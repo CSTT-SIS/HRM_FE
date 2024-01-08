@@ -1,0 +1,18 @@
+version: '3.3'
+services:
+    hrm_fe:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: hrm_fe_container
+        networks:
+            - myNetwork
+        ports:
+            - '80:80'
+        volumes:
+            - './public:/home/project/public'
+        restart: always
+
+networks:
+    myNetwork:
+        external: true
