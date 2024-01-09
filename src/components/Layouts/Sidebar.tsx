@@ -32,6 +32,7 @@ import IconMenuUsers from '@/components/Icon/Menu/IconMenuUsers';
 import IconMenuPages from '@/components/Icon/Menu/IconMenuPages';
 import IconMenuAuthentication from '@/components/Icon/Menu/IconMenuAuthentication';
 import IconMenuDocumentation from '@/components/Icon/Menu/IconMenuDocumentation';
+import IconUsersGroup from '../Icon/IconUsersGroup';
 
 const Sidebar = () => {
     const router = useRouter();
@@ -141,6 +142,14 @@ const Sidebar = () => {
 
                             <li className="nav-item">
                                 <ul>
+                                    <li className="nav-item">
+                                        <Link href="/Department/department" className="group">
+                                            <div className="flex items-center">
+                                                <IconUsersGroup className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('department')}</span>
+                                            </div>
+                                        </Link>
+                                    </li>
                                     <li className="nav-item">
                                         <Link href="/apps/chat" className="group">
                                             <div className="flex items-center">
@@ -604,9 +613,8 @@ const Sidebar = () => {
                                         <li className="menu nav-item">
                                             <button
                                                 type="button"
-                                                className={`${
-                                                    errorSubMenu ? 'open' : ''
-                                                } w-full before:h-[5px] before:w-[5px] before:rounded before:bg-gray-300 hover:bg-gray-100 ltr:before:mr-2 rtl:before:ml-2 dark:text-[#888ea8] dark:hover:bg-gray-900`}
+                                                className={`${errorSubMenu ? 'open' : ''
+                                                    } w-full before:h-[5px] before:w-[5px] before:rounded before:bg-gray-300 hover:bg-gray-100 ltr:before:mr-2 rtl:before:ml-2 dark:text-[#888ea8] dark:hover:bg-gray-900`}
                                                 onClick={() => setErrorSubMenu(!errorSubMenu)}
                                             >
                                                 {t('error')}
