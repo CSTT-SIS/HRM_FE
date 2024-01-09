@@ -1,6 +1,6 @@
 import { useEffect, Fragment, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { setPageTitle } from '../../store/themeConfigSlice';
+import { setPageTitle } from '../../../store/themeConfigSlice';
 import { lazy } from 'react';
 // Third party libs
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
@@ -9,19 +9,19 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
-import { deleteDepartment, detailDepartment, listAllDepartment } from '../../services/apis/department';
+import { deleteDepartment, detailDepartment, listAllDepartment } from '../../../services/apis/department';
 // constants
-import { PAGE_SIZES, PAGE_SIZES_DEFAULT, PAGE_NUMBER_DEFAULT } from '../../libs/constants';
+import { PAGE_SIZES, PAGE_SIZES_DEFAULT, PAGE_NUMBER_DEFAULT } from '../../../libs/constants';
 // helper
-import { capitalize, formatDate, showMessage } from '../../libs/helper';
+import { capitalize, formatDate, showMessage } from '../../../libs/helper';
 // icons
-import IconPrinter from '../../components/Icon/IconPrinter';
-import IconPlus from '../../components/Icon/IconPlus';
-import IconPencil from '../../components/Icon/IconPencil';
-import IconTrashLines from '../../components/Icon/IconTrashLines';
-import IconDownload from '../../components/Icon/IconDownload';
-import IconFile from '../../components/Icon/IconFile';
-import IconFolderMinus from '../../components/Icon/IconFolderMinus';
+import IconPrinter from '../../../components/Icon/IconPrinter';
+import IconPlus from '../../../components/Icon/IconPlus';
+import IconPencil from '../../../components/Icon/IconPencil';
+import IconTrashLines from '../../../components/Icon/IconTrashLines';
+import IconDownload from '../../../components/Icon/IconDownload';
+import IconFile from '../../../components/Icon/IconFile';
+import IconFolderMinus from '../../../components/Icon/IconFolderMinus';
 
 import { usePathname, useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/router';
