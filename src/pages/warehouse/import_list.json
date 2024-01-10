@@ -1,0 +1,86 @@
+[
+    {
+        "id": 1,
+        "name": "item 1",
+        "code": "123",
+        "idSelect": 1,
+        "unit": "kg",
+        "quantity": 100,
+        "unitPrice": 2000,
+        "totalAmount": 3000,
+        "type": "",
+        "status": "pending"
+    },
+    {
+        "id": 2,
+        "name": "item 2",
+        "code": "123",
+        "unit": "kg",
+        "idSelect": 2,
+        "quantity": 100,
+        "unitPrice": 2000,
+        "totalAmount": 3000,
+        "type": "",
+        "status": "pending"
+    },
+    {
+        "id": 3,
+        "name": "item 3",
+        "idSelect": 3,
+        "code": "123",
+        "unit": "kg",
+        "quantity": 100,
+        "unitPrice": 2000,
+        "totalAmount": 3000,
+        "type": "",
+        "status": "unapproved"
+    },
+    {
+        "id": 4,
+        "name": "item 4",
+        "idSelect": 4,
+        "code": "123",
+        "unit": "kg",
+        "quantity": 100,
+        "unitPrice": 2000,
+        "totalAmount": 3000,
+        "type": "",
+        "status": "pending"
+    },
+    {
+        "id": 5,
+        "name": "item 5",
+        "idSelect": 5,
+        "code": "123",
+        "unit": "kg",
+        "quantity": 100,
+        "unitPrice": 2000,
+        "totalAmount": 3000,
+        "type": "",
+        "status": "pending"
+    },
+    {
+        "id": 6,
+        "name": "item 6",
+        "idSelect": 6,
+        "code": "123",
+        "unit": "kg",
+        "quantity": 100,
+        "unitPrice": 2000,
+        "totalAmount": 3000,
+        "type": "",
+        "status": "pending"
+    },
+    {
+        "id": 7,
+        "name": "item 7",
+        "idSelect": 7,
+        "code": "123",
+        "unit": "kg",
+        "quantity": 100,
+        "unitPrice": 2000,
+        "totalAmount": 3000,
+        "type": "",
+        "status": "approved"
+    }
+]
