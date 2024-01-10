@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { API } from '../libs/client';
+import { API } from '../@core/libs/client';
 
 export default class Auth {
     static saveToken(token: string): void {

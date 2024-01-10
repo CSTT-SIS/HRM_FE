@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
-import Auth from '../auth/auth';
+import Auth from '../../auth/auth';
 
 function getAuthToken(): string {
     return window.localStorage.getItem('accessToken') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlck5hbWUiOiJhZG1pbiIsInJvbGUiOiIiLCJzdWIiOjEsImlhdCI6MTcwMjkwNjE4MywiZXhwIjoxNzAyOTkyNTgzfQ.f90xyPM2Pi71qNVyWSoU5K6nROYt3Wu5nxqvT2p3u2g';

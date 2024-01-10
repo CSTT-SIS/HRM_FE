@@ -1,5 +1,5 @@
 
-import { API } from "../../libs/client";
+import { API } from "../../@core/libs/client";
 
 export const listAllDepartment = async (data: any): Promise<any> => {
     const res = await API.get(`/department/list-all`, data);

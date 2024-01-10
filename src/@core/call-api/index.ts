@@ -70,7 +70,7 @@ const callApi = (
 		headers,
 		responseType,
 		...config,
-		withCredentials: true,
+		// withCredentials: true,
 	})
 		.then((res: any) => {
 			console.log('LOG ~ .then ~ res:', res.headers);
