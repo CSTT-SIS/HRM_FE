@@ -11,7 +11,8 @@ import { useTranslation } from 'react-i18next';
 // component
 import LoadingComponent from "@/@core/components/LoadingComponent";
 // API
-import { deleteDepartment, detailDepartment, listAllDepartment } from '../../../services/apis/department';
+import { deleteDepartment, detailDepartment, listAllDepartment } from '@/services/apis/department.api';
+
 // constants
 import { PAGE_SIZES, PAGE_SIZES_DEFAULT, PAGE_NUMBER_DEFAULT } from '@/utils/constants';
 // helper
@@ -61,20 +62,20 @@ const Department = () => {
      * =======================>>> API calls <<<=======================
      */
 
-    const getDepartment = () => {
+    const getDepartment = (page: number, pageSize: number, sortStatus: any, search: string) => {
         listAllDepartment({
-            params: {
-                page: page,
-                limit: pageSize,
-                ...(search && search !== '' && { search }),
-                sort: sortStatus.columnAccessor,
-                sortOrder: sortStatus.direction,
-            },
+            page: page,
+            limit: pageSize,
+            ...(search && search !== '' && { search }),
+            sort: sortStatus.columnAccessor,
+            sortOrder: sortStatus.direction,
         }).then((res) => {
             setShowLoader(false)
             setRecordsData(res.data.list);
             setTotal(res.data.total);
+           
         });
+
     };
 
     /**
@@ -83,15 +84,17 @@ const Department = () => {
     useEffect(() => {
         dispatch(setPageTitle(`${t('department')}`));
     });
-
     useEffect(() => {
-        // router.push(window.location.pathname + '?' + createQueryString('sort', sortStatus.columnAccessor)
-        //     + '&' + createQueryString('sortOrder', sortStatus.direction)
-        //     + '&' + createQueryString('page', page.toString())
-        //     + '&' + createQueryString('pageSize', pageSize.toString())
-        //     + '&' + createQueryString('search', search))
+        getDepartment(page, pageSize, sortStatus, search);
 
-        getDepartment();
+      }, [router.query]);
+    useEffect(() => {
+        router.push(window.location.pathname + '?' + createQueryString('sort', sortStatus.columnAccessor)
+        + '&' + createQueryString('sortOrder', sortStatus.direction)
+        + '&' + createQueryString('page', page.toString())
+        + '&' + createQueryString('pageSize', pageSize.toString())
+        + '&' + createQueryString('search', search))
+
     }, [page, pageSize, sortStatus, search]);
 
     /**
@@ -149,7 +152,6 @@ const Department = () => {
     const createQueryString = useCallback(
         (name: string, value: string) => {
             const params = new URLSearchParams()
-            console.log(params.toString())
             params.set(name, value)
             return params.toString()
         },
@@ -158,89 +160,89 @@ const Department = () => {
 
     return (
         <div>
-        { showLoader && (
-            <LoadingComponent />
-        )}
-<div className="panel mt-6" >
-    <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5" >
-        <div className="flex items-center flex-wrap" >
-            <button type="button" onClick = {(e) => setModalAdd(true)} className = "btn btn-primary btn-sm m-1 " >
-                <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                    { t('add') }
-                    < /button>
-                    < button type = "button" className = "btn btn-primary btn-sm m-1" >
-                        <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
+            {showLoader && (
+                <LoadingComponent />
+            )}
+            <div className="panel mt-6" >
+                <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5" >
+                    <div className="flex items-center flex-wrap" >
+                        <button type="button" onClick={(e) => setModalAdd(true)} className="btn btn-primary btn-sm m-1 " >
+                            <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                            {t('add')}
+                        </button>
+                        <button type="button" className="btn btn-primary btn-sm m-1" >
+                            <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
                             Nhập file
-                                < /button>
-                                < button type = "button" className = "btn btn-primary btn-sm m-1" >
-                                    <IconDownload className="ltr:mr-2 rtl:ml-2" />
-                                        Xuất file excel
-                                            < /button>
-                                            < /div>
-                                            < input type = "text" className = "form-input w-auto" placeholder = {`${t('search')}`} onChange = {(e) => {
-    if (e.target.value === "") {
-        setSearch("")
-    }
-}}
-onKeyPress = {(e) => {
-    if (e.key === "Enter") {
-        setSearch(e.target.value)
-    }
-}} />
-    < /div>
-    < div className = "datatables" >
-        <DataTable
+                        </button>
+                        <button type="button" className="btn btn-primary btn-sm m-1" >
+                            <IconDownload className="ltr:mr-2 rtl:ml-2" />
+                            Xuất file excel
+                        </button>
+                    </div>
+                    < input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => {
+                        if (e.target.value === "") {
+                            setSearch("")
+                        }
+                    }}
+                        onKeyPress={(e) => {
+                            if (e.key === "Enter") {
+                                setSearch(e.target.value)
+                            }
+                        }} />
+                </div>
+                <div className="datatables" >
+                    <DataTable
                         highlightOnHover
-className = "whitespace-nowrap table-hover"
-records = { recordsData }
-columns = {
-    [
-        {
-            accessor: 'id',
-            title: '#',
-            render: (records, index) => <span>{(page - 1) * pageSize + index + 1
-        } < /span>,
-                            },
-    { accessor: 'departmentCode', title: 'Mã phòng ban', sortable: true },
-    { accessor: 'departmentName', title: 'Tên phòng ban', sortable: true },
-    { accessor: 'numOfHuman', title: 'Số nhân viên', sortable: true },
+                        className="whitespace-nowrap table-hover"
+                        records={recordsData}
+                        columns={
+                            [
+                                {
+                                    accessor: 'id',
+                                    title: '#',
+                                    render: (records, index) => <span>{(page - 1) * pageSize + index + 1
+                                    } </span>,
+                                },
+                                { accessor: 'departmentCode', title: 'Mã phòng ban', sortable: true },
+                                { accessor: 'departmentName', title: 'Tên phòng ban', sortable: true },
+                                { accessor: 'numOfHuman', title: 'Số nhân viên', sortable: true },
 
-{
-    accessor: 'action',
-    title: 'Thao tác',
-    titleClassName: '!text-center',
-    render: (records) => (
-        <div className= "flex items-center w-max mx-auto gap-2" >
-        <Tippy content={ `${t('edit')}` }>
-            <button type="button" onClick = {() => handleEditDepartment(records)}>
-                <IconPencil />
-                < /button>
-                < /Tippy>
-                < Tippy content = {`${t('delete')}`}>
-                    <button type="button" onClick = {() => handleDeleteDepartment(records)}>
-                        <IconTrashLines />
-                        < /button>
-                        < /Tippy>
-                        < /div>
-                                ),
-                            },
-                        ]}
-totalRecords = { total }
-recordsPerPage = { pageSize }
-page = { page }
-onPageChange = {(p) => setPage(p)}
-recordsPerPageOptions = { PAGE_SIZES }
-onRecordsPerPageChange = { setPageSize }
-sortStatus = { sortStatus }
-onSortStatusChange = { setSortStatus }
-minHeight = { 200}
-paginationText = {({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
-/>
-    < /div>
-    < /div>
-    < AddDepartmentModal open = { modalAdd } handleModal = { handleModalAdd } getDepartment = { getDepartment } />
-        <EditDepartmentModal open={ modalEdit } handleModal = { handleModalEdit } dataEdit = { dataEdit } getDepartment = { getDepartment } />
+                                {
+                                    accessor: 'action',
+                                    title: 'Thao tác',
+                                    titleClassName: '!text-center',
+                                    render: (records) => (
+                                        <div className="flex items-center w-max mx-auto gap-2" >
+                                            <Tippy content={`${t('edit')}`}>
+                                                <button type="button" onClick={() => handleEditDepartment(records)}>
+                                                    <IconPencil />
+                                                </button>
+                                            </Tippy>
+                                            <Tippy content={`${t('delete')}`}>
+                                                <button type="button" onClick={() => handleDeleteDepartment(records)}>
+                                                    <IconTrashLines />
+                                                </button>
+                                            </Tippy>
+                                        </div>
+                                    ),
+                                },
+                            ]}
+                        totalRecords={total}
+                        recordsPerPage={pageSize}
+                        page={page}
+                        onPageChange={(p) => setPage(p)}
+                        recordsPerPageOptions={PAGE_SIZES}
+                        onRecordsPerPageChange={setPageSize}
+                        sortStatus={sortStatus}
+                        onSortStatusChange={setSortStatus}
+                        minHeight={200}
+                        paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
+                    />
+                </div>
             </div>
+            <AddDepartmentModal open={modalAdd} handleModal={handleModalAdd} getDepartment={getDepartment} />
+            <EditDepartmentModal open={modalEdit} handleModal={handleModalEdit} dataEdit={dataEdit} getDepartment={getDepartment} />
+        </div>
     );
 };
 

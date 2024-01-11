@@ -7,8 +7,8 @@ import IconX from '../../../../components/Icon/IconX';
 import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
 import Swal from 'sweetalert2';
-import { createDepartment } from '../../../../services/apis/department';
 import { showMessage } from '@/@core/utils';
+import { createDepartment } from '@/services/apis/department.api';
 interface Props {
     open: boolean;
     handleModal: any;
