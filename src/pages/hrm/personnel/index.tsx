@@ -23,8 +23,8 @@ import IconPlus from '@/components/Icon/IconPlus';
 import { useRouter } from 'next/router';
 
 // json
-import DepartmentList from './department_list.json';
-import DepartmentModal from './modal/DepartmentModal';
+import PersonnelList from './personnel_list.json';
+import PersonnelModal from './modal/PersonnelModal';
 import IconFolderMinus from '@/components/Icon/IconFolderMinus';
 import IconDownload from '@/components/Icon/IconDownload';
 
@@ -38,7 +38,7 @@ const Department = ({ ...props }: Props) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     useEffect(() => {
-        dispatch(setPageTitle(`${t('department')}`));
+        dispatch(setPageTitle(`${t('staff')}`));
     });
 
     const router = useRouter();
@@ -57,11 +57,11 @@ const Department = ({ ...props }: Props) => {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const data = localStorage.getItem('departmentList');
+            const data = localStorage.getItem('staffList');
             if (data) {
                 setGetStorge(JSON.parse(data));
             } else {
-                localStorage.setItem('departmentList', JSON.stringify(DepartmentList));
+                localStorage.setItem('staffList', JSON.stringify(PersonnelList));
             }
 
         }
@@ -103,7 +103,7 @@ const Department = ({ ...props }: Props) => {
             .then((result) => {
                 if (result.value) {
                     const value = getStorge.filter((item: any) => { return (item.id !== data.id) });
-                    localStorage.setItem('departmentList', JSON.stringify(value));
+                    localStorage.setItem('staffList', JSON.stringify(value));
                     setGetStorge(value);
                     showMessage(`${t('delete_department_success')}`, 'success')
                 }
@@ -127,8 +127,8 @@ const Department = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
         },
-        { accessor: 'name', title: 'Tên phòng ban', sortable: false },
-        { accessor: 'code', title: 'Mã phòng ban', sortable: false },
+        { accessor: 'name', title: 'Tên nhân viên', sortable: false },
+        { accessor: 'code', title: 'Mã nhân viên', sortable: false },
 
         {
             accessor: 'action',
@@ -158,7 +158,7 @@ const Department = ({ ...props }: Props) => {
                     <IconLoading />
                 </div>
             )}
-            <title>{t('department')}</title>
+            <title>{t('staff')}</title>
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
@@ -196,7 +196,7 @@ const Department = ({ ...props }: Props) => {
                     />
                 </div>
             </div>
-            <DepartmentModal
+            <PersonnelModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}
                 data={data}

@@ -39,6 +39,7 @@ import { IconWarehouse } from '../Icon/IconWarehouse';
 import { IconItem } from '../Icon/IconItem';
 import IconDownload from '../Icon/IconDownload';
 import IconLogout from '../Icon/IconLogout';
+import IconUser from '../Icon/IconUser';
 
 const Sidebar = () => {
     const router = useRouter();
@@ -143,7 +144,7 @@ const Sidebar = () => {
 
                             <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
                                 <IconMinus className="hidden h-5 w-4 flex-none" />
-                                <span>{t('apps')}</span>
+                                <span>{t('hrmanagement')}</span>
                             </h2>
 
                             <li className="nav-item">
@@ -157,10 +158,10 @@ const Sidebar = () => {
                                         </Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link href="#" className="group">
+                                        <Link href="/hrm/personnel" className="group">
                                             <div className="flex items-center">
-                                                <IconUsers className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('user')}</span>
+                                                <IconUser className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('staff')}</span>
                                             </div>
                                         </Link>
                                     </li>
