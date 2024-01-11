@@ -1,13 +1,15 @@
-import { useEffect, Fragment, useState } from 'react';
+import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Dialog, Transition } from '@headlessui/react';
 
 import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
-import Swal from 'sweetalert2';
 import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
+import { CreateWarehouse, EditWarehouse } from '@/services/apis/warehouse.api';
+import { WarehouseTpyes } from '@/services/swr/warehouse.twr';
+import { useRouter } from 'next/router';
 
 interface Props {
     [key: string]: any;
@@ -16,48 +18,41 @@ interface Props {
 const WarehouseModal = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
-    const [disabled, setDisabled] = useState(false);
+
+    // get data 
+    const { data: warehouseType, pagination, mutate } = WarehouseTpyes();
 
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_warehouse')}`),
         code: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_warehouseCode')}`),
-        status: Yup.string().required(`${t('please_fill_status')}`)
+        typeId: Yup.string().required(`${t('please_fill_type')}`)
     });
 
-    const handleWarehouse = (value: any) => {
+    const handleWarehouse = (param: any) => {
         if (props?.data) {
-            const reNew = props.totalData.filter((item: any) => item.id !== props.data.id);
-            reNew.push({
-                id: props.data.id,
-                name: value.name,
-                code: value.code,
-                status: value.status
+            EditWarehouse({ id: props.data.id, ...param }).then(() => {
+                props.warehouseMutate();
+                handleCancel();
+                showMessage(`${t('edit_warehouse_success')}`, 'success');
+            }).catch((err) => {
+                showMessage(`${t('edit_warehouse_error')}`, 'error');
             });
-            localStorage.setItem('warehouseList', JSON.stringify(reNew));
-            props.setGetStorge(reNew);
-            props.setOpenModal(false);
-            props.setData(undefined);
-            showMessage(`${t('edit_warehouse_success')}`, 'success');
         } else {
-            const reNew = props.totalData;
-            reNew.push({
-                id: Number(props?.totalData[props?.totalData?.length - 1].id) + 1,
-                name: value.name,
-                code: value.code,
-                status: value.status
-            })
-            localStorage.setItem('warehouseList', JSON.stringify(reNew));
-            props.setGetStorge(props.totalData);
-            props.setOpenModal(false);
-            props.setData(undefined);
-            showMessage(`${t('create_warehouse_success')}`, 'success')
+            CreateWarehouse(param).then(() => {
+                props.warehouseMutate();
+                handleCancel();
+                showMessage(`${t('create_warehouse_success')}`, 'success');
+            }).catch((err) => {
+                showMessage(`${t('create_warehouse_error')}`, 'error');
+            });
         }
     }
 
     const handleCancel = () => {
         props.setOpenModal(false);
-        props.setData(undefined);
+        props.setData();
     };
+
     return (
         <Transition appear show={props.openModal} as={Fragment}>
             <Dialog as="div" open={props.openModal} onClose={() => props.setOpenModal(false)} className="relative z-50">
@@ -101,7 +96,9 @@ const WarehouseModal = ({ ...props }: Props) => {
                                             {
                                                 name: props?.data ? `${props?.data?.name}` : "",
                                                 code: props?.data ? `${props?.data?.code}` : "",
-                                                status: props?.data ? `${props?.data?.status}` : ""
+                                                status: props?.data ? `${props?.data?.status}` : "",
+                                                typeId: props?.data ? `${props?.data?.typeId}` : "",
+                                                description: props?.data ? `${props?.data?.description}` : ""
                                             }
                                         }
                                         validationSchema={SubmittedForm}
@@ -128,22 +125,34 @@ const WarehouseModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mb-5 flex justify-between gap-4">
                                                     <div className="flex-1">
-                                                        <label htmlFor="status" > {t('status')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Field as="select" name="status" id="status" className="form-input">
+                                                        <label htmlFor="typeId" > {t('type_warehouse')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <Field as="select" name="typeId" id="typeId" className="form-input">
                                                             <option value="">---</option>
-                                                            <option value="active">Active</option>
-                                                            <option value="inActive">InActive</option>
+                                                            {
+                                                                warehouseType?.data.map((item: any) => {
+                                                                    return (
+                                                                        <option key={item} value={item.id}>{item.name}</option>
+                                                                    )
+                                                                })
+                                                            }
                                                         </Field>
-                                                        {errors.status ? (
-                                                            <div className="text-danger mt-1"> {errors.status} </div>
+                                                        {errors.typeId ? (
+                                                            <div className="text-danger mt-1"> {errors.typeId} </div>
                                                         ) : null}
                                                     </div>
+                                                </div>
+                                                <div className="mb-5">
+                                                    <label htmlFor="description" > {t('description')} </label >
+                                                    <Field name="description" type="text" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
+                                                    {errors.description ? (
+                                                        <div className="text-danger mt-1"> {errors.description} </div>
+                                                    ) : null}
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                                     <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
                                                         Cancel
                                                     </button>
-                                                    <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4" disabled={disabled}>
+                                                    <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4">
                                                         {props.data !== undefined ? 'Update' : 'Add'}
                                                     </button>
                                                 </div>

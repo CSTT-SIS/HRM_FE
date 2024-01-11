@@ -1,4 +1,5 @@
 import { useEffect, Fragment, useState, useCallback } from 'react';
+import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { setPageTitle } from '../../store/themeConfigSlice';
 import { lazy } from 'react';
@@ -9,21 +10,19 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
+import { Warehouses } from '@/services/swr/warehouse.twr';
 // constants
-import { PAGE_SIZES, PAGE_SIZES_DEFAULT, PAGE_NUMBER_DEFAULT } from '@/utils/constants';
+import { PAGE_SIZES } from '@/utils/constants';
 // helper
-import { capitalize, formatDate, showMessage } from '@/@core/utils';
+import { showMessage } from '@/@core/utils';
 // icons
 import IconPencil from '../../components/Icon/IconPencil';
 import IconTrashLines from '../../components/Icon/IconTrashLines';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
-
-import { useRouter } from 'next/router';
-
-// json
-import WarehouseList from './warehouse_list.json';
+// modal
 import WarehouseModal from './modal/WarehouseModal';
+import { DeleteWarehouse } from '@/services/apis/warehouse.api';
 
 
 interface Props {
@@ -34,52 +33,32 @@ const WarehousePage = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
+    const router = useRouter();
+
+    const [showLoader, setShowLoader] = useState(true);
+    const [data, setData] = useState<any>();
+    const [openModal, setOpenModal] = useState(false);
+
+    const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
+
+
+    // get data
+    const { data: warehouse, pagination, mutate } = Warehouses(router.query);
+
     useEffect(() => {
         dispatch(setPageTitle(`${t('warehouse')}`));
     });
 
-    const router = useRouter();
-
-    const [showLoader, setShowLoader] = useState(true);
-    const [page, setPage] = useState<any>(PAGE_NUMBER_DEFAULT);
-    const [pageSize, setPageSize] = useState(PAGE_SIZES_DEFAULT);
-    const [recordsData, setRecordsData] = useState<any>();
-    const [total, setTotal] = useState(0);
-    const [getStorge, setGetStorge] = useState<any>();
-    const [data, setData] = useState<any>();
-
-    const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
-
-    const [openModal, setOpenModal] = useState(false);
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const data = localStorage.getItem('warehouseList');
-            if (data) {
-                setGetStorge(JSON.parse(data));
-            } else {
-                localStorage.setItem('warehouseList', JSON.stringify(WarehouseList));
-            }
-
-        }
-    }, [])
-
-    useEffect(() => {
-        setTotal(getStorge?.length);
-        setPageSize(PAGE_SIZES_DEFAULT);
-        setRecordsData(getStorge?.filter((item: any, index: any) => { return index <= 9 && page === 1 ? item : index >= 10 && index <= (page * 9) ? item : null }));
-    }, [getStorge, getStorge?.length, page])
-
     useEffect(() => {
         setShowLoader(false);
-    }, [recordsData])
+    }, [warehouse])
 
     const handleEdit = (data: any) => {
         setOpenModal(true);
         setData(data);
     };
 
-    const handleDelete = (data: any) => {
+    const handleDelete = ({ id, name }: any) => {
         const swalDeletes = Swal.mixin({
             customClass: {
                 confirmButton: 'btn btn-secondary',
@@ -92,47 +71,66 @@ const WarehousePage = ({ ...props }: Props) => {
             .fire({
                 icon: 'question',
                 title: `${t('delete_warehouse')}`,
-                text: `${t('delete')} ${data.name}`,
+                text: `${t('delete')} ${name}`,
                 padding: '2em',
                 showCancelButton: true,
                 reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
-                    const value = getStorge.filter((item: any) => { return (item.id !== data.id) });
-                    localStorage.setItem('warehouseList', JSON.stringify(value));
-                    setGetStorge(value);
-                    showMessage(`${t('delete_warehouse_success')}`, 'success')
+                    DeleteWarehouse({ id }).then(() => {
+                        mutate();
+                        showMessage(`${t('delete_warehouse_success')}`, 'success');
+                    }).catch((err) => {
+                        showMessage(`${t('delete_warehouse_error')}`, 'error');
+                    });
                 }
             });
     };
 
-    const handleSearch = (e: any) => {
-        if (e.target.value === "") {
-            setRecordsData(getStorge);
-        } else {
-            setRecordsData(
-                getStorge.filter((item: any) => {
-                    return item.name.toLowerCase().includes(e.target.value.toLowerCase())
-                })
-            )
-        }
+    const handleSearch = (param: any) => {
+        router.replace(
+            {
+                pathname: router.pathname,
+                query: {
+                    ...router.query,
+                    search: param
+                },
+            }
+        );
     }
+
+    const handleChangePage = (page: number, pageSize: number) => {
+        router.replace(
+            {
+                pathname: router.pathname,
+                query: {
+                    ...router.query,
+                    page: page,
+                    perPage: pageSize,
+                },
+            },
+            undefined,
+            { shallow: true },
+        );
+        return pageSize;
+    };
+
     const columns = [
         {
             accessor: 'id',
             title: '#',
-            render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
+            render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
         { accessor: 'name', title: 'Tên kho', sortable: false },
         { accessor: 'code', title: 'Mã kho', sortable: false },
+        { accessor: 'description', title: 'Ghi chú', sortable: false },
         {
-            accessor: 'status',
-            title: 'Trạng thái',
-            sortable: false,
-            render: ({ status }: any) => <span className={`badge badge-outline-${status === "active" ? "success" : "danger"} `}>{status}</span>,
+            accessor: 'type',
+            title: 'Loại kho',
+            render: ({ name }: any) => <span >{name}</span>,
+            sortable: false
         },
-
         {
             accessor: 'action',
             title: 'Thao tác',
@@ -171,24 +169,23 @@ const WarehousePage = ({ ...props }: Props) => {
                         </button>
                     </div>
 
-                    <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                    <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
                 </div>
                 <div className="datatables">
                     <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover"
-                        records={recordsData}
+                        records={warehouse?.data}
                         columns={columns}
-                        totalRecords={total}
-                        recordsPerPage={pageSize}
-                        page={page}
-                        onPageChange={(p) => setPage(p)}
+                        totalRecords={pagination?.totalRecords}
+                        recordsPerPage={pagination?.perPage}
+                        page={pagination?.page}
+                        onPageChange={(p) => handleChangePage(pagination?.page, pagination?.perPage)}
                         recordsPerPageOptions={PAGE_SIZES}
-                        onRecordsPerPageChange={setPageSize}
+                        onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
                         sortStatus={sortStatus}
                         onSortStatusChange={setSortStatus}
                         minHeight={200}
-                        onRowClick={(records) => router.push('/warehouse/' + `${records.id}`)}
                         paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
                     />
                 </div>
@@ -197,9 +194,8 @@ const WarehousePage = ({ ...props }: Props) => {
                 openModal={openModal}
                 setOpenModal={setOpenModal}
                 data={data}
-                totalData={getStorge}
                 setData={setData}
-                setGetStorge={setGetStorge}
+                warehouseMutate={mutate}
             />
         </div>
     );
