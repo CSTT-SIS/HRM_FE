@@ -24,8 +24,7 @@ axios.interceptors.request.use(
 		config.headers = {
 			...headers,
 			...config.headers,
-			Authorization: `Bearer ${Cookies.get(Config.Env.NEXT_PUBLIC_X_ACCESS_TOKEN)}`
-
+			Authorization: `${Cookies.get(Config.Env.NEXT_PUBLIC_X_ACCESS_TOKEN)}`
 		};
 		return config;
 	},
@@ -102,5 +101,3 @@ export const callApiSWRInfinite = (endpoint: string, method: any, body?: any, he
 	});
 };
 export default callApi;
-
-// export const frappe = new FrappeApp(Config.Env.NEXT_PUBLIC_BE_URL);
