@@ -17,4 +17,18 @@ export const DeleteWarehouse = (body: any) => {
     return callApi(endpoint, 'DELETE', body);
 };
 
+export const CreateWarehouseType = (body: any) => {
+    const endpoint = '/warehouse/type';
+    return callApi(endpoint, 'POST', body);
+};
+
+export const EditWarehouseType = (body: any) => {
+    const endpoint = `/warehouse/type/${body.id}`;
+    return callApi(endpoint, 'PATCH', body);
+};
+
+export const DeleteWarehouseType = (body: any) => {
+    const endpoint = `/warehouse/type/${body.id}`;
+    return callApi(endpoint, 'DELETE', body);
+};
 
