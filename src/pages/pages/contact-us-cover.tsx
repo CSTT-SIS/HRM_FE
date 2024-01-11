@@ -20,7 +20,6 @@ const RecoverIdCover = () => {
         dispatch(setPageTitle('Contact Us Cover'));
     });
     const router = useRouter();
-
     const submitForm = (e: any) => {
         e.preventDefault();
         router.push('/');

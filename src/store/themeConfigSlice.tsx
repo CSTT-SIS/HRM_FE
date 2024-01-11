@@ -13,22 +13,9 @@ const initialState = {
     locale: themeConfig.locale,
     semidark: themeConfig.semidark,
     languageList: [
-        { code: 'zh', name: 'Chinese' },
-        { code: 'da', name: 'Danish' },
-        { code: 'en', name: 'English' },
-        { code: 'fr', name: 'French' },
-        { code: 'de', name: 'German' },
-        { code: 'el', name: 'Greek' },
-        { code: 'hu', name: 'Hungarian' },
-        { code: 'it', name: 'Italian' },
-        { code: 'ja', name: 'Japanese' },
-        { code: 'pl', name: 'Polish' },
-        { code: 'pt', name: 'Portuguese' },
-        { code: 'ru', name: 'Russian' },
-        { code: 'es', name: 'Spanish' },
-        { code: 'sv', name: 'Swedish' },
-        { code: 'tr', name: 'Turkish' },
-        { code: 'ae', name: 'Arabic' },
+        { code: 'vn', name: 'Việt Nam' },
+        { code: 'la', name: 'Laos' },
+        { code: 'en', name: 'English' }
     ],
 };
 
@@ -101,7 +88,7 @@ const themeConfigSlice = createSlice({
         },
 
         setPageTitle(state, { payload }) {
-            document.title = `${payload} | VRISTO - Multipurpose Tailwind Dashboard Template`;
+            document.title = `${payload} | CSTT - Multipurpose Tailwind Dashboard Template`;
         },
     },
 });
