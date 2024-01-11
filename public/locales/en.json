@@ -7,7 +7,16 @@
     "role": "Role",
     "shift": "Shift",
     "work_schedule": "Work Schedule",
+    "dayoff": "Dayoffs",
     "on_leave":"On Leave",
+    "forget_timekeeping": "Forget Timekeeping Form",
+    "ot_form": "Overtime Form",
+    "attendance_exemption": "Attendance exemption",
+    "task": "Task",
+    "assets": "Assets",
+    "document": "Documents",
+    "statistic": "Satistic",
+    "notification": "Notifications",
     "timekeeping":"Timekeeping",
     "hrmanagement": "Human Resource Management",
     "save": "Save",
@@ -172,5 +181,6 @@
     "delete_user_success": "Delete user success",
     "add_user_err": "Add user error",
     "edit_user_err": "Edit user error",
-    "delete_user_success_department_err": "Delete user error"
+    "delete_user_success_department_err": "Delete user error",
+    "forget_password": "Forget password"
 }
