@@ -1,0 +1,79 @@
+[
+    {
+        "id": 1,
+        "name": "item 1",
+        "code": "123",
+        "unit": "kg",
+        "quantity": 100,
+        "purchasePrice": 2000,
+        "salePrice": 3000,
+        "type": "",
+        "status": "active"
+    },
+    {
+        "id": 2,
+        "name": "item 2",
+        "code": "123",
+        "unit": "kg",
+        "quantity": 100,
+        "purchasePrice": 2000,
+        "salePrice": 3000,
+        "type": "",
+        "status": "active"
+    },
+    {
+        "id": 3,
+        "name": "item 3",
+        "code": "123",
+        "unit": "kg",
+        "quantity": 100,
+        "purchasePrice": 2000,
+        "salePrice": 3000,
+        "type": "",
+        "status": "active"
+    },
+    {
+        "id": 4,
+        "name": "item 4",
+        "code": "123",
+        "unit": "kg",
+        "quantity": 100,
+        "purchasePrice": 2000,
+        "salePrice": 3000,
+        "type": "",
+        "status": "active"
+    },
+    {
+        "id": 5,
+        "name": "item 5",
+        "code": "123",
+        "unit": "kg",
+        "quantity": 100,
+        "purchasePrice": 2000,
+        "salePrice": 3000,
+        "type": "",
+        "status": "active"
+    },
+    {
+        "id": 6,
+        "name": "item 6",
+        "code": "123",
+        "unit": "kg",
+        "quantity": 100,
+        "purchasePrice": 2000,
+        "salePrice": 3000,
+        "type": "",
+        "status": "active"
+    },
+    {
+        "id": 7,
+        "name": "item 7",
+        "code": "123",
+        "unit": "kg",
+        "quantity": 100,
+        "purchasePrice": 2000,
+        "salePrice": 3000,
+        "type": "",
+        "status": "active"
+    }
+]
