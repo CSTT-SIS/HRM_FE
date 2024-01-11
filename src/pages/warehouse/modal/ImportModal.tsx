@@ -109,7 +109,7 @@ const ImportModal = ({ ...props }: Props) => {
     }
 
     return (
-        <Transition appear show={props.openModal} as={Fragment}>
+        <Transition appear show={props.openModal ?? false} as={Fragment}>
             <Dialog as="div" open={props.openModal} onClose={() => props.setOpenModal(false)} className="relative z-50">
                 <Transition.Child
                     as={Fragment}
