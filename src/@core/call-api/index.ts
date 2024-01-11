@@ -24,7 +24,9 @@ axios.interceptors.request.use(
 		config.headers = {
 			...headers,
 			...config.headers,
-			Authorization: `Bearer ${Cookies.get(Config.Env.NEXT_PUBLIC_X_ACCESS_TOKEN)}`
+			Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlck5hbWUiOiJhZG1pbiIsInJvbGUiOiIiLCJzdWIiOjEsImlhdCI6MTcwNDkwNDU4NSwiZXhwIjoxNzA0OTkwOTg1fQ.FfwZmKV9wivIXZnuRIYzT3xvUDzkwEMVUhqzdJLMcI8`
+			// Authorization: `Bearer ${Cookies.get(Config.Env.NEXT_PUBLIC_X_ACCESS_TOKEN)}`
+
 		};
 		return config;
 	},
@@ -65,6 +67,7 @@ const callApi = (
 	const responseType = isBlob ? 'blob' : 'json';
 	return axios({
 		url: url,
+		params: body || {},
 		method: method || 'GET',
 		data: body || {},
 		headers,
