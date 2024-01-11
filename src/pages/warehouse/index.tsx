@@ -8,8 +8,6 @@ import Swal from 'sweetalert2';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
-// API
-import { deleteDepartment, detailDepartment, listAllDepartment } from '../../services/apis/department';
 // constants
 import { PAGE_SIZES, PAGE_SIZES_DEFAULT, PAGE_NUMBER_DEFAULT } from '@/utils/constants';
 // helper
