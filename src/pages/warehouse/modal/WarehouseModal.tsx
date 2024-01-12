@@ -22,6 +22,7 @@ const WarehouseModal = ({ ...props }: Props) => {
     const { t } = useTranslation();
     const [query, setQuery] = useState<any>();
     const [openModal, setOpenModal] = useState(false);
+    const [data, setData] = useState();
 
     // get data 
     const { data: warehouseType, pagination, mutate } = WarehouseTpyes(query);
@@ -219,6 +220,7 @@ const WarehouseModal = ({ ...props }: Props) => {
                     openModal={openModal}
                     setOpenModal={setOpenModal}
                     warehouseMutateType={mutate}
+                    setData={setData}
                 />
             </Dialog>
         </Transition>
