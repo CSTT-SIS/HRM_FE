@@ -10,6 +10,7 @@ import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
 import { ProductByIdWarehouse } from '@/services/swr/product.twr';
+import { GetWarehouse } from '@/services/apis/warehouse.api';
 // constants
 import { PAGE_SIZES } from '@/utils/constants';
 // helper
@@ -17,7 +18,6 @@ import { PAGE_SIZES } from '@/utils/constants';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
 import ImportModal from '../import-product/ImportModal';
-import { GetWarehouse } from '@/services/apis/warehouse.api';
 
 
 // json
