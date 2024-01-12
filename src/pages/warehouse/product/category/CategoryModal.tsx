@@ -1,52 +1,52 @@
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, Fragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Dialog, Transition } from '@headlessui/react';
 
 import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
+import Swal from 'sweetalert2';
 import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
-import { CreateWarehouseType, EditWarehouseType } from '@/services/apis/warehouse.api';
+import { CreateProductCategory, EditProductCategory } from '@/services/apis/product.api';
 
 interface Props {
     [key: string]: any;
 }
 
-const WarehouseTypeModal = ({ ...props }: Props) => {
+const CategoryModal = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
-
+    const [disabled, setDisabled] = useState(false);
 
     const SubmittedForm = Yup.object().shape({
-        name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_warehouse')}`),
+        name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_category')}`)
     });
 
-    const handleWarehouse = (param: any) => {
+    const handleCategory = (param: any) => {
         if (props?.data) {
-            EditWarehouseType({ id: props.data.id, ...param }).then(() => {
-                props.warehouseMutateType();
+            EditProductCategory({ id: props.data.id, ...param }).then(() => {
+                props.categoryMutate();
                 handleCancel();
-                showMessage(`${t('edit_warehouse_success')}`, 'success');
+                showMessage(`${t('edit_category_success')}`, 'success');
             }).catch((err) => {
-                showMessage(`${t('edit_warehouse_error')}`, 'error');
+                showMessage(`${t('edit_category_error')}`, 'error');
             });
         } else {
-            CreateWarehouseType(param).then(() => {
-                props.warehouseMutateType();
+            CreateProductCategory(param).then(() => {
+                props.categoryMutate();
                 handleCancel();
-                showMessage(`${t('create_warehouse_success')}`, 'success');
+                showMessage(`${t('create_category_success')}`, 'success');
             }).catch((err) => {
-                showMessage(`${t('create_warehouse_error')}`, 'error');
+                showMessage(`${t('create_category_error')}`, 'error');
             });
         }
     }
 
     const handleCancel = () => {
         props.setOpenModal(false);
-        props.setData();
+        props.setData(undefined);
     };
-
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
             <Dialog as="div" open={props.openModal} onClose={() => props.setOpenModal(false)} className="relative z-50">
@@ -82,7 +82,7 @@ const WarehouseTypeModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data !== undefined ? 'Edit Warehouse' : 'Add Warehouse'}
+                                    {props.data !== undefined ? 'Edit category' : 'Add category'}
                                 </div>
                                 <div className="p-5">
                                     <Formik
@@ -90,19 +90,20 @@ const WarehouseTypeModal = ({ ...props }: Props) => {
                                             {
                                                 name: props?.data ? `${props?.data?.name}` : "",
                                                 description: props?.data ? `${props?.data?.description}` : ""
+
                                             }
                                         }
                                         validationSchema={SubmittedForm}
                                         onSubmit={values => {
-                                            handleWarehouse(values);
+                                            handleCategory(values);
                                         }}
                                     >
 
-                                        {({ errors, setFieldValue, values }) => (
+                                        {({ errors, touched }) => (
                                             <Form className="space-y-5" >
                                                 <div className="mb-5">
-                                                    <label htmlFor="name" > {t('name_warehouse_type')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name_warehouse_type')}`} className="form-input" />
+                                                    <label htmlFor="name" > {t('name_category')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name_category')}`} className="form-input" />
                                                     {errors.name ? (
                                                         <div className="text-danger mt-1"> {errors.name} </div>
                                                     ) : null}
@@ -118,7 +119,7 @@ const WarehouseTypeModal = ({ ...props }: Props) => {
                                                     <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
                                                         Cancel
                                                     </button>
-                                                    <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4">
+                                                    <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4" disabled={disabled}>
                                                         {props.data !== undefined ? 'Update' : 'Add'}
                                                     </button>
                                                 </div>
@@ -137,4 +138,4 @@ const WarehouseTypeModal = ({ ...props }: Props) => {
     );
 };
 
-export default WarehouseTypeModal;
+export default CategoryModal;

@@ -8,51 +8,38 @@ import { Field, Form, Formik } from 'formik';
 import Swal from 'sweetalert2';
 import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
+import { CreateUnit, EditUnit } from '@/services/apis/product.api';
 
 interface Props {
     [key: string]: any;
 }
 
-const ShelfModal = ({ ...props }: Props) => {
+const UnitModal = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
     const [disabled, setDisabled] = useState(false);
 
     const SubmittedForm = Yup.object().shape({
-        name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_shelf')}`),
-        code: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_shelfCode')}`),
-        status: Yup.string().required(`${t('please_fill_status')}`),
-        unit: Yup.string().required(`${t('please_fill_unit')}`),
-        quantity: Yup.string().required(`${t('please_fill_quantity')}`)
+        name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_unit')}`)
     });
 
-    const handleShelf = (value: any) => {
+    const handleUnit = (param: any) => {
         if (props?.data) {
-            const reNew = props.totalData.filter((item: any) => item.id !== props.data.id);
-            reNew.push({
-                id: props.data.id,
-                name: value.name,
-                code: value.code,
-                status: value.status
+            EditUnit({ id: props.data.id, ...param }).then(() => {
+                props.unitMutate();
+                handleCancel();
+                showMessage(`${t('edit_unit_success')}`, 'success');
+            }).catch((err) => {
+                showMessage(`${t('edit_unit_error')}`, 'error');
             });
-            localStorage.setItem('shelfList', JSON.stringify(reNew));
-            props.setGetStorge(reNew);
-            props.setOpenModal(false);
-            props.setData(undefined);
-            showMessage(`${t('edit_shelf_success')}`, 'success');
         } else {
-            const reNew = props.totalData;
-            reNew.push({
-                id: Number(props?.totalData[props?.totalData?.length - 1].id) + 1,
-                name: value.name,
-                code: value.code,
-                status: value.status
-            })
-            localStorage.setItem('shelfList', JSON.stringify(reNew));
-            props.setGetStorge(props.totalData);
-            props.setOpenModal(false);
-            props.setData(undefined);
-            showMessage(`${t('create_shelf_success')}`, 'success')
+            CreateUnit(param).then(() => {
+                props.unitMutate();
+                handleCancel();
+                showMessage(`${t('create_unit_success')}`, 'success');
+            }).catch((err) => {
+                showMessage(`${t('create_unit_error')}`, 'error');
+            });
         }
     }
 
@@ -95,53 +82,38 @@ const ShelfModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data !== undefined ? 'Edit Shelf' : 'Add Shelf'}
+                                    {props.data !== undefined ? 'Edit unit' : 'Add unit'}
                                 </div>
                                 <div className="p-5">
                                     <Formik
                                         initialValues={
                                             {
                                                 name: props?.data ? `${props?.data?.name}` : "",
-                                                code: props?.data ? `${props?.data?.code}` : "",
-                                                status: props?.data ? `${props?.data?.status}` : "",
-                                                unit: props?.data ? `${props?.data?.unit}` : "",
-                                                quantity: props?.data ? `${props?.data?.quantity}` : ""
+                                                description: props?.data ? `${props?.data?.description}` : ""
+
                                             }
                                         }
                                         validationSchema={SubmittedForm}
                                         onSubmit={values => {
-                                            handleShelf(values);
+                                            handleUnit(values);
                                         }}
                                     >
 
                                         {({ errors, touched }) => (
                                             <Form className="space-y-5" >
                                                 <div className="mb-5">
-                                                    <label htmlFor="name" > {t('name_shelf')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name_shelf')}`} className="form-input" />
+                                                    <label htmlFor="name" > {t('name_unit')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name_unit')}`} className="form-input" />
                                                     {errors.name ? (
                                                         <div className="text-danger mt-1"> {errors.name} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
-                                                    <label htmlFor="code" > {t('code_shelf')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="code" type="text" id="code" placeholder={`${t('enter_code_shelf')}`} className="form-input" />
-                                                    {errors.code ? (
-                                                        <div className="text-danger mt-1"> {errors.code} </div>
+                                                    <label htmlFor="description" > {t('description')} </label >
+                                                    <Field name="description" type="text" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
+                                                    {errors.description ? (
+                                                        <div className="text-danger mt-1"> {errors.description} </div>
                                                     ) : null}
-                                                </div>
-                                                <div className="mb-5 flex justify-between gap-4">
-                                                    <div className="flex-1">
-                                                        <label htmlFor="status" > {t('status')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Field as="select" name="status" id="status" className="form-input">
-                                                            <option value="">---</option>
-                                                            <option value="active">Active</option>
-                                                            <option value="inActive">InActive</option>
-                                                        </Field>
-                                                        {errors.status ? (
-                                                            <div className="text-danger mt-1"> {errors.status} </div>
-                                                        ) : null}
-                                                    </div>
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                                     <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
@@ -166,4 +138,4 @@ const ShelfModal = ({ ...props }: Props) => {
     );
 };
 
-export default ShelfModal;
+export default UnitModal;
