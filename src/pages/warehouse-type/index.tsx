@@ -1,7 +1,7 @@
 import { useEffect, Fragment, useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
-import { setPageTitle } from '../../../store/themeConfigSlice';
+import { setPageTitle } from '../../store/themeConfigSlice';
 import { lazy } from 'react';
 // Third party libs
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
@@ -17,12 +17,12 @@ import { PAGE_SIZES } from '@/utils/constants';
 // helper
 import { showMessage } from '@/@core/utils';
 // icons
-import IconPencil from '../../../components/Icon/IconPencil';
-import IconTrashLines from '../../../components/Icon/IconTrashLines';
+import IconPencil from '../../components/Icon/IconPencil';
+import IconTrashLines from '../../components/Icon/IconTrashLines';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
 // modal
-import WarehouseTypeModal from '../modal/WarehouseTypeModal';
+import WarehouseTypeModal from '../warehouse/modal/WarehouseTypeModal';
 
 
 interface Props {
