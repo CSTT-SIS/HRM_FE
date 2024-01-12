@@ -14,6 +14,10 @@ import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
 import BlankLayout from '@/components/Layouts/BlankLayout';
+import { signIn } from '@/services/apis/auth.api';
+import Config from '@/@core/configs';
+import Cookies from 'js-cookie';
+import { showMessage } from '@/@core/utils';
 
 const LoginBoxed = () => {
     const dispatch = useDispatch();
@@ -22,9 +26,25 @@ const LoginBoxed = () => {
     });
     const router = useRouter();
 
-    const submitForm = (e: any) => {
-        // e.preventDefault();
-        router.push('/');
+    const submitForm = ({ userName, passWord }: any) => {
+        
+        signIn(userName, passWord)
+            .then((res: any) => {
+                const token = res.data.session;
+                const accessTokenKey = Config.Env.NEXT_PUBLIC_X_ACCESS_TOKEN as string;
+                Cookies.set(accessTokenKey, token);
+                return true;
+            }).then(() => {
+                const returnUrl = (router.query.returnUrl as string) ?? '/';
+                router.push(returnUrl).finally(() => {
+                    setTimeout(() => {
+                        showMessage(`${t('add_department_success')}`, 'success')
+                    }, 300);
+                });
+            }).catch((err: any) => {
+                showMessage(`${t('add_department_success')}`, 'success')
+            });
+
     };
     const SubmittedForm = Yup.object().shape({
         userName: Yup.string().required('Vui lòng nhập tên đăng nhập'),
@@ -129,15 +149,15 @@ const LoginBoxed = () => {
                                             </div>
                                         </div>
                                         <div>
-                                            <p style={{display: "flex", justifyContent: "space-between"}}>
-                                            <label htmlFor="passWord">
-                                                {t('password')} <span style={{ color: 'red' }}>*</span>
-                                            </label>
-                                            <label htmlFor="">
-                                            <Link href="/auth/cover-password-reset" >
-                                            {t('forget_password')}
+                                            <p style={{ display: "flex", justifyContent: "space-between" }}>
+                                                <label htmlFor="passWord">
+                                                    {t('password')} <span style={{ color: 'red' }}>*</span>
+                                                </label>
+                                                <label htmlFor="">
+                                                    <Link href="/auth/cover-password-reset" >
+                                                        {t('forget_password')}
                                                     </Link>
-                                            </label>
+                                                </label>
                                             </p>
                                             <div className="relative text-white-dark">
                                                 <Field name="passWord" id="passWord" type="password" placeholder="Enter password" className="form-input placeholder:text-white-dark" />
@@ -159,11 +179,11 @@ const LoginBoxed = () => {
                                         <button
                                             type="submit"
                                             className="btn btn-primary !mt-6"
-                                            // onClick={() => {
-                                            //     if (touched.userName && !errors.userName) {
-                                            //         submitForm();
-                                            //     }
-                                            // }}
+                                        // onClick={() => {
+                                        //     if (touched.userName && !errors.userName) {
+                                        //         submitForm();
+                                        //     }
+                                        // }}
                                         >
                                             {t('sign_in')}
                                         </button>
@@ -215,7 +235,8 @@ const LoginBoxed = () => {
                                 </ul>
                             </div>
                             <div className="text-center dark:text-white">
-                                Don't have an account ?&nbsp;
+                                {`Don't have an account ?&`}
+                                <br />
                                 <Link href="/auth/boxed-signup" className="uppercase text-primary underline transition hover:text-black dark:hover:text-white">
                                     SIGN UP
                                 </Link>
