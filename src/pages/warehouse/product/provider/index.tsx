@@ -123,7 +123,7 @@ const ProductCategoryPage = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
-        { accessor: 'name', title: 'Tên kho', sortable: false },
+        { accessor: 'name', title: 'Tên nhà cung cấp', sortable: false },
         { accessor: 'address', title: 'Địa chỉ', sortable: false },
         { accessor: 'phone', title: 'Sđt', sortable: false },
         { accessor: 'email', title: 'Email', sortable: false },
