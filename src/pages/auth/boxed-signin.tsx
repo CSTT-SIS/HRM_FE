@@ -38,11 +38,11 @@ const LoginBoxed = () => {
                 const returnUrl = (router.query.returnUrl as string) ?? '/';
                 router.push(returnUrl).finally(() => {
                     setTimeout(() => {
-                        showMessage(`${t('add_department_success')}`, 'success')
+                        showMessage(`${t('sign_in_success')}`, 'success')
                     }, 300);
                 });
             }).catch((err: any) => {
-                showMessage(`${t('add_department_success')}`, 'success')
+                showMessage(`${t('sign_in_error')}`, 'error')
             });
 
     };
