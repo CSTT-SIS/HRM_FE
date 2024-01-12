@@ -8,55 +8,41 @@ import { Field, Form, Formik } from 'formik';
 import Swal from 'sweetalert2';
 import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
+import { CreateProvider, EditProvider } from '@/services/apis/product.api';
 
 interface Props {
     [key: string]: any;
 }
 
-const ProductModal = ({ ...props }: Props) => {
+const ProviderModal = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
     const [disabled, setDisabled] = useState(false);
 
     const SubmittedForm = Yup.object().shape({
-        name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_product')}`),
-        code: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_productCode')}`),
-        status: Yup.string().required(`${t('please_fill_status')}`),
-        unit: Yup.string().required(`${t('please_fill_unit')}`),
-        quantity: Yup.string().required(`${t('please_fill_quantity')}`)
+        name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_provider')}`),
+        address: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_add')}`),
+        phone: Yup.string().required(`${t('please_fill_phone')}`),
+        email: Yup.string().required(`${t('please_fill_email')}`),
     });
 
-    const handleProduct = (value: any) => {
+    const handleProvider = (param: any) => {
         if (props?.data) {
-            const reNew = props.totalData.filter((item: any) => item.id !== props.data.id);
-            reNew.push({
-                id: props.data.id,
-                name: value.name,
-                code: value.code,
-                status: value.status,
-                quantity: value.quantity,
-                unit: value.unit
+            EditProvider({ id: props.data.id, ...param }).then(() => {
+                props.providerMutate();
+                handleCancel();
+                showMessage(`${t('edit_provider_success')}`, 'success');
+            }).catch((err) => {
+                showMessage(`${t('edit_provider_error')}`, 'error');
             });
-            localStorage.setItem('productList', JSON.stringify(reNew));
-            props.setGetStorge(reNew);
-            props.setOpenModal(false);
-            props.setData(undefined);
-            showMessage(`${t('edit_product_success')}`, 'success');
         } else {
-            const reNew = props.totalData;
-            reNew.push({
-                id: Number(props?.totalData[props?.totalData?.length - 1].id) + 1,
-                name: value.name,
-                code: value.code,
-                status: value.status,
-                quantity: value.quantity,
-                unit: value.unit
-            })
-            localStorage.setItem('productList', JSON.stringify(reNew));
-            props.setGetStorge(props.totalData);
-            props.setOpenModal(false);
-            props.setData(undefined);
-            showMessage(`${t('create_product_success')}`, 'success')
+            CreateProvider(param).then(() => {
+                props.providerMutate();
+                handleCancel();
+                showMessage(`${t('create_provider_success')}`, 'success');
+            }).catch((err) => {
+                showMessage(`${t('create_provider_error')}`, 'error');
+            });
         }
     }
 
@@ -99,67 +85,62 @@ const ProductModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data !== undefined ? 'Edit Product' : 'Add Product'}
+                                    {props.data !== undefined ? 'Edit provider' : 'Add provider'}
                                 </div>
                                 <div className="p-5">
                                     <Formik
                                         initialValues={
                                             {
                                                 name: props?.data ? `${props?.data?.name}` : "",
-                                                code: props?.data ? `${props?.data?.code}` : "",
-                                                status: props?.data ? `${props?.data?.status}` : "",
-                                                unit: props?.data ? `${props?.data?.unit}` : "",
-                                                quantity: props?.data ? `${props?.data?.quantity}` : ""
+                                                address: props?.data ? `${props?.data?.address}` : "",
+                                                phone: props?.data ? `${props?.data?.phone}` : "",
+                                                email: props?.data ? `${props?.data?.email}` : "",
+                                                description: props?.data ? `${props?.data?.description}` : ""
+
                                             }
                                         }
                                         validationSchema={SubmittedForm}
                                         onSubmit={values => {
-                                            handleProduct(values);
+                                            handleProvider(values);
                                         }}
                                     >
 
                                         {({ errors, touched }) => (
                                             <Form className="space-y-5" >
                                                 <div className="mb-5">
-                                                    <label htmlFor="name" > {t('name_product')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name_product')}`} className="form-input" />
+                                                    <label htmlFor="name" > {t('name_provider')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name_provider')}`} className="form-input" />
                                                     {errors.name ? (
                                                         <div className="text-danger mt-1"> {errors.name} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
-                                                    <label htmlFor="code" > {t('code_product')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="code" type="text" id="code" placeholder={`${t('enter_code_product')}`} className="form-input" />
-                                                    {errors.code ? (
-                                                        <div className="text-danger mt-1"> {errors.code} </div>
+                                                    <label htmlFor="address" > {t('address')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="address" type="text" id="address" placeholder={`${t('enter_address')}`} className="form-input" />
+                                                    {errors.address ? (
+                                                        <div className="text-danger mt-1"> {errors.address} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
-                                                    <label htmlFor="unit" > {t('unit')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="unit" type="text" id="code" placeholder={`${t('enter_unit_product')}`} className="form-input" />
-                                                    {errors.unit ? (
-                                                        <div className="text-danger mt-1"> {errors.code} </div>
+                                                    <label htmlFor="phone" > {t('phone')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="phone" type="text" id="phone" placeholder={`${t('enter_phone')}`} className="form-input" />
+                                                    {errors.phone ? (
+                                                        <div className="text-danger mt-1"> {errors.phone} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
-                                                    <label htmlFor="quantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="quantity" type="text" id="code" placeholder={`${t('enter_quantity_product')}`} className="form-input" />
-                                                    {errors.quantity ? (
-                                                        <div className="text-danger mt-1"> {errors.quantity} </div>
+                                                    <label htmlFor="email" > {t('email')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="email" type="text" id="email" placeholder={`${t('enter_email')}`} className="form-input" />
+                                                    {errors.email ? (
+                                                        <div className="text-danger mt-1"> {errors.email} </div>
                                                     ) : null}
                                                 </div>
-                                                <div className="mb-5 flex justify-between gap-4">
-                                                    <div className="flex-1">
-                                                        <label htmlFor="status" > {t('status')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Field as="select" name="status" id="status" className="form-input">
-                                                            <option value="">---</option>
-                                                            <option value="active">Active</option>
-                                                            <option value="inActive">InActive</option>
-                                                        </Field>
-                                                        {errors.status ? (
-                                                            <div className="text-danger mt-1"> {errors.status} </div>
-                                                        ) : null}
-                                                    </div>
+                                                <div className="mb-5">
+                                                    <label htmlFor="description" > {t('description')} </label >
+                                                    <Field name="description" type="text" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
+                                                    {errors.description ? (
+                                                        <div className="text-danger mt-1"> {errors.description} </div>
+                                                    ) : null}
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                                     <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
@@ -184,4 +165,4 @@ const ProductModal = ({ ...props }: Props) => {
     );
 };
 
-export default ProductModal;
+export default ProviderModal;
