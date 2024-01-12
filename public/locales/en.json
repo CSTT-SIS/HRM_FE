@@ -184,6 +184,8 @@
     "contact_us_boxed": "Contact Us Boxed",
     "contact_us_cover": "Contact Us Cover",
     "sign_in": "Sign in",
+    "sign_in_success": "Sign in success",
+    "sign_in_error": "Sign in error",
     "username": "Username",
     "password": "Password",
     "edit_user": "Edit user",
