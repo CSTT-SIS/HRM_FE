@@ -100,7 +100,7 @@ export const data_work_schedule = [
 	{
 		id: 11,
 		user: 'Staff_L',
-		title: 'Công việc 1',
+		title: 'Công việc 11',
 		start: now.getFullYear() + '-' + getMonth(now, -1) + '-13T08:12:14',
 		end: now.getFullYear() + '-' + getMonth(now, -1) + '-16T22:20:20',
 		className: 'primary',
@@ -109,7 +109,7 @@ export const data_work_schedule = [
 	{
 		id: 13,
 		user: 'Staff_M',
-		title: 'Công việc 3',
+		title: 'Công việc 13',
 		start: now.getFullYear() + '-' + getMonth(now, 1) + '-15T08:12:14',
 		end: now.getFullYear() + '-' + getMonth(now, 1) + '-18T22:20:20',
 		className: 'primary',
