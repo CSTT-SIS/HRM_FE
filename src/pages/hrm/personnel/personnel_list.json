@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "name": "Nhân viên 1",
+        "code": "123",
+        "status": "active"
+    },
+    {
+        "id": 2,
+        "name": "Nhân viên 2",
+        "code": "123",
+        "status": "active"
+    },
+    {
+        "id": 3,
+        "name": "Nhân viên 3",
+        "code": "123",
+        "status": "active"
+    },
+    {
+        "id": 4,
+        "name": "Nhân viên 4",
+        "code": "123",
+        "status": "active"
+    }
+]

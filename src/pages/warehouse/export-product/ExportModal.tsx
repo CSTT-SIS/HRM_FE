@@ -14,7 +14,7 @@ interface Props {
     [key: string]: any;
 }
 
-const ImportModal = ({ ...props }: Props) => {
+const ExportModal = ({ ...props }: Props) => {
     const { t } = useTranslation();
     const [disabled, setDisabled] = useState(false);
     const router = useRouter();
@@ -25,7 +25,7 @@ const ImportModal = ({ ...props }: Props) => {
         quantity: Yup.string().required(`${t('please_fill_quantity')}`)
     });
 
-    const handleImport = (value: any) => {
+    const handleExport = (value: any) => {
         if (props?.data) {
             const reNew = props.totalData.filter((item: any) => item.id !== props.data.id);
             reNew.push({
@@ -39,12 +39,12 @@ const ImportModal = ({ ...props }: Props) => {
                 quantity: value.quantity,
                 unitPrice: value.unitPrice
             });
-            localStorage.setItem('importList', JSON.stringify(reNew));
+            localStorage.setItem('exportList', JSON.stringify(reNew));
             props.setGetStorge(reNew);
             props.setOpenModal(false);
             props.setData(undefined);
             setInitialValue({});
-            showMessage(`${t('edit_import_success')}`, 'success');
+            showMessage(`${t('edit_export_success')}`, 'success');
         } else {
             const reNew = props.totalData;
             reNew.push({
@@ -58,12 +58,12 @@ const ImportModal = ({ ...props }: Props) => {
                 quantity: value.quantity,
                 unitPrice: value.unitPrice
             })
-            localStorage.setItem('importList', JSON.stringify(reNew));
+            localStorage.setItem('exportList', JSON.stringify(reNew));
             props.setGetStorge(reNew);
             props.setOpenModal(false);
             props.setData(undefined);
             setInitialValue({});
-            showMessage(`${t('create_import_success')}`, 'success')
+            showMessage(`${t('create_export_success')}`, 'success')
         }
     }
 
@@ -109,7 +109,7 @@ const ImportModal = ({ ...props }: Props) => {
     }
 
     return (
-        <Transition appear show={props.openModal} as={Fragment}>
+        <Transition appear show={props.openModal ?? false} as={Fragment}>
             <Dialog as="div" open={props.openModal} onClose={() => props.setOpenModal(false)} className="relative z-50">
                 <Transition.Child
                     as={Fragment}
@@ -143,14 +143,14 @@ const ImportModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data !== undefined ? 'Edit Import' : 'Add Import'}
+                                    {props.data !== undefined ? 'Edit Export' : 'Add Export'}
                                 </div>
                                 <div className="p-5">
                                     <Formik
                                         initialValues={initialValue}
                                         validationSchema={SubmittedForm}
                                         onSubmit={values => {
-                                            handleImport(values);
+                                            handleExport(values);
                                         }}
                                         enableReinitialize
                                     >
@@ -250,4 +250,4 @@ const ImportModal = ({ ...props }: Props) => {
     );
 };
 
-export default ImportModal;
+export default ExportModal;

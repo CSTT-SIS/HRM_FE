@@ -1,8 +1,8 @@
 import { useEffect, Fragment, useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
-import { setPageTitle } from '../../store/themeConfigSlice';
 import { lazy } from 'react';
+import { setPageTitle } from '@/store/themeConfigSlice';
 // Third party libs
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
 import Swal from 'sweetalert2';
@@ -10,27 +10,27 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
-import { Warehouses } from '@/services/swr/warehouse.twr';
+import { ProductCategorys } from '@/services/swr/product.twr';
+import { DeleteProductCategory } from '@/services/apis/product.api';
 // constants
 import { PAGE_SIZES } from '@/utils/constants';
 // helper
 import { showMessage } from '@/@core/utils';
 // icons
-import IconPencil from '../../components/Icon/IconPencil';
-import IconTrashLines from '../../components/Icon/IconTrashLines';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
+import IconPencil from '@/components/Icon/IconPencil';
+import IconTrashLines from '@/components/Icon/IconTrashLines';
+
 // modal
-import WarehouseModal from './modal/WarehouseModal';
-import { DeleteWarehouse } from '@/services/apis/warehouse.api';
-import IconEye from '@/components/Icon/IconEye';
+import CategoryModal from './CategoryModal';
 
 
 interface Props {
     [key: string]: any;
 }
 
-const WarehousePage = ({ ...props }: Props) => {
+const ProductCategoryPage = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -44,15 +44,15 @@ const WarehousePage = ({ ...props }: Props) => {
 
 
     // get data
-    const { data: warehouse, pagination, mutate } = Warehouses({ sortBy: 'id.ASC', ...router.query });
+    const { data: category, pagination, mutate } = ProductCategorys({ sortBy: 'id.ASC', ...router.query });
 
     useEffect(() => {
-        dispatch(setPageTitle(`${t('warehouse')}`));
+        dispatch(setPageTitle(`${t('category')}`));
     });
 
     useEffect(() => {
         setShowLoader(false);
-    }, [warehouse])
+    }, [category])
 
     const handleEdit = (data: any) => {
         setOpenModal(true);
@@ -71,7 +71,7 @@ const WarehousePage = ({ ...props }: Props) => {
         swalDeletes
             .fire({
                 icon: 'question',
-                title: `${t('delete_warehouse')}`,
+                title: `${t('delete_category')}`,
                 text: `${t('delete')} ${name}`,
                 padding: '2em',
                 showCancelButton: true,
@@ -79,11 +79,11 @@ const WarehousePage = ({ ...props }: Props) => {
             })
             .then((result) => {
                 if (result.value) {
-                    DeleteWarehouse({ id }).then(() => {
+                    DeleteProductCategory({ id }).then(() => {
                         mutate();
-                        showMessage(`${t('delete_warehouse_success')}`, 'success');
+                        showMessage(`${t('delete_category_success')}`, 'success');
                     }).catch((err) => {
-                        showMessage(`${t('delete_warehouse_error')}`, 'error');
+                        showMessage(`${t('delete_category_error')}`, 'error');
                     });
                 }
             });
@@ -123,26 +123,14 @@ const WarehousePage = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
-        { accessor: 'name', title: 'Tên kho', sortable: false },
-        { accessor: 'code', title: 'Mã kho', sortable: false },
+        { accessor: 'name', title: 'Tên loại', sortable: false },
         { accessor: 'description', title: 'Ghi chú', sortable: false },
-        {
-            accessor: 'type',
-            title: 'Loại kho',
-            render: ({ type }: any) => <span >{type?.name}</span>,
-            sortable: false
-        },
         {
             accessor: 'action',
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('detail')}`}>
-                        <button type="button" onClick={() => router.push(`/warehouse/${records.id}`)}>
-                            <IconEye />
-                        </button>
-                    </Tippy>
                     <Tippy content={`${t('edit')}`}>
                         <button type="button" onClick={() => handleEdit(records)}>
                             <IconPencil />
@@ -165,7 +153,7 @@ const WarehousePage = ({ ...props }: Props) => {
                     <IconLoading />
                 </div>
             )}
-            <title>Warehouse</title>
+            <title>category</title>
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
@@ -181,7 +169,7 @@ const WarehousePage = ({ ...props }: Props) => {
                     <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover"
-                        records={warehouse?.data}
+                        records={category?.data}
                         columns={columns}
                         totalRecords={pagination?.totalRecords}
                         recordsPerPage={pagination?.perPage}
@@ -196,15 +184,15 @@ const WarehousePage = ({ ...props }: Props) => {
                     />
                 </div>
             </div>
-            <WarehouseModal
+            <CategoryModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}
                 data={data}
                 setData={setData}
-                warehouseMutate={mutate}
+                categoryMutate={mutate}
             />
         </div>
     );
 };
 
-export default WarehousePage;
+export default ProductCategoryPage;

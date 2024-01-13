@@ -21,9 +21,8 @@ import { useRouter } from 'next/router';
 import { setPageTitle } from '@/store/themeConfigSlice';
 
 // json
-import exportList from '../export_list.json';
 
-import ExportModal from '../modal/ExportModal';
+import ExportModal from './ExportModal';
 import IconXCircle from '@/components/Icon/IconXCircle';
 
 interface Props {
@@ -51,18 +50,6 @@ const ExportPage = ({ ...props }: Props) => {
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
     const [openModal, setOpenModal] = useState(false);
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const data = localStorage.getItem('exportList');
-            if (data) {
-                setGetStorge(JSON.parse(data));
-            } else {
-                localStorage.setItem('exportList', JSON.stringify(exportList));
-            }
-
-        }
-    }, [])
 
     useEffect(() => {
         setTotal(getStorge?.length);

@@ -10,7 +10,8 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
-import { Warehouses } from '@/services/swr/warehouse.twr';
+import { WarehouseTpyes } from '@/services/swr/warehouse.twr';
+import { DeleteWarehouseType } from '@/services/apis/warehouse.api';
 // constants
 import { PAGE_SIZES } from '@/utils/constants';
 // helper
@@ -21,16 +22,14 @@ import IconTrashLines from '../../components/Icon/IconTrashLines';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
 // modal
-import WarehouseModal from './modal/WarehouseModal';
-import { DeleteWarehouse } from '@/services/apis/warehouse.api';
-import IconEye from '@/components/Icon/IconEye';
+import WarehouseTypeModal from '../warehouse/modal/WarehouseTypeModal';
 
 
 interface Props {
     [key: string]: any;
 }
 
-const WarehousePage = ({ ...props }: Props) => {
+const WarehouseTypePage = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -44,7 +43,8 @@ const WarehousePage = ({ ...props }: Props) => {
 
 
     // get data
-    const { data: warehouse, pagination, mutate } = Warehouses({ sortBy: 'id.ASC', ...router.query });
+    const { data: warehouseType, pagination, mutate } = WarehouseTpyes({ sortBy: 'id.ASC', ...router.query });
+
 
     useEffect(() => {
         dispatch(setPageTitle(`${t('warehouse')}`));
@@ -52,7 +52,7 @@ const WarehousePage = ({ ...props }: Props) => {
 
     useEffect(() => {
         setShowLoader(false);
-    }, [warehouse])
+    }, [warehouseType])
 
     const handleEdit = (data: any) => {
         setOpenModal(true);
@@ -79,7 +79,7 @@ const WarehousePage = ({ ...props }: Props) => {
             })
             .then((result) => {
                 if (result.value) {
-                    DeleteWarehouse({ id }).then(() => {
+                    DeleteWarehouseType({ id }).then(() => {
                         mutate();
                         showMessage(`${t('delete_warehouse_success')}`, 'success');
                     }).catch((err) => {
@@ -124,25 +124,13 @@ const WarehousePage = ({ ...props }: Props) => {
             render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
         { accessor: 'name', title: 'Tên kho', sortable: false },
-        { accessor: 'code', title: 'Mã kho', sortable: false },
         { accessor: 'description', title: 'Ghi chú', sortable: false },
-        {
-            accessor: 'type',
-            title: 'Loại kho',
-            render: ({ type }: any) => <span >{type?.name}</span>,
-            sortable: false
-        },
         {
             accessor: 'action',
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('detail')}`}>
-                        <button type="button" onClick={() => router.push(`/warehouse/${records.id}`)}>
-                            <IconEye />
-                        </button>
-                    </Tippy>
                     <Tippy content={`${t('edit')}`}>
                         <button type="button" onClick={() => handleEdit(records)}>
                             <IconPencil />
@@ -181,7 +169,7 @@ const WarehousePage = ({ ...props }: Props) => {
                     <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover"
-                        records={warehouse?.data}
+                        records={warehouseType?.data}
                         columns={columns}
                         totalRecords={pagination?.totalRecords}
                         recordsPerPage={pagination?.perPage}
@@ -196,15 +184,15 @@ const WarehousePage = ({ ...props }: Props) => {
                     />
                 </div>
             </div>
-            <WarehouseModal
+            <WarehouseTypeModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}
                 data={data}
                 setData={setData}
-                warehouseMutate={mutate}
+                warehouseMutateType={mutate}
             />
         </div>
     );
 };
 
-export default WarehousePage;
+export default WarehouseTypePage;

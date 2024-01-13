@@ -53,7 +53,7 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 									<IconX />
 								</button>
 								<div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pl-[50px] rtl:pr-5 dark:bg-[#121c2c]">
-									{params.id ? 'Sửa lịch công việc' : 'Thêm lịch công việc'}
+									{params.id ? 'Sửa lịch làm việc' : 'Thêm lịch làm việc'}
 								</div>
 								<div className="p-5">
 									<Formik
@@ -90,7 +90,7 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 												</div>
 												<div className="mb-3">
 													<label htmlFor="title">
-														Tiêu đề lịch công việc
+														Tiêu đề lịch làm việc
 														<span style={{ color: 'red' }}> *</span>
 													</label>
 													<Field name="title" type="text" id="title" placeholder="Nhập tiêu đề lịch công việc" className="form-input" />

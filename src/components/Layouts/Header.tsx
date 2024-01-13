@@ -32,6 +32,7 @@ import IconMenuDatatables from '@/components/Icon/Menu/IconMenuDatatables';
 import IconMenuForms from '@/components/Icon/Menu/IconMenuForms';
 import IconMenuPages from '@/components/Icon/Menu/IconMenuPages';
 import IconMenuMore from '@/components/Icon/Menu/IconMenuMore';
+import IconLock from '../Icon/IconLock';
 
 const Header = () => {
     const router = useRouter();
@@ -155,7 +156,7 @@ const Header = () => {
                     <div className="horizontal-logo flex items-center justify-between ltr:mr-2 rtl:ml-2 lg:hidden">
                         <Link href="/" className="main-logo flex shrink-0 items-center">
                             <img className="inline w-8 ltr:-ml-1 rtl:-mr-1" src="/assets/images/logo.svg" alt="logo" />
-                            <span className="hidden align-middle text-2xl  font-semibold  transition-all duration-300 ltr:ml-1.5 rtl:mr-1.5 dark:text-white-light md:inline">VRISTO</span>
+                            <span className="hidden align-middle text-2xl  font-semibold  transition-all duration-300 ltr:ml-1.5 rtl:mr-1.5 dark:text-white-light md:inline">CSTT</span>
                         </Link>
                         <button
                             type="button"
@@ -437,9 +438,9 @@ const Header = () => {
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href="/apps/mailbox" className="dark:hover:text-white">
-                                            <IconMail className="h-4.5 w-4.5 shrink-0 ltr:mr-2 rtl:ml-2" />
-                                            Inbox
+                                        <Link href="/apps/change-password" className="dark:hover:text-white">
+                                            <IconLock className="h-4.5 w-4.5 shrink-0 ltr:mr-2 rtl:ml-2" />
+                                            Change password
                                         </Link>
                                     </li>
                                     <li>
