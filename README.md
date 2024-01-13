@@ -100,6 +100,6 @@ src
 
 Create pull request to merge `feat/*`, `fix/*` and `chore/*` branches into `dev`branch and`dev`branch into`main` branch.
 
-**Note 1**: Please don't push directly to `feat/*` branch and `dev` branch.
+**Note 1**: Please don't push directly to `main` branch and `dev` branch.
 
-**Note 2**: In progress commit should have suffix `[WIP]` in commit message. Ex: `[WIP] Update README.md`
+**Note 2**: In progress commit should have suffix `[WIP]` in commit message. Ex: `chore: Update README.md [WIP]`
