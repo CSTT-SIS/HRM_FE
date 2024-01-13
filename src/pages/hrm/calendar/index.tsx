@@ -9,8 +9,9 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import { data_work_schedule } from './data';
-import AddWorkScheduleModal from './modal/AddWorkScheduleModal';
+
 import IconXCircle from '@/components/Icon/IconXCircle';
+import AddWorkScheduleModal from './modal/AddWorkScheduleModal';
 
 const Canlendar = () => {
 	const dispatch = useDispatch();
