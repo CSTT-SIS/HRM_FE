@@ -16,6 +16,8 @@
     "delete": "Xóa",
     "add_department": "Thêm phòng ban",
     "edit_department": "Sửa phòng ban",
+    "add_timekeeping": "Thêm phòng ban",
+    "edit_timekeeping": "Sửa phòng ban",
     "delete_department": "Delete Department",
     "please_fill_name_department": "Vui lòng nhập tên phòng ban",
     "please_fill_departmentCode": "Vui lòng nhập mã phòng ban",
@@ -176,5 +178,7 @@
     "sign_in": "ເຂົ້າສູ່ລະບົບ",
     "username": "ຊື່ຜູ້ໃຊ້",
     "password": "ລະຫັດຜ່າ",
-    "organization_structure": "ສາຂາລະບົບ"
+    "organization_structure": "ສາຂາລະບົບ",
+    "timekeeping_manage": "ການຄຸ້ມຄອງການເຂົ້າຮ່ວມເວລາ",
+    "timekeeping_table": "ແຜ່ນເວລາ"
 }

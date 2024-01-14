@@ -241,14 +241,6 @@ const Sidebar = () => {
                                     <li className="nav-item">
                                         <Link href="#" className="group">
                                             <div className="flex items-center">
-                                                <IconMenuElements className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('attendance_exemption')}</span>
-                                            </div>
-                                        </Link>
-                                    </li>
-                                    <li className="nav-item">
-                                        <Link href="#" className="group">
-                                            <div className="flex items-center">
                                                 <IconMenuDocumentation className="shrink-0 group-hover:!text-primary" />
                                                 <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('task')}</span>
                                             </div>
@@ -324,6 +316,38 @@ const Sidebar = () => {
                                             </div>
                                         </Link>
                                     </li> */}
+                                </ul>
+                            </li>
+                            <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
+                                <IconMinus className="hidden h-5 w-4 flex-none" />
+                                <span>{t('timekeeping_manage')}</span>
+                            </h2>
+                            <li className="nav-item">
+                                <ul>
+                                    <li className="nav-item">
+                                        <Link href="/hrm/timekeeping-table" className="group">
+                                            <div className="flex items-center">
+                                                <IconMenuTables className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('timekeeping_table')}</span>
+                                            </div>
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link href="/hrm/timekeeping-employee" className="group">
+                                            <div className="flex items-center">
+                                                <IconMenuDatatables className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('timekeeping_employee')}</span>
+                                            </div>
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link href="#" className="group">
+                                            <div className="flex items-center">
+                                                <IconMenuElements className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('attendance_exemption')}</span>
+                                            </div>
+                                        </Link>
+                                    </li>
                                 </ul>
                             </li>
 

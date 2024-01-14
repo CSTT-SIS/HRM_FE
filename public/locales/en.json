@@ -336,5 +336,22 @@
     "edit_export_success": "Edit export Success",
     "approve": "Approve",
     "unapprove": "Unapprove",
-    "organization_structure": "Organization Structure"
+    "organization_structure": "Organization Structure",
+    "timekeeping_manage": "Timekeeping Manage",
+    "timekeeping_table": "Timekeeping Table",
+    "add_timekeeping_success": "Add timekeeping success",
+    "edit_timekeeping_success": "Edit timekeeping success",
+    "delete_timekeeping": "Delete timekeeping",
+    "delete_timekeeping_success": "Delete timekeeping success",
+    "add_timekeeping_err": "Add timekeeping error",
+    "edit_timekeeping_err": "Edit timekeeping error",
+    "check_timekeeping_success": "Check timekeeping success",
+    "check_timekeeping_err": "Check timekeeping error",
+    "check_timekeeping": "Check timekeeping",
+    "check": "Check",
+    "detail": "Detail",
+    "timekeeping_table_detail": "Timekeeping detail table",
+    "timekeeping_employee": "Timekeeping Employee",
+    "cancel": "Cancel",
+    "update": "Update"
 }
