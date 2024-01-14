@@ -41,6 +41,9 @@
 
 /* Select2*/
 @import './select2.css';
+
+@import './custom.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

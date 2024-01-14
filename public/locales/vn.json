@@ -198,5 +198,6 @@
     "add_user_err": "Thêm người dùng thất bại",
     "edit_user_err": "Sửa người dùng thất bại",
     "delete_user_success_department_err": "Xóa người dùng thất bại",
-    "forget_password": "Quên mật khẩu"
+    "forget_password": "Quên mật khẩu",
+    "organization_structure": "Cơ cấu tổ chức"
 }

@@ -159,6 +159,14 @@ const Sidebar = () => {
                                         </Link>
                                     </li>
                                     <li className="nav-item">
+                                        <Link href="/hrm/organization-structure" className="group">
+                                            <div className="flex items-center">
+                                                <IconMenuTables className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('organization_structure')}</span>
+                                            </div>
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
                                         <Link href="/hrm/personnel" className="group">
                                             <div className="flex items-center">
                                                 <IconUser className="shrink-0 group-hover:!text-primary" />

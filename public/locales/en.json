@@ -278,5 +278,6 @@
     "create_export_success": "Create export Success",
     "edit_export_success": "Edit export Success",
     "approve": "Approve",
-    "unapprove": "Unapprove"
+    "unapprove": "Unapprove",
+    "organization_structure": "Organization Structure"
 }
