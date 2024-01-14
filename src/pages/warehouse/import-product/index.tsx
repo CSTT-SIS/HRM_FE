@@ -21,9 +21,7 @@ import { useRouter } from 'next/router';
 import { setPageTitle } from '@/store/themeConfigSlice';
 
 // json
-import importList from '../import_list.json';
-
-import ImportModal from '../modal/ImportModal';
+import ImportModal from './ImportModal';
 import IconXCircle from '@/components/Icon/IconXCircle';
 
 interface Props {
@@ -51,18 +49,6 @@ const ImportPage = ({ ...props }: Props) => {
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
     const [openModal, setOpenModal] = useState(false);
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const data = localStorage.getItem('importList');
-            if (data) {
-                setGetStorge(JSON.parse(data));
-            } else {
-                localStorage.setItem('importList', JSON.stringify(importList));
-            }
-
-        }
-    }, [])
 
     useEffect(() => {
         setTotal(getStorge?.length);
