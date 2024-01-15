@@ -7,6 +7,11 @@ export const GetWarehouse = (body: any) => {
     return callApi(endpoint, 'GET', body);
 };
 
+export const CreateWarehouse = (body: any) => {
+    const endpoint = '/warehouse';
+    return callApi(endpoint, 'POST', body);
+};
+
 export const EditWarehouse = (body: any) => {
     const endpoint = `/warehouse/${body.id}`;
     return callApi(endpoint, 'PATCH', body);
