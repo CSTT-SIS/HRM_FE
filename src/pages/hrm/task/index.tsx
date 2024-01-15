@@ -83,7 +83,7 @@ const Task = ({ ...props }: Props) => {
 		swalDeletes
 			.fire({
 				icon: 'question',
-				title: `${t('delete_department')}`,
+				title: `${t('delete_task')}`,
 				text: `${t('delete')} ${data.name}`,
 				padding: '2em',
 				showCancelButton: true,
@@ -96,7 +96,7 @@ const Task = ({ ...props }: Props) => {
 					});
 					localStorage.setItem('staffList', JSON.stringify(value));
 					setGetStorge(value);
-					showMessage(`${t('delete_department_success')}`, 'success');
+					showMessage(`${t('delete_task_success')}`, 'success');
 				}
 			});
 	};
@@ -125,9 +125,13 @@ const Task = ({ ...props }: Props) => {
 		// { accessor: 'collaborator', title: 'Người phối hợp thực hiện', sortable: false },
 		// { accessor: 'description', title: 'Mô tả nhiệm vụ', sortable: false },
 		{ accessor: 'deadline', title: 'Thời hạn', sortable: false },
+		{
+			accessor: 'status',
+			title: 'Trạng thái',
+			render: (records: any, index: any) => <span className={`badge bg-${records?.color}`}>{records?.status}</span>,
+		},
 		// { accessor: 'directive', title: 'Ý kiến chỉ đạo', sortable: false },
 		// { accessor: 'attachment', title: 'File đính kèm', sortable: false },
-		// { accessor: 'additional_info', title: 'Thông tin thêm', sortable: false },
 
 		{
 			accessor: 'action',
@@ -169,14 +173,6 @@ const Task = ({ ...props }: Props) => {
 							<IconPlus className="h-5 w-5 ltr:mr-2 rtl:ml-2" />
 							{t('add')}
 						</button>
-						{/* <button type="button" className="btn btn-primary btn-sm m-1">
-							<IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
-							Nhập file
-						</button>
-						<button type="button" className="btn btn-primary btn-sm m-1">
-							<IconDownload className="ltr:mr-2 rtl:ml-2" />
-							Xuất file excel
-						</button> */}
 					</div>
 					<input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
 				</div>
