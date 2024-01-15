@@ -353,5 +353,13 @@
     "timekeeping_table_detail": "Timekeeping detail table",
     "timekeeping_employee": "Timekeeping Employee",
     "cancel": "Cancel",
-    "update": "Update"
+    "update": "Update",
+	"please_fill_title_work_schedule": "Please fill the title work schedule",
+	"please_select_the_staff": "Please select the staff",
+	"please_fill_work_start_date": "Please fill work start date",
+	"please_fill_work_end_date": "Please fill work end date",
+	"save_work_schedule": "Save work schedule success",
+	"delete_work_schedule": "Delete work schedule",
+	"delete_work_schedule_success": "Delete work schedule success",
+	"delete_work_schedule_error": "Delete work schedule error"
 }

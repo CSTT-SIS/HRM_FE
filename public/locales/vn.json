@@ -219,5 +219,13 @@
     "add_timekeeping": "Thêm công",
     "edit_timekeeping": "Sửa công",
     "cancel": "Hủy",
-    "update": "Chỉnh sửa"
+    "update": "Chỉnh sửa",
+	"please_fill_title_work_schedule": "Vui lòng nhập tiêu đề lịch làm việc",
+	"please_select_the_staff": "Vui lòng chọn nhân viên",
+	"please_fill_work_start_date": "Vui lòng chọn ngày bắt đầu làm việc",
+	"please_fill_work_end_date": "Vui lòng chọn ngày kết thúc làm việc",
+	"save_work_schedule": "Lịch làm việc đã được lưu",
+	"delete_work_schedule": "Xoá lịch làm việc",
+	"delete_work_schedule_success": "Xoá lịch làm việc thành công",
+	"delete_work_schedule_error": "Xoá lịch làm việc thất bại"
 }
