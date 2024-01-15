@@ -57,7 +57,7 @@ const TimekeepingModal = ({ ...props }: Props) => {
         props.setData(undefined);
     };
 
-    const handleDelete = (data: any) => {
+    const handleDelete = () => {
         const swalDeletes = Swal.mixin({
             customClass: {
                 confirmButton: 'btn btn-secondary',
