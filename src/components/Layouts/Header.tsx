@@ -434,7 +434,7 @@ const Header = () => {
                                     <li>
                                         <Link href="/users/profile" className="dark:hover:text-white">
                                             <IconUser className="h-4.5 w-4.5 shrink-0 ltr:mr-2 rtl:ml-2" />
-                                            Profile
+                                            {t('profile')}
                                         </Link>
                                     </li>
                                     <li>

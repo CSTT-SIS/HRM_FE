@@ -51,6 +51,8 @@
         "react-i18next": "^12.1.5",
         "react-images-uploading": "^3.1.7",
         "react-infinite-scroll-component": "^6.1.0",
+        "react-organizational-chart": "^2.2.1",
+        "react-orgchart": "^1.0.5",
         "react-perfect-scrollbar": "^1.5.8",
         "react-popper": "^2.3.0",
         "react-quill": "^2.0.0",
