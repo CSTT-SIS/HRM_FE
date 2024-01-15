@@ -172,5 +172,19 @@
     "delete_user_success": "Delete user success",
     "add_user_err": "Add user error",
     "edit_user_err": "Edit user error",
-    "delete_user_success_department_err": "Delete user error"
+    "delete_user_success_department_err": "Delete user error",
+
+    "duty": "duty",
+    "duty_list": "Duty list",
+    "delete_duty": "Delete Duty",
+    "delete_duty_success": "Delete duty success",
+    "delete_duty_error": "Delete duty error",
+    "please_fill_name_duty": "Please fill the name of duty",
+    "please_fill_dutyCode": "Please fill the code of duty",
+    "enter_name_duty": "Enter Name Duty",
+    "enter_code_duty": "Enter Code Duty",
+    "name_duty": "Name Duty",
+    "code_duty": "Code Duty",
+    "create_duty_success": "Create Duty Success",
+    "edit_duty_success": "Edit Duty Success"
 }
