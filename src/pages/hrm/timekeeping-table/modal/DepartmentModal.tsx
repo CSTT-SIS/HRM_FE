@@ -1,52 +1,61 @@
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, Fragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Dialog, Transition } from '@headlessui/react';
 
 import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
+import Swal from 'sweetalert2';
 import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
-import { CreateWarehouseType, EditWarehouseType } from '@/services/apis/warehouse.api';
 
 interface Props {
     [key: string]: any;
 }
 
-const WarehouseTypeModal = ({ ...props }: Props) => {
+const DepartmentModal = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
-
+    const [disabled, setDisabled] = useState(false);
 
     const SubmittedForm = Yup.object().shape({
-        name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_warehouse')}`),
+        name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_department')}`),
+        code: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_departmentCode')}`),
     });
 
-    const handleWarehouse = (param: any) => {
+    const handleDepartment = (value: any) => {
         if (props?.data) {
-            EditWarehouseType({ id: props.data.id, ...param }).then(() => {
-                props.warehouseMutateType();
-                handleCancel();
-                showMessage(`${t('edit_warehouse_success')}`, 'success');
-            }).catch((err) => {
-                showMessage(`${t('edit_warehouse_error')}`, 'error');
+            const reNew = props.totalData.filter((item: any) => item.id !== props.data.id);
+            reNew.push({
+                id: props.data.id,
+                name: value.name,
+                code: value.code,
             });
+            localStorage.setItem('departmentList', JSON.stringify(reNew));
+            props.setGetStorge(reNew);
+            props.setOpenModal(false);
+            props.setData(undefined);
+            showMessage(`${t('edit_department_success')}`, 'success');
         } else {
-            CreateWarehouseType(param).then(() => {
-                props.warehouseMutateType();
-                handleCancel();
-                showMessage(`${t('create_warehouse_success')}`, 'success');
-            }).catch((err) => {
-                showMessage(`${t('create_warehouse_error')}`, 'error');
-            });
+            const reNew = props.totalData;
+            reNew.push({
+                id: Number(props?.totalData[props?.totalData?.length - 1].id) + 1,
+                name: value.name,
+                code: value.code,
+                status: value.status
+            })
+            localStorage.setItem('departmentList', JSON.stringify(reNew));
+            props.setGetStorge(props.totalData);
+            props.setOpenModal(false);
+            props.setData(undefined);
+            showMessage(`${t('add_department_success')}`, 'success')
         }
     }
 
     const handleCancel = () => {
         props.setOpenModal(false);
-        props.setData();
+        props.setData(undefined);
     };
-
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
             <Dialog as="div" open={props.openModal} onClose={() => props.setOpenModal(false)} className="relative z-50">
@@ -82,43 +91,43 @@ const WarehouseTypeModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data !== undefined ? 'Edit Warehouse' : 'Add Warehouse'}
+                                    {props.data !== undefined ? `${t('edit_department')}` : `${t('add_department')}`}
                                 </div>
                                 <div className="p-5">
                                     <Formik
                                         initialValues={
                                             {
                                                 name: props?.data ? `${props?.data?.name}` : "",
-                                                description: props?.data ? `${props?.data?.description}` : ""
+                                                code: props?.data ? `${props?.data?.code}` : "",
                                             }
                                         }
                                         validationSchema={SubmittedForm}
                                         onSubmit={values => {
-                                            handleWarehouse(values);
+                                            handleDepartment(values);
                                         }}
                                     >
 
-                                        {({ errors, setFieldValue, values }) => (
+                                        {({ errors, touched }) => (
                                             <Form className="space-y-5" >
                                                 <div className="mb-5">
-                                                    <label htmlFor="name" > {t('name_warehouse_type')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name_warehouse_type')}`} className="form-input" />
+                                                    <label htmlFor="name" > {t('name_department')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name_department')}`} className="form-input" />
                                                     {errors.name ? (
                                                         <div className="text-danger mt-1"> {errors.name} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
-                                                    <label htmlFor="description" > {t('description')} </label >
-                                                    <Field name="description" type="text" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
-                                                    {errors.description ? (
-                                                        <div className="text-danger mt-1"> {errors.description} </div>
+                                                    <label htmlFor="code" > {t('code_department')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="code" type="text" id="code" placeholder={`${t('enter_code_department')}`} className="form-input" />
+                                                    {errors.code ? (
+                                                        <div className="text-danger mt-1"> {errors.code} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                                     <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
                                                         Cancel
                                                     </button>
-                                                    <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4">
+                                                    <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4" disabled={disabled}>
                                                         {props.data !== undefined ? 'Update' : 'Add'}
                                                     </button>
                                                 </div>
@@ -137,4 +146,4 @@ const WarehouseTypeModal = ({ ...props }: Props) => {
     );
 };
 
-export default WarehouseTypeModal;
+export default DepartmentModal;

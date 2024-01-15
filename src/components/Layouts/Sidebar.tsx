@@ -161,6 +161,14 @@ const Sidebar = () => {
                                         </Link>
                                     </li>
                                     <li className="nav-item">
+                                        <Link href="/hrm/organization-structure" className="group">
+                                            <div className="flex items-center">
+                                                <IconMenuTables className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('organization_structure')}</span>
+                                            </div>
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
                                         <Link href="/hrm/personnel" className="group">
                                             <div className="flex items-center">
                                                 <IconUser className="shrink-0 group-hover:!text-primary" />
@@ -235,14 +243,6 @@ const Sidebar = () => {
                                     <li className="nav-item">
                                         <Link href="#" className="group">
                                             <div className="flex items-center">
-                                                <IconMenuElements className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('attendance_exemption')}</span>
-                                            </div>
-                                        </Link>
-                                    </li>
-                                    <li className="nav-item">
-                                        <Link href="#" className="group">
-                                            <div className="flex items-center">
                                                 <IconMenuDocumentation className="shrink-0 group-hover:!text-primary" />
                                                 <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('task')}</span>
                                             </div>
@@ -280,47 +280,40 @@ const Sidebar = () => {
                                             </div>
                                         </Link>
                                     </li>
-                                    {/* <li className="menu nav-item">
-                                        <button type="button" className={`${currentMenu === 'invoice' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('invoice')}>
+                                    </ul>
+                                    </li>
+                                    <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
+                                <IconMinus className="hidden h-5 w-4 flex-none" />
+                                <span>{t('timekeeping_manage')}</span>
+                            </h2>
+                            <li className="nav-item">
+                                <ul>
+                                    <li className="nav-item">
+                                        <Link href="/hrm/timekeeping-table" className="group">
                                             <div className="flex items-center">
-                                                <IconMenuInvoice className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('invoice')}</span>
-                                            </div>
-
-                                            <div className={currentMenu !== 'invoice' ? '-rotate-90 rtl:rotate-90' : ''}>
-                                                <IconCaretDown />
-                                            </div>
-                                        </button>
-
-                                        <AnimateHeight duration={300} height={currentMenu === 'invoice' ? 'auto' : 0}>
-                                            <ul className="sub-menu text-gray-500">
-                                                <li>
-                                                    <Link href="/apps/invoice/list">{t('list')}</Link>
-                                                </li>
-                                                <li>
-                                                    <Link href="/apps/invoice/preview">{t('preview')}</Link>
-                                                </li>
-                                                <li>
-                                                    <Link href="/apps/invoice/add">{t('add')}</Link>
-                                                </li>
-                                                <li>
-                                                    <Link href="/apps/invoice/edit">{t('edit')}</Link>
-                                                </li>
-                                            </ul>
-                                        </AnimateHeight>
-                                    </li> */}
-
-                                    {/* <li className="nav-item">
-                                        <Link href="/apps/calendar" className="group">
-                                            <div className="flex items-center">
-                                                <IconMenuCalendar className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('calendar')}</span>
+                                                <IconMenuTables className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('timekeeping_table')}</span>
                                             </div>
                                         </Link>
-                                    </li> */}
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link href="/hrm/timekeeping-employee" className="group">
+                                            <div className="flex items-center">
+                                                <IconMenuDatatables className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('timekeeping_employee')}</span>
+                                            </div>
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link href="#" className="group">
+                                            <div className="flex items-center">
+                                                <IconMenuElements className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('attendance_exemption')}</span>
+                                            </div>
+                                        </Link>
+                                    </li>
                                 </ul>
                             </li>
-
                             <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
                                 <span>{t('warehouse')}</span>
                             </h2>
@@ -328,6 +321,7 @@ const Sidebar = () => {
                             <li className="nav-item">
                                 <ul>
                                     <li className="nav-item">
+
                                         <Link href="/warehouse" className="group">
                                             <div className="flex items-center">
                                                 <IconWarehouse className="shrink-0 group-hover:!text-primary" />
@@ -343,15 +337,91 @@ const Sidebar = () => {
                                             </div>
                                         </Link>
                                     </li>
-                                    <li className="nav-item">
-                                        <Link href="/warehouse/product" className="group">
+                                    <li className="menu nav-item">
+                                        <button type="button" className={`${currentMenu === 'product' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('product')}>
                                             <div className="flex items-center">
                                                 <IconItem className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('product_list')}</span>
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('product')}</span>
                                             </div>
-                                        </Link>
+
+                                            <div className={currentMenu !== 'product' ? '-rotate-90 rtl:rotate-90' : ''}>
+                                                <IconCaretDown />
+                                            </div>
+                                        </button>
+
+                                        <AnimateHeight duration={300} height={currentMenu === 'product' ? 'auto' : 0}>
+                                            <ul className="sub-menu text-gray-500">
+                                                <li>
+                                                    <Link href="/warehouse/product/list">{t('product_list')}</Link>
+                                                </li>
+                                                <li>
+                                                    <Link href="/warehouse/product/category">{t('product_category')}</Link>
+                                                </li>
+                                                <li>
+                                                    <Link href="/warehouse/product/unit">{t('product_unit')}</Link>
+                                                </li>
+                                                <li>
+                                                    <Link href="/warehouse/product/provider">{t('product_provider')}</Link>
+                                                </li>
+                                            </ul>
+                                        </AnimateHeight>
                                     </li>
-                                    <li className="nav-item">
+                                    {/* <li className="nav-item">
+								</ul>
+							</li>
+
+							<h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
+								<span>{t('warehouse')}</span>
+							</h2>
+
+							<li className="nav-item">
+								<ul>
+									<li className="nav-item">
+										<Link href="/warehouse" className="group">
+											<div className="flex items-center">
+												<IconWarehouse className="shrink-0 group-hover:!text-primary" />
+												<span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('warehouse_list')}</span>
+											</div>
+										</Link>
+									</li>
+									<li className="nav-item">
+										<Link href="/warehouse-type" className="group">
+											<div className="flex items-center">
+												<IconTypeWarehouse className="shrink-0 group-hover:!text-primary" />
+												<span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('type_list')}</span>
+											</div>
+										</Link>
+									</li>
+									<li className="menu nav-item">
+										<button type="button" className={`${currentMenu === 'product' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('product')}>
+											<div className="flex items-center">
+												<IconItem className="shrink-0 group-hover:!text-primary" />
+												<span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('product')}</span>
+											</div>
+
+											<div className={currentMenu !== 'product' ? '-rotate-90 rtl:rotate-90' : ''}>
+												<IconCaretDown />
+											</div>
+										</button>
+
+										<AnimateHeight duration={300} height={currentMenu === 'product' ? 'auto' : 0}>
+											<ul className="sub-menu text-gray-500">
+												<li>
+													<Link href="/warehouse/product/list">{t('product_list')}</Link>
+												</li>
+												<li>
+													<Link href="/warehouse/product/category">{t('product_category')}</Link>
+												</li>
+												<li>
+													<Link href="/warehouse/product/unit">{t('product_unit')}</Link>
+												</li>
+												<li>
+													<Link href="/warehouse/product/provider">{t('product_provider')}</Link>
+												</li>
+											</ul>
+										</AnimateHeight>
+									</li>
+									{/* <li className="nav-item">
                                         <Link href="/warehouse/import-product" className="group">
                                             <div className="flex items-center">
                                                 <IconDownload className="shrink-0 group-hover:!text-primary" size={20} />
@@ -366,10 +436,10 @@ const Sidebar = () => {
                                                 <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('export_product')}</span>
                                             </div>
                                         </Link>
-                                    </li>
-                                </ul>
-                            </li>
-                            {/*
+                                    </li> */}
+								</ul>
+							</li>
+							{/*
                             <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
                                 <IconMinus className="hidden h-5 w-4 flex-none" />
                                 <span>{t('user_interface')}</span>
@@ -853,12 +923,12 @@ const Sidebar = () => {
                                     </div>
                                 </Link>
                             </li> */}
-                        </ul>
-                    </PerfectScrollbar>
-                </div>
-            </nav>
-        </div>
-    );
+						</ul>
+					</PerfectScrollbar>
+				</div>
+			</nav>
+		</div>
+	);
 };
 
 export default Sidebar;

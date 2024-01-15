@@ -13,56 +13,72 @@ interface Props {
     [key: string]: any;
 }
 
-const ProductModal = ({ ...props }: Props) => {
+const TimekeepingModal = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
     const [disabled, setDisabled] = useState(false);
 
     const SubmittedForm = Yup.object().shape({
-        name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_product')}`),
-        code: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_productCode')}`),
-        status: Yup.string().required(`${t('please_fill_status')}`),
-        unit: Yup.string().required(`${t('please_fill_unit')}`),
-        quantity: Yup.string().required(`${t('please_fill_quantity')}`)
+        name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_timekeeping')}`),
+        code: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_timekeepingCode')}`),
     });
 
-    const handleProduct = (value: any) => {
+    const handleDepartment = (value: any) => {
         if (props?.data) {
             const reNew = props.totalData.filter((item: any) => item.id !== props.data.id);
             reNew.push({
                 id: props.data.id,
                 name: value.name,
                 code: value.code,
-                status: value.status,
-                quantity: value.quantity,
-                unit: value.unit
             });
-            localStorage.setItem('productList', JSON.stringify(reNew));
+            localStorage.setItem('timekeepingList', JSON.stringify(reNew));
             props.setGetStorge(reNew);
             props.setOpenModal(false);
             props.setData(undefined);
-            showMessage(`${t('edit_product_success')}`, 'success');
+            showMessage(`${t('edit_timekeeping_success')}`, 'success');
         } else {
             const reNew = props.totalData;
             reNew.push({
                 id: Number(props?.totalData[props?.totalData?.length - 1].id) + 1,
                 name: value.name,
                 code: value.code,
-                status: value.status,
-                quantity: value.quantity,
-                unit: value.unit
+                status: value.status
             })
-            localStorage.setItem('productList', JSON.stringify(reNew));
+            localStorage.setItem('timekeepingList', JSON.stringify(reNew));
             props.setGetStorge(props.totalData);
             props.setOpenModal(false);
             props.setData(undefined);
-            showMessage(`${t('create_product_success')}`, 'success')
+            showMessage(`${t('add_timekeeping_success')}`, 'success')
         }
     }
 
     const handleCancel = () => {
         props.setOpenModal(false);
         props.setData(undefined);
+    };
+
+    const handleDelete = (data: any) => {
+        const swalDeletes = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'sweet-alerts',
+            },
+            buttonsStyling: false,
+        });
+        swalDeletes
+            .fire({
+                icon: 'question',
+                title: `${t('delete_timekeeping')}`,
+                padding: '2em',
+                showCancelButton: true,
+                reverseButtons: true,
+            })
+            .then((result) => {
+                if (result.value) {
+
+                }
+            });
     };
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
@@ -99,7 +115,7 @@ const ProductModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data !== undefined ? 'Edit Product' : 'Add Product'}
+                                    {props.data !== undefined ? `${t('edit_timekeeping')} ngày` : `${t('add_timekeeping')} ngày`}
                                 </div>
                                 <div className="p-5">
                                     <Formik
@@ -107,66 +123,66 @@ const ProductModal = ({ ...props }: Props) => {
                                             {
                                                 name: props?.data ? `${props?.data?.name}` : "",
                                                 code: props?.data ? `${props?.data?.code}` : "",
-                                                status: props?.data ? `${props?.data?.status}` : "",
-                                                unit: props?.data ? `${props?.data?.unit}` : "",
-                                                quantity: props?.data ? `${props?.data?.quantity}` : ""
                                             }
                                         }
                                         validationSchema={SubmittedForm}
                                         onSubmit={values => {
-                                            handleProduct(values);
+                                            handleDepartment(values);
                                         }}
                                     >
 
                                         {({ errors, touched }) => (
                                             <Form className="space-y-5" >
                                                 <div className="mb-5">
-                                                    <label htmlFor="name" > {t('name_product')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name_product')}`} className="form-input" />
+                                                    <label htmlFor="name">Số công hưởng lương <span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="name" type="number" id="name" placeholder="Nhập số công hưởng lương" className="form-input" />
                                                     {errors.name ? (
                                                         <div className="text-danger mt-1"> {errors.name} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
-                                                    <label htmlFor="code" > {t('code_product')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="code" type="text" id="code" placeholder={`${t('enter_code_product')}`} className="form-input" />
+                                                    <label htmlFor="code" >Số công đi làm thực tế < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="" type="number" id="code" placeholder="Nhập số công đi làm thực tế" className="form-input" />
                                                     {errors.code ? (
                                                         <div className="text-danger mt-1"> {errors.code} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
-                                                    <label htmlFor="unit" > {t('unit')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="unit" type="text" id="code" placeholder={`${t('enter_unit_product')}`} className="form-input" />
-                                                    {errors.unit ? (
+                                                    <label htmlFor="code" >Giờ vào < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="code" type="time" id="code" placeholder={`${t('enter_code_timekeeping')}`} className="form-input" />
+                                                    {errors.code ? (
                                                         <div className="text-danger mt-1"> {errors.code} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
-                                                    <label htmlFor="quantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="quantity" type="text" id="code" placeholder={`${t('enter_quantity_product')}`} className="form-input" />
-                                                    {errors.quantity ? (
-                                                        <div className="text-danger mt-1"> {errors.quantity} </div>
+                                                    <label htmlFor="code" >Giờ ra < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="code" type="time" id="code" placeholder={`${t('enter_code_timekeeping')}`} className="form-input" />
+                                                    {errors.code ? (
+                                                        <div className="text-danger mt-1"> {errors.code} </div>
                                                     ) : null}
                                                 </div>
-                                                <div className="mb-5 flex justify-between gap-4">
-                                                    <div className="flex-1">
-                                                        <label htmlFor="status" > {t('status')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Field as="select" name="status" id="status" className="form-input">
-                                                            <option value="">---</option>
-                                                            <option value="active">Active</option>
-                                                            <option value="inActive">InActive</option>
-                                                        </Field>
-                                                        {errors.status ? (
-                                                            <div className="text-danger mt-1"> {errors.status} </div>
-                                                        ) : null}
-                                                    </div>
+                                                <div className="mb-5">
+                                                    <label htmlFor="code" >Đi muộn (phút) < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="" type="number" id="code" placeholder="" className="form-input" />
+                                                    {errors.code ? (
+                                                        <div className="text-danger mt-1"> {errors.code} </div>
+                                                    ) : null}
+                                                </div>
+                                                <div className="mb-5">
+                                                    <label htmlFor="code" >Đi sớm (phút) < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="" type="number" id="code" placeholder="" className="form-input" />
+                                                    {errors.code ? (
+                                                        <div className="text-danger mt-1"> {errors.code} </div>
+                                                    ) : null}
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
-                                                    <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
-                                                        Cancel
-                                                    </button>
+                                                    {props.data === undefined ?  <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
+                                                        {t('cancel')}
+                                                    </button> :  <button type="button" className="btn btn-outline-danger" onClick={() => handleDelete()}>
+                                                        {t('delete')}
+                                                    </button>}
                                                     <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4" disabled={disabled}>
-                                                        {props.data !== undefined ? 'Update' : 'Add'}
+                                                        {props.data !== undefined ? `${t('update')}` : `${t('add')}`}
                                                     </button>
                                                 </div>
 
@@ -184,4 +200,4 @@ const ProductModal = ({ ...props }: Props) => {
     );
 };
 
-export default ProductModal;
+export default TimekeepingModal;

@@ -1,5 +1,6 @@
 import { useEffect, Fragment, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
+import { setPageTitle } from '../../../store/themeConfigSlice';
 import { lazy } from 'react';
 // Third party libs
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
@@ -8,34 +9,44 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
+import { deleteDepartment, detailDepartment, listAllDepartment } from '../../../services/apis/department.api';
 // constants
 import { PAGE_SIZES, PAGE_SIZES_DEFAULT, PAGE_NUMBER_DEFAULT } from '@/utils/constants';
 // helper
+import { capitalize, formatDate, showMessage } from '@/@core/utils';
 // icons
+import IconPencil from '../../../components/Icon/IconPencil';
+import IconTrashLines from '../../../components/Icon/IconTrashLines';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
 
 import { useRouter } from 'next/router';
-import IconPencil from '@/components/Icon/IconPencil';
-import IconTrashLines from '@/components/Icon/IconTrashLines';
-import { setPageTitle } from '@/store/themeConfigSlice';
 
 // json
-import productList from '../product_list.json';
+import DayList from './dayOfMonth_list.json'
+import EmployeeList from './employee_list.json';
+import TimekeepingModal from './modal/TimekeepingModal';
+import IconFolderMinus from '@/components/Icon/IconFolderMinus';
+import IconDownload from '@/components/Icon/IconDownload';
+import IconEye from '@/components/Icon/IconEye';
+import IconChecks from '@/components/Icon/IconChecks';
 
-import ProductModal from '../modal/ProductModal';
-import IconMultipleForwardRight from '@/components/Icon/IconMultipleForwardRight';
 
 interface Props {
     [key: string]: any;
 }
 
-const ProductPage = ({ ...props }: Props) => {
+interface Day {
+    dayMonth: string,
+    dayWeek: string
+}
+
+const Department = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
     useEffect(() => {
-        dispatch(setPageTitle(`${t('Product')}`));
+        dispatch(setPageTitle(`${t('department')}`));
     });
 
     const router = useRouter();
@@ -54,13 +65,12 @@ const ProductPage = ({ ...props }: Props) => {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const data = localStorage.getItem('productList');
+            const data = localStorage.getItem('employeeList');
             if (data) {
                 setGetStorge(JSON.parse(data));
             } else {
-                localStorage.setItem('productList', JSON.stringify(productList));
+                localStorage.setItem('employeeList', JSON.stringify(EmployeeList));
             }
-
         }
     }, [])
 
@@ -91,7 +101,7 @@ const ProductPage = ({ ...props }: Props) => {
         swalDeletes
             .fire({
                 icon: 'question',
-                title: `${t('delete_product')}`,
+                title: `${t('delete_department')}`,
                 text: `${t('delete')} ${data.name}`,
                 padding: '2em',
                 showCancelButton: true,
@@ -100,12 +110,39 @@ const ProductPage = ({ ...props }: Props) => {
             .then((result) => {
                 if (result.value) {
                     const value = getStorge.filter((item: any) => { return (item.id !== data.id) });
-                    localStorage.setItem('productList', JSON.stringify(value));
+                    localStorage.setItem('employeeList', JSON.stringify(value));
                     setGetStorge(value);
+                    showMessage(`${t('delete_department_success')}`, 'success')
                 }
             });
     };
-
+    const handleCheck = (data: any) => {
+        const swalChecks = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'sweet-alerts',
+            },
+            buttonsStyling: false,
+        });
+        swalChecks
+            .fire({
+                icon: 'question',
+                title: `${t('check_timekeeping')}`,
+                text: `${t('check')} ${data.name}`,
+                padding: '2em',
+                showCancelButton: true,
+                reverseButtons: true,
+            })
+            .then((result) => {
+                if (result.value) {
+                    const value = getStorge.filter((item: any) => { return (item.id !== data.id) });
+                    localStorage.setItem('employeeList', JSON.stringify(value));
+                    setGetStorge(value);
+                    showMessage(`${t('check_timekeeping_success')}`, 'success')
+                }
+            });
+    };
     const handleSearch = (e: any) => {
         if (e.target.value === "") {
             setRecordsData(getStorge);
@@ -123,43 +160,27 @@ const ProductPage = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
         },
-        { accessor: 'code', title: 'Mã vật tư', sortable: false },
-        { accessor: 'name', title: 'Tên vật tư', sortable: false },
-        { accessor: 'unit', title: 'Đvt', sortable: false },
-        { accessor: 'quantity', title: 'Số lượng', sortable: false },
-        {
-            accessor: 'status',
-            title: 'Trạng thái',
-            sortable: false,
-            render: ({ status }: any) => <span className={`badge badge-outline-${status === "active" ? "success" : "danger"} `}>{status}</span>,
-        },
-
-        {
-            accessor: 'action',
-            title: 'Thao tác',
-            titleClassName: '!text-center',
-            render: (records: any) => (
-                <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('edit')}`}>
-                        <button type="button" onClick={() => handleEdit(records)}>
-                            <IconPencil />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('delete')}`}>
-                        <button type="button" onClick={() => handleDelete(records)}>
-                            <IconTrashLines />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('move')}`}>
-                        <button type="button" >
-                            <IconMultipleForwardRight size={20} />
-                        </button>
-                    </Tippy>
-
-                </div>
-            ),
-        },
+        { accessor: 'code', title: 'Mã chấm công', sortable: false
+    },
+        { accessor: 'name', title: 'Tên nhân viên', sortable: false,
+    }
     ]
+
+    DayList?.map((item: Day, columIndex: number) => {
+        columns.push(
+            {
+                accessor: '',
+                title: `${item.dayWeek}, ${item.dayMonth}`,
+                render: (records: any, index: any) => {
+                    if (columIndex <= 3) {
+                        return <span onClick={() => handleEdit(records)} style={{cursor: "pointer"}}>{`CONG_${records.code}`}</span>
+                    } else {
+                        return <div onClick={() => setOpenModal(true)} style={{cursor: "pointer", height: "20px"}}></div>
+                    }
+                },
+            }
+        )
+    })
 
     return (
         <div>
@@ -168,17 +189,38 @@ const ProductPage = ({ ...props }: Props) => {
                     <IconLoading />
                 </div>
             )}
-            <title>Product</title>
             <div className="panel mt-6">
-                <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
+            <h1>Bảng chấm công nhân viên tháng 01/2024</h1>
+                <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5 grid grid-cols-2">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >
+                        {/* <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >
                             <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                             {t('add')}
+                        </button> */}
+                        <button type="button" className="btn btn-primary btn-sm m-1" >
+                            <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
+                            Nhập file
+                        </button>
+                        <button type="button" className="btn btn-primary btn-sm m-1" >
+                            <IconDownload className="ltr:mr-2 rtl:ml-2" />
+                            Xuất file excel
                         </button>
                     </div>
-
-                    <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                    <div className='grid grid-cols-3 gap-1'>
+                    <select id="ctnSelect1" className="form-select w-auto text-white-dark" required>
+                                    <option>Chọn phòng ban</option>
+                                    <option>Phòng ban 1</option>
+                                    <option>Phòng ban 2</option>
+                                    <option>Phòng ban 3</option>
+                                </select>
+                                <select id="ctnSelect1" className="form-select w-auto text-white-dark" required>
+                                    <option>Chọn tháng</option>
+                                    <option>Tháng 1</option>
+                                    <option>Tháng 2</option>
+                                    <option>Tháng 3</option>
+                                </select>
+                                <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                    </div>
                 </div>
                 <div className="datatables">
                     <DataTable
@@ -199,7 +241,7 @@ const ProductPage = ({ ...props }: Props) => {
                     />
                 </div>
             </div>
-            <ProductModal
+            <TimekeepingModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}
                 data={data}
@@ -211,4 +253,4 @@ const ProductPage = ({ ...props }: Props) => {
     );
 };
 
-export default ProductPage;
+export default Department;

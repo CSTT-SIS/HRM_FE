@@ -1,0 +1,24 @@
+.initechNode {
+    border: solid 1px #ccc;
+    border-radius: 3px;
+    padding: 5px;
+    width: 150px;
+    display: inline-block;
+    background-color: #ffdead;
+}
+
+#initechOrgChart .orgNodeChildGroup .nodeGroupLineVerticalMiddle {
+    border-right: solid 1px #ccc
+}
+
+#initechOrgChart .nodeLineBorderTop {
+    border-top: solid 1px #ccc;
+}
+
+.reactOrgChart td {
+    padding: 0!important;
+}
+
+.reactOrgChart tr {
+    border-style: none;
+}

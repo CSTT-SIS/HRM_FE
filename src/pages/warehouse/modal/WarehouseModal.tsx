@@ -26,10 +26,10 @@ const WarehouseModal = ({ ...props }: Props) => {
 
     // get data 
     const { data: warehouseType, pagination, mutate } = WarehouseTpyes(query);
-
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_warehouse')}`),
-        code: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_warehouseCode')}`)
+        code: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_warehouseCode')}`),
+        typeId: new Yup.ObjectSchema().required(`${t('please_fill_type')}`)
     });
 
     const handleWarehouse = (param: any) => {
@@ -92,12 +92,6 @@ const WarehouseModal = ({ ...props }: Props) => {
             item.label = item.name
         )
     })
-
-    const handleValue = (val: any) => {
-        return {
-        }
-
-    }
 
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>

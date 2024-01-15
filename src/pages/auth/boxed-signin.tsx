@@ -27,7 +27,6 @@ const LoginBoxed = () => {
     const router = useRouter();
 
     const submitForm = ({ userName, passWord }: any) => {
-        
         signIn(userName, passWord)
             .then((res: any) => {
                 const token = res.data.session;
