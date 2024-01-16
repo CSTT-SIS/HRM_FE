@@ -141,7 +141,7 @@ const DutyModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                                     <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
-                                                        Cancel
+                                                        {t('cancel')}
                                                     </button>
                                                     <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4" disabled={disabled}>
                                                         {props.data !== undefined ? 'Update' : 'Add'}

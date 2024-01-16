@@ -31,7 +31,6 @@ interface Props {
 }
 
 const DutyPage = ({ ...props }: Props) => {
-
     const dispatch = useDispatch();
     const { t } = useTranslation();
     useEffect(() => {
