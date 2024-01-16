@@ -191,7 +191,7 @@ const DashBoard = () => {
             },
         },
     };
-   
+
     return (
         <div>
             <ul className="flex space-x-2 rtl:space-x-reverse mb-6">
@@ -249,7 +249,7 @@ const DashBoard = () => {
                         <h5 className="text-lg font-semibold dark:text-white-light">Tình hình nghỉ theo thời gian</h5>
                     </div>
                     <div className="mb-5">
-                        {isMounted && <ReactApexChart series={lineChart.series} options={lineChart.options} className="rounded-lg bg-white dark:bg-black overflow-hidden" type="line" height={300} />}
+                        {isMounted && <ReactApexChart series={lineChart.series} options={lineChart.options} className="rounded-lg bg-white dark:bg-black overflow-hidden" type="line" height={300} width={"100%"} />}
                     </div>
                 </div>
                 <div className="panel">
@@ -257,7 +257,7 @@ const DashBoard = () => {
                         <h5 className="text-lg font-semibold dark:text-white">Tình hình nghỉ theo phòng ban</h5>
                     </div>
                     <div className="mb-5">
-                        {isMounted && <ReactApexChart series={columnChart.series} options={columnChart.options} className="rounded-lg bg-white dark:bg-black overflow-hidden" type="bar" height={300} />}
+                        {isMounted && <ReactApexChart series={columnChart.series} options={columnChart.options} className="rounded-lg bg-white dark:bg-black overflow-hidden" type="bar" height={300} width={"100%"} />}
                     </div>
                 </div>
                 <div className="panel">
@@ -267,7 +267,7 @@ const DashBoard = () => {
                     <p>Tất cả đơn vị</p>
 
                     <div className="mb-5">
-                        {isMounted && <ReactApexChart series={donutChart.series} options={donutChart.options} className="rounded-lg bg-white dark:bg-black overflow-hidden" type="donut" height={300} />}
+                        {isMounted && <ReactApexChart series={donutChart.series} options={donutChart.options} className="rounded-lg bg-white dark:bg-black overflow-hidden" type="donut" height={300} width={"100%"} />}
                     </div>
                 </div>
                 <div className="panel h-full">
