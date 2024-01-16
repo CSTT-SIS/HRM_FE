@@ -9,7 +9,7 @@ const API = axios.create({
     baseURL: `http://117.4.240.104:8687/api/v1`,
 });
 
-API.interceptors.request.use((config: AxiosRequestConfig) => {
+API.interceptors.request.use((config: any) => {
     config.headers = {
         ...(config.headers ?? {}),
         Authorization: `Bearer ${getAuthToken()}`,
@@ -23,14 +23,14 @@ API.interceptors.response.use(
         const status = error.response ? error.response.status : null;
 
         // Access Token was expired
-        if (status === 401) {
-            return Auth.refreshToken().then((res) => {
-                if (error.config && error.config.headers) {
-                    error.config.headers['Authorization'] = 'Bearer ' + getAuthToken();
-                }
-                return API(error.config);
-            });
-        }
+        // if (status === 401) {
+        //     return Auth.refreshToken().then((res) => {
+        //         if (error.config && error.config.headers) {
+        //             error.config.headers['Authorization'] = 'Bearer ' + getAuthToken();
+        //         }
+        //         return API(error.config);
+        //     });
+        // }
         if (status === 400) {
             return error.response;
         }

@@ -24,9 +24,7 @@ axios.interceptors.request.use(
 		config.headers = {
 			...headers,
 			...config.headers,
-			Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlck5hbWUiOiJhZG1pbiIsInJvbGUiOiIiLCJzdWIiOjEsImlhdCI6MTcwNDkwNDU4NSwiZXhwIjoxNzA0OTkwOTg1fQ.FfwZmKV9wivIXZnuRIYzT3xvUDzkwEMVUhqzdJLMcI8`
-			// Authorization: `Bearer ${Cookies.get(Config.Env.NEXT_PUBLIC_X_ACCESS_TOKEN)}`
-
+			Authorization: `${Cookies.get(Config.Env.NEXT_PUBLIC_X_ACCESS_TOKEN)}`
 		};
 		return config;
 	},
@@ -42,11 +40,11 @@ axios.interceptors.response.use(
 	async function (error: any) {
 		const status = error?.response?.status;
 		const returnUrl = encodeURI(window.location.pathname + window.location.search);
-		const returnUrlStr = returnUrl?.includes('/sign-in') ? '' : `?returnUrl=${returnUrl}`;
+		const returnUrlStr = returnUrl?.includes('/auth/boxed-signin') ? '' : `?returnUrl=${returnUrl}`;
 		switch (status) {
 			case 401:
 				Cookies.remove(Config.Env.NEXT_PUBLIC_X_ACCESS_TOKEN);
-				window.location.href = '/sign-in' + returnUrlStr;
+				window.location.href = '/auth/boxed-signin' + returnUrlStr;
 				break;
 			default:
 				return Promise.reject(error);
@@ -103,5 +101,3 @@ export const callApiSWRInfinite = (endpoint: string, method: any, body?: any, he
 	});
 };
 export default callApi;
-
-// export const frappe = new FrappeApp(Config.Env.NEXT_PUBLIC_BE_URL);
