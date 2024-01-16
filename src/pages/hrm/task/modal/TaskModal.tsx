@@ -82,7 +82,6 @@ const TaskModal = ({ ...props }: Props) => {
 	};
 
 	return (
-		// Modal structure, similar to DepartmentModal
 		<Transition appear show={props.openModal ?? false} as={Fragment}>
 			<Dialog as="div" open={props.openModal} onClose={() => props.setOpenModal(false)} className="relative z-50">
 				<Transition.Child as={Fragment} enter="ease-out duration-300" enterFrom="opacity-0" enterTo="opacity-100" leave="ease-in duration-200" leaveFrom="opacity-100" leaveTo="opacity-0">
@@ -114,19 +113,21 @@ const TaskModal = ({ ...props }: Props) => {
 								<div className="p-5">
 									<Formik
 										initialValues={{
-											name: props?.data ? props?.data?.name : '',
-											creator: props?.data ? props?.data?.creator : '',
-											executor: props?.data ? props?.data?.executor : '',
-											collaborator: props?.data ? props?.data?.collaborator : '',
-											description: props?.data ? props?.data?.description : '',
-											deadline: props?.data ? props?.data?.deadline : '',
-											directive: props?.data ? props?.data?.directive : '',
-											color: props?.data ? props?.data?.color : 'info',
-											status: props?.data ? props?.data?.status : 'ĐANG THỰC HIỆN',
-											attachment: props?.data ? props?.data?.attachment : '',
+											name: props?.data ? `${props?.data?.name}` : '',
+											creator: props?.data ? `${props?.data?.creator}` : '',
+											executor: props?.data ? `${props?.data?.executor}` : '',
+											collaborator: props?.data ? `${props?.data?.collaborator}` : '',
+											description: props?.data ? `${props?.data?.description}` : '',
+											deadline: props?.data ? `${props?.data?.deadline}` : '',
+											directive: props?.data ? `${props?.data?.directive}` : '',
+											color: props?.data ? `${props?.data?.color}` : 'info',
+											status: props?.data ? `${props?.data?.status}` : 'ĐANG THỰC HIỆN',
+											attachment: props?.data ? `${props?.data?.attachment}` : '',
 										}}
 										validationSchema={SubmittedForm}
-										onSubmit={(values) => handleTask(values)}
+										onSubmit={(values) => {
+											handleTask(values);
+										}}
 									>
 										{({ errors, touched }) => (
 											<Form className="space-y-5">
