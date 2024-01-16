@@ -20,8 +20,7 @@ const AssetModal = ({ ...props }: Props) => {
 	const SubmittedForm = Yup.object().shape({
 		quantity: Yup.number().required(`${t('please_fill_asset_quantity')}`),
 		name: Yup.string()
-			.min(2, 'Too Short!')
-			.required(`${t('please_fill_name_asset')}`),
+		.required(`${t('please_fill_name_asset')}`),
 	});
 
 	const handleDepartment = (value: any) => {

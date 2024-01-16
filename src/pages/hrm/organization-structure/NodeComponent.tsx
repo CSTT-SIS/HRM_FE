@@ -6,7 +6,7 @@ interface MyNode {
 const MyNodeComponent: React.FC<{ node: MyNode }> = ({ node }) => {
     return (
         <div className="initechNode">
-            {node.name}
+            {node?.name || "Unknown"}
         </div>
     );
 };
