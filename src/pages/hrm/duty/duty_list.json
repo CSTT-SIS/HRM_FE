@@ -1,0 +1,50 @@
+[
+    {
+        "id": 1,
+        "name": "Trưởng phòng",
+        "code": "TP",
+        "status": "active"
+    },
+    {
+        "id": 2,
+        "name": "Phó Trưởng Phòng",
+        "code": "PTP",
+        "status": "active"
+    },
+    {
+        "id": 3,
+        "name": "Trưởng Ban",
+        "code": "TB",
+        "status": "active"
+    },
+    {
+        "id": 4,
+        "name": "Trợ lý",
+        "code": "TL",
+        "status": "active"
+    },
+    {
+        "id": 5,
+        "name": "Trạm Trưởng",
+        "code": "TT",
+        "status": "active"
+    },
+    {
+        "id": 6,
+        "name": "Nhân viên Hành chính",
+        "code": "NV-HC",
+        "status": "active"
+    },
+    {
+        "id": 7,
+        "name": "Nhân viên Sửa chữa",
+        "code": "NV-SC",
+        "status": "active"
+    },
+    {
+        "id": 8,
+        "name": "Nhân viên Thống kê",
+        "code": "NV-TK",
+        "status": "active"
+    }
+]
