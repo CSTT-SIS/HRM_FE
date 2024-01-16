@@ -144,7 +144,7 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 	});
 	const { isAddWorkScheduleModal, setIsAddWokScheduleModal, params, minStartDate, minEndDate, saveWorkSchedule, handleDelete } = props;
 	return (
-		<Transition appear show={isAddWorkScheduleModal} as={Fragment}>
+		<Transition appear show={isAddWorkScheduleModal ?? false} as={Fragment}>
 			<Dialog as="div" onClose={() => setIsAddWokScheduleModal(false)} open={isAddWorkScheduleModal} className="relative z-50">
 				<Transition.Child as={Fragment} enter="duration-300 ease-out" enter-from="opacity-0" enter-to="opacity-100" leave="duration-200 ease-in" leave-from="opacity-100" leave-to="opacity-0">
 					<Dialog.Overlay className="fixed inset-0 bg-[black]/60" />
@@ -170,7 +170,7 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 									<IconX />
 								</button>
 								<div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pl-[50px] rtl:pr-5 dark:bg-[#121c2c]">
-									{params.id ? 'Sửa lịch làm việc' : 'Thêm lịch làm việc'}
+									{params?.id ? 'Sửa lịch làm việc' : 'Thêm lịch làm việc'}
 								</div>
 								<div className="p-5">
 									<Formik
@@ -255,13 +255,13 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 														<button type="button" className="btn btn-outline-danger" onClick={() => setIsAddWokScheduleModal(false)}>
 															Cancel
 														</button>
-														{params.id && (
+														{params?.id && (
 															<button type="button" className="btn btn-outline-warning ltr:ml-4 rtl:mr-4" onClick={() => handleDelete(params)}>
 																Remove
 															</button>
 														)}
 														<button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4">
-															{params.id ? 'Update' : 'Create'}
+															{params?.id ? 'Update' : 'Create'}
 														</button>
 													</div>
 												</div>
