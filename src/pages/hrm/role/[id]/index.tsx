@@ -32,8 +32,8 @@ const RoleDetailPage = ({ ...props }: Props) => {
     const [showLoader, setShowLoader] = useState(true);
     const [data, setData] = useState<any>();
     const [checked, setChecked] = useState<any>([]);
+    const [checkAll, setCheckAll] = useState<any>(false);
     const [dataPermission, setDataPermission] = useState<any>();
-
     // get data
     const { data: permission } = Permissions({ sortBy: 'id.ASC', ...router.query });
 
@@ -54,7 +54,7 @@ const RoleDetailPage = ({ ...props }: Props) => {
                         .concat({ ...permission })
                 }), {})
         )
-    }, [permission])
+    }, [permission]);
 
     useEffect(() => {
         GetRole({ id: router.query.id }).then((res) => {
@@ -62,7 +62,15 @@ const RoleDetailPage = ({ ...props }: Props) => {
             setChecked(res.data.permissionIds);
         }).catch((err: any) => {
         });
-    }, [router.query.id])
+    }, [router.query.id]);
+
+    useEffect(() => {
+        if (checked.length === permission?.data.length) {
+            setCheckAll(true);
+        } else {
+            setCheckAll(false);
+        }
+    }, [checked, permission]);
 
     const handleRole = (param: any) => {
         if (data && data?.id !== 'create') {
@@ -94,6 +102,17 @@ const RoleDetailPage = ({ ...props }: Props) => {
                 : [...checked, permissionId]
         );
     }
+    const handleCheckAll = (e: any) => {
+        if (checkAll === false) {
+            const permissionIds = permission?.data
+                .map((item: any) => item.id)
+            setChecked(permissionIds);
+            setCheckAll(true);
+        } else {
+            setChecked([]);
+            setCheckAll(false);
+        }
+    };
 
     return (
         <div>
@@ -160,7 +179,18 @@ const RoleDetailPage = ({ ...props }: Props) => {
                                 </div>
                             </div>
                             <div className="space-y-5 panel mt-6">
-                                <div className="text-2xl">Permission</div>
+                                <div className='flex items-center justify-between flex-row'>
+                                    <div className="text-2xl">Permissions</div>
+                                    <label className='flex items-center justify-between'>
+                                        <Field
+                                            className="mr-2"
+                                            type="checkbox"
+                                            onChange={(e: any) => handleCheckAll(e)}
+                                            checked={checkAll}
+                                        />
+                                        check all
+                                    </label>
+                                </div>
                                 {
                                     dataPermission && Object.keys(dataPermission).map((key: any) => {
                                         return (

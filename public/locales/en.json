@@ -5,6 +5,7 @@
 	"staff": "Staff",
 	"position": "Positions",
 	"role": "Role",
+	"permission": "Permission",
 	"shift": "Shift",
 	"work_schedule": "Work Schedule",
 	"dayoff": "Holiday schedule",
