@@ -94,7 +94,7 @@ const Department = ({ ...props }: Props) => {
         swalDeletes
             .fire({
                 icon: 'question',
-                title: `${t('delete_department')}`,
+                title: `${t('delete_staff')}`,
                 text: `${t('delete')} ${data.name}`,
                 padding: '2em',
                 showCancelButton: true,

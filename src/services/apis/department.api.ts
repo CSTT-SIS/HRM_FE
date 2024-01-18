@@ -9,16 +9,16 @@ export const detailDepartment = async (data: any) => {
 	const endpoint = `/department/detail?departmentId=${data.departmentId}`;
 	return callApi(endpoint, 'GET');
 };
-export const createDepartment = async (data: any): Promise<any> => {
+export const createDepartment = async (data: any) => {
 	const endpoint = `/department/create`;
 	return callApi(endpoint, 'POST', data);
 };
-export const updateDepartment = async (data: any): Promise<any> => {
+export const updateDepartment = async (data: any) => {
 	const endpoint = `/department/update`;
 	return callApi(endpoint, 'POST', data);
 };
 
-export const deleteDepartment = async (data: any): Promise<any> => {
+export const deleteDepartment = async (data: any) => {
 	const endpoint = `/department/delete?departmentId=${data.departmentId}`;
 	return callApi(endpoint, 'POST', data);
 };
