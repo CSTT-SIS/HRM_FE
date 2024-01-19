@@ -5,6 +5,7 @@
 	"staff": "Staff",
 	"position": "Positions",
 	"role": "Role",
+	"permission": "Permission",
 	"shift": "Shift",
 	"work_schedule": "Work Schedule",
 	"dayoff": "Holiday schedule",
@@ -225,6 +226,10 @@
 	"edit_warehouse_success": "Edit Warehouse Success",
 	"create_warehouse_error": "Create Warehouse error",
 	"edit_warehouse_error": "Edit Warehouse error",
+	"create_role_success": "Create role Success",
+	"edit_role_success": "Edit role Success",
+	"create_role_error": "Create role error",
+	"edit_role_error": "Edit role error",
 	"delete_category": "Delete category",
 	"delete_category_success": "Delete category success",
 	"delete_category_error": "Delete category error",
@@ -395,5 +400,11 @@
 	"status_task": "Task status",
 	"enter_status_task": "Select task status",
 	"attachment_task": "Attach file",
-	"enter_attachment_task": "Select attached file"
+	"enter_attachment_task": "Select attached file",
+	"name_role": "Name Role",
+	"enter_name_role": "Enter name role",
+	"please_fill_name_role": "Please fill name role",
+	"delete_role_error": "Delete role error",
+	"delete_role_success": "Delete role success",
+	"delete_role": "Delete role"
 }
