@@ -111,7 +111,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                             enddate: props?.data ? `${props?.data?.enddate}` : '',
                                             shift: props?.data ? `${props?.data?.shift}` : '',
                                             late_second: props?.data ? `${props?.data?.late_second}` : '',
-                                            early_second: props?.data ? `${props?.data?.early_second}` : ''
+                                            early_second: props?.data ? `${props?.data?.early_second}` : '',
+                                            reason: props?.data ? `${props?.data?.reason}` : ''
 										}}
 										validationSchema={SubmittedForm}
 										onSubmit={(values) => {
