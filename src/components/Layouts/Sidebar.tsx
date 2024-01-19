@@ -177,7 +177,7 @@ const Sidebar = () => {
 										</Link>
 									</li>
 									<li className="nav-item">
-										<Link href="#" className="group">
+										<Link href="/hrm/duty" className="group">
 											<div className="flex items-center">
 												<IconUsers className="shrink-0 group-hover:!text-primary" />
 												<span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('position')}</span>
@@ -249,7 +249,7 @@ const Sidebar = () => {
 										</Link>
 									</li>
 									<li className="nav-item">
-										<Link href="#" className="group">
+										<Link href="/hrm/asset" className="group">
 											<div className="flex items-center">
 												<IconMenuDatatables className="shrink-0 group-hover:!text-primary" />
 												<span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('assets')}</span>
@@ -439,38 +439,6 @@ const Sidebar = () => {
 								</ul>
 							</li>
 							{/*
-                            <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
-                                <span>{t('duty')}</span>
-                            </h2>
-
-                            <li className="nav-item">
-                                <ul>
-                                    <li className="nav-item">
-                                        <Link href="/hrm/duty" className="group">
-                                            <div className="flex items-center">
-                                                <IconDuty className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('duty_list')}</span>
-                                            </div>
-                                        </Link>
-                                    </li>
-                                    <li className="nav-item">
-                                        <Link href="/hrm/duty/import" className="group">
-                                            <div className="flex items-center">
-                                                <IconDownload className="shrink-0 group-hover:!text-primary" size={20} />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('Import')}</span>
-                                            </div>
-                                        </Link>
-                                    </li>
-                                    <li className="nav-item">
-                                        <Link href="/hrm/duty/export" className="group">
-                                            <div className="flex items-center">
-                                                <IconLogout className="shrink-0 group-hover:!text-primary" size={20} />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('Export')}</span>
-                                            </div>
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </li>
 
                             <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
                                 <IconMinus className="hidden h-5 w-4 flex-none" />

@@ -248,7 +248,7 @@
 	"edit_task_success": "Chỉnh sửa nhiệm vụ thành công",
 	"add_task_success": "Thêm nhiệm vụ mới thành công",
 	"edit_task": "Chỉnh sửa nhiệm vụ",
-	"add_task": "Thêm phòng ban mới",
+	"add_task": "Thêm nhiệm vụ mới",
 	"name_task": "Tên nhiệm vụ",
 	"enter_name_task": "Nhập tên nhiệm vụ",
 	"creator_task": "Người tạo",
@@ -266,5 +266,24 @@
 	"status_task": "Trạng thái nhiệm vụ",
 	"enter_status_task": "Chọn trạng thái nhiệm vụ",
 	"attachment_task": "Đính kèm tệp",
-	"enter_attachment_task": "Chọn tệp đính kèm"
+	"enter_attachment_task": "Chọn tệp đính kèm",
+
+	"//_START_ASSET": "--- BẮT ĐẦU TÀI SẢN ---",
+	"add_asset": "Thêm tài sản",
+	"edit_asset": "Sửa tài sản",
+	"delete_asset": "Xóa tài sản",
+	"please_fill_name_asset": "Vui lòng nhập tên tài sản",
+	"please_fill_asset_quantity": "Vui lòng nhập số lượng tài sản",
+	"name_asset": "Tên tài sản",
+	"quantity_asset": "Số lượng tài sản",
+	"enter_name_asset": "Nhập tên tài sản",
+	"enter_quantity_asset": "Nhập số lượng tài sản",
+	"add_asset_success": "Thêm tài sản thành công",
+	"edit_asset_success": "Sửa tài sản thành công",
+	"delete_asset_success": "Xóa tài sản thành công",
+	"delete_asset_err": "Xóa tài sản thất bại",
+	"add_asset_err": "Thêm tài sản thất bại",
+	"edit_asset_err": "Sửa tài sản thất bại",
+
+	"//_END_ASSET": "--- KẾT THÚC TÀI SẢN ---"
 }

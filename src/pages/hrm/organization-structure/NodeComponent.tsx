@@ -10,7 +10,7 @@ const MyNodeComponent: React.FC<{ node: MyNode }> = ({ node }) => {
     const { t } = useTranslation();
     return (
         <div className="initechNode">
-            {t(`${node.name}`)}
+            <h1>{node?.name || "Unknown"}</h1>
         </div>
     );
 };

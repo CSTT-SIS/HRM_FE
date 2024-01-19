@@ -2,9 +2,11 @@
     border: solid 1px #ccc;
     border-radius: 3px;
     padding: 5px;
-    width: 150px;
+    width: 75px;
     display: inline-block;
     background-color: #ffdead;
+    min-height: 120px;
+    font-weight: bold;
 }
 
 #initechOrgChart .orgNodeChildGroup .nodeGroupLineVerticalMiddle {
