@@ -43,6 +43,7 @@ import { IconItem } from '../Icon/IconItem';
 import IconUser from '../Icon/IconUser';
 import { IconTypeWarehouse } from '../Icon/IconTypeWarehouse';
 import { IconRole } from '../Icon/IconRole';
+import IconFolder from '../Icon/IconFolder';
 
 const Sidebar = () => {
     const router = useRouter();
@@ -199,7 +200,7 @@ const Sidebar = () => {
                                         </Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link href="#" className="group">
+                                        <Link href="/hrm/shift" className="group">
                                             <div className="flex items-center">
                                                 <IconMenuMailbox className="shrink-0 group-hover:!text-primary" />
                                                 <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('shift')}</span>
@@ -288,10 +289,16 @@ const Sidebar = () => {
                                         </Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link href="#" className="group">
+                                        <Link href="/hrm/forget-form" className="group">
                                             <div className="flex items-center">
                                                 <IconMenuElements className="shrink-0 group-hover:!text-primary" />
                                                 <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('forget_timekeeping_form')}</span>
+                                            </div>
+                                        </Link>
+                                        <Link href="/hrm/exempt-form" className="group">
+                                            <div className="flex items-center">
+                                                <IconFolder className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('exempt_form')}</span>
                                             </div>
                                         </Link>
                                     </li>
