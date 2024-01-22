@@ -14,27 +14,32 @@ import { PAGE_SIZES, PAGE_SIZES_DEFAULT, PAGE_NUMBER_DEFAULT } from '@/utils/con
 // helper
 import { capitalize, formatDate, showMessage } from '@/@core/utils';
 // icons
-import IconPencil from '@/components/Icon/IconPencil';
-import IconTrashLines from '@/components/Icon/IconTrashLines';
+import IconPencil from '../../../components/Icon/IconPencil';
+import IconTrashLines from '../../../components/Icon/IconTrashLines';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
 
 import { useRouter } from 'next/router';
 
 // json
-import DutyList from './duty_list.json';
-import DutyModal from './modal/DutyModal';
+import LateEarlyFormList from './late_early_form.json';
+import LateEarlyFormModal from './modal/LateEarlyFormModal';
+import DetailModal from './modal/DetailModal';
+import IconFolderMinus from '@/components/Icon/IconFolderMinus';
+import IconDownload from '@/components/Icon/IconDownload';
+import IconChecks from '@/components/Icon/IconChecks';
 
 
 interface Props {
     [key: string]: any;
 }
 
-const DutyPage = ({ ...props }: Props) => {
+const LateEarlyForm = ({ ...props }: Props) => {
+
     const dispatch = useDispatch();
     const { t } = useTranslation();
     useEffect(() => {
-        dispatch(setPageTitle(`${t('duty')}`));
+        dispatch(setPageTitle(`${t('department')}`));
     });
 
     const router = useRouter();
@@ -50,14 +55,15 @@ const DutyPage = ({ ...props }: Props) => {
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
     const [openModal, setOpenModal] = useState(false);
+    const [openDetail, setOpenDetail] = useState(false);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const data = localStorage.getItem('dutyList');
+            const data = localStorage.getItem('lateEarlyFormList');
             if (data) {
                 setGetStorge(JSON.parse(data));
             } else {
-                localStorage.setItem('dutyList', JSON.stringify(DutyList));
+                localStorage.setItem('lateEarlyFormList', JSON.stringify(LateEarlyFormList));
             }
 
         }
@@ -77,7 +83,10 @@ const DutyPage = ({ ...props }: Props) => {
         setOpenModal(true);
         setData(data);
     };
-
+    const handleDetail = (data: any) => {
+        setOpenDetail(true);
+        setData(data);
+    };
     const handleDelete = (data: any) => {
         const swalDeletes = Swal.mixin({
             customClass: {
@@ -90,8 +99,8 @@ const DutyPage = ({ ...props }: Props) => {
         swalDeletes
             .fire({
                 icon: 'question',
-                title: `${t('delete_duty')}`,
-                text: `${t('delete')} ${data.name}`,
+                title: `${t('delete_form')}`,
+                text: `${t('delete_form')} ${data.name}`,
                 padding: '2em',
                 showCancelButton: true,
                 reverseButtons: true,
@@ -99,9 +108,35 @@ const DutyPage = ({ ...props }: Props) => {
             .then((result) => {
                 if (result.value) {
                     const value = getStorge.filter((item: any) => { return (item.id !== data.id) });
-                    localStorage.setItem('dutyList', JSON.stringify(value));
+                    localStorage.setItem('lateEarlyFormList', JSON.stringify(value));
                     setGetStorge(value);
-                    showMessage(`${t('delete_duty_success')}`, 'success')
+                    showMessage(`${t('delete_form_success')}`, 'success')
+                }
+            });
+    };
+
+    const handleCheck = (data: any) => {
+        const swalDeletes = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'sweet-alerts',
+            },
+            buttonsStyling: false,
+        });
+        swalDeletes
+            .fire({
+                icon: 'question',
+                title: `${t('check_form')}`,
+                text: `${t('check')} ${data.name}`,
+                padding: '2em',
+                showCancelButton: true,
+                reverseButtons: true,
+            })
+            .then((result) => {
+                if (result.value) {
+                    const value = getStorge.filter((item: any) => { return (item.id !== data.id) });
+                    showMessage(`${t('check_form_success')}`, 'success')
                 }
             });
     };
@@ -121,17 +156,36 @@ const DutyPage = ({ ...props }: Props) => {
         {
             accessor: 'id',
             title: '#',
-            render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
+            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{(page - 1) * pageSize + index + 1}</span>,
         },
-        { accessor: 'name', title: 'Tên chức vụ', sortable: false },
-        { accessor: 'code', title: 'Mã Chức vụ', sortable: false },
-        {
-            accessor: 'status',
-            title: 'Trạng thái',
-            sortable: false,
-            render: ({ status }: any) => <span className={`badge badge-outline-${status === "active" ? "success" : "danger"} `}>{status}</span>,
-        },
-
+        { accessor: 'code', title: `${t('personel_code')}`, sortable: false,
+        render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.code}</span>
+    },
+        { accessor: 'name', title: `${t('personel_name')}`, sortable: false,
+        render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.name}</span>
+    },
+        { accessor: 'position', title: `${t('personel_position')}`, sortable: false,
+        render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.position}</span>
+    },
+        { accessor: 'department', title: `${t('personel_department')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.department}</span>
+    },
+        { accessor: 'submitday', title: `${t('submitday')}`, sortable: false,         render: (records: any, index: any) => <span onClick={(records) => handleDetail(records)}>{records?.submitday}</span>
+    },
+        { accessor: 'fromdate', title: `${t('fromdate')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.fromdate}</span>
+    },
+        { accessor: 'enddate', title: `${t('enddate')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.enddate}</span>
+    },
+        { accessor: 'shift', title: `${t('late_early_shift')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.shift}</span> },
+        { accessor: 'late_second', title: `${t('late_second')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.late_second}</span>
+    },
+        { accessor: 'early_second', title: `${t('early_second')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.early_second}</span>
+    },
+        { accessor: 'checker', title: `${t('checker')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.checker}</span> },
+        { accessor: 'isCheck',
+         title: `${t('isCheck')}`,
+          sortable: false,
+          render: (records: any, index: any) => <span className={`badge badge-outline-${records?.isCheck ? "success" : "danger"} `} onClick={() => handleDetail(records)}>{records?.isCheck ? `${t('isCheckTrue')}` : `${t('isCheckFalse')}`}</span>
+    },
         {
             accessor: 'action',
             title: 'Thao tác',
@@ -141,6 +195,11 @@ const DutyPage = ({ ...props }: Props) => {
                     <Tippy content={`${t('edit')}`}>
                         <button type="button" onClick={() => handleEdit(records)}>
                             <IconPencil />
+                        </button>
+                    </Tippy>
+                    <Tippy content={`${t('check')}`}>
+                        <button type="button" onClick={() => handleCheck(records)}>
+                            <IconChecks />
                         </button>
                     </Tippy>
                     <Tippy content={`${t('delete')}`}>
@@ -160,7 +219,7 @@ const DutyPage = ({ ...props }: Props) => {
                     <IconLoading />
                 </div>
             )}
-            <title>Duty</title>
+            <title>{t('department')}</title>
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
@@ -168,8 +227,15 @@ const DutyPage = ({ ...props }: Props) => {
                             <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                             {t('add')}
                         </button>
+                        <button type="button" className="btn btn-primary btn-sm m-1" >
+                            <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
+                            Nhập file
+                        </button>
+                        <button type="button" className="btn btn-primary btn-sm m-1" >
+                            <IconDownload className="ltr:mr-2 rtl:ml-2" />
+                            Xuất file excel
+                        </button>
                     </div>
-
                     <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
                 </div>
                 <div className="datatables">
@@ -191,9 +257,17 @@ const DutyPage = ({ ...props }: Props) => {
                     />
                 </div>
             </div>
-            <DutyModal
+            <LateEarlyFormModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}
+                data={data}
+                totalData={getStorge}
+                setData={setData}
+                setGetStorge={setGetStorge}
+            />
+             <DetailModal
+                openModal={openDetail}
+                setOpenModal={setOpenDetail}
                 data={data}
                 totalData={getStorge}
                 setData={setData}
@@ -203,4 +277,4 @@ const DutyPage = ({ ...props }: Props) => {
     );
 };
 
-export default DutyPage;
+export default LateEarlyForm;

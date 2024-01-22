@@ -223,30 +223,6 @@ const Sidebar = () => {
                                         </Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link href="#" className="group">
-                                            <div className="flex items-center">
-                                                <IconMenuFontIcons className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('on_leave')}</span>
-                                            </div>
-                                        </Link>
-                                    </li>
-                                    <li className="nav-item">
-                                        <Link href="#" className="group">
-                                            <div className="flex items-center">
-                                                <IconMenuFontIcons className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('forget_timekeeping')}</span>
-                                            </div>
-                                        </Link>
-                                    </li>
-                                    <li className="nav-item">
-                                        <Link href="#" className="group">
-                                            <div className="flex items-center">
-                                                <IconMenuChat className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('ot_form')}</span>
-                                            </div>
-                                        </Link>
-                                    </li>
-                                    <li className="nav-item">
                                         <Link href="/hrm/task" className="group">
                                             <div className="flex items-center">
                                                 <IconMenuDocumentation className="shrink-0 group-hover:!text-primary" />
@@ -288,6 +264,40 @@ const Sidebar = () => {
                                     </li>
                                 </ul>
                             </li>
+                            {/* === QUẢN LÝ ĐƠN */}
+                            <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
+                                <IconMinus className="hidden h-5 w-4 flex-none" />
+                                <span>{t('form_management')}</span>
+                            </h2>
+                            <li className="nav-item">
+                                <ul>
+                                    <li className="nav-item">
+                                        <Link href="/hrm/late-early-form" className="group">
+                                            <div className="flex items-center">
+                                                <IconMenuTables className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('late_early_form')}</span>
+                                            </div>
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link href="/hrm/overtime-form" className="group">
+                                            <div className="flex items-center">
+                                                <IconMenuDatatables className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('ot_form')}</span>
+                                            </div>
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link href="#" className="group">
+                                            <div className="flex items-center">
+                                                <IconMenuElements className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('forget_timekeeping_form')}</span>
+                                            </div>
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </li>
+                            {/* === KẾT THÚC MENU QUẢN LÝ ĐƠN */}
                             <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
                                 <IconMinus className="hidden h-5 w-4 flex-none" />
                                 <span>{t('timekeeping_manage')}</span>
