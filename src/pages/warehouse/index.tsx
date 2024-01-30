@@ -83,7 +83,7 @@ const WarehousePage = ({ ...props }: Props) => {
                         mutate();
                         showMessage(`${t('delete_warehouse_success')}`, 'success');
                     }).catch((err) => {
-                        showMessage(`${t('delete_warehouse_error')}`, 'error');
+                        showMessage(`${err?.response?.data?.message}`, 'error');
                     });
                 }
             });

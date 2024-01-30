@@ -20,11 +20,9 @@ const ProductModal = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
     const [disabled, setDisabled] = useState(false);
-    const [query, setQuery] = useState<any>();
 
     //get data
     const { data: categorys } = DropdownProductCategorys({ perPage: 0 });
-    const { data: providers } = DropdownProviders({ perPage: 0 });
     const { data: units } = DropdownUnits({ perPage: 0 });
 
     const SubmittedForm = Yup.object().shape({
@@ -43,8 +41,7 @@ const ProductModal = ({ ...props }: Props) => {
             "tax": Number(param.tax),
             "unitId": param.unitId.value,
             "description": param.description,
-            "categoryId": param.categoryId.value,
-            "providerId": param.providerId.value
+            "categoryId": param.categoryId.value
         }
         if (props?.data) {
             EditProduct({ id: props.data.id, ...query }).then(() => {
@@ -52,7 +49,7 @@ const ProductModal = ({ ...props }: Props) => {
                 handleCancel();
                 showMessage(`${t('edit_product_success')}`, 'success');
             }).catch((err) => {
-                showMessage(`${t('edit_product_error')}`, 'error');
+                showMessage(`${err?.response?.data?.message}`, 'error');
             });
         } else {
             CreateProduct(query).then(() => {
@@ -60,7 +57,7 @@ const ProductModal = ({ ...props }: Props) => {
                 handleCancel();
                 showMessage(`${t('create_product_success')}`, 'success');
             }).catch((err) => {
-                showMessage(`${t('create_product_error')}`, 'error');
+                showMessage(`${err?.response?.data?.message}`, 'error');
             });
         }
     }
@@ -69,10 +66,6 @@ const ProductModal = ({ ...props }: Props) => {
         props.setOpenModal(false);
         props.setData(undefined);
     };
-
-    const handleSearch = (param: any) => {
-        setQuery({ search: param });
-    }
 
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
@@ -176,7 +169,6 @@ const ProductModal = ({ ...props }: Props) => {
                                                     <Select
                                                         id='unitId'
                                                         name='unitId'
-                                                        onInputChange={e => handleSearch(e)}
                                                         options={units?.data}
                                                         maxMenuHeight={160}
                                                         value={values.unitId}
@@ -193,7 +185,6 @@ const ProductModal = ({ ...props }: Props) => {
                                                     <Select
                                                         id='categoryId'
                                                         name='categoryId'
-                                                        onInputChange={e => handleSearch(e)}
                                                         options={categorys?.data}
                                                         maxMenuHeight={160}
                                                         value={values.categoryId}
@@ -204,25 +195,6 @@ const ProductModal = ({ ...props }: Props) => {
                                                     {errors.categoryId ? (
                                                         <div className="text-danger mt-1"> {errors.categoryId} </div>
                                                     ) : null}
-                                                </div>
-                                                <div className="mb-5 flex justify-between gap-4">
-                                                    <div className="flex-1">
-                                                        <label htmlFor="providerId" > {t('provider')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Select
-                                                            id='providerId'
-                                                            name='providerId'
-                                                            onInputChange={e => handleSearch(e)}
-                                                            options={providers?.data}
-                                                            maxMenuHeight={160}
-                                                            value={values.providerId}
-                                                            onChange={e => {
-                                                                setFieldValue('providerId', e)
-                                                            }}
-                                                        />
-                                                        {errors.providerId ? (
-                                                            <div className="text-danger mt-1"> {errors.providerId} </div>
-                                                        ) : null}
-                                                    </div>
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="description" > {t('description')} </label >

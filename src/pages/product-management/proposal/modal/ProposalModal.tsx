@@ -4,51 +4,53 @@ import { useTranslation } from 'react-i18next';
 import { Dialog, Transition } from '@headlessui/react';
 
 import * as Yup from 'yup';
-import { Field, Form, Formik, useFormikContext } from 'formik';
-import Swal from 'sweetalert2';
+import { Field, Form, Formik } from 'formik';
 import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
-import { Products } from '@/services/swr/product.twr';
-import { ImportProduct } from '@/services/apis/warehouse.api';
+import { CreateProposal, EditProposal } from '@/services/apis/proposal.api';
 
 interface Props {
     [key: string]: any;
 }
 
-const ImportModal = ({ ...props }: Props) => {
+const ProposalModal = ({ ...props }: Props) => {
+
     const { t } = useTranslation();
-    const [disabled, setDisabled] = useState(false);
     const router = useRouter();
     const [initialValue, setInitialValue] = useState<any>();
-    const [dataSelect, setDataSelect] = useState<any>();
-    const [query, setQuery] = useState<any>();
-
 
     const SubmittedForm = Yup.object().shape({
-        quantity: Yup.string().required(`${t('please_fill_quantity')}`),
-        productId: new Yup.ObjectSchema().required(`${t('please_fill_product')}`)
+        name: Yup.string().required(`${t('please_fill_name_proposal')}`),
+        content: Yup.string().required(`${t('please_fill_content_proposal')}`),
+        type: new Yup.ObjectSchema().required(`${t('please_fill_type_proposal')}`)
 
     });
 
-    //get data
-    const { data: products } = Products(query);
-
-    const handleImport = (param: any) => {
+    const handleProposal = (param: any) => {
         const query = {
-            "id": router.query.id,
-            "quantity": Number(param.quantity),
-            "errorQuantity": Number(param.errorQuantity),
-            "productId": param.productId.id
+            name: param.name,
+            type: param.type.value,
+            content: param.content
+        };
+        if (props?.data) {
+            EditProposal({ id: props?.data?.id, ...query }).then(() => {
+                props.proposalMutate();
+                handleCancel();
+                showMessage(`${t('edit_success')}`, 'success');
+            }).catch((err) => {
+                showMessage(`${err?.response?.data?.message}`, 'error');
+            });
+        } else {
+            CreateProposal(query).then(() => {
+                props.proposalMutate();
+                handleCancel();
+                showMessage(`${t('create_success')}`, 'success');
+            }).catch((err) => {
+                showMessage(`${err?.response?.data?.message}`, 'error');
+            });
         }
-        ImportProduct(query).then(() => {
-            props.importMutate();
-            handleCancel();
-            showMessage(`${t('import_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${t('import_error')}`, 'error');
-        });
     }
 
     const handleCancel = () => {
@@ -58,25 +60,26 @@ const ImportModal = ({ ...props }: Props) => {
 
     useEffect(() => {
         setInitialValue({
-            quantity: props?.data ? `${props?.data?.quantity}` : "",
-            errorQuantity: props?.data ? `${props?.data?.errorQuantity}` : "",
-            productId: props?.data ? {
-                value: `${props?.data?.product.id}`,
-                label: `${props?.data?.product.name}`
-            } : ""
+            name: props?.data ? `${props?.data?.name}` : "",
+            type: props?.data ? {
+                value: `${props?.data?.type}`,
+                label: `${props?.data?.type}`
+            } : "",
+            content: props?.data ? `${props?.data?.content}` : ""
+
         })
     }, [props?.data, router]);
 
-    const handleSearch = (param: any) => {
-        setQuery({ search: param });
-    }
-
-    const product = products?.data.filter((item: any) => {
-        return (
-            item.value = item.id,
-            item.label = item.name
-        )
-    })
+    const option = [
+        {
+            label: "PURCHASE",
+            value: "PURCHASE"
+        },
+        {
+            label: "REPAIR",
+            value: "REPAIR"
+        }
+    ]
 
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
@@ -113,70 +116,69 @@ const ImportModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data !== undefined ? 'Edit Import' : 'Add Import'}
+                                    {props.data !== undefined ? 'Edit proposal' : 'Add proposal'}
                                 </div>
                                 <div className="p-5">
                                     <Formik
                                         initialValues={initialValue}
                                         validationSchema={SubmittedForm}
                                         onSubmit={values => {
-                                            handleImport(values);
+                                            handleProposal(values);
                                         }}
                                         enableReinitialize
                                     >
 
                                         {({ errors, values, setFieldValue }) => (
                                             <Form className="space-y-5" >
+                                                <div className="mb-5">
+                                                    <label htmlFor="name" > {t('name_proposal')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field
+                                                        name="name"
+                                                        type="text"
+                                                        id="name"
+                                                        placeholder={`${t('enter_name_proposal')}`}
+                                                        className="form-input"
+                                                    />
+                                                    {errors.name ? (
+                                                        <div className="text-danger mt-1"> {`${errors.name}`} </div>
+                                                    ) : null}
+                                                </div>
                                                 <div className="mb-5 flex justify-between gap-4">
                                                     <div className="flex-1">
-                                                        <label htmlFor="productId" > {t('product')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <label htmlFor="type" > {t('type_proposal')} < span style={{ color: 'red' }}>* </span></label >
                                                         <Select
-                                                            id='productId'
-                                                            name='productId'
-                                                            onInputChange={e => handleSearch(e)}
-                                                            options={product}
+                                                            id='type'
+                                                            name='type'
+                                                            options={option}
                                                             maxMenuHeight={160}
-                                                            value={values.productId}
+                                                            value={values.type}
                                                             onChange={e => {
-                                                                setFieldValue('productId', e)
+                                                                setFieldValue('type', e)
                                                             }}
                                                         />
-                                                        {errors.productId ? (
-                                                            <div className="text-danger mt-1"> {`${errors.productId}`} </div>
+                                                        {errors.type ? (
+                                                            <div className="text-danger mt-1"> {`${errors.type}`} </div>
                                                         ) : null}
                                                     </div>
                                                 </div>
                                                 <div className="mb-5">
-                                                    <label htmlFor="quantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <label htmlFor="type" > {t('content_proposal')} < span style={{ color: 'red' }}>* </span></label >
                                                     <Field
-                                                        name="quantity"
+                                                        name="content"
                                                         type="text"
-                                                        id="quantity"
-                                                        placeholder={`${t('enter_quantity_product')}`}
+                                                        id="content"
+                                                        placeholder={`${t('enter_content_proposal')}`}
                                                         className="form-input"
                                                     />
-                                                    {errors.quantity ? (
-                                                        <div className="text-danger mt-1"> {`${errors.quantity}`} </div>
-                                                    ) : null}
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="errorQuantity" > {t('error_quantity')}</label >
-                                                    <Field
-                                                        name="errorQuantity"
-                                                        type="text"
-                                                        id="errorQuantity"
-                                                        placeholder={`${t('enter_error_quantity_product')}`}
-                                                        className="form-input"
-                                                    />
-                                                    {errors.errorQuantity ? (
-                                                        <div className="text-danger mt-1"> {`${errors.errorQuantity}`} </div>
+                                                    {errors.content ? (
+                                                        <div className="text-danger mt-1"> {`${errors.content}`} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                                     <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
                                                         Cancel
                                                     </button>
-                                                    <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4" disabled={disabled}>
+                                                    <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4">
                                                         {props.data !== undefined ? 'Update' : 'Add'}
                                                     </button>
                                                 </div>
@@ -195,4 +197,4 @@ const ImportModal = ({ ...props }: Props) => {
     );
 };
 
-export default ImportModal;
+export default ProposalModal;

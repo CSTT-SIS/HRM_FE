@@ -33,7 +33,7 @@ const ProviderModal = ({ ...props }: Props) => {
                 handleCancel();
                 showMessage(`${t('edit_provider_success')}`, 'success');
             }).catch((err) => {
-                showMessage(`${t('edit_provider_error')}`, 'error');
+                showMessage(`${err?.response?.data?.message}`, 'error');
             });
         } else {
             CreateProvider(param).then(() => {
@@ -41,7 +41,7 @@ const ProviderModal = ({ ...props }: Props) => {
                 handleCancel();
                 showMessage(`${t('create_provider_success')}`, 'success');
             }).catch((err) => {
-                showMessage(`${t('create_provider_error')}`, 'error');
+                showMessage(`${err?.response?.data?.message}`, 'error');
             });
         }
     }

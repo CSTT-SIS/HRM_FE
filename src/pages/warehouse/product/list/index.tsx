@@ -82,7 +82,7 @@ const ProductCategoryPage = ({ ...props }: Props) => {
                         mutate();
                         showMessage(`${t('delete_product_success')}`, 'success');
                     }).catch((err) => {
-                        showMessage(`${t('delete_product_error')}`, 'error');
+                        showMessage(`${err?.response?.data?.message}`, 'error');
                     });
                 }
             });
@@ -136,12 +136,6 @@ const ProductCategoryPage = ({ ...props }: Props) => {
             accessor: 'category',
             title: 'Loại',
             render: ({ category }: any) => <span >{category?.name}</span>,
-            sortable: false
-        },
-        {
-            accessor: 'provider',
-            title: 'Nhà phân phối',
-            render: ({ provider }: any) => <span >{provider?.name}</span>,
             sortable: false
         },
         { accessor: 'description', title: 'Ghi chú', sortable: false },

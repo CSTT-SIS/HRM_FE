@@ -20,13 +20,11 @@ interface Props {
 const WarehouseModal = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
-    const [query, setQuery] = useState<any>();
     const [openModal, setOpenModal] = useState(false);
-    const [data, setData] = useState();
 
     // get data 
     const { data: dropdownWarehouseType, pagination, mutate } = DropdownWarehouseTypes({ perPage: 0 });
-    
+
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_warehouse')}`),
         code: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_warehouseCode')}`),
@@ -49,7 +47,6 @@ const WarehouseModal = ({ ...props }: Props) => {
                 showMessage(`${t('edit_warehouse_error')}`, 'error');
             });
         } else {
-            // const query = 
             CreateWarehouse(query).then(() => {
                 props.warehouseMutate();
                 handleCancel();
@@ -81,10 +78,6 @@ const WarehouseModal = ({ ...props }: Props) => {
                 {props.children}
             </components.MenuList >
         )
-    }
-
-    const handleSearch = (param: any) => {
-        setQuery({ search: param });
     }
 
     return (
@@ -165,7 +158,6 @@ const WarehouseModal = ({ ...props }: Props) => {
                                                         <Select
                                                             id='typeId'
                                                             name='typeId'
-                                                            onInputChange={e => handleSearch(e)}
                                                             options={dropdownWarehouseType?.data}
                                                             components={{ MenuList: SelectMenuButton }}
                                                             maxMenuHeight={160}
@@ -208,7 +200,6 @@ const WarehouseModal = ({ ...props }: Props) => {
                     openModal={openModal}
                     setOpenModal={setOpenModal}
                     warehouseMutateType={mutate}
-                    setData={setData}
                 />
             </Dialog>
         </Transition>

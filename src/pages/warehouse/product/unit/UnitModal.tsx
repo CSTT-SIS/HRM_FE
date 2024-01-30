@@ -30,7 +30,7 @@ const UnitModal = ({ ...props }: Props) => {
                 handleCancel();
                 showMessage(`${t('edit_unit_success')}`, 'success');
             }).catch((err) => {
-                showMessage(`${t('edit_unit_error')}`, 'error');
+                showMessage(`${err?.response?.data?.message}`, 'error');
             });
         } else {
             CreateUnit(param).then(() => {
@@ -38,7 +38,7 @@ const UnitModal = ({ ...props }: Props) => {
                 handleCancel();
                 showMessage(`${t('create_unit_success')}`, 'success');
             }).catch((err) => {
-                showMessage(`${t('create_unit_error')}`, 'error');
+                showMessage(`${err?.response?.data?.message}`, 'error');
             });
         }
     }
