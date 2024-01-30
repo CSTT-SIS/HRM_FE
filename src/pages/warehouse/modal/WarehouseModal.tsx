@@ -8,7 +8,7 @@ import { Field, Form, Formik } from 'formik';
 import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { CreateWarehouse, EditWarehouse } from '@/services/apis/warehouse.api';
-import { WarehouseTpyes } from '@/services/swr/warehouse.twr';
+import { DropdownWarehouseTypes } from '@/services/swr/dropdown.twr';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
 import WarehouseTypeModal from './WarehouseTypeModal';
@@ -25,7 +25,8 @@ const WarehouseModal = ({ ...props }: Props) => {
     const [data, setData] = useState();
 
     // get data 
-    const { data: warehouseType, pagination, mutate } = WarehouseTpyes(query);
+    const { data: dropdownWarehouseType, pagination, mutate } = DropdownWarehouseTypes({ perPage: 0 });
+    
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_warehouse')}`),
         code: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_warehouseCode')}`),
@@ -36,7 +37,7 @@ const WarehouseModal = ({ ...props }: Props) => {
         const query = {
             name: param.name,
             code: param.code,
-            typeId: param.typeId.id,
+            typeId: param.typeId.value,
             description: param.description
         }
         if (props?.data) {
@@ -85,13 +86,6 @@ const WarehouseModal = ({ ...props }: Props) => {
     const handleSearch = (param: any) => {
         setQuery({ search: param });
     }
-
-    const options = warehouseType?.data.filter((item: any) => {
-        return (
-            item.value = item.id,
-            item.label = item.name
-        )
-    })
 
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
@@ -172,7 +166,7 @@ const WarehouseModal = ({ ...props }: Props) => {
                                                             id='typeId'
                                                             name='typeId'
                                                             onInputChange={e => handleSearch(e)}
-                                                            options={options}
+                                                            options={dropdownWarehouseType?.data}
                                                             components={{ MenuList: SelectMenuButton }}
                                                             maxMenuHeight={160}
                                                             value={values.typeId}

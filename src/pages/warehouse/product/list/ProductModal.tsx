@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import Select, { components } from 'react-select';
-import { ProductCategorys, Providers, Units } from '@/services/swr/product.twr';
+import { DropdownProductCategorys, DropdownProviders, DropdownUnits } from '@/services/swr/dropdown.twr';
 import { CreateProduct, EditProduct } from '@/services/apis/product.api';
 
 interface Props {
@@ -23,9 +23,9 @@ const ProductModal = ({ ...props }: Props) => {
     const [query, setQuery] = useState<any>();
 
     //get data
-    const { data: categorys } = ProductCategorys(query);
-    const { data: providers } = Providers(query);
-    const { data: units } = Units(query);
+    const { data: categorys } = DropdownProductCategorys({ perPage: 0 });
+    const { data: providers } = DropdownProviders({ perPage: 0 });
+    const { data: units } = DropdownUnits({ perPage: 0 });
 
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_product')}`),
@@ -35,17 +35,16 @@ const ProductModal = ({ ...props }: Props) => {
         providerId: new Yup.ObjectSchema().required(`${t('please_fill_provider')}`),
         categoryId: new Yup.ObjectSchema().required(`${t('please_fill_category')}`)
     });
-
     const handleProduct = (param: any) => {
         const query = {
             "name": param.name,
             "code": param.code,
             "price": Number(param.price),
             "tax": Number(param.tax),
-            "unitId": param.unitId.id,
+            "unitId": param.unitId.value,
             "description": param.description,
-            "categoryId": param.categoryId.id,
-            "providerId": param.providerId.id
+            "categoryId": param.categoryId.value,
+            "providerId": param.providerId.value
         }
         if (props?.data) {
             EditProduct({ id: props.data.id, ...query }).then(() => {
@@ -74,28 +73,6 @@ const ProductModal = ({ ...props }: Props) => {
     const handleSearch = (param: any) => {
         setQuery({ search: param });
     }
-
-    const category = categorys?.data.filter((item: any) => {
-        return (
-            item.value = item.id,
-            item.label = item.name,
-            delete item.createdAt
-        )
-    })
-    const provider = providers?.data.filter((item: any) => {
-        return (
-            item.value = item.id,
-            item.label = item.name
-        )
-    })
-
-    const unit = units?.data.filter((item: any) => {
-        return (
-            item.value = item.id,
-            item.label = item.name
-        )
-    })
-
 
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
@@ -151,8 +128,8 @@ const ProductModal = ({ ...props }: Props) => {
                                                     label: `${props?.data?.category.name}`
                                                 } : "",
                                                 providerId: props?.data ? {
-                                                    value: `${props?.data?.provider.id}`,
-                                                    label: `${props?.data?.provider.name}`
+                                                    value: `${props?.data?.provider?.id}`,
+                                                    label: `${props?.data?.provider?.name}`
                                                 } : "",
                                                 tax: props?.data ? `${props?.data?.tax}` : ""
 
@@ -200,7 +177,7 @@ const ProductModal = ({ ...props }: Props) => {
                                                         id='unitId'
                                                         name='unitId'
                                                         onInputChange={e => handleSearch(e)}
-                                                        options={unit}
+                                                        options={units?.data}
                                                         maxMenuHeight={160}
                                                         value={values.unitId}
                                                         onChange={e => {
@@ -217,7 +194,7 @@ const ProductModal = ({ ...props }: Props) => {
                                                         id='categoryId'
                                                         name='categoryId'
                                                         onInputChange={e => handleSearch(e)}
-                                                        options={category}
+                                                        options={categorys?.data}
                                                         maxMenuHeight={160}
                                                         value={values.categoryId}
                                                         onChange={e => {
@@ -235,7 +212,7 @@ const ProductModal = ({ ...props }: Props) => {
                                                             id='providerId'
                                                             name='providerId'
                                                             onInputChange={e => handleSearch(e)}
-                                                            options={provider}
+                                                            options={providers?.data}
                                                             maxMenuHeight={160}
                                                             value={values.providerId}
                                                             onChange={e => {
