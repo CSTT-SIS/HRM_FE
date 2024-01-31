@@ -10,6 +10,7 @@ import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
 import { CreateProposal, EditProposal } from '@/services/apis/proposal.api';
+import { DropdownProposalType } from '@/services/swr/dropdown.twr';
 
 interface Props {
     [key: string]: any;
@@ -27,6 +28,8 @@ const ProposalModal = ({ ...props }: Props) => {
         type: new Yup.ObjectSchema().required(`${t('please_fill_type_proposal')}`)
 
     });
+
+    const { data: dropdownProposalType } = DropdownProposalType({ perPage: 0 })
 
     const handleProposal = (param: any) => {
         const query = {
@@ -61,25 +64,17 @@ const ProposalModal = ({ ...props }: Props) => {
     useEffect(() => {
         setInitialValue({
             name: props?.data ? `${props?.data?.name}` : "",
-            type: props?.data ? {
+            type: props?.data ? props?.data?.type === "PURCHASE" ? {
                 value: `${props?.data?.type}`,
-                label: `${props?.data?.type}`
+                label: `Yêu cầu mua hàng`
+            } : {
+                value: `${props?.data?.type}`,
+                label: `Yêu cầu sửa chữa`
             } : "",
             content: props?.data ? `${props?.data?.content}` : ""
 
         })
     }, [props?.data, router]);
-
-    const option = [
-        {
-            label: "PURCHASE",
-            value: "PURCHASE"
-        },
-        {
-            label: "REPAIR",
-            value: "REPAIR"
-        }
-    ]
 
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
@@ -149,7 +144,7 @@ const ProposalModal = ({ ...props }: Props) => {
                                                         <Select
                                                             id='type'
                                                             name='type'
-                                                            options={option}
+                                                            options={dropdownProposalType?.data}
                                                             maxMenuHeight={160}
                                                             value={values.type}
                                                             onChange={e => {

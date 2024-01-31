@@ -8,3 +8,7 @@ export const DropdownProductCategorys = (queries?: any) => swr(getEndpoint('/dro
 export const DropdownUnits = (queries?: any) => swr(getEndpoint('/dropdown/unit', queries));
 export const DropdownProviders = (queries?: any) => swr(getEndpoint('/dropdown/provider', queries));
 export const DropdownProposals = (queries?: any) => swr(getEndpoint('/dropdown/proposal', queries));
+export const DropdownWarehouses = (queries?: any) => swr(getEndpoint('/dropdown/warehouse', queries));
+export const DropdownOrder = (queries?: any) => swr(getEndpoint('/dropdown/order', queries));
+export const DropdownOrderType = (queries?: any) => swr(getEndpoint('/dropdown/order-type', queries));
+export const DropdownProposalType = (queries?: any) => swr(getEndpoint('/dropdown/proposal-type', queries));

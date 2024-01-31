@@ -9,8 +9,8 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
-import { Orders } from '@/services/swr/order.twr';
-import { DeleteOrder, OrderCancel, OrderReceive, OrderShipping } from '@/services/apis/order.api';
+import { WarehousingBill } from '@/services/swr/warehousing-bill.twr';
+import { DeleteWarehousingBill, WarehousingBillApprove, WarehousingBillFinish, WarehousingBillReject } from '@/services/apis/warehousing-bill.api';
 // constants
 import { PAGE_SIZES } from '@/utils/constants';
 // helper
@@ -21,12 +21,12 @@ import IconPlus from '@/components/Icon/IconPlus';
 import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
 import IconXCircle from '@/components/Icon/IconXCircle';
-import { IconCartCheck } from '@/components/Icon/IconCartCheck';
-import { IconShipping } from '@/components/Icon/IconShipping';
+import IconCircleCheck from '@/components/Icon/IconCircleCheck';
+import IconArchive from '@/components/Icon/IconArchive';
 // modal
-import ProposalModal from './modal/OrderModal';
+import WarehousingBillModal from './modal/WarehousingBillModal';
 import DetailModal from './modal/DetailModal';
-import moment from 'moment';
+
 
 
 
@@ -35,7 +35,7 @@ interface Props {
     [key: string]: any;
 }
 
-const OrderPage = ({ ...props }: Props) => {
+const WarehousingPage = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -52,16 +52,14 @@ const OrderPage = ({ ...props }: Props) => {
 
 
     // get data
-    const { data: orders, pagination, mutate } = Orders({ ...router.query });
-    console.log("🚀 ~ OrderPage ~ orders:", orders)
-
+    const { data: warehousing, pagination, mutate } = WarehousingBill({ ...router.query });
     useEffect(() => {
         dispatch(setPageTitle(`${t('proposal')}`));
     });
 
     useEffect(() => {
         setShowLoader(false);
-    }, [orders])
+    }, [warehousing])
 
     const handleEdit = (data: any) => {
         setOpenModal(true);
@@ -88,7 +86,7 @@ const OrderPage = ({ ...props }: Props) => {
             })
             .then((result) => {
                 if (result.value) {
-                    DeleteOrder({ id }).then(() => {
+                    DeleteWarehousingBill({ id }).then(() => {
                         mutate();
                         showMessage(`${t('delete_success')}`, 'success');
                     }).catch((err) => {
@@ -132,8 +130,8 @@ const OrderPage = ({ ...props }: Props) => {
         setStatus(value.status);
     }
 
-    const handleShipping = ({ id }: any) => {
-        OrderShipping({ id }).then(() => {
+    const handleApprove = ({ id }: any) => {
+        WarehousingBillApprove({ id }).then(() => {
             mutate();
             showMessage(`${t('update_success')}`, 'success');
         }).catch((err) => {
@@ -141,17 +139,8 @@ const OrderPage = ({ ...props }: Props) => {
         });
     }
 
-    const handleCancel = ({ id }: any) => {
-        OrderCancel({ id }).then(() => {
-            mutate();
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
-
-    const handleReceive = ({ id }: any) => {
-        OrderReceive({ id }).then(() => {
+    const handleReject = ({ id }: any) => {
+        WarehousingBillReject({ id }).then(() => {
             mutate();
             showMessage(`${t('update_success')}`, 'success');
         }).catch((err) => {
@@ -165,8 +154,7 @@ const OrderPage = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
-        { accessor: 'name', title: 'Tên đơn hàng', sortable: false },
-        { accessor: 'code', title: 'Mã đơn hàng', sortable: false },
+        { accessor: 'name', title: 'Tên hoá đơn kho', sortable: false },
         { accessor: 'type', title: 'Loại đơn hàng', sortable: false },
         {
             accessor: 'proposal',
@@ -174,18 +162,24 @@ const OrderPage = ({ ...props }: Props) => {
             render: ({ proposal }: any) => <span>{proposal?.name}</span>,
         },
         {
-            accessor: 'estimatedDeliveryDate',
-            title: 'Nhận hàng dự kiến',
-            render: ({ estimatedDeliveryDate }: any) => <span>{moment(estimatedDeliveryDate).format("DD/MM/YYYY")}</span>,
+            accessor: 'order',
+            title: 'Tên đặt hàng',
+            render: ({ order }: any) => <span>{order?.name}</span>,
+        },
+        {
+            accessor: 'warehouse',
+            title: 'Tên kho',
+            render: ({ warehouse }: any) => <span>{warehouse?.name}</span>,
         },
         { accessor: 'status', title: 'Status', sortable: false },
+        { accessor: 'note', title: 'Ghi chú', sortable: false },
         {
             accessor: 'action',
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('add detail')}`}>
+                    <Tippy content={`${t('check quantity')}`}>
                         <button type="button" onClick={() => handleDetail(records)}>
                             <IconPlus />
                         </button>
@@ -200,18 +194,13 @@ const OrderPage = ({ ...props }: Props) => {
                             <IconTrashLines />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('shipping')}`}>
-                        <button type="button" onClick={() => handleShipping(records)}>
-                            <IconShipping size={20} />
+                    <Tippy content={`${t('approve')}`}>
+                        <button type="button" onClick={() => handleApprove(records)}>
+                            <IconCircleCheck size={20} />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('receive')}`}>
-                        <button type="button" onClick={() => handleReceive(records)}>
-                            <IconCartCheck />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('cancel')}`}>
-                        <button type="button" onClick={() => handleCancel(records)}>
+                    <Tippy content={`${t('reject')}`}>
+                        <button type="button" onClick={() => handleReject(records)}>
                             <IconXCircle />
                         </button>
                     </Tippy>
@@ -243,7 +232,7 @@ const OrderPage = ({ ...props }: Props) => {
                     <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover"
-                        records={orders?.data}
+                        records={warehousing?.data}
                         columns={columns}
                         totalRecords={pagination?.totalRecords}
                         recordsPerPage={pagination?.perPage}
@@ -258,22 +247,22 @@ const OrderPage = ({ ...props }: Props) => {
                     />
                 </div>
             </div>
-            <ProposalModal
+            <WarehousingBillModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}
                 data={data}
                 setData={setData}
-                proposalMutate={mutate}
+                warehousingMutate={mutate}
             />
             <DetailModal
                 openModalDetail={openModalDetail}
                 setOpenModalDetail={setOpenModalDetail}
                 idDetail={idDetail}
                 status={status}
-                proposalMutate={mutate}
+                warehousingMutate={mutate}
             />
         </div>
     );
 };
 
-export default OrderPage;
+export default WarehousingPage;

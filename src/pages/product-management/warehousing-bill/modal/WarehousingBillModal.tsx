@@ -9,50 +9,54 @@ import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
-import { DropdownProposals } from '@/services/swr/dropdown.twr';
-import { CreateOrder, EditOrder } from '@/services/apis/order.api';
-import moment from 'moment';
+import { DropdownOrder, DropdownOrderType, DropdownProposals, DropdownWarehouses } from '@/services/swr/dropdown.twr';
+import { CreateWarehousingBill, EditWarehousingBill } from '@/services/apis/warehousing-bill.api';
 
 interface Props {
     [key: string]: any;
 }
 
-const OrderModal = ({ ...props }: Props) => {
+const WarehousingBillModal = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
     const router = useRouter();
     const [initialValue, setInitialValue] = useState<any>();
+    const [proposal, setProposal] = useState<any>({ perPage: 0, status: "APPROVED" });
+    const [orderQuery, setOrderQuery] = useState<any>({ perPage: 0, status: "RECEIVED" });
 
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().required(`${t('please_fill_name')}`),
-        type: Yup.string().required(`${t('please_fill_type')}`),
-        code: Yup.string().required(`${t('please_fill_code')}`),
+        type: new Yup.ObjectSchema().required(`${t('please_fill_type')}`),
         proposalId: new Yup.ObjectSchema().required(`${t('please_fill_proposal')}`),
-        estimatedDeliveryDate: Yup.string().required(`${t('please_fill_date')}`),
-
+        warehouseId: new Yup.ObjectSchema().required(`${t('please_fill_warehouse')}`),
     });
 
-    const { data: proposals } = DropdownProposals({ perPage: 0, type: "PURCHASE" });
+    const { data: proposals } = DropdownProposals(proposal);
+    const { data: orders } = DropdownOrder(orderQuery);
+    const { data: warehouses } = DropdownWarehouses({ perPage: 0 });
+    const { data: dropdownOrderType } = DropdownOrderType({ perPage: 0 });
 
-    const handleOrder = (param: any) => {
+
+    const handleWarehousing = (param: any) => {
         const query = {
-            name: param.name,
             proposalId: Number(param.proposalId.value),
-            type: param.type,
-            code: param.code,
-            estimatedDeliveryDate: param.estimatedDeliveryDate
+            orderId: Number(param.orderId.value),
+            warehouseId: Number(param.proposalId.value),
+            type: param.type.value,
+            note: param.note,
+            name: param.name
         };
         if (props?.data) {
-            EditOrder({ id: props?.data?.id, ...query }).then(() => {
-                props.proposalMutate();
+            EditWarehousingBill({ id: props?.data?.id, ...query }).then(() => {
+                props.warehousingMutate();
                 handleCancel();
                 showMessage(`${t('edit_success')}`, 'success');
             }).catch((err) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
         } else {
-            CreateOrder(query).then(() => {
-                props.proposalMutate();
+            CreateWarehousingBill(query).then(() => {
+                props.warehousingMutate();
                 handleCancel();
                 showMessage(`${t('create_success')}`, 'success');
             }).catch((err) => {
@@ -63,19 +67,32 @@ const OrderModal = ({ ...props }: Props) => {
 
     const handleCancel = () => {
         props.setOpenModal(false);
+        props.setData();
         setInitialValue({});
     };
-
     useEffect(() => {
         setInitialValue({
-            name: props?.data ? `${props?.data?.name}` : "",
             proposalId: props?.data ? {
                 value: `${props?.data?.proposal.id}`,
                 label: `${props?.data?.proposal.name}`
             } : "",
-            type: props?.data ? `${props?.data?.type}` : "",
-            code: props?.data ? `${props?.data?.code}` : "",
-            estimatedDeliveryDate: props?.data ? moment(`${props?.data?.estimatedDeliveryDate}`).format("YYYY-MM-DD") : "",
+            orderId: props?.data ? {
+                value: `${props?.data?.order.id}`,
+                label: `${props?.data?.order.name}`
+            } : "",
+            warehouseId: props?.data ? {
+                value: `${props?.data?.warehouse.id}`,
+                label: `${props?.data?.warehouse.name}`
+            } : "",
+            type: props?.data ? props?.data?.type === "IMPORT" ? {
+                value: `${props?.data?.type}`,
+                label: `Đơn hàng mua`
+            } : {
+                value: `${props?.data?.type}`,
+                label: `Đơn hàng bán`
+            } : "",
+            note: props?.data ? `${props?.data?.note}` : "",
+            name: props?.data ? `${props?.data?.name}` : ""
         })
     }, [props?.data, router]);
 
@@ -114,14 +131,14 @@ const OrderModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data !== undefined ? 'Edit order' : 'Add order'}
+                                    {props.data !== undefined ? 'Edit warehousing bill' : 'Add warehousing bill'}
                                 </div>
                                 <div className="p-5">
                                     <Formik
                                         initialValues={initialValue}
                                         validationSchema={SubmittedForm}
                                         onSubmit={values => {
-                                            handleOrder(values);
+                                            handleWarehousing(values);
                                         }}
                                         enableReinitialize
                                     >
@@ -129,17 +146,40 @@ const OrderModal = ({ ...props }: Props) => {
                                         {({ errors, values, setFieldValue }) => (
                                             <Form className="space-y-5" >
                                                 <div className="mb-5">
-                                                    <label htmlFor="name" > {t('name_order')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <label htmlFor="name" > {t('name')}< span style={{ color: 'red' }}>* </span></label >
                                                     <Field
                                                         name="name"
                                                         type="text"
                                                         id="name"
-                                                        placeholder={`${t('enter_name_order')}`}
+                                                        placeholder={`${t('enter_name')}`}
                                                         className="form-input"
                                                     />
                                                     {errors.name ? (
                                                         <div className="text-danger mt-1"> {`${errors.name}`} </div>
                                                     ) : null}
+                                                </div>
+                                                <div className="mb-5 flex justify-between gap-4">
+                                                    <div className="flex-1">
+                                                        <label htmlFor="type" > {t('type')}</label >
+                                                        <Select
+                                                            id='type'
+                                                            name='type'
+                                                            options={dropdownOrderType?.data}
+                                                            maxMenuHeight={160}
+                                                            value={values.type}
+                                                            onChange={e => {
+                                                                if (e.value === "PURCHASE") {
+                                                                    setProposal({ ...orderQuery, type: "PURCHASE" })
+                                                                } else {
+                                                                    setProposal({ ...orderQuery, type: "REPAIR" })
+                                                                }
+                                                                setFieldValue('type', e)
+                                                            }}
+                                                        />
+                                                        {errors.type ? (
+                                                            <div className="text-danger mt-1"> {`${errors.type}`} </div>
+                                                        ) : null}
+                                                    </div>
                                                 </div>
                                                 <div className="mb-5 flex justify-between gap-4">
                                                     <div className="flex-1">
@@ -151,7 +191,9 @@ const OrderModal = ({ ...props }: Props) => {
                                                             maxMenuHeight={160}
                                                             value={values.proposalId}
                                                             onChange={e => {
+                                                                setOrderQuery({ ...orderQuery, proposalId: e.value })
                                                                 setFieldValue('proposalId', e)
+                                                                setFieldValue('orderId', "")
                                                             }}
                                                         />
                                                         {errors.proposalId ? (
@@ -159,42 +201,56 @@ const OrderModal = ({ ...props }: Props) => {
                                                         ) : null}
                                                     </div>
                                                 </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="type" > {t('type')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field
-                                                        name="type"
-                                                        type="text"
-                                                        id="type"
-                                                        placeholder={`${t('enter_type')}`}
-                                                        className="form-input"
-                                                    />
-                                                    {errors.type ? (
-                                                        <div className="text-danger mt-1"> {`${errors.type}`} </div>
-                                                    ) : null}
+                                                {
+                                                    orders?.data.length > 0 && proposal?.type === "PURCHASE" &&
+                                                    <div className="mb-5 flex justify-between gap-4">
+                                                        <div className="flex-1">
+                                                            <label htmlFor="orderId" > {t('order')}</label >
+                                                            <Select
+                                                                id='orderId'
+                                                                name='orderId'
+                                                                options={orders?.data}
+                                                                maxMenuHeight={160}
+                                                                value={values.orderId}
+                                                                onChange={e => {
+                                                                    setFieldValue('orderId', e)
+                                                                }}
+                                                            />
+                                                            {errors.orderId ? (
+                                                                <div className="text-danger mt-1"> {`${errors.orderId}`} </div>
+                                                            ) : null}
+                                                        </div>
+                                                    </div>
+                                                }
+                                                <div className="mb-5 flex justify-between gap-4">
+                                                    <div className="flex-1">
+                                                        <label htmlFor="warehouseId" > {t('warehouse')}</label >
+                                                        <Select
+                                                            id='warehouseId'
+                                                            name='warehouseId'
+                                                            options={warehouses?.data}
+                                                            maxMenuHeight={160}
+                                                            value={values.warehouseId}
+                                                            onChange={e => {
+                                                                setFieldValue('warehouseId', e)
+                                                            }}
+                                                        />
+                                                        {errors.warehouseId ? (
+                                                            <div className="text-danger mt-1"> {`${errors.warehouseId}`} </div>
+                                                        ) : null}
+                                                    </div>
                                                 </div>
                                                 <div className="mb-5">
-                                                    <label htmlFor="code" > {t('code')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <label htmlFor="note" > {t('note')}</label >
                                                     <Field
-                                                        name="code"
+                                                        name="note"
                                                         type="text"
-                                                        id="code"
-                                                        placeholder={`${t('enter_code')}`}
+                                                        id="note"
+                                                        placeholder={`${t('enter_note')}`}
                                                         className="form-input"
                                                     />
-                                                    {errors.code ? (
-                                                        <div className="text-danger mt-1"> {`${errors.code}`} </div>
-                                                    ) : null}
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="estimatedDeliveryDate" > {t('estimated_delivery_date')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field
-                                                        name="estimatedDeliveryDate"
-                                                        type="date"
-                                                        id="estimatedDeliveryDate"
-                                                        className="form-input"
-                                                    />
-                                                    {errors.estimatedDeliveryDate ? (
-                                                        <div className="text-danger mt-1"> {`${errors.estimatedDeliveryDate}`} </div>
+                                                    {errors.note ? (
+                                                        <div className="text-danger mt-1"> {`${errors.note}`} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
@@ -220,4 +276,4 @@ const OrderModal = ({ ...props }: Props) => {
     );
 };
 
-export default OrderModal;
+export default WarehousingBillModal;

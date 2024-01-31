@@ -8,9 +8,7 @@ import { Field, Form, Formik } from 'formik';
 import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
-import Select, { components } from 'react-select';
-import { DropdownProducts } from '@/services/swr/dropdown.twr';
-import { AddOrderDetail, EditOrderDetail } from '@/services/apis/order.api';
+import { CheckWarehousingBillDetail } from '@/services/apis/warehousing-bill.api';
 
 interface Props {
     [key: string]: any;
@@ -23,34 +21,17 @@ const HandleDetailModal = ({ ...props }: Props) => {
     const [initialValue, setInitialValue] = useState<any>();
 
     const SubmittedForm = Yup.object().shape({
-        productId: new Yup.ObjectSchema().required(`${t('please_fill_product')}`),
         quantity: Yup.string().required(`${t('please_fill_quantity')}`),
     });
 
-    const { data: productDropdown } = DropdownProducts({ perPage: 0 });
     const handleProposal = (param: any) => {
-        const query = {
-            productId: Number(param.productId.value),
-            quantity: Number(param.quantity),
-            note: param.note
-        };
-        if (props?.data) {
-            EditOrderDetail({ id: props.idDetail, itemId: props?.data?.id, ...query }).then(() => {
-                props.orderDetailMutate();
-                handleCancel();
-                showMessage(`${t('edit_success')}`, 'success');
-            }).catch((err) => {
-                showMessage(`${err?.response?.data?.message}`, 'error');
-            });
-        } else {
-            AddOrderDetail({ id: props.idDetail, ...query }).then(() => {
-                props.orderDetailMutate();
-                handleCancel();
-                showMessage(`${t('create_success')}`, 'success');
-            }).catch((err) => {
-                showMessage(`${err?.response?.data?.message}`, 'error');
-            });
-        }
+        CheckWarehousingBillDetail({ ...param }).then(() => {
+            props.warehousingDetailMutate();
+            handleCancel();
+            showMessage(`${t('edit_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
     }
 
     const handleCancel = () => {
@@ -61,14 +42,11 @@ const HandleDetailModal = ({ ...props }: Props) => {
 
     useEffect(() => {
         setInitialValue({
-            quantity: props?.data ? `${props?.data?.quantity}` : "",
-            productId: props?.data ? {
-                value: `${props?.data?.product?.id}`,
-                label: `${props?.data?.product?.name}`
-            } : "",
-            note: props?.data ? `${props?.data?.note}` : "",
+            id: props?.idDetail,
+            quantity: "",
+            detailId: props?.data?.id
         })
-    }, [props?.data, router]);
+    }, [props?.data?.id, props?.idDetail, router]);
 
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
@@ -105,7 +83,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {'Add order detail'}
+                                    {'Update quantity'}
                                 </div>
                                 <div className="p-5">
                                     <Formik
@@ -118,24 +96,6 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                     >
                                         {({ errors, values, setFieldValue }) => (
                                             <Form className="space-y-5" >
-                                                <div className="mb-5 flex justify-between gap-4">
-                                                    <div className="flex-1">
-                                                        <label htmlFor="productId" > {t('product')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Select
-                                                            id='productId'
-                                                            name='productId'
-                                                            options={productDropdown?.data}
-                                                            maxMenuHeight={160}
-                                                            value={values.productId}
-                                                            onChange={e => {
-                                                                setFieldValue('productId', e)
-                                                            }}
-                                                        />
-                                                        {errors.productId ? (
-                                                            <div className="text-danger mt-1"> {`${errors.productId}`} </div>
-                                                        ) : null}
-                                                    </div>
-                                                </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="quantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
                                                     <Field
@@ -147,19 +107,6 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                     />
                                                     {errors.quantity ? (
                                                         <div className="text-danger mt-1"> {`${errors.quantity}`} </div>
-                                                    ) : null}
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="note" > {t('description')} </label >
-                                                    <Field
-                                                        name="note"
-                                                        type="text"
-                                                        id="note"
-                                                        placeholder={`${t('enter_description')}`}
-                                                        className="form-input"
-                                                    />
-                                                    {errors.note ? (
-                                                        <div className="text-danger mt-1"> {`${errors.note}`} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">

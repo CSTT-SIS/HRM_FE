@@ -442,5 +442,8 @@
 	"please_fill_code": "Please fill code",
 	"please_fill_date": "please fill date",
 	"please_fill_proposal": "Please fill proposal",
-	"warehousing_bill": "Warehousing bill"
+	"warehousing_bill": "Warehousing bill",
+	"enter_name": "Enter name",
+	"enter_note": "Enter note",
+	"please_fill_warehouse": "Please fill warehouse"
 }
