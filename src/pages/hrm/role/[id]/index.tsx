@@ -215,23 +215,6 @@ const RoleDetailPage = ({ ...props }: Props) => {
                                                         })
                                                     }
                                                 </div>
-                                                {/* {
-                                                        dataPermission[key].map((item: any) => {
-                                                            return (
-                                                                <label key={item} className='basis-1/4'>
-                                                                    <Field
-                                                                        className="mr-2"
-                                                                        type="checkbox"
-                                                                        name="permissionIds"
-                                                                        value={item.id}
-                                                                        checked={checked?.includes(item.id)}
-                                                                        onChange={(e: any) => handleChecked(Number(e.target.value), values)}
-                                                                    />
-                                                                    {item.name}
-                                                                </label>
-                                                            )
-                                                        })
-                                                    } */}
                                             </div>
                                         )
                                     })
