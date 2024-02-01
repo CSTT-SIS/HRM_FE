@@ -17,7 +17,8 @@ import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import HandleDetailModal from './HandleDetailModal';
 import { DeleteOrderDetail, OrderPlace } from '@/services/apis/order.api';
-import { OrderDetails } from '@/services/swr/order.twr';
+import { RepairDetails } from '@/services/swr/repair.twr';
+import { DeleteRepairDetail, RepairInprogress } from '@/services/apis/repair.api';
 
 interface Props {
     [key: string]: any;
@@ -37,15 +38,15 @@ const DetailModal = ({ ...props }: Props) => {
 
 
     // get data
-    const { data: orderDetails, pagination, mutate } = OrderDetails({ id: props.idDetail, ...router.query });
+    const { data: repairDetails, pagination, mutate } = RepairDetails({ id: props.idDetail, ...router.query });
 
     useEffect(() => {
-        dispatch(setPageTitle(`${t('Order')}`));
+        dispatch(setPageTitle(`${t('Repair')}`));
     });
 
     useEffect(() => {
         setShowLoader(false);
-    }, [orderDetails])
+    }, [repairDetails])
 
     const handleEdit = (data: any) => {
         setOpenModal(true);
@@ -72,7 +73,7 @@ const DetailModal = ({ ...props }: Props) => {
             })
             .then((result) => {
                 if (result.value) {
-                    DeleteOrderDetail({ id: props.idDetail, detailId: id }).then(() => {
+                    DeleteRepairDetail({ id: props.idDetail, detailId: id }).then(() => {
                         mutate();
                         showMessage(`${t('delete_product_success')}`, 'success');
                     }).catch((err) => {
@@ -123,7 +124,6 @@ const DetailModal = ({ ...props }: Props) => {
             sortable: false
         },
         { accessor: 'quantity', title: 'số lượng', sortable: false },
-        { accessor: 'note', title: 'Ghi chú', sortable: false },
         {
             accessor: 'action',
             title: 'Thao tác',
@@ -150,8 +150,8 @@ const DetailModal = ({ ...props }: Props) => {
     };
 
     const handleChangeComplete = () => {
-        OrderPlace({ id: props.idDetail }).then(() => {
-            props.orderMutate();
+        RepairInprogress({ id: props.idDetail }).then(() => {
+            props.repairMutate();
             props.setOpenModalDetail(false);
             showMessage(`${t('update_success')}`, 'success');
         }).catch((err) => {
@@ -194,7 +194,7 @@ const DetailModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {'Order detail'}
+                                    {'Repair detail'}
                                 </div>
 
                                 <div>
@@ -218,7 +218,7 @@ const DetailModal = ({ ...props }: Props) => {
                                             <DataTable
                                                 highlightOnHover
                                                 className="whitespace-nowrap table-hover"
-                                                records={orderDetails?.data}
+                                                records={repairDetails?.data}
                                                 columns={columns}
                                                 totalRecords={pagination?.totalRecords}
                                                 recordsPerPage={pagination?.perPage}

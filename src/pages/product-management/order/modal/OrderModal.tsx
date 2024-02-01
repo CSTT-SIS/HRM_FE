@@ -9,7 +9,7 @@ import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
-import { DropdownProposals } from '@/services/swr/dropdown.twr';
+import { DropdownOrderType, DropdownProposals, DropdownProviders } from '@/services/swr/dropdown.twr';
 import { CreateOrder, EditOrder } from '@/services/apis/order.api';
 import moment from 'moment';
 
@@ -25,7 +25,7 @@ const OrderModal = ({ ...props }: Props) => {
 
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().required(`${t('please_fill_name')}`),
-        type: Yup.string().required(`${t('please_fill_type')}`),
+        type: new Yup.ObjectSchema().required(`${t('please_fill_type')}`),
         code: Yup.string().required(`${t('please_fill_code')}`),
         proposalId: new Yup.ObjectSchema().required(`${t('please_fill_proposal')}`),
         estimatedDeliveryDate: Yup.string().required(`${t('please_fill_date')}`),
@@ -33,6 +33,8 @@ const OrderModal = ({ ...props }: Props) => {
     });
 
     const { data: proposals } = DropdownProposals({ perPage: 0, type: "PURCHASE" });
+    const { data: orderTypes } = DropdownOrderType({ perPage: 0 });
+    const { data: providers } = DropdownProviders({ perPage: 0 });
 
     const handleOrder = (param: any) => {
         const query = {
@@ -40,11 +42,12 @@ const OrderModal = ({ ...props }: Props) => {
             proposalId: Number(param.proposalId.value),
             type: param.type,
             code: param.code,
-            estimatedDeliveryDate: param.estimatedDeliveryDate
+            estimatedDeliveryDate: param.estimatedDeliveryDate,
+            providerId: Number(param.providerId.value)
         };
         if (props?.data) {
             EditOrder({ id: props?.data?.id, ...query }).then(() => {
-                props.proposalMutate();
+                props.orderMutate();
                 handleCancel();
                 showMessage(`${t('edit_success')}`, 'success');
             }).catch((err) => {
@@ -52,7 +55,7 @@ const OrderModal = ({ ...props }: Props) => {
             });
         } else {
             CreateOrder(query).then(() => {
-                props.proposalMutate();
+                props.orderMutate();
                 handleCancel();
                 showMessage(`${t('create_success')}`, 'success');
             }).catch((err) => {
@@ -63,6 +66,7 @@ const OrderModal = ({ ...props }: Props) => {
 
     const handleCancel = () => {
         props.setOpenModal(false);
+        props.setData();
         setInitialValue({});
     };
 
@@ -73,9 +77,19 @@ const OrderModal = ({ ...props }: Props) => {
                 value: `${props?.data?.proposal.id}`,
                 label: `${props?.data?.proposal.name}`
             } : "",
-            type: props?.data ? `${props?.data?.type}` : "",
+            type: props?.data ? props?.data?.type === "PURCHASE" ? {
+                value: `${props?.data?.type}`,
+                label: `Đơn hàng mua`
+            } : {
+                value: `${props?.data?.type}`,
+                label: `Đơn hàng bán`
+            } : "",
             code: props?.data ? `${props?.data?.code}` : "",
             estimatedDeliveryDate: props?.data ? moment(`${props?.data?.estimatedDeliveryDate}`).format("YYYY-MM-DD") : "",
+            providerId: props?.data ? {
+                value: `${props?.data?.provider?.id}`,
+                label: `${props?.data?.provider?.name}`
+            } : "",
         })
     }, [props?.data, router]);
 
@@ -159,18 +173,41 @@ const OrderModal = ({ ...props }: Props) => {
                                                         ) : null}
                                                     </div>
                                                 </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="type" > {t('type')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field
-                                                        name="type"
-                                                        type="text"
-                                                        id="type"
-                                                        placeholder={`${t('enter_type')}`}
-                                                        className="form-input"
-                                                    />
-                                                    {errors.type ? (
-                                                        <div className="text-danger mt-1"> {`${errors.type}`} </div>
-                                                    ) : null}
+                                                <div className="mb-5 flex justify-between gap-4">
+                                                    <div className="flex-1">
+                                                        <label htmlFor="type" > {t('type')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <Select
+                                                            id='type'
+                                                            name='type'
+                                                            options={orderTypes?.data}
+                                                            maxMenuHeight={160}
+                                                            value={values.type}
+                                                            onChange={e => {
+                                                                setFieldValue('type', e)
+                                                            }}
+                                                        />
+                                                        {errors.type ? (
+                                                            <div className="text-danger mt-1"> {`${errors.type}`} </div>
+                                                        ) : null}
+                                                    </div>
+                                                </div>
+                                                <div className="mb-5 flex justify-between gap-4">
+                                                    <div className="flex-1">
+                                                        <label htmlFor="providerId" > {t('provider')}</label >
+                                                        <Select
+                                                            id='providerId'
+                                                            name='providerId'
+                                                            options={providers?.data}
+                                                            maxMenuHeight={160}
+                                                            value={values.providerId}
+                                                            onChange={e => {
+                                                                setFieldValue('providerId', e)
+                                                            }}
+                                                        />
+                                                        {errors.providerId ? (
+                                                            <div className="text-danger mt-1"> {`${errors.providerId}`} </div>
+                                                        ) : null}
+                                                    </div>
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="code" > {t('code')} < span style={{ color: 'red' }}>* </span></label >

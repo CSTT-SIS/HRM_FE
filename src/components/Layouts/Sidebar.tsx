@@ -45,6 +45,7 @@ import { IconTypeWarehouse } from '../Icon/IconTypeWarehouse';
 import { IconRole } from '../Icon/IconRole';
 import IconFolder from '../Icon/IconFolder';
 import IconShoppingCart from '../Icon/IconShoppingCart';
+import { IconRepair } from '../Icon/IconRepair';
 
 const Sidebar = () => {
     const router = useRouter();
@@ -411,6 +412,14 @@ const Sidebar = () => {
                                             <div className="flex items-center">
                                                 <IconShoppingCart className="shrink-0 group-hover:!text-primary" />
                                                 <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('order_product')}</span>
+                                            </div>
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link href="/product-management/repair" className="group">
+                                            <div className="flex items-center">
+                                                <IconRepair className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('repair')}</span>
                                             </div>
                                         </Link>
                                     </li>

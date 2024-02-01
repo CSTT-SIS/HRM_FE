@@ -9,45 +9,41 @@ import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
-import { CreateProposal, EditProposal } from '@/services/apis/proposal.api';
-import { DropdownProposalType } from '@/services/swr/dropdown.twr';
+import { DropdownProducts } from '@/services/swr/dropdown.twr';
+import { AddRepairDetail, EditRepairDetail } from '@/services/apis/repair.api';
 
 interface Props {
     [key: string]: any;
 }
 
-const ProposalModal = ({ ...props }: Props) => {
+const HandleDetailModal = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
     const router = useRouter();
     const [initialValue, setInitialValue] = useState<any>();
 
     const SubmittedForm = Yup.object().shape({
-        name: Yup.string().required(`${t('please_fill_name_proposal')}`),
-        content: Yup.string().required(`${t('please_fill_content_proposal')}`),
-        type: new Yup.ObjectSchema().required(`${t('please_fill_type_proposal')}`)
-
+        replacementPartId: new Yup.ObjectSchema().required(`${t('please_fill_product')}`),
+        quantity: Yup.string().required(`${t('please_fill_quantity')}`),
     });
 
-    const { data: dropdownProposalType } = DropdownProposalType({ perPage: 0 })
-
+    const { data: productDropdown } = DropdownProducts({ perPage: 0 });
     const handleProposal = (param: any) => {
         const query = {
-            name: param.name,
-            type: param.type.value,
-            content: param.content
+            replacementPartId: Number(param.replacementPartId.value),
+            quantity: Number(param.quantity),
         };
         if (props?.data) {
-            EditProposal({ id: props?.data?.id, ...query }).then(() => {
-                props.proposalMutate();
+            EditRepairDetail({ id: props.idDetail, itemId: props?.data?.id, ...query }).then(() => {
+                props.orderDetailMutate();
                 handleCancel();
                 showMessage(`${t('edit_success')}`, 'success');
             }).catch((err) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
         } else {
-            CreateProposal(query).then(() => {
-                props.proposalMutate();
+            AddRepairDetail({ id: props.idDetail, ...query }).then(() => {
+                props.orderDetailMutate();
                 handleCancel();
                 showMessage(`${t('create_success')}`, 'success');
             }).catch((err) => {
@@ -64,16 +60,11 @@ const ProposalModal = ({ ...props }: Props) => {
 
     useEffect(() => {
         setInitialValue({
-            name: props?.data ? `${props?.data?.name}` : "",
-            type: props?.data ? props?.data?.type === "PURCHASE" ? {
-                value: `${props?.data?.type}`,
-                label: `Yêu cầu mua hàng`
-            } : {
-                value: `${props?.data?.type}`,
-                label: `Yêu cầu sửa chữa`
+            quantity: props?.data ? `${props?.data?.quantity}` : "",
+            replacementPartId: props?.data ? {
+                value: `${props?.data?.replacementPart?.id}`,
+                label: `${props?.data?.replacementPart?.name}`
             } : "",
-            content: props?.data ? `${props?.data?.content}` : ""
-
         })
     }, [props?.data, router]);
 
@@ -112,7 +103,7 @@ const ProposalModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data !== undefined ? 'Edit proposal' : 'Add proposal'}
+                                    {'Add repair detail'}
                                 </div>
                                 <div className="p-5">
                                     <Formik
@@ -123,51 +114,37 @@ const ProposalModal = ({ ...props }: Props) => {
                                         }}
                                         enableReinitialize
                                     >
-
                                         {({ errors, values, setFieldValue }) => (
                                             <Form className="space-y-5" >
-                                                <div className="mb-5">
-                                                    <label htmlFor="name" > {t('name_proposal')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field
-                                                        name="name"
-                                                        type="text"
-                                                        id="name"
-                                                        placeholder={`${t('enter_name_proposal')}`}
-                                                        className="form-input"
-                                                    />
-                                                    {errors.name ? (
-                                                        <div className="text-danger mt-1"> {`${errors.name}`} </div>
-                                                    ) : null}
-                                                </div>
                                                 <div className="mb-5 flex justify-between gap-4">
                                                     <div className="flex-1">
-                                                        <label htmlFor="type" > {t('type_proposal')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <label htmlFor="replacementPartId" > {t('product')} < span style={{ color: 'red' }}>* </span></label >
                                                         <Select
-                                                            id='type'
-                                                            name='type'
-                                                            options={dropdownProposalType?.data}
+                                                            id='replacementPartId'
+                                                            name='replacementPartId'
+                                                            options={productDropdown?.data}
                                                             maxMenuHeight={160}
-                                                            value={values.type}
+                                                            value={values.replacementPartId}
                                                             onChange={e => {
-                                                                setFieldValue('type', e)
+                                                                setFieldValue('replacementPartId', e)
                                                             }}
                                                         />
-                                                        {errors.type ? (
-                                                            <div className="text-danger mt-1"> {`${errors.type}`} </div>
+                                                        {errors.replacementPartId ? (
+                                                            <div className="text-danger mt-1"> {`${errors.replacementPartId}`} </div>
                                                         ) : null}
                                                     </div>
                                                 </div>
                                                 <div className="mb-5">
-                                                    <label htmlFor="type" > {t('content_proposal')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <label htmlFor="quantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
                                                     <Field
-                                                        name="content"
-                                                        type="text"
-                                                        id="content"
-                                                        placeholder={`${t('enter_content_proposal')}`}
+                                                        name="quantity"
+                                                        type="number"
+                                                        id="quantity"
+                                                        placeholder={`${t('enter_quantity')}`}
                                                         className="form-input"
                                                     />
-                                                    {errors.content ? (
-                                                        <div className="text-danger mt-1"> {`${errors.content}`} </div>
+                                                    {errors.quantity ? (
+                                                        <div className="text-danger mt-1"> {`${errors.quantity}`} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
@@ -178,7 +155,6 @@ const ProposalModal = ({ ...props }: Props) => {
                                                         {props.data !== undefined ? 'Update' : 'Add'}
                                                     </button>
                                                 </div>
-
                                             </Form>
                                         )}
                                     </Formik>
@@ -192,5 +168,4 @@ const ProposalModal = ({ ...props }: Props) => {
         </Transition>
     );
 };
-
-export default ProposalModal;
+export default HandleDetailModal;

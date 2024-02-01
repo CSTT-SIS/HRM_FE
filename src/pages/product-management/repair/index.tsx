@@ -9,8 +9,8 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
-import { Orders } from '@/services/swr/order.twr';
-import { DeleteOrder, OrderCancel, OrderReceive, OrderShipping } from '@/services/apis/order.api';
+import { Repairs } from '@/services/swr/repair.twr';
+import { DeleteRepair, RepairComplete } from '@/services/apis/repair.api';
 // constants
 import { PAGE_SIZES } from '@/utils/constants';
 // helper
@@ -20,22 +20,16 @@ import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
 import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
-import IconXCircle from '@/components/Icon/IconXCircle';
-import { IconCartCheck } from '@/components/Icon/IconCartCheck';
-import { IconShipping } from '@/components/Icon/IconShipping';
+import IconCircleCheck from '@/components/Icon/IconCircleCheck';
 // modal
 import DetailModal from './modal/DetailModal';
-import moment from 'moment';
-import OrderModal from './modal/OrderModal';
-
-
-
+import RepairModal from './modal/RepairModal';
 
 interface Props {
     [key: string]: any;
 }
 
-const OrderPage = ({ ...props }: Props) => {
+const RepairPage = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -52,15 +46,15 @@ const OrderPage = ({ ...props }: Props) => {
 
 
     // get data
-    const { data: orders, pagination, mutate } = Orders({ ...router.query });
+    const { data: repairs, pagination, mutate } = Repairs({ ...router.query });
 
     useEffect(() => {
-        dispatch(setPageTitle(`${t('Order')}`));
+        dispatch(setPageTitle(`${t('Repair')}`));
     });
 
     useEffect(() => {
         setShowLoader(false);
-    }, [orders])
+    }, [repairs])
 
     const handleEdit = (data: any) => {
         setOpenModal(true);
@@ -87,7 +81,7 @@ const OrderPage = ({ ...props }: Props) => {
             })
             .then((result) => {
                 if (result.value) {
-                    DeleteOrder({ id }).then(() => {
+                    DeleteRepair({ id }).then(() => {
                         mutate();
                         showMessage(`${t('delete_success')}`, 'success');
                     }).catch((err) => {
@@ -131,26 +125,8 @@ const OrderPage = ({ ...props }: Props) => {
         setStatus(value.status);
     }
 
-    const handleShipping = ({ id }: any) => {
-        OrderShipping({ id }).then(() => {
-            mutate();
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
-
-    const handleCancel = ({ id }: any) => {
-        OrderCancel({ id }).then(() => {
-            mutate();
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
-
-    const handleReceive = ({ id }: any) => {
-        OrderReceive({ id }).then(() => {
+    const handleComplete = ({ id }: any) => {
+        RepairComplete({ id }).then(() => {
             mutate();
             showMessage(`${t('update_success')}`, 'success');
         }).catch((err) => {
@@ -165,19 +141,17 @@ const OrderPage = ({ ...props }: Props) => {
             render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
         { accessor: 'name', title: 'Tên đơn hàng', sortable: false },
-        { accessor: 'code', title: 'Mã đơn hàng', sortable: false },
-        { accessor: 'type', title: 'Loại đơn hàng', sortable: false },
         {
-            accessor: 'proposal',
-            title: 'Tên đề xuất',
-            render: ({ proposal }: any) => <span>{proposal?.name}</span>,
+            accessor: 'vehicle',
+            title: 'Số đăng ký xe',
+            render: ({ vehicle }: any) => <span>{vehicle?.registrationNumber}</span>,
         },
         {
-            accessor: 'estimatedDeliveryDate',
-            title: 'Nhận hàng dự kiến',
-            render: ({ estimatedDeliveryDate }: any) => <span>{moment(estimatedDeliveryDate).format("DD/MM/YYYY")}</span>,
+            accessor: 'repairBy',
+            title: 'Người phụ trách',
+            render: ({ repairBy }: any) => <span>{repairBy?.fullName}</span>,
         },
-        { accessor: 'status', title: 'Status', sortable: false },
+        { accessor: 'description', title: 'Ghi chú', sortable: false },
         {
             accessor: 'action',
             title: 'Thao tác',
@@ -199,19 +173,9 @@ const OrderPage = ({ ...props }: Props) => {
                             <IconTrashLines />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('shipping')}`}>
-                        <button type="button" onClick={() => handleShipping(records)}>
-                            <IconShipping size={20} />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('receive')}`}>
-                        <button type="button" onClick={() => handleReceive(records)}>
-                            <IconCartCheck />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('cancel')}`}>
-                        <button type="button" onClick={() => handleCancel(records)}>
-                            <IconXCircle />
+                    <Tippy content={`${t('complete')}`}>
+                        <button type="button" onClick={() => handleComplete(records)}>
+                            <IconCircleCheck size={20} />
                         </button>
                     </Tippy>
                 </div>
@@ -242,7 +206,7 @@ const OrderPage = ({ ...props }: Props) => {
                     <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover"
-                        records={orders?.data}
+                        records={repairs?.data}
                         columns={columns}
                         totalRecords={pagination?.totalRecords}
                         recordsPerPage={pagination?.perPage}
@@ -257,22 +221,22 @@ const OrderPage = ({ ...props }: Props) => {
                     />
                 </div>
             </div>
-            <OrderModal
+            <RepairModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}
                 data={data}
                 setData={setData}
-                orderMutate={mutate}
+                repairMutate={mutate}
             />
             <DetailModal
                 openModalDetail={openModalDetail}
                 setOpenModalDetail={setOpenModalDetail}
                 idDetail={idDetail}
                 status={status}
-                orderMutate={mutate}
+                repairMutate={mutate}
             />
         </div>
     );
 };
 
-export default OrderPage;
+export default RepairPage;

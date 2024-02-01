@@ -9,7 +9,7 @@ import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
-import { DropdownOrder, DropdownOrderType, DropdownProposals, DropdownWarehouses } from '@/services/swr/dropdown.twr';
+import { DropdownOrder, DropdownOrderType, DropdownProposals, DropdownWarehouses, DropdownWarehousingType } from '@/services/swr/dropdown.twr';
 import { CreateWarehousingBill, EditWarehousingBill } from '@/services/apis/warehousing-bill.api';
 
 interface Props {
@@ -34,7 +34,7 @@ const WarehousingBillModal = ({ ...props }: Props) => {
     const { data: proposals } = DropdownProposals(proposal);
     const { data: orders } = DropdownOrder(orderQuery);
     const { data: warehouses } = DropdownWarehouses({ perPage: 0 });
-    const { data: dropdownOrderType } = DropdownOrderType({ perPage: 0 });
+    const { data: warehousingBill } = DropdownWarehousingType({ perPage: 0 });
 
 
     const handleWarehousing = (param: any) => {
@@ -86,10 +86,10 @@ const WarehousingBillModal = ({ ...props }: Props) => {
             } : "",
             type: props?.data ? props?.data?.type === "IMPORT" ? {
                 value: `${props?.data?.type}`,
-                label: `Đơn hàng mua`
+                label: `Phiếu nhập kho`
             } : {
                 value: `${props?.data?.type}`,
-                label: `Đơn hàng bán`
+                label: `Phiếu xuất kho`
             } : "",
             note: props?.data ? `${props?.data?.note}` : "",
             name: props?.data ? `${props?.data?.name}` : ""
@@ -164,11 +164,11 @@ const WarehousingBillModal = ({ ...props }: Props) => {
                                                         <Select
                                                             id='type'
                                                             name='type'
-                                                            options={dropdownOrderType?.data}
+                                                            options={warehousingBill?.data}
                                                             maxMenuHeight={160}
                                                             value={values.type}
                                                             onChange={e => {
-                                                                if (e.value === "PURCHASE") {
+                                                                if (e.value === "IMPORT") {
                                                                     setProposal({ ...orderQuery, type: "PURCHASE" })
                                                                 } else {
                                                                     setProposal({ ...orderQuery, type: "REPAIR" })

@@ -9,45 +9,44 @@ import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
-import { CreateProposal, EditProposal } from '@/services/apis/proposal.api';
-import { DropdownProposalType } from '@/services/swr/dropdown.twr';
+import { DropdownProposals } from '@/services/swr/dropdown.twr';
+import { CreateRepair, EditRepair } from '@/services/apis/repair.api';
 
 interface Props {
     [key: string]: any;
 }
 
-const ProposalModal = ({ ...props }: Props) => {
+const RepairModal = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
     const router = useRouter();
     const [initialValue, setInitialValue] = useState<any>();
 
     const SubmittedForm = Yup.object().shape({
-        name: Yup.string().required(`${t('please_fill_name_proposal')}`),
-        content: Yup.string().required(`${t('please_fill_content_proposal')}`),
-        type: new Yup.ObjectSchema().required(`${t('please_fill_type_proposal')}`)
-
+        vehicleRegistrationNumber: Yup.string().required(`${t('please_fill_name')}`),
+        repairById: new Yup.ObjectSchema().required(`${t('please_fill_proposal')}`),
     });
 
-    const { data: dropdownProposalType } = DropdownProposalType({ perPage: 0 })
+    const { data: proposals } = DropdownProposals({ perPage: 0, type: "PURCHASE" });
 
-    const handleProposal = (param: any) => {
+    const handleOrder = (param: any) => {
         const query = {
-            name: param.name,
-            type: param.type.value,
-            content: param.content
+            vehicleRegistrationNumber: param.vehicleRegistrationNumber,
+            repairById: Number(param.repairById.value),
+            description: param.description,
+            damageLevel: param.damageLevel
         };
         if (props?.data) {
-            EditProposal({ id: props?.data?.id, ...query }).then(() => {
-                props.proposalMutate();
+            EditRepair({ id: props?.data?.id, ...query }).then(() => {
+                props.repairMutate();
                 handleCancel();
                 showMessage(`${t('edit_success')}`, 'success');
             }).catch((err) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
         } else {
-            CreateProposal(query).then(() => {
-                props.proposalMutate();
+            CreateRepair(query).then(() => {
+                props.repairMutate();
                 handleCancel();
                 showMessage(`${t('create_success')}`, 'success');
             }).catch((err) => {
@@ -64,16 +63,13 @@ const ProposalModal = ({ ...props }: Props) => {
 
     useEffect(() => {
         setInitialValue({
-            name: props?.data ? `${props?.data?.name}` : "",
-            type: props?.data ? props?.data?.type === "PURCHASE" ? {
-                value: `${props?.data?.type}`,
-                label: `Yêu cầu mua hàng`
-            } : {
-                value: `${props?.data?.type}`,
-                label: `Yêu cầu sửa chữa`
+            vehicleRegistrationNumber: props?.data ? `${props?.data?.vehicle?.registrationNumber}` : "",
+            repairById: props?.data ? {
+                value: `${props?.data?.proposal?.id}`,
+                label: `${props?.data?.proposal?.name}`
             } : "",
-            content: props?.data ? `${props?.data?.content}` : ""
-
+            description: props?.data ? `${props?.data?.description}` : "",
+            damageLevel: props?.data ? `${props?.data?.damageLevel}` : "",
         })
     }, [props?.data, router]);
 
@@ -112,62 +108,75 @@ const ProposalModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data !== undefined ? 'Edit proposal' : 'Add proposal'}
+                                    {props.data !== undefined ? 'Edit repair' : 'Add repair'}
                                 </div>
                                 <div className="p-5">
                                     <Formik
                                         initialValues={initialValue}
                                         validationSchema={SubmittedForm}
                                         onSubmit={values => {
-                                            handleProposal(values);
+                                            handleOrder(values);
                                         }}
                                         enableReinitialize
                                     >
 
                                         {({ errors, values, setFieldValue }) => (
                                             <Form className="space-y-5" >
-                                                <div className="mb-5">
-                                                    <label htmlFor="name" > {t('name_proposal')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field
-                                                        name="name"
-                                                        type="text"
-                                                        id="name"
-                                                        placeholder={`${t('enter_name_proposal')}`}
-                                                        className="form-input"
-                                                    />
-                                                    {errors.name ? (
-                                                        <div className="text-danger mt-1"> {`${errors.name}`} </div>
-                                                    ) : null}
-                                                </div>
                                                 <div className="mb-5 flex justify-between gap-4">
                                                     <div className="flex-1">
-                                                        <label htmlFor="type" > {t('type_proposal')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <label htmlFor="repairById" > {t('repair_by_id')} < span style={{ color: 'red' }}>* </span></label >
                                                         <Select
-                                                            id='type'
-                                                            name='type'
-                                                            options={dropdownProposalType?.data}
+                                                            id='repairById'
+                                                            name='repairById'
+                                                            options={proposals?.data}
                                                             maxMenuHeight={160}
-                                                            value={values.type}
+                                                            value={values.repairById}
                                                             onChange={e => {
-                                                                setFieldValue('type', e)
+                                                                setFieldValue('repairById', e)
                                                             }}
                                                         />
-                                                        {errors.type ? (
-                                                            <div className="text-danger mt-1"> {`${errors.type}`} </div>
+                                                        {errors.repairById ? (
+                                                            <div className="text-danger mt-1"> {`${errors.repairById}`} </div>
                                                         ) : null}
                                                     </div>
                                                 </div>
                                                 <div className="mb-5">
-                                                    <label htmlFor="type" > {t('content_proposal')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <label htmlFor="type" > {t('vehicle_registration_number')} < span style={{ color: 'red' }}>* </span></label >
                                                     <Field
-                                                        name="content"
+                                                        name="vehicleRegistrationNumber"
                                                         type="text"
-                                                        id="content"
-                                                        placeholder={`${t('enter_content_proposal')}`}
+                                                        id="vehicleRegistrationNumber"
+                                                        placeholder={`${t('enter_type')}`}
                                                         className="form-input"
                                                     />
-                                                    {errors.content ? (
-                                                        <div className="text-danger mt-1"> {`${errors.content}`} </div>
+                                                    {errors.vehicleRegistrationNumber ? (
+                                                        <div className="text-danger mt-1"> {`${errors.vehicleRegistrationNumber}`} </div>
+                                                    ) : null}
+                                                </div>
+                                                <div className="mb-5">
+                                                    <label htmlFor="description" > {t('description')}</label >
+                                                    <Field
+                                                        name="description"
+                                                        type="text"
+                                                        id="description"
+                                                        placeholder={`${t('enter_description')}`}
+                                                        className="form-input"
+                                                    />
+                                                    {errors.description ? (
+                                                        <div className="text-danger mt-1"> {`${errors.description}`} </div>
+                                                    ) : null}
+                                                </div>
+                                                <div className="mb-5">
+                                                    <label htmlFor="damageLevel" > {t('damage_level')} </label >
+                                                    <Field
+                                                        name="damageLevel"
+                                                        type="text"
+                                                        id="damageLevel"
+                                                        className="form-input"
+                                                        placeholder={`${t('enter_damage_level')}`}
+                                                    />
+                                                    {errors.damageLevel ? (
+                                                        <div className="text-danger mt-1"> {`${errors.damageLevel}`} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
@@ -193,4 +202,4 @@ const ProposalModal = ({ ...props }: Props) => {
     );
 };
 
-export default ProposalModal;
+export default RepairModal;

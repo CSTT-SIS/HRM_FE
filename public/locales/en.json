@@ -445,5 +445,10 @@
 	"warehousing_bill": "Warehousing bill",
 	"enter_name": "Enter name",
 	"enter_note": "Enter note",
-	"please_fill_warehouse": "Please fill warehouse"
+	"please_fill_warehouse": "Please fill warehouse",
+	"repair": "Repair",
+	"repair_by_id": "Repair by whom",
+	"vehicle_registration_number": "Vehicle registration number",
+	"damage_level": "Damage level",
+	"enter_damage_level": "Enter damage level"
 }
