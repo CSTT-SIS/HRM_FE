@@ -10,7 +10,7 @@ import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
 import { CreateProposal, EditProposal } from '@/services/apis/proposal.api';
-import { DropdownProposalType } from '@/services/swr/dropdown.twr';
+import { DropdownProposalType, DropdownRepair } from '@/services/swr/dropdown.twr';
 
 interface Props {
     [key: string]: any;
@@ -21,6 +21,7 @@ const ProposalModal = ({ ...props }: Props) => {
     const { t } = useTranslation();
     const router = useRouter();
     const [initialValue, setInitialValue] = useState<any>();
+    const [repair, setRepair] = useState(false);
 
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().required(`${t('please_fill_name_proposal')}`),
@@ -30,12 +31,14 @@ const ProposalModal = ({ ...props }: Props) => {
     });
 
     const { data: dropdownProposalType } = DropdownProposalType({ perPage: 0 })
+    const { data: dropdownRepair } = DropdownRepair({ perPage: 0 })
 
     const handleProposal = (param: any) => {
         const query = {
             name: param.name,
             type: param.type.value,
-            content: param.content
+            content: param.content,
+            repairRequestId: param.repairRequestId.value
         };
         if (props?.data) {
             EditProposal({ id: props?.data?.id, ...query }).then(() => {
@@ -51,7 +54,7 @@ const ProposalModal = ({ ...props }: Props) => {
                 handleCancel();
                 showMessage(`${t('create_success')}`, 'success');
             }).catch((err) => {
-                showMessage(`${err?.response?.data?.message}`, 'error');
+                showMessage(`${err?.response?.data?.message[0].error}`, 'error');
             });
         }
     }
@@ -72,7 +75,11 @@ const ProposalModal = ({ ...props }: Props) => {
                 value: `${props?.data?.type}`,
                 label: `Yêu cầu sửa chữa`
             } : "",
-            content: props?.data ? `${props?.data?.content}` : ""
+            content: props?.data ? `${props?.data?.content}` : "",
+            repairRequestId: props?.data ? {
+                value: `${props?.data?.repairRequest.id}`,
+                label: `${props?.data?.repairRequest.name}`,
+            } : "",
 
         })
     }, [props?.data, router]);
@@ -149,6 +156,9 @@ const ProposalModal = ({ ...props }: Props) => {
                                                             maxMenuHeight={160}
                                                             value={values.type}
                                                             onChange={e => {
+                                                                if (e.value === "REPAIR") {
+                                                                    setRepair(true)
+                                                                }
                                                                 setFieldValue('type', e)
                                                             }}
                                                         />
@@ -157,6 +167,27 @@ const ProposalModal = ({ ...props }: Props) => {
                                                         ) : null}
                                                     </div>
                                                 </div>
+                                                {
+                                                    repair &&
+                                                    <div className="mb-5 flex justify-between gap-4">
+                                                        <div className="flex-1">
+                                                            <label htmlFor="repairRequestId" > {t('repair_request')} < span style={{ color: 'red' }}>* </span></label >
+                                                            <Select
+                                                                id='repairRequestId'
+                                                                name='repairRequestId'
+                                                                options={dropdownRepair?.data}
+                                                                maxMenuHeight={160}
+                                                                value={values.repairRequestId}
+                                                                onChange={e => {
+                                                                    setFieldValue('repairRequestId', e)
+                                                                }}
+                                                            />
+                                                            {errors.repairRequestId ? (
+                                                                <div className="text-danger mt-1"> {`${errors.repairRequestId}`} </div>
+                                                            ) : null}
+                                                        </div>
+                                                    </div>
+                                                }
                                                 <div className="mb-5">
                                                     <label htmlFor="type" > {t('content_proposal')} < span style={{ color: 'red' }}>* </span></label >
                                                     <Field

@@ -13,3 +13,5 @@ export const DropdownOrder = (queries?: any) => swr(getEndpoint('/dropdown/order
 export const DropdownOrderType = (queries?: any) => swr(getEndpoint('/dropdown/order-type', queries));
 export const DropdownProposalType = (queries?: any) => swr(getEndpoint('/dropdown/proposal-type', queries));
 export const DropdownWarehousingType = (queries?: any) => swr(getEndpoint('/dropdown/warehousing-bill-type', queries));
+export const DropdownUsers = (queries?: any) => swr(getEndpoint('/dropdown/user', queries));
+export const DropdownRepair = (queries?: any) => swr(getEndpoint('/dropdown/repair', queries));

@@ -60,7 +60,7 @@ const WarehousingBillModal = ({ ...props }: Props) => {
                 handleCancel();
                 showMessage(`${t('create_success')}`, 'success');
             }).catch((err) => {
-                showMessage(`${err?.response?.data?.message}`, 'error');
+                showMessage(`${err?.response?.data?.message[0].error}`, 'error');
             });
         }
     }

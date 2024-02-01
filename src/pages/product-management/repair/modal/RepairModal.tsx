@@ -9,7 +9,7 @@ import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
-import { DropdownProposals } from '@/services/swr/dropdown.twr';
+import { DropdownProposals, DropdownUsers } from '@/services/swr/dropdown.twr';
 import { CreateRepair, EditRepair } from '@/services/apis/repair.api';
 
 interface Props {
@@ -28,6 +28,7 @@ const RepairModal = ({ ...props }: Props) => {
     });
 
     const { data: proposals } = DropdownProposals({ perPage: 0, type: "PURCHASE" });
+    const { data: users } = DropdownUsers({ perPage: 0 });
 
     const handleOrder = (param: any) => {
         const query = {
@@ -50,7 +51,7 @@ const RepairModal = ({ ...props }: Props) => {
                 handleCancel();
                 showMessage(`${t('create_success')}`, 'success');
             }).catch((err) => {
-                showMessage(`${err?.response?.data?.message}`, 'error');
+                showMessage(`${err?.response?.data?.message[0].error}`, 'error');
             });
         }
     }
@@ -128,7 +129,7 @@ const RepairModal = ({ ...props }: Props) => {
                                                         <Select
                                                             id='repairById'
                                                             name='repairById'
-                                                            options={proposals?.data}
+                                                            options={users?.data}
                                                             maxMenuHeight={160}
                                                             value={values.repairById}
                                                             onChange={e => {

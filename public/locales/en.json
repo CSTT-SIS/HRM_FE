@@ -450,5 +450,7 @@
 	"repair_by_id": "Repair by whom",
 	"vehicle_registration_number": "Vehicle registration number",
 	"damage_level": "Damage level",
-	"enter_damage_level": "Enter damage level"
+	"enter_damage_level": "Enter damage level",
+	"delete_proposal": "Delete proposal",
+	"repair_request": "Repair request"
 }

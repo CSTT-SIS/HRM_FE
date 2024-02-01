@@ -28,6 +28,7 @@ const OrderModal = ({ ...props }: Props) => {
         type: new Yup.ObjectSchema().required(`${t('please_fill_type')}`),
         code: Yup.string().required(`${t('please_fill_code')}`),
         proposalId: new Yup.ObjectSchema().required(`${t('please_fill_proposal')}`),
+        providerId: new Yup.ObjectSchema().required(`${t('please_fill_provider')}`),
         estimatedDeliveryDate: Yup.string().required(`${t('please_fill_date')}`),
 
     });
@@ -59,7 +60,7 @@ const OrderModal = ({ ...props }: Props) => {
                 handleCancel();
                 showMessage(`${t('create_success')}`, 'success');
             }).catch((err) => {
-                showMessage(`${err?.response?.data?.message}`, 'error');
+                showMessage(`${err?.response?.data?.message[0].error}`, 'error');
             });
         }
     }
@@ -193,7 +194,7 @@ const OrderModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mb-5 flex justify-between gap-4">
                                                     <div className="flex-1">
-                                                        <label htmlFor="providerId" > {t('provider')}</label >
+                                                        <label htmlFor="providerId" > {t('provider')}< span style={{ color: 'red' }}>* </span></label >
                                                         <Select
                                                             id='providerId'
                                                             name='providerId'
