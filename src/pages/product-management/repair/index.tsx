@@ -47,6 +47,7 @@ const RepairPage = ({ ...props }: Props) => {
 
     // get data
     const { data: repairs, pagination, mutate } = Repairs({ ...router.query });
+    console.log("🚀 ~ RepairPage ~ repairs:", repairs)
 
     useEffect(() => {
         dispatch(setPageTitle(`${t('Repair')}`));
@@ -152,6 +153,7 @@ const RepairPage = ({ ...props }: Props) => {
             render: ({ repairBy }: any) => <span>{repairBy?.fullName}</span>,
         },
         { accessor: 'description', title: 'Ghi chú', sortable: false },
+        { accessor: 'status', title: 'Trạng thái', sortable: false },
         {
             accessor: 'action',
             title: 'Thao tác',

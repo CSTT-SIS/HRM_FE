@@ -166,7 +166,7 @@ const ProposalPage = ({ ...props }: Props) => {
         { accessor: 'name', title: 'Tên đề xuất', sortable: false },
         { accessor: 'type', title: 'Loại đề xuất', sortable: false },
         { accessor: 'content', title: 'Nội dung', sortable: false },
-        { accessor: 'status', title: 'Status', sortable: false },
+        { accessor: 'status', title: 'Trạng thái', sortable: false },
         {
             accessor: 'action',
             title: 'Thao tác',

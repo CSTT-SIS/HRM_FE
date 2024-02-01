@@ -177,7 +177,7 @@ const OrderPage = ({ ...props }: Props) => {
             title: 'Nhận hàng dự kiến',
             render: ({ estimatedDeliveryDate }: any) => <span>{moment(estimatedDeliveryDate).format("DD/MM/YYYY")}</span>,
         },
-        { accessor: 'status', title: 'Status', sortable: false },
+        { accessor: 'status', title: 'Trạng thái', sortable: false },
         {
             accessor: 'action',
             title: 'Thao tác',

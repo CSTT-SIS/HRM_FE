@@ -171,7 +171,7 @@ const WarehousingPage = ({ ...props }: Props) => {
             title: 'Tên kho',
             render: ({ warehouse }: any) => <span>{warehouse?.name}</span>,
         },
-        { accessor: 'status', title: 'Status', sortable: false },
+        { accessor: 'status', title: 'Trạng thái', sortable: false },
         { accessor: 'note', title: 'Ghi chú', sortable: false },
         {
             accessor: 'action',
