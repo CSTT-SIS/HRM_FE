@@ -28,6 +28,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
     });
 
     const { data: productDropdown } = DropdownProducts({ perPage: 0 });
+    
     const handleProposal = (param: any) => {
         const query = {
             productId: Number(param.productId.value),

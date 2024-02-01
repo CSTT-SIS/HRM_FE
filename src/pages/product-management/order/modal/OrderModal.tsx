@@ -40,7 +40,7 @@ const OrderModal = ({ ...props }: Props) => {
         const query = {
             name: param.name,
             proposalId: Number(param.proposalId.value),
-            type: param.type,
+            type: param.type.value,
             code: param.code,
             estimatedDeliveryDate: param.estimatedDeliveryDate,
             providerId: Number(param.providerId.value)
