@@ -118,12 +118,14 @@ const DetailModal = ({ ...props }: Props) => {
             render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
         {
-            accessor: 'name',
+            accessor: 'replacementPart',
             title: 'Tên sản phẩm',
-            render: ({ product }: any) => <span>{product?.name}</span>,
+            render: ({ replacementPart }: any) => <span>{replacementPart?.name}</span>,
             sortable: false
         },
         { accessor: 'quantity', title: 'số lượng', sortable: false },
+        { accessor: 'brokenPart', title: 'Phần bị hỏng', sortable: false },
+        { accessor: 'description', title: 'Ghi chú', sortable: false },
         {
             accessor: 'action',
             title: 'Thao tác',

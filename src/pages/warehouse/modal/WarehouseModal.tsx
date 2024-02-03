@@ -21,9 +21,11 @@ const WarehouseModal = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
     const [openModal, setOpenModal] = useState(false);
+    const [size, setSize] = useState<any>(5);
 
     // get data 
-    const { data: dropdownWarehouseType, pagination, mutate } = DropdownWarehouseTypes({ perPage: 0 });
+    const { data: dropdownWarehouseType, pagination: paginationWarehousetype, isLoading, mutate } = DropdownWarehouseTypes({ perPage: size });
+
 
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_warehouse')}`),
@@ -61,6 +63,11 @@ const WarehouseModal = ({ ...props }: Props) => {
         props.setOpenModal(false);
         props.setData();
     };
+
+    const handleMenuScrollToBottom = () => {
+        if (paginationWarehousetype?.totalRecords <= paginationWarehousetype?.perPage) return
+        setSize(paginationWarehousetype?.perPage + 5);
+    }
 
     const SelectMenuButton = (props: any) => {
         return (
@@ -139,29 +146,32 @@ const WarehouseModal = ({ ...props }: Props) => {
                                         {({ errors, setFieldValue, values }) => (
                                             <Form className="space-y-5" >
                                                 <div className="mb-5">
-                                                    <label htmlFor="name" > {t('name_warehouse')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name_warehouse')}`} className="form-input" />
+                                                    <label htmlFor="name" > {t('name')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name')}`} className="form-input" />
                                                     {errors.name ? (
                                                         <div className="text-danger mt-1"> {errors.name} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
-                                                    <label htmlFor="code" > {t('code_warehouse')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="code" type="text" id="code" placeholder={`${t('enter_code_warehouse')}`} className="form-input" />
+                                                    <label htmlFor="code" > {t('code')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="code" type="text" id="code" placeholder={`${t('enter_code')}`} className="form-input" />
                                                     {errors.code ? (
                                                         <div className="text-danger mt-1"> {errors.code} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5 flex justify-between gap-4">
                                                     <div className="flex-1">
-                                                        <label htmlFor="typeId" > {t('type_warehouse')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <label htmlFor="typeId" > {t('type')} < span style={{ color: 'red' }}>* </span></label >
                                                         <Select
                                                             id='typeId'
                                                             name='typeId'
                                                             options={dropdownWarehouseType?.data}
                                                             components={{ MenuList: SelectMenuButton }}
+                                                            onMenuOpen={() => setSize(5)}
+                                                            onMenuScrollToBottom={handleMenuScrollToBottom}
                                                             maxMenuHeight={160}
                                                             value={values.typeId}
+                                                            isLoading={isLoading}
                                                             onChange={e => {
                                                                 setFieldValue('typeId', e)
                                                             }}

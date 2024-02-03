@@ -5,13 +5,12 @@ import { Dialog, Transition } from '@headlessui/react';
 
 import * as Yup from 'yup';
 import { Field, Form, Formik, useFormikContext } from 'formik';
-import Swal from 'sweetalert2';
 import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
-import { Products } from '@/services/swr/product.twr';
 import { ImportProduct } from '@/services/apis/warehouse.api';
+import { DropdownProducts } from '@/services/swr/dropdown.twr';
 
 interface Props {
     [key: string]: any;
@@ -22,8 +21,7 @@ const ImportModal = ({ ...props }: Props) => {
     const [disabled, setDisabled] = useState(false);
     const router = useRouter();
     const [initialValue, setInitialValue] = useState<any>();
-    const [dataSelect, setDataSelect] = useState<any>();
-    const [query, setQuery] = useState<any>();
+    const [size, setSize] = useState<any>(5);
 
 
     const SubmittedForm = Yup.object().shape({
@@ -32,8 +30,10 @@ const ImportModal = ({ ...props }: Props) => {
 
     });
 
-    //get data
-    const { data: products } = Products(query);
+    //get data 
+    // const { data: products } = Products(query);
+    const { data: products, pagination: paginationProduct, isLoading } = DropdownProducts({ perPage: size });
+
 
     const handleImport = (param: any) => {
         const query = {
@@ -67,16 +67,10 @@ const ImportModal = ({ ...props }: Props) => {
         })
     }, [props?.data, router]);
 
-    const handleSearch = (param: any) => {
-        setQuery({ search: param });
+    const handleMenuScrollToBottom = () => {
+        if (paginationProduct?.totalRecords <= paginationProduct?.perPage) return
+        setSize(paginationProduct?.perPage + 5);
     }
-
-    const product = products?.data.filter((item: any) => {
-        return (
-            item.value = item.id,
-            item.label = item.name
-        )
-    })
 
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
@@ -113,7 +107,7 @@ const ImportModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data !== undefined ? 'Edit Import' : 'Add Import'}
+                                    {props.data !== undefined ? 'Import Product' : 'Import Product'}
                                 </div>
                                 <div className="p-5">
                                     <Formik
@@ -133,8 +127,10 @@ const ImportModal = ({ ...props }: Props) => {
                                                         <Select
                                                             id='productId'
                                                             name='productId'
-                                                            onInputChange={e => handleSearch(e)}
-                                                            options={product}
+                                                            options={products?.data}
+                                                            onMenuOpen={() => setSize(5)}
+                                                            onMenuScrollToBottom={handleMenuScrollToBottom}
+                                                            isLoading={isLoading}
                                                             maxMenuHeight={160}
                                                             value={values.productId}
                                                             onChange={e => {

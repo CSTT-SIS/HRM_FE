@@ -22,6 +22,10 @@ const OrderModal = ({ ...props }: Props) => {
     const { t } = useTranslation();
     const router = useRouter();
     const [initialValue, setInitialValue] = useState<any>();
+    const [sizeProposal, setSizeProposal] = useState(5);
+    const [sizeOrderType, setSizeOrderType] = useState(5);
+    const [sizeProvider, setSizeProvider] = useState(5);
+
 
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().required(`${t('please_fill_name')}`),
@@ -33,9 +37,9 @@ const OrderModal = ({ ...props }: Props) => {
 
     });
 
-    const { data: proposals } = DropdownProposals({ perPage: 0, type: "PURCHASE" });
-    const { data: orderTypes } = DropdownOrderType({ perPage: 0 });
-    const { data: providers } = DropdownProviders({ perPage: 0 });
+    const { data: proposals, pagination: proposalPagiantion, isLoading: proposalLoading } = DropdownProposals({ perPage: sizeProposal, type: "PURCHASE" });
+    const { data: orderTypes, pagination: orderTypePagiantion, isLoading: orderTypeLoading } = DropdownOrderType({ perPage: sizeOrderType });
+    const { data: providers, pagination: providerPagiantion, isLoading: providerLoading } = DropdownProviders({ perPage: sizeProvider });
 
     const handleOrder = (param: any) => {
         const query = {
@@ -94,6 +98,19 @@ const OrderModal = ({ ...props }: Props) => {
         })
     }, [props?.data, router]);
 
+    const handleMenuScrollToBottomProposal = () => {
+        if (proposalPagiantion?.totalRecords <= proposalPagiantion?.perPage) return
+        setSizeProposal(proposalPagiantion?.perPage + 5);
+    }
+    const handleMenuScrollToBottomOrderType = () => {
+        if (orderTypePagiantion?.totalRecords <= orderTypePagiantion?.perPage) return
+        setSizeOrderType(orderTypePagiantion?.perPage + 5);
+    }
+    const handleMenuScrollToBottomProvider = () => {
+        if (providerPagiantion?.totalRecords <= providerPagiantion?.perPage) return
+        setSizeProvider(providerPagiantion?.perPage + 5);
+    }
+
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
             <Dialog as="div" open={props.openModal} onClose={() => props.setOpenModal(false)} className="relative z-50">
@@ -144,12 +161,12 @@ const OrderModal = ({ ...props }: Props) => {
                                         {({ errors, values, setFieldValue }) => (
                                             <Form className="space-y-5" >
                                                 <div className="mb-5">
-                                                    <label htmlFor="name" > {t('name_order')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <label htmlFor="name" > {t('name')} < span style={{ color: 'red' }}>* </span></label >
                                                     <Field
                                                         name="name"
                                                         type="text"
                                                         id="name"
-                                                        placeholder={`${t('enter_name_order')}`}
+                                                        placeholder={`${t('enter_name')}`}
                                                         className="form-input"
                                                     />
                                                     {errors.name ? (
@@ -163,6 +180,9 @@ const OrderModal = ({ ...props }: Props) => {
                                                             id='proposalId'
                                                             name='proposalId'
                                                             options={proposals?.data}
+                                                            onMenuOpen={() => setSizeProposal(5)}
+                                                            onMenuScrollToBottom={handleMenuScrollToBottomProposal}
+                                                            isLoading={proposalLoading}
                                                             maxMenuHeight={160}
                                                             value={values.proposalId}
                                                             onChange={e => {
@@ -181,6 +201,9 @@ const OrderModal = ({ ...props }: Props) => {
                                                             id='type'
                                                             name='type'
                                                             options={orderTypes?.data}
+                                                            onMenuOpen={() => setSizeOrderType(5)}
+                                                            onMenuScrollToBottom={handleMenuScrollToBottomOrderType}
+                                                            isLoading={orderTypeLoading}
                                                             maxMenuHeight={160}
                                                             value={values.type}
                                                             onChange={e => {
@@ -199,6 +222,9 @@ const OrderModal = ({ ...props }: Props) => {
                                                             id='providerId'
                                                             name='providerId'
                                                             options={providers?.data}
+                                                            onMenuOpen={() => setSizeProvider(5)}
+                                                            onMenuScrollToBottom={handleMenuScrollToBottomProvider}
+                                                            isLoading={providerLoading}
                                                             maxMenuHeight={160}
                                                             value={values.providerId}
                                                             onChange={e => {

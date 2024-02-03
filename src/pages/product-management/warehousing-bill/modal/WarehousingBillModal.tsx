@@ -21,8 +21,13 @@ const WarehousingBillModal = ({ ...props }: Props) => {
     const { t } = useTranslation();
     const router = useRouter();
     const [initialValue, setInitialValue] = useState<any>();
-    const [proposal, setProposal] = useState<any>({ perPage: 0, status: "APPROVED" });
-    const [orderQuery, setOrderQuery] = useState<any>({ perPage: 0, status: "RECEIVED" });
+    const [sizeProposal, setSizeProposal] = useState(5);
+    const [sizeOder, setSizeOrder] = useState(5);
+    const [sizeWarehouse, setSizeWarehouse] = useState(5);
+    const [sizeWarehousing, setSizeWarehousing] = useState(5);
+
+    const [proposalQuery, setProposalQuery] = useState<any>({ perPage: sizeProposal, status: "APPROVED" });
+    const [orderQuery, setOrderQuery] = useState<any>({ perPage: sizeOder, status: "RECEIVED" });
 
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().required(`${t('please_fill_name')}`),
@@ -31,11 +36,10 @@ const WarehousingBillModal = ({ ...props }: Props) => {
         warehouseId: new Yup.ObjectSchema().required(`${t('please_fill_warehouse')}`),
     });
 
-    const { data: proposals } = DropdownProposals(proposal);
-    const { data: orders } = DropdownOrder(orderQuery);
-    const { data: warehouses } = DropdownWarehouses({ perPage: 0 });
-    const { data: warehousingBill } = DropdownWarehousingType({ perPage: 0 });
-
+    const { data: proposals, pagination: proposalPagination, isLoading: proposalLoading } = DropdownProposals(proposalQuery);
+    const { data: orders, pagination: orderPagination, isLoading: orderLoading } = DropdownOrder(orderQuery);
+    const { data: warehouses, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({ perPage: sizeWarehouse });
+    const { data: warehousingBill, pagination: warehousingPagination, isLoading: warehousingLoading } = DropdownWarehousingType({ perPage: sizeWarehousing });
 
     const handleWarehousing = (param: any) => {
         const query = {
@@ -95,6 +99,23 @@ const WarehousingBillModal = ({ ...props }: Props) => {
             name: props?.data ? `${props?.data?.name}` : ""
         })
     }, [props?.data, router]);
+
+    const handleMenuScrollToBottomProposal = () => {
+        if (proposalPagination?.totalRecords <= proposalPagination?.perPage) return
+        setSizeProposal(proposalPagination?.perPage + 5);
+    }
+    const handleMenuScrollToBottomOrder = () => {
+        if (orderPagination?.totalRecords <= orderPagination?.perPage) return
+        setSizeOrder(orderPagination?.perPage + 5);
+    }
+    const handleMenuScrollToBottomWarehouse = () => {
+        if (warehousePagination?.totalRecords <= warehousePagination?.perPage) return
+        setSizeWarehouse(warehousePagination?.perPage + 5);
+    }
+    const handleMenuScrollToBottomWarehousing = () => {
+        if (warehousingPagination?.totalRecords <= warehousingPagination?.perPage) return
+        setSizeWarehousing(warehousingPagination?.perPage + 5);
+    }
 
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
@@ -165,13 +186,16 @@ const WarehousingBillModal = ({ ...props }: Props) => {
                                                             id='type'
                                                             name='type'
                                                             options={warehousingBill?.data}
+                                                            onMenuOpen={() => setSizeWarehousing(5)}
+                                                            onMenuScrollToBottom={handleMenuScrollToBottomWarehousing}
+                                                            isLoading={warehousingLoading}
                                                             maxMenuHeight={160}
                                                             value={values.type}
                                                             onChange={e => {
                                                                 if (e.value === "IMPORT") {
-                                                                    setProposal({ ...orderQuery, type: "PURCHASE" })
+                                                                    setProposalQuery({ ...orderQuery, type: "PURCHASE" })
                                                                 } else {
-                                                                    setProposal({ ...orderQuery, type: "REPAIR" })
+                                                                    setProposalQuery({ ...orderQuery, type: "REPAIR" })
                                                                 }
                                                                 setFieldValue('type', e)
                                                             }}
@@ -188,6 +212,9 @@ const WarehousingBillModal = ({ ...props }: Props) => {
                                                             id='proposalId'
                                                             name='proposalId'
                                                             options={proposals?.data}
+                                                            onMenuOpen={() => setSizeProposal(5)}
+                                                            onMenuScrollToBottom={handleMenuScrollToBottomProposal}
+                                                            isLoading={proposalLoading}
                                                             maxMenuHeight={160}
                                                             value={values.proposalId}
                                                             onChange={e => {
@@ -202,7 +229,7 @@ const WarehousingBillModal = ({ ...props }: Props) => {
                                                     </div>
                                                 </div>
                                                 {
-                                                    orders?.data.length > 0 && proposal?.type === "PURCHASE" &&
+                                                    orders?.data.length > 0 && proposalQuery?.type === "PURCHASE" &&
                                                     <div className="mb-5 flex justify-between gap-4">
                                                         <div className="flex-1">
                                                             <label htmlFor="orderId" > {t('order')}</label >
@@ -210,6 +237,9 @@ const WarehousingBillModal = ({ ...props }: Props) => {
                                                                 id='orderId'
                                                                 name='orderId'
                                                                 options={orders?.data}
+                                                                onMenuOpen={() => setSizeOrder(5)}
+                                                                onMenuScrollToBottom={handleMenuScrollToBottomOrder}
+                                                                isLoading={orderLoading}
                                                                 maxMenuHeight={160}
                                                                 value={values.orderId}
                                                                 onChange={e => {
@@ -229,6 +259,9 @@ const WarehousingBillModal = ({ ...props }: Props) => {
                                                             id='warehouseId'
                                                             name='warehouseId'
                                                             options={warehouses?.data}
+                                                            onMenuOpen={() => setSizeWarehouse(5)}
+                                                            onMenuScrollToBottom={handleMenuScrollToBottomWarehouse}
+                                                            isLoading={warehouseLoading}
                                                             maxMenuHeight={160}
                                                             value={values.warehouseId}
                                                             onChange={e => {

@@ -22,6 +22,8 @@ const ProposalModal = ({ ...props }: Props) => {
     const router = useRouter();
     const [initialValue, setInitialValue] = useState<any>();
     const [repair, setRepair] = useState(false);
+    const [sizeRepair, setSizeRepair] = useState<any>(5);
+    const [sizeProposalType, setSizeProposalType] = useState<any>(5);
 
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().required(`${t('please_fill_name_proposal')}`),
@@ -30,8 +32,8 @@ const ProposalModal = ({ ...props }: Props) => {
 
     });
 
-    const { data: dropdownProposalType } = DropdownProposalType({ perPage: 0 })
-    const { data: dropdownRepair } = DropdownRepair({ perPage: 0 })
+    const { data: dropdownProposalType, pagination: proposalTypePagination, isLoading: proposalTypeLoading } = DropdownProposalType({ perPage: 0 })
+    const { data: dropdownRepair, pagination: repairPagination, isLoading: repairLoading } = DropdownRepair({ perPage: sizeRepair })
 
     const handleProposal = (param: any) => {
         const query = {
@@ -77,12 +79,22 @@ const ProposalModal = ({ ...props }: Props) => {
             } : "",
             content: props?.data ? `${props?.data?.content}` : "",
             repairRequestId: props?.data ? {
-                value: `${props?.data?.repairRequest.id}`,
-                label: `${props?.data?.repairRequest.name}`,
+                value: `${props?.data?.repairRequest?.id}`,
+                label: `${props?.data?.repairRequest?.name}`,
             } : "",
 
         })
     }, [props?.data, router]);
+
+    const handleMenuScrollToBottomRepair = () => {
+        if (repairPagination?.totalRecords <= repairPagination?.perPage) return
+        setSizeRepair(repairPagination?.perPage + 5);
+    }
+
+    const handleMenuScrollToBottomProposalType = () => {
+        if (proposalTypePagination?.totalRecords <= proposalTypePagination?.perPage) return
+        setSizeProposalType(proposalTypePagination?.perPage + 5);
+    }
 
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
@@ -119,7 +131,7 @@ const ProposalModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data !== undefined ? 'Edit proposal' : 'Add proposal'}
+                                    {props.data !== undefined ? 'Edit Proposal' : 'Add Proposal'}
                                 </div>
                                 <div className="p-5">
                                     <Formik
@@ -134,12 +146,12 @@ const ProposalModal = ({ ...props }: Props) => {
                                         {({ errors, values, setFieldValue }) => (
                                             <Form className="space-y-5" >
                                                 <div className="mb-5">
-                                                    <label htmlFor="name" > {t('name_proposal')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <label htmlFor="name" > {t('name')} < span style={{ color: 'red' }}>* </span></label >
                                                     <Field
                                                         name="name"
                                                         type="text"
                                                         id="name"
-                                                        placeholder={`${t('enter_name_proposal')}`}
+                                                        placeholder={`${t('enter_name')}`}
                                                         className="form-input"
                                                     />
                                                     {errors.name ? (
@@ -148,13 +160,16 @@ const ProposalModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mb-5 flex justify-between gap-4">
                                                     <div className="flex-1">
-                                                        <label htmlFor="type" > {t('type_proposal')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <label htmlFor="type" > {t('type')} < span style={{ color: 'red' }}>* </span></label >
                                                         <Select
                                                             id='type'
                                                             name='type'
                                                             options={dropdownProposalType?.data}
                                                             maxMenuHeight={160}
                                                             value={values.type}
+                                                            onMenuOpen={() => setSizeProposalType(5)}
+                                                            onMenuScrollToBottom={handleMenuScrollToBottomProposalType}
+                                                            isLoading={proposalTypeLoading}
                                                             onChange={e => {
                                                                 if (e.value === "REPAIR") {
                                                                     setRepair(true)
@@ -176,6 +191,9 @@ const ProposalModal = ({ ...props }: Props) => {
                                                                 id='repairRequestId'
                                                                 name='repairRequestId'
                                                                 options={dropdownRepair?.data}
+                                                                onMenuOpen={() => setSizeRepair(5)}
+                                                                onMenuScrollToBottom={handleMenuScrollToBottomRepair}
+                                                                isLoading={repairLoading}
                                                                 maxMenuHeight={160}
                                                                 value={values.repairRequestId}
                                                                 onChange={e => {
@@ -189,12 +207,12 @@ const ProposalModal = ({ ...props }: Props) => {
                                                     </div>
                                                 }
                                                 <div className="mb-5">
-                                                    <label htmlFor="type" > {t('content_proposal')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <label htmlFor="type" > {t('content')} < span style={{ color: 'red' }}>* </span></label >
                                                     <Field
                                                         name="content"
                                                         type="text"
                                                         id="content"
-                                                        placeholder={`${t('enter_content_proposal')}`}
+                                                        placeholder={`${t('enter_content')}`}
                                                         className="form-input"
                                                     />
                                                     {errors.content ? (

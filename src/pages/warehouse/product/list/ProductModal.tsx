@@ -20,10 +20,12 @@ const ProductModal = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
     const [disabled, setDisabled] = useState(false);
+    const [sizeCategory, setSizeCategory] = useState<any>(5);
+    const [sizeUnit, setSizeUnit] = useState<any>(5);
 
     //get data
-    const { data: categorys } = DropdownProductCategorys({ perPage: 0 });
-    const { data: units } = DropdownUnits({ perPage: 0 });
+    const { data: categorys, pagination: paginationCategory, isLoading: CategoryLoading } = DropdownProductCategorys({ perPage: sizeCategory });
+    const { data: units, pagination: paginationUnit, isLoading: UnitLoading } = DropdownUnits({ perPage: sizeUnit });
 
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_product')}`),
@@ -66,6 +68,16 @@ const ProductModal = ({ ...props }: Props) => {
         props.setOpenModal(false);
         props.setData(undefined);
     };
+
+    const handleMenuScrollToBottomCategory = () => {
+        if (paginationCategory?.totalRecords <= paginationCategory?.perPage) return
+        setSizeCategory(paginationCategory?.perPage + 5);
+    }
+
+    const handleMenuScrollToBottomUnit = () => {
+        if (paginationUnit?.totalRecords <= paginationUnit?.perPage) return
+        setSizeUnit(paginationUnit?.perPage + 5);
+    }
 
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
@@ -137,29 +149,29 @@ const ProductModal = ({ ...props }: Props) => {
                                         {({ errors, values, setFieldValue }) => (
                                             <Form className="space-y-5" >
                                                 <div className="mb-5">
-                                                    <label htmlFor="name" > {t('name_product')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name_product')}`} className="form-input" />
+                                                    <label htmlFor="name" > {t('name')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name')}`} className="form-input" />
                                                     {errors.name ? (
                                                         <div className="text-danger mt-1"> {errors.name} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
-                                                    <label htmlFor="code" > {t('code_product')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="code" type="text" id="code" placeholder={`${t('enter_code_product')}`} className="form-input" />
+                                                    <label htmlFor="code" > {t('code')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="code" type="text" id="code" placeholder={`${t('enter_code')}`} className="form-input" />
                                                     {errors.code ? (
                                                         <div className="text-danger mt-1"> {errors.code} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
-                                                    <label htmlFor="price" > {t('price_product')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="price" type="number" id="price" placeholder={`${t('enter_price_product')}`} className="form-input" />
+                                                    <label htmlFor="price" > {t('price')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="price" type="number" id="price" placeholder={`${t('enter_price')}`} className="form-input" />
                                                     {errors.price ? (
                                                         <div className="text-danger mt-1"> {errors.price} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="tax" > {t('tax')} </label >
-                                                    <Field name="tax" type="number" id="tax" placeholder={`${t('enter_tax_product')}`} className="form-input" />
+                                                    <Field name="tax" type="number" id="tax" placeholder={`${t('enter_tax')}`} className="form-input" />
                                                     {errors.tax ? (
                                                         <div className="text-danger mt-1"> {errors.tax} </div>
                                                     ) : null}
@@ -170,8 +182,11 @@ const ProductModal = ({ ...props }: Props) => {
                                                         id='unitId'
                                                         name='unitId'
                                                         options={units?.data}
+                                                        onMenuOpen={() => setSizeCategory(5)}
+                                                        onMenuScrollToBottom={handleMenuScrollToBottomCategory}
                                                         maxMenuHeight={160}
                                                         value={values.unitId}
+                                                        isLoading={UnitLoading}
                                                         onChange={e => {
                                                             setFieldValue('unitId', e)
                                                         }}
@@ -186,6 +201,9 @@ const ProductModal = ({ ...props }: Props) => {
                                                         id='categoryId'
                                                         name='categoryId'
                                                         options={categorys?.data}
+                                                        onMenuOpen={() => setSizeUnit(5)}
+                                                        onMenuScrollToBottom={handleMenuScrollToBottomUnit}
+                                                        isLoading={CategoryLoading}
                                                         maxMenuHeight={160}
                                                         value={values.categoryId}
                                                         onChange={e => {

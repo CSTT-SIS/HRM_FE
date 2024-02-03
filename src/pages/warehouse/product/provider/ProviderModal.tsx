@@ -20,7 +20,7 @@ const ProviderModal = ({ ...props }: Props) => {
     const [disabled, setDisabled] = useState(false);
 
     const SubmittedForm = Yup.object().shape({
-        name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_provider')}`),
+        name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name')}`),
         address: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_add')}`),
         phone: Yup.string().required(`${t('please_fill_phone')}`),
         email: Yup.string().required(`${t('please_fill_email')}`),
@@ -85,7 +85,7 @@ const ProviderModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data !== undefined ? 'Edit provider' : 'Add provider'}
+                                    {props.data !== undefined ? 'Edit Provider' : 'Add Provider'}
                                 </div>
                                 <div className="p-5">
                                     <Formik
@@ -108,8 +108,8 @@ const ProviderModal = ({ ...props }: Props) => {
                                         {({ errors, touched }) => (
                                             <Form className="space-y-5" >
                                                 <div className="mb-5">
-                                                    <label htmlFor="name" > {t('name_provider')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name_provider')}`} className="form-input" />
+                                                    <label htmlFor="name" > {t('name')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name')}`} className="form-input" />
                                                     {errors.name ? (
                                                         <div className="text-danger mt-1"> {errors.name} </div>
                                                     ) : null}

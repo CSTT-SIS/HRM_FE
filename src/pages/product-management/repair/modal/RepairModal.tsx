@@ -9,7 +9,7 @@ import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
-import { DropdownProposals, DropdownUsers } from '@/services/swr/dropdown.twr';
+import { DropdownProducts, DropdownProposals, DropdownUsers } from '@/services/swr/dropdown.twr';
 import { CreateRepair, EditRepair } from '@/services/apis/repair.api';
 
 interface Props {
@@ -21,14 +21,14 @@ const RepairModal = ({ ...props }: Props) => {
     const { t } = useTranslation();
     const router = useRouter();
     const [initialValue, setInitialValue] = useState<any>();
+    const [sizeUser, setSizeUser] = useState(5);
 
     const SubmittedForm = Yup.object().shape({
         vehicleRegistrationNumber: Yup.string().required(`${t('please_fill_name')}`),
         repairById: new Yup.ObjectSchema().required(`${t('please_fill_proposal')}`),
     });
 
-    const { data: proposals } = DropdownProposals({ perPage: 0, type: "PURCHASE" });
-    const { data: users } = DropdownUsers({ perPage: 0 });
+    const { data: users, pagination: paginationUser, isLoading: userLoading } = DropdownUsers({ perPage: sizeUser });
 
     const handleOrder = (param: any) => {
         const query = {
@@ -66,13 +66,19 @@ const RepairModal = ({ ...props }: Props) => {
         setInitialValue({
             vehicleRegistrationNumber: props?.data ? `${props?.data?.vehicle?.registrationNumber}` : "",
             repairById: props?.data ? {
-                value: `${props?.data?.proposal?.id}`,
-                label: `${props?.data?.proposal?.name}`
+                value: `${props?.data?.repairBy?.id}`,
+                label: `${props?.data?.repairBy?.fullName}`
             } : "",
             description: props?.data ? `${props?.data?.description}` : "",
             damageLevel: props?.data ? `${props?.data?.damageLevel}` : "",
         })
     }, [props?.data, router]);
+
+
+    const handleMenuScrollToBottom = () => {
+        if (paginationUser?.totalRecords <= paginationUser?.perPage) return
+        setSizeUser(paginationUser?.perPage + 5);
+    }
 
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
@@ -132,6 +138,9 @@ const RepairModal = ({ ...props }: Props) => {
                                                             options={users?.data}
                                                             maxMenuHeight={160}
                                                             value={values.repairById}
+                                                            onMenuOpen={() => setSizeUser(5)}
+                                                            onMenuScrollToBottom={handleMenuScrollToBottom}
+                                                            isLoading={userLoading}
                                                             onChange={e => {
                                                                 setFieldValue('repairById', e)
                                                             }}

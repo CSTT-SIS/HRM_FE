@@ -21,13 +21,15 @@ const HandleDetailModal = ({ ...props }: Props) => {
     const { t } = useTranslation();
     const router = useRouter();
     const [initialValue, setInitialValue] = useState<any>();
+    const [size, setSize] = useState(5);
 
     const SubmittedForm = Yup.object().shape({
         productId: new Yup.ObjectSchema().required(`${t('please_fill_product')}`),
         quantity: Yup.string().required(`${t('please_fill_quantity')}`),
     });
 
-    const { data: productDropdown } = DropdownProducts({ perPage: 0 });
+    const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ perPage: size });
+
     const handleProposal = (param: any) => {
         const query = {
             productId: Number(param.productId.value),
@@ -69,6 +71,11 @@ const HandleDetailModal = ({ ...props }: Props) => {
             note: props?.data ? `${props?.data?.note}` : "",
         })
     }, [props?.data, router]);
+
+    const handleMenuScrollToBottom = () => {
+        if (productPagination.totalRecords <= productPagination?.perPage) return
+        setSize(productPagination?.perPage + 5);
+    }
 
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
@@ -125,6 +132,9 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                             id='productId'
                                                             name='productId'
                                                             options={productDropdown?.data}
+                                                            onMenuOpen={() => setSize(5)}
+                                                            onMenuScrollToBottom={handleMenuScrollToBottom}
+                                                            isLoading={productLoading}
                                                             maxMenuHeight={160}
                                                             value={values.productId}
                                                             onChange={e => {

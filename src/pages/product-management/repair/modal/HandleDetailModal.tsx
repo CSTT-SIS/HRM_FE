@@ -21,20 +21,24 @@ const HandleDetailModal = ({ ...props }: Props) => {
     const { t } = useTranslation();
     const router = useRouter();
     const [initialValue, setInitialValue] = useState<any>();
+    const [size, setSize] = useState(5);
 
     const SubmittedForm = Yup.object().shape({
         replacementPartId: new Yup.ObjectSchema().required(`${t('please_fill_product')}`),
         quantity: Yup.string().required(`${t('please_fill_quantity')}`),
     });
 
-    const { data: productDropdown } = DropdownProducts({ perPage: 0 });
+    const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ perPage: size });
+
     const handleProposal = (param: any) => {
         const query = {
             replacementPartId: Number(param.replacementPartId.value),
             quantity: Number(param.quantity),
+            brokenPart: param.brokenPart,
+            description: param.description
         };
         if (props?.data) {
-            EditRepairDetail({ id: props.idDetail, itemId: props?.data?.id, ...query }).then(() => {
+            EditRepairDetail({ id: props.idDetail, detailId: props?.data?.id, ...query }).then(() => {
                 props.orderDetailMutate();
                 handleCancel();
                 showMessage(`${t('edit_success')}`, 'success');
@@ -65,8 +69,15 @@ const HandleDetailModal = ({ ...props }: Props) => {
                 value: `${props?.data?.replacementPart?.id}`,
                 label: `${props?.data?.replacementPart?.name}`
             } : "",
+            brokenPart: props?.data ? props?.data.brokenPart : "",
+            description: props?.data ? props?.data.description : ""
         })
     }, [props?.data, router]);
+
+    const handleMenuScrollToBottom = () => {
+        if (productPagination?.totalRecords <= productPagination?.perPage) return
+        setSize(productPagination?.perPage + 5);
+    }
 
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
@@ -123,6 +134,9 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                             id='replacementPartId'
                                                             name='replacementPartId'
                                                             options={productDropdown?.data}
+                                                            onMenuOpen={() => setSize(5)}
+                                                            onMenuScrollToBottom={handleMenuScrollToBottom}
+                                                            isLoading={productLoading}
                                                             maxMenuHeight={160}
                                                             value={values.replacementPartId}
                                                             onChange={e => {
@@ -145,6 +159,32 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                     />
                                                     {errors.quantity ? (
                                                         <div className="text-danger mt-1"> {`${errors.quantity}`} </div>
+                                                    ) : null}
+                                                </div>
+                                                <div className="mb-5">
+                                                    <label htmlFor="brokenPart" > {t('broken_part')} </label >
+                                                    <Field
+                                                        name="brokenPart"
+                                                        type="text"
+                                                        id="brokenPart"
+                                                        placeholder={`${t('enter_broken_part')}`}
+                                                        className="form-input"
+                                                    />
+                                                    {errors.brokenPart ? (
+                                                        <div className="text-danger mt-1"> {`${errors.brokenPart}`} </div>
+                                                    ) : null}
+                                                </div>
+                                                <div className="mb-5">
+                                                    <label htmlFor="description" > {t('description')}</label >
+                                                    <Field
+                                                        name="description"
+                                                        type="text"
+                                                        id="description"
+                                                        placeholder={`${t('enter_description')}`}
+                                                        className="form-input"
+                                                    />
+                                                    {errors.description ? (
+                                                        <div className="text-danger mt-1"> {`${errors.description}`} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
