@@ -25,6 +25,12 @@ const ProposalModal = ({ ...props }: Props) => {
     const [sizeRepair, setSizeRepair] = useState<any>(5);
     const [sizeProposalType, setSizeProposalType] = useState<any>(5);
 
+    useEffect(() => {
+        if (props?.data?.type === "REPAIR") {
+            setRepair(true);
+        }
+    }, [props?.data])
+
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().required(`${t('please_fill_name_proposal')}`),
         content: Yup.string().required(`${t('please_fill_content_proposal')}`),
@@ -32,7 +38,7 @@ const ProposalModal = ({ ...props }: Props) => {
 
     });
 
-    const { data: dropdownProposalType, pagination: proposalTypePagination, isLoading: proposalTypeLoading } = DropdownProposalType({ perPage: 0 })
+    const { data: dropdownProposalType, pagination: proposalTypePagination, isLoading: proposalTypeLoading } = DropdownProposalType({ perPage: sizeProposalType })
     const { data: dropdownRepair, pagination: repairPagination, isLoading: repairLoading } = DropdownRepair({ perPage: sizeRepair })
 
     const handleProposal = (param: any) => {
