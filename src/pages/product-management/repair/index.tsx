@@ -47,7 +47,6 @@ const RepairPage = ({ ...props }: Props) => {
 
     // get data
     const { data: repairs, pagination, mutate } = Repairs({ ...router.query });
-    console.log("🚀 ~ RepairPage ~ repairs:", repairs)
 
     useEffect(() => {
         dispatch(setPageTitle(`${t('Repair')}`));
