@@ -22,12 +22,15 @@ const ProposalModal = ({ ...props }: Props) => {
     const router = useRouter();
     const [initialValue, setInitialValue] = useState<any>();
     const [repair, setRepair] = useState(false);
-    const [sizeRepair, setSizeRepair] = useState<any>(5);
-    const [sizeProposalType, setSizeProposalType] = useState<any>(5);
+    const [pageRepair, setPageRepair] = useState<any>(1);
+    const [dataRepairDropdown, setDataRepairDropdown] = useState<any>([]);
+
 
     useEffect(() => {
         if (props?.data?.type === "REPAIR") {
             setRepair(true);
+        } else {
+            setRepair(false)
         }
     }, [props?.data])
 
@@ -38,8 +41,8 @@ const ProposalModal = ({ ...props }: Props) => {
 
     });
 
-    const { data: dropdownProposalType, pagination: proposalTypePagination, isLoading: proposalTypeLoading } = DropdownProposalType({ perPage: sizeProposalType })
-    const { data: dropdownRepair, pagination: repairPagination, isLoading: repairLoading } = DropdownRepair({ perPage: sizeRepair })
+    const { data: dropdownProposalType } = DropdownProposalType({ perPage: 0 })
+    const { data: dropdownRepair, pagination: repairPagination, isLoading: repairLoading } = DropdownRepair({ page: pageRepair })
 
     const handleProposal = (param: any) => {
         const query = {
@@ -92,14 +95,19 @@ const ProposalModal = ({ ...props }: Props) => {
         })
     }, [props?.data, router]);
 
-    const handleMenuScrollToBottomRepair = () => {
-        if (repairPagination?.totalRecords <= repairPagination?.perPage) return
-        setSizeRepair(repairPagination?.perPage + 5);
-    }
+    useEffect(() => {
+        if (repairPagination?.page === undefined) return;
+        if (repairPagination?.page === 1) {
+            setDataRepairDropdown(dropdownRepair?.data)
+        } else {
+            setDataRepairDropdown([...dataRepairDropdown, ...dropdownRepair?.data])
+        }
+    }, [dataRepairDropdown, dropdownRepair, repairPagination]);
 
-    const handleMenuScrollToBottomProposalType = () => {
-        if (proposalTypePagination?.totalRecords <= proposalTypePagination?.perPage) return
-        setSizeProposalType(proposalTypePagination?.perPage + 5);
+    const handleMenuScrollToBottomRepair = () => {
+        setTimeout(() => {
+            setPageRepair(repairPagination?.page + 1);
+        }, 1000);
     }
 
     return (
@@ -173,12 +181,12 @@ const ProposalModal = ({ ...props }: Props) => {
                                                             options={dropdownProposalType?.data}
                                                             maxMenuHeight={160}
                                                             value={values.type}
-                                                            onMenuOpen={() => setSizeProposalType(5)}
-                                                            onMenuScrollToBottom={handleMenuScrollToBottomProposalType}
-                                                            isLoading={proposalTypeLoading}
                                                             onChange={e => {
                                                                 if (e.value === "REPAIR") {
+                                                                    setFieldValue('repairRequestId', '')
                                                                     setRepair(true)
+                                                                } else {
+                                                                    setRepair(false)
                                                                 }
                                                                 setFieldValue('type', e)
                                                             }}
@@ -196,8 +204,9 @@ const ProposalModal = ({ ...props }: Props) => {
                                                             <Select
                                                                 id='repairRequestId'
                                                                 name='repairRequestId'
-                                                                options={dropdownRepair?.data}
-                                                                onMenuOpen={() => setSizeRepair(5)}
+                                                                options={dataRepairDropdown}
+                                                                onMenuOpen={() => setPageRepair(1)}
+                                                                onMenuClose={() => setDataRepairDropdown([])}
                                                                 onMenuScrollToBottom={handleMenuScrollToBottomRepair}
                                                                 isLoading={repairLoading}
                                                                 maxMenuHeight={160}

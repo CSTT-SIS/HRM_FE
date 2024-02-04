@@ -21,13 +21,17 @@ const WarehousingBillModal = ({ ...props }: Props) => {
     const { t } = useTranslation();
     const router = useRouter();
     const [initialValue, setInitialValue] = useState<any>();
-    const [sizeProposal, setSizeProposal] = useState(5);
-    const [sizeOder, setSizeOrder] = useState(5);
-    const [sizeWarehouse, setSizeWarehouse] = useState(5);
-    const [sizeWarehousing, setSizeWarehousing] = useState(5);
+    const [proposalStatus, setproposalStatus] = useState(true);
+    const [pageProposal, setPageProposal] = useState(1);
+    const [pageOder, setPageOrder] = useState(1);
+    const [pageWarehouse, setPageWarehouse] = useState(1);
+    const [dataProposalDropdown, setDataProposalDropdown] = useState<any>([]);
+    const [dataOrderDropdown, setDataOrderDropdown] = useState<any>([]);
+    const [dataWarehouseDropdown, setDataWarehouseDropdown] = useState<any>([]);
 
-    const [proposalQuery, setProposalQuery] = useState<any>({ perPage: sizeProposal, status: "APPROVED" });
-    const [orderQuery, setOrderQuery] = useState<any>({ perPage: sizeOder, status: "RECEIVED" });
+
+    const [proposalQuery, setProposalQuery] = useState<any>({ page: pageProposal, status: "APPROVED" });
+    const [orderQuery, setOrderQuery] = useState<any>({ page: pageOder, status: "RECEIVED" });
 
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().required(`${t('please_fill_name')}`),
@@ -38,8 +42,8 @@ const WarehousingBillModal = ({ ...props }: Props) => {
 
     const { data: proposals, pagination: proposalPagination, isLoading: proposalLoading } = DropdownProposals(proposalQuery);
     const { data: orders, pagination: orderPagination, isLoading: orderLoading } = DropdownOrder(orderQuery);
-    const { data: warehouses, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({ perPage: sizeWarehouse });
-    const { data: warehousingBill, pagination: warehousingPagination, isLoading: warehousingLoading } = DropdownWarehousingType({ perPage: sizeWarehousing });
+    const { data: warehouses, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({ page: pageWarehouse });
+    const { data: warehousingBill, pagination: warehousingPagination, isLoading: warehousingLoading } = DropdownWarehousingType({ perPage: 0 });
 
     const handleWarehousing = (param: any) => {
         const query = {
@@ -73,7 +77,10 @@ const WarehousingBillModal = ({ ...props }: Props) => {
         props.setOpenModal(false);
         props.setData();
         setInitialValue({});
+        setProposalQuery({ ...proposalQuery, type: "" })
     };
+    console.log("🚀 ~ handleCancel ~ orderQuery:", proposalQuery)
+
     useEffect(() => {
         setInitialValue({
             proposalId: props?.data ? {
@@ -100,21 +107,52 @@ const WarehousingBillModal = ({ ...props }: Props) => {
         })
     }, [props?.data, router]);
 
+    useEffect(() => {
+        if (proposalPagination?.page === undefined) return;
+        if (proposalPagination?.page === 1) {
+            setDataProposalDropdown(proposals?.data)
+        } else {
+            setDataProposalDropdown([...dataProposalDropdown, ...proposals?.data])
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [proposalPagination])
+
+    useEffect(() => {
+        if (orderPagination?.page === undefined) return;
+        if (orderPagination?.page === 1) {
+            setDataOrderDropdown(orders?.data)
+        } else {
+            setDataOrderDropdown([...dataOrderDropdown, ...orders?.data])
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [orderPagination])
+
+    useEffect(() => {
+        if (warehousePagination?.page === undefined) return;
+        if (warehousePagination?.page === 1) {
+            setDataWarehouseDropdown(warehouses?.data)
+        } else {
+            setDataWarehouseDropdown([...dataWarehouseDropdown, ...warehouses?.data])
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [warehousePagination])
+
     const handleMenuScrollToBottomProposal = () => {
-        if (proposalPagination?.totalRecords <= proposalPagination?.perPage) return
-        setSizeProposal(proposalPagination?.perPage + 5);
+        setTimeout(() => {
+            setPageProposal(proposalPagination?.page + 1);
+        }, 1000);
     }
+
     const handleMenuScrollToBottomOrder = () => {
-        if (orderPagination?.totalRecords <= orderPagination?.perPage) return
-        setSizeOrder(orderPagination?.perPage + 5);
+        setTimeout(() => {
+            setPageOrder(orderPagination?.page + 1);
+        }, 1000);
     }
+
     const handleMenuScrollToBottomWarehouse = () => {
-        if (warehousePagination?.totalRecords <= warehousePagination?.perPage) return
-        setSizeWarehouse(warehousePagination?.perPage + 5);
-    }
-    const handleMenuScrollToBottomWarehousing = () => {
-        if (warehousingPagination?.totalRecords <= warehousingPagination?.perPage) return
-        setSizeWarehousing(warehousingPagination?.perPage + 5);
+        setTimeout(() => {
+            setPageWarehouse(warehousePagination?.page + 1);
+        }, 1000);
     }
 
     return (
@@ -186,17 +224,16 @@ const WarehousingBillModal = ({ ...props }: Props) => {
                                                             id='type'
                                                             name='type'
                                                             options={warehousingBill?.data}
-                                                            onMenuOpen={() => setSizeWarehousing(5)}
-                                                            onMenuScrollToBottom={handleMenuScrollToBottomWarehousing}
                                                             isLoading={warehousingLoading}
                                                             maxMenuHeight={160}
                                                             value={values.type}
                                                             onChange={e => {
                                                                 if (e.value === "IMPORT") {
-                                                                    setProposalQuery({ ...orderQuery, type: "PURCHASE" })
+                                                                    setProposalQuery({ ...proposalQuery, type: "PURCHASE" })
                                                                 } else {
-                                                                    setProposalQuery({ ...orderQuery, type: "REPAIR" })
+                                                                    setProposalQuery({ ...proposalQuery, type: "REPAIR" })
                                                                 }
+                                                                setproposalStatus(false)
                                                                 setFieldValue('type', e)
                                                             }}
                                                         />
@@ -211,12 +248,13 @@ const WarehousingBillModal = ({ ...props }: Props) => {
                                                         <Select
                                                             id='proposalId'
                                                             name='proposalId'
-                                                            options={proposals?.data}
-                                                            onMenuOpen={() => setSizeProposal(5)}
+                                                            options={dataProposalDropdown}
+                                                            onMenuOpen={() => setPageProposal(1)}
                                                             onMenuScrollToBottom={handleMenuScrollToBottomProposal}
                                                             isLoading={proposalLoading}
                                                             maxMenuHeight={160}
                                                             value={values.proposalId}
+                                                            isDisabled={proposalStatus}
                                                             onChange={e => {
                                                                 setOrderQuery({ ...orderQuery, proposalId: e.value })
                                                                 setFieldValue('proposalId', e)
@@ -236,8 +274,8 @@ const WarehousingBillModal = ({ ...props }: Props) => {
                                                             <Select
                                                                 id='orderId'
                                                                 name='orderId'
-                                                                options={orders?.data}
-                                                                onMenuOpen={() => setSizeOrder(5)}
+                                                                options={dataOrderDropdown}
+                                                                onMenuOpen={() => setPageOrder(1)}
                                                                 onMenuScrollToBottom={handleMenuScrollToBottomOrder}
                                                                 isLoading={orderLoading}
                                                                 maxMenuHeight={160}
@@ -258,8 +296,8 @@ const WarehousingBillModal = ({ ...props }: Props) => {
                                                         <Select
                                                             id='warehouseId'
                                                             name='warehouseId'
-                                                            options={warehouses?.data}
-                                                            onMenuOpen={() => setSizeWarehouse(5)}
+                                                            options={dataWarehouseDropdown}
+                                                            onMenuOpen={() => setPageWarehouse(1)}
                                                             onMenuScrollToBottom={handleMenuScrollToBottomWarehouse}
                                                             isLoading={warehouseLoading}
                                                             maxMenuHeight={160}

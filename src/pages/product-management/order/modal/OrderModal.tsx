@@ -22,9 +22,11 @@ const OrderModal = ({ ...props }: Props) => {
     const { t } = useTranslation();
     const router = useRouter();
     const [initialValue, setInitialValue] = useState<any>();
-    const [sizeProposal, setSizeProposal] = useState(5);
-    const [sizeOrderType, setSizeOrderType] = useState(5);
-    const [sizeProvider, setSizeProvider] = useState(5);
+    const [pageProposal, setPageProposal] = useState(1);
+    const [pageProvider, setPageProvider] = useState(1);
+    const [dataProposalDropdown, setDataProposalDropdown] = useState<any>([]);
+    const [dataProviderDropdown, setDataProviderDropdown] = useState<any>([]);
+
 
 
     const SubmittedForm = Yup.object().shape({
@@ -37,9 +39,9 @@ const OrderModal = ({ ...props }: Props) => {
 
     });
 
-    const { data: proposals, pagination: proposalPagiantion, isLoading: proposalLoading } = DropdownProposals({ perPage: sizeProposal, type: "PURCHASE" });
-    const { data: orderTypes, pagination: orderTypePagiantion, isLoading: orderTypeLoading } = DropdownOrderType({ perPage: sizeOrderType });
-    const { data: providers, pagination: providerPagiantion, isLoading: providerLoading } = DropdownProviders({ perPage: sizeProvider });
+    const { data: proposals, pagination: proposalPagiantion, isLoading: proposalLoading } = DropdownProposals({ page: pageProposal, type: "PURCHASE" });
+    const { data: orderTypes } = DropdownOrderType({ perPage: 0 });
+    const { data: providers, pagination: providerPagiantion, isLoading: providerLoading } = DropdownProviders({ page: pageProvider });
 
     const handleOrder = (param: any) => {
         const query = {
@@ -98,17 +100,35 @@ const OrderModal = ({ ...props }: Props) => {
         })
     }, [props?.data, router]);
 
+    useEffect(() => {
+        if (providerPagiantion?.page === undefined) return;
+        if (providerPagiantion?.page === 1) {
+            setDataProviderDropdown(providers?.data)
+        } else {
+            setDataProviderDropdown([...dataProviderDropdown, ...providers?.data])
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [providerPagiantion])
+
+    useEffect(() => {
+        if (proposalPagiantion?.page === undefined) return;
+        if (proposalPagiantion?.page === 1) {
+            setDataProposalDropdown(proposals?.data)
+        } else {
+            setDataProposalDropdown([...dataProposalDropdown, ...proposals?.data])
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [proposalPagiantion])
+
     const handleMenuScrollToBottomProposal = () => {
-        if (proposalPagiantion?.totalRecords <= proposalPagiantion?.perPage) return
-        setSizeProposal(proposalPagiantion?.perPage + 5);
-    }
-    const handleMenuScrollToBottomOrderType = () => {
-        if (orderTypePagiantion?.totalRecords <= orderTypePagiantion?.perPage) return
-        setSizeOrderType(orderTypePagiantion?.perPage + 5);
+        setTimeout(() => {
+            setPageProposal(proposalPagiantion?.page + 1);
+        }, 1000);
     }
     const handleMenuScrollToBottomProvider = () => {
-        if (providerPagiantion?.totalRecords <= providerPagiantion?.perPage) return
-        setSizeProvider(providerPagiantion?.perPage + 5);
+        setTimeout(() => {
+            setPageProvider(providerPagiantion?.page + 1);
+        }, 1000);
     }
 
     return (
@@ -179,8 +199,8 @@ const OrderModal = ({ ...props }: Props) => {
                                                         <Select
                                                             id='proposalId'
                                                             name='proposalId'
-                                                            options={proposals?.data}
-                                                            onMenuOpen={() => setSizeProposal(5)}
+                                                            options={dataProposalDropdown}
+                                                            onMenuOpen={() => setPageProposal(1)}
                                                             onMenuScrollToBottom={handleMenuScrollToBottomProposal}
                                                             isLoading={proposalLoading}
                                                             maxMenuHeight={160}
@@ -201,9 +221,6 @@ const OrderModal = ({ ...props }: Props) => {
                                                             id='type'
                                                             name='type'
                                                             options={orderTypes?.data}
-                                                            onMenuOpen={() => setSizeOrderType(5)}
-                                                            onMenuScrollToBottom={handleMenuScrollToBottomOrderType}
-                                                            isLoading={orderTypeLoading}
                                                             maxMenuHeight={160}
                                                             value={values.type}
                                                             onChange={e => {
@@ -221,8 +238,8 @@ const OrderModal = ({ ...props }: Props) => {
                                                         <Select
                                                             id='providerId'
                                                             name='providerId'
-                                                            options={providers?.data}
-                                                            onMenuOpen={() => setSizeProvider(5)}
+                                                            options={dataProviderDropdown}
+                                                            onMenuOpen={() => setPageProvider(1)}
                                                             onMenuScrollToBottom={handleMenuScrollToBottomProvider}
                                                             isLoading={providerLoading}
                                                             maxMenuHeight={160}

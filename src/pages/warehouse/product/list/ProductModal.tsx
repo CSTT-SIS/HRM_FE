@@ -20,12 +20,14 @@ const ProductModal = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
     const [disabled, setDisabled] = useState(false);
-    const [sizeCategory, setSizeCategory] = useState<any>(5);
-    const [sizeUnit, setSizeUnit] = useState<any>(5);
+    const [pageCategory, setSizeCategory] = useState<any>(1);
+    const [pageUnit, setSizeUnit] = useState<any>(1);
+    const [dataCategoryDropdown, setDataCategoryDropdown] = useState<any>([]);
+    const [dataUnitDropdown, setDataUnitDropdown] = useState<any>([]);
 
     //get data
-    const { data: categorys, pagination: paginationCategory, isLoading: CategoryLoading } = DropdownProductCategorys({ perPage: sizeCategory });
-    const { data: units, pagination: paginationUnit, isLoading: UnitLoading } = DropdownUnits({ perPage: sizeUnit });
+    const { data: categorys, pagination: paginationCategory, isLoading: CategoryLoading } = DropdownProductCategorys({ page: pageCategory });
+    const { data: units, pagination: paginationUnit, isLoading: UnitLoading } = DropdownUnits({ page: pageUnit });
 
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_product')}`),
@@ -68,15 +70,36 @@ const ProductModal = ({ ...props }: Props) => {
         props.setOpenModal(false);
         props.setData(undefined);
     };
+    useEffect(() => {
+        if (paginationCategory?.page === undefined) return;
+        if (paginationCategory?.page === 1) {
+            setDataCategoryDropdown(categorys?.data)
+        } else {
+            setDataCategoryDropdown([...dataCategoryDropdown, ...categorys?.data])
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [paginationCategory])
+
+    useEffect(() => {
+        if (paginationUnit?.page === undefined) return;
+        if (paginationUnit?.page === 1) {
+            setDataUnitDropdown(units?.data)
+        } else {
+            setDataUnitDropdown([...dataUnitDropdown, ...units?.data])
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [paginationUnit])
 
     const handleMenuScrollToBottomCategory = () => {
-        if (paginationCategory?.totalRecords <= paginationCategory?.perPage) return
-        setSizeCategory(paginationCategory?.perPage + 5);
+        setTimeout(() => {
+            setSizeCategory(paginationCategory?.page + 1);
+        }, 1000);
     }
 
     const handleMenuScrollToBottomUnit = () => {
-        if (paginationUnit?.totalRecords <= paginationUnit?.perPage) return
-        setSizeUnit(paginationUnit?.perPage + 5);
+        setTimeout(() => {
+            setSizeUnit(paginationUnit?.page + 1);
+        }, 1000);
     }
 
     return (
@@ -181,9 +204,9 @@ const ProductModal = ({ ...props }: Props) => {
                                                     <Select
                                                         id='unitId'
                                                         name='unitId'
-                                                        options={units?.data}
-                                                        onMenuOpen={() => setSizeCategory(5)}
-                                                        onMenuScrollToBottom={handleMenuScrollToBottomCategory}
+                                                        options={dataUnitDropdown}
+                                                        onMenuOpen={() => setSizeUnit(1)}
+                                                        onMenuScrollToBottom={handleMenuScrollToBottomUnit}
                                                         maxMenuHeight={160}
                                                         value={values.unitId}
                                                         isLoading={UnitLoading}
@@ -200,9 +223,9 @@ const ProductModal = ({ ...props }: Props) => {
                                                     <Select
                                                         id='categoryId'
                                                         name='categoryId'
-                                                        options={categorys?.data}
-                                                        onMenuOpen={() => setSizeUnit(5)}
-                                                        onMenuScrollToBottom={handleMenuScrollToBottomUnit}
+                                                        options={dataCategoryDropdown}
+                                                        onMenuOpen={() => setSizeCategory(1)}
+                                                        onMenuScrollToBottom={handleMenuScrollToBottomCategory}
                                                         isLoading={CategoryLoading}
                                                         maxMenuHeight={160}
                                                         value={values.categoryId}

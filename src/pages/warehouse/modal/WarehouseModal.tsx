@@ -21,10 +21,11 @@ const WarehouseModal = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
     const [openModal, setOpenModal] = useState(false);
-    const [size, setSize] = useState<any>(5);
+    const [dataWarehouseTypeDropdown, setDataWarehouseTypeDropdown] = useState<any>([]);
+    const [page, setPage] = useState(1);
 
     // get data 
-    const { data: dropdownWarehouseType, pagination: paginationWarehousetype, isLoading, mutate } = DropdownWarehouseTypes({ perPage: size });
+    const { data: dropdownWarehouseType, pagination: paginationWarehousetype, isLoading, mutate } = DropdownWarehouseTypes({ page: page });
 
 
     const SubmittedForm = Yup.object().shape({
@@ -64,9 +65,20 @@ const WarehouseModal = ({ ...props }: Props) => {
         props.setData();
     };
 
+    useEffect(() => {
+        if (paginationWarehousetype?.page === undefined) return;
+        if (paginationWarehousetype?.page === 1) {
+            setDataWarehouseTypeDropdown(dropdownWarehouseType?.data)
+        } else {
+            setDataWarehouseTypeDropdown([...dataWarehouseTypeDropdown, ...dropdownWarehouseType?.data])
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [paginationWarehousetype])
+
     const handleMenuScrollToBottom = () => {
-        if (paginationWarehousetype?.totalRecords <= paginationWarehousetype?.perPage) return
-        setSize(paginationWarehousetype?.perPage + 5);
+        setTimeout(() => {
+            setPage(paginationWarehousetype?.page + 1);
+        }, 1000);
     }
 
     const SelectMenuButton = (props: any) => {
@@ -165,9 +177,9 @@ const WarehouseModal = ({ ...props }: Props) => {
                                                         <Select
                                                             id='typeId'
                                                             name='typeId'
-                                                            options={dropdownWarehouseType?.data}
+                                                            options={dataWarehouseTypeDropdown}
                                                             components={{ MenuList: SelectMenuButton }}
-                                                            onMenuOpen={() => setSize(5)}
+                                                            onMenuOpen={() => setPage(1)}
                                                             onMenuScrollToBottom={handleMenuScrollToBottom}
                                                             maxMenuHeight={160}
                                                             value={values.typeId}

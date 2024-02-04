@@ -21,14 +21,15 @@ const RepairModal = ({ ...props }: Props) => {
     const { t } = useTranslation();
     const router = useRouter();
     const [initialValue, setInitialValue] = useState<any>();
-    const [sizeUser, setSizeUser] = useState(5);
+    const [dataUserDropdown, setDataUserDropdown] = useState<any>([]);
+    const [page, setPage] = useState(1);
 
     const SubmittedForm = Yup.object().shape({
         vehicleRegistrationNumber: Yup.string().required(`${t('please_fill_name')}`),
         repairById: new Yup.ObjectSchema().required(`${t('please_fill_proposal')}`),
     });
 
-    const { data: users, pagination: paginationUser, isLoading: userLoading } = DropdownUsers({ perPage: sizeUser });
+    const { data: users, pagination: paginationUser, isLoading: userLoading } = DropdownUsers({ page: page });
 
     const handleOrder = (param: any) => {
         const query = {
@@ -75,9 +76,20 @@ const RepairModal = ({ ...props }: Props) => {
     }, [props?.data, router]);
 
 
+    useEffect(() => {
+        if (paginationUser?.page === undefined) return;
+        if (paginationUser?.page === 1) {
+            setDataUserDropdown(users?.data)
+        } else {
+            setDataUserDropdown([...dataUserDropdown, ...users?.data])
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [paginationUser])
+
     const handleMenuScrollToBottom = () => {
-        if (paginationUser?.totalRecords <= paginationUser?.perPage) return
-        setSizeUser(paginationUser?.perPage + 5);
+        setTimeout(() => {
+            setPage(paginationUser?.page + 1);
+        }, 1000);
     }
 
     return (
@@ -135,10 +147,10 @@ const RepairModal = ({ ...props }: Props) => {
                                                         <Select
                                                             id='repairById'
                                                             name='repairById'
-                                                            options={users?.data}
+                                                            options={dataUserDropdown}
                                                             maxMenuHeight={160}
                                                             value={values.repairById}
-                                                            onMenuOpen={() => setSizeUser(5)}
+                                                            onMenuOpen={() => setPage(1)}
                                                             onMenuScrollToBottom={handleMenuScrollToBottom}
                                                             isLoading={userLoading}
                                                             onChange={e => {

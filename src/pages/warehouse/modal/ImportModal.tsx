@@ -21,8 +21,8 @@ const ImportModal = ({ ...props }: Props) => {
     const [disabled, setDisabled] = useState(false);
     const router = useRouter();
     const [initialValue, setInitialValue] = useState<any>();
-    const [size, setSize] = useState<any>(5);
-
+    const [dataProductDropdown, setDataProductDropdown] = useState<any>([]);
+    const [page, setPage] = useState(1);
 
     const SubmittedForm = Yup.object().shape({
         quantity: Yup.string().required(`${t('please_fill_quantity')}`),
@@ -31,9 +31,7 @@ const ImportModal = ({ ...props }: Props) => {
     });
 
     //get data 
-    // const { data: products } = Products(query);
-    const { data: products, pagination: paginationProduct, isLoading } = DropdownProducts({ perPage: size });
-
+    const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ page: page });
 
     const handleImport = (param: any) => {
         const query = {
@@ -67,9 +65,20 @@ const ImportModal = ({ ...props }: Props) => {
         })
     }, [props?.data, router]);
 
+    useEffect(() => {
+        if (productPagination?.page === undefined) return;
+        if (productPagination?.page === 1) {
+            setDataProductDropdown(productDropdown?.data)
+        } else {
+            setDataProductDropdown([...dataProductDropdown, ...productDropdown?.data])
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [productPagination])
+
     const handleMenuScrollToBottom = () => {
-        if (paginationProduct?.totalRecords <= paginationProduct?.perPage) return
-        setSize(paginationProduct?.perPage + 5);
+        setTimeout(() => {
+            setPage(productPagination?.page + 1);
+        }, 1000);
     }
 
     return (
@@ -127,10 +136,10 @@ const ImportModal = ({ ...props }: Props) => {
                                                         <Select
                                                             id='productId'
                                                             name='productId'
-                                                            options={products?.data}
-                                                            onMenuOpen={() => setSize(5)}
+                                                            options={dataProductDropdown}
+                                                            onMenuOpen={() => setPage(1)}
                                                             onMenuScrollToBottom={handleMenuScrollToBottom}
-                                                            isLoading={isLoading}
+                                                            isLoading={productLoading}
                                                             maxMenuHeight={160}
                                                             value={values.productId}
                                                             onChange={e => {
