@@ -36,7 +36,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
             productId: Number(param.productId.value),
             quantity: Number(param.quantity),
             note: param.note,
-            price: param.price
+            price: param?.price
         };
         if (props?.data) {
             EditProposalDetail({ id: props.idDetail, detailId: props?.data?.id, ...query }).then(() => {
