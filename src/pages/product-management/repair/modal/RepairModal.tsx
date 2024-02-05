@@ -9,7 +9,7 @@ import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
-import { DropdownProducts, DropdownProposals, DropdownUsers } from '@/services/swr/dropdown.twr';
+import { DropdownUsers } from '@/services/swr/dropdown.twr';
 import { CreateRepair, EditRepair } from '@/services/apis/repair.api';
 
 interface Props {
@@ -31,7 +31,7 @@ const RepairModal = ({ ...props }: Props) => {
 
     const { data: users, pagination: paginationUser, isLoading: userLoading } = DropdownUsers({ page: page });
 
-    const handleOrder = (param: any) => {
+    const handleRepair = (param: any) => {
         const query = {
             vehicleRegistrationNumber: param.vehicleRegistrationNumber,
             repairById: Number(param.repairById.value),
@@ -134,7 +134,7 @@ const RepairModal = ({ ...props }: Props) => {
                                         initialValues={initialValue}
                                         validationSchema={SubmittedForm}
                                         onSubmit={values => {
-                                            handleOrder(values);
+                                            handleRepair(values);
                                         }}
                                         enableReinitialize
                                     >

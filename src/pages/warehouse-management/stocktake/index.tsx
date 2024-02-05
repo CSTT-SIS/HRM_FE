@@ -8,9 +8,10 @@ import Swal from 'sweetalert2';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
+import moment from 'moment';
 // API
-import { Proposals } from '@/services/swr/proposal.twr';
-import { DeleteProposal, ProposalApprove, ProposalReject, ProposalReturn } from '@/services/apis/proposal.api';
+import { Stocktakes } from '@/services/swr/stocktake.twr';
+import { DeleteStocktake, StocktakeApprove, StocktakeCancel, StocktakeFinish, StocktakeReject } from '@/services/apis/stocktake.api';
 // constants
 import { PAGE_SIZES } from '@/utils/constants';
 // helper
@@ -20,12 +21,16 @@ import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
 import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
-import IconCircleCheck from '@/components/Icon/IconCircleCheck';
 import IconXCircle from '@/components/Icon/IconXCircle';
+import IconChecks from '@/components/Icon/IconChecks';
+import IconCircleCheck from '@/components/Icon/IconCircleCheck';
 import IconRestore from '@/components/Icon/IconRestore';
+import { IconInventory } from '@/components/Icon/IconInventory';
 // modal
-import ProposalModal from './modal/ProposalModal';
 import DetailModal from './modal/DetailModal';
+import StocktakeModal from './modal/StocktakeModal';
+
+
 
 
 
@@ -34,7 +39,7 @@ interface Props {
     [key: string]: any;
 }
 
-const ProposalPage = ({ ...props }: Props) => {
+const StocktakePage = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -46,21 +51,20 @@ const ProposalPage = ({ ...props }: Props) => {
     const [openModalDetail, setOpenModalDetail] = useState(false);
     const [idDetail, setIdDetail] = useState();
     const [status, setStatus] = useState();
-    const [type, setType] = useState();
+    const [tally, setTally] = useState(false);
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
 
     // get data
-    const { data: proposal, pagination, mutate } = Proposals({ sortBy: 'id.ASC', ...router.query });
-
+    const { data: stocktakes, pagination, mutate } = Stocktakes({ ...router.query });
     useEffect(() => {
-        dispatch(setPageTitle(`${t('proposal')}`));
+        dispatch(setPageTitle(`${t('Stocktake')}`));
     });
 
     useEffect(() => {
         setShowLoader(false);
-    }, [proposal])
+    }, [stocktakes])
 
     const handleEdit = (data: any) => {
         setOpenModal(true);
@@ -79,7 +83,7 @@ const ProposalPage = ({ ...props }: Props) => {
         swalDeletes
             .fire({
                 icon: 'question',
-                title: `${t('delete_proposal')}`,
+                title: `${t('delete_stocktake')}`,
                 text: `${t('delete')} ${name}`,
                 padding: '2em',
                 showCancelButton: true,
@@ -87,7 +91,7 @@ const ProposalPage = ({ ...props }: Props) => {
             })
             .then((result) => {
                 if (result.value) {
-                    DeleteProposal({ id }).then(() => {
+                    DeleteStocktake({ id }).then(() => {
                         mutate();
                         showMessage(`${t('delete_success')}`, 'success');
                     }).catch((err) => {
@@ -126,23 +130,13 @@ const ProposalPage = ({ ...props }: Props) => {
     };
 
     const handleDetail = (value: any) => {
-        setType(value.type)
         setOpenModalDetail(true);
         setIdDetail(value.id);
         setStatus(value.status);
     }
 
-    const handleApprove = ({ id }: any) => {
-        ProposalApprove({ id }).then(() => {
-            mutate();
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
-
     const handleReject = ({ id }: any) => {
-        ProposalReject({ id }).then(() => {
+        StocktakeReject({ id }).then(() => {
             mutate();
             showMessage(`${t('update_success')}`, 'success');
         }).catch((err) => {
@@ -150,13 +144,38 @@ const ProposalPage = ({ ...props }: Props) => {
         });
     }
 
-    const handleReturn = ({ id }: any) => {
-        ProposalReturn({ id }).then(() => {
+    const handleCancel = ({ id }: any) => {
+        StocktakeCancel({ id }).then(() => {
             mutate();
             showMessage(`${t('update_success')}`, 'success');
         }).catch((err) => {
             showMessage(`${err?.response?.data?.message}`, 'error');
         });
+    }
+
+    const handleApprove = ({ id }: any) => {
+        StocktakeApprove({ id }).then(() => {
+            mutate();
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
+    const handleFinish = ({ id }: any) => {
+        StocktakeFinish({ id }).then(() => {
+            mutate();
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
+    const handleTally = (value: any) => {
+        setOpenModalDetail(true);
+        setIdDetail(value.id);
+        setStatus(value.status);
+        setTally(true);
     }
 
     const columns = [
@@ -165,9 +184,34 @@ const ProposalPage = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
-        { accessor: 'name', title: 'Tên đề xuất', sortable: false },
-        { accessor: 'type', title: 'Loại đề xuất', sortable: false },
-        { accessor: 'content', title: 'Nội dung', sortable: false },
+        { accessor: 'name', title: 'Tên đơn hàng', sortable: false },
+        {
+            accessor: 'warehouse',
+            title: 'Tên kho',
+            render: ({ warehouse }: any) => <span>{warehouse?.name}</span>,
+        },
+        {
+            accessor: 'participants',
+            title: 'Người tham gia',
+            render: ({ participants }: any) => {
+                return participants?.map((item: any, index: any) => {
+                    return (
+                        <span key={item}>{index + 1 < participants.length ? item?.fullName + ", " : item?.fullName}</span>
+                    )
+                })
+            }
+        },
+        {
+            accessor: 'startDate',
+            title: 'Ngày bắt đầu',
+            render: ({ startDate }: any) => <span>{moment(startDate).format("DD/MM/YYYY")}</span>,
+        },
+        {
+            accessor: 'EndDate',
+            title: 'Ngày kết thúc',
+            render: ({ EndDate }: any) => <span>{moment(EndDate).format("DD/MM/YYYY")}</span>,
+        },
+        { accessor: 'description', title: 'Ghi chú', sortable: false },
         { accessor: 'status', title: 'Trạng thái', sortable: false },
         {
             accessor: 'action',
@@ -175,9 +219,14 @@ const ProposalPage = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('add detail')}`}>
+                    <Tippy content={`${t('add_detail')}`}>
                         <button type="button" onClick={() => handleDetail(records)}>
                             <IconPlus />
+                        </button>
+                    </Tippy>
+                    <Tippy content={`${t('tally')}`}>
+                        <button type="button" onClick={() => handleTally(records)}>
+                            <IconInventory />
                         </button>
                     </Tippy>
                     <Tippy content={`${t('edit')}`}>
@@ -190,19 +239,24 @@ const ProposalPage = ({ ...props }: Props) => {
                             <IconTrashLines />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('approve')}`}>
-                        <button type="button" onClick={() => handleApprove(records)}>
-                            <IconCircleCheck size={20} />
+                    <Tippy content={`${t('finish')}`}>
+                        <button type="button" onClick={() => handleFinish(records)}>
+                            <IconChecks />
                         </button>
                     </Tippy>
                     <Tippy content={`${t('reject')}`}>
                         <button type="button" onClick={() => handleReject(records)}>
+                            <IconRestore />
+                        </button>
+                    </Tippy>
+                    <Tippy content={`${t('cancel')}`}>
+                        <button type="button" onClick={() => handleCancel(records)}>
                             <IconXCircle />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('return')}`}>
-                        <button type="button" onClick={() => handleReturn(records)}>
-                            <IconRestore />
+                    <Tippy content={`${t('approve')}`}>
+                        <button type="button" onClick={() => handleApprove(records)}>
+                            <IconCircleCheck size={20} />
                         </button>
                     </Tippy>
                 </div>
@@ -233,7 +287,7 @@ const ProposalPage = ({ ...props }: Props) => {
                     <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover"
-                        records={proposal?.data}
+                        records={stocktakes?.data}
                         columns={columns}
                         totalRecords={pagination?.totalRecords}
                         recordsPerPage={pagination?.perPage}
@@ -248,23 +302,24 @@ const ProposalPage = ({ ...props }: Props) => {
                     />
                 </div>
             </div>
-            <ProposalModal
+            <StocktakeModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}
                 data={data}
                 setData={setData}
-                proposalMutate={mutate}
+                stocktakeMutate={mutate}
             />
             <DetailModal
                 openModalDetail={openModalDetail}
                 setOpenModalDetail={setOpenModalDetail}
                 idDetail={idDetail}
                 status={status}
-                proposalMutate={mutate}
-                type={type}
+                stocktakeMutate={mutate}
+                tally={tally}
+                setTally={setTally}
             />
         </div>
     );
 };
 
-export default ProposalPage;
+export default StocktakePage;

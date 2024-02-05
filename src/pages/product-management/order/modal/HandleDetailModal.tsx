@@ -31,7 +31,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
 
     const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ page: page });
 
-    const handleProposal = (param: any) => {
+    const handleOrder = (param: any) => {
         const query = {
             productId: Number(param.productId.value),
             quantity: Number(param.quantity),
@@ -131,7 +131,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                         initialValues={initialValue}
                                         validationSchema={SubmittedForm}
                                         onSubmit={values => {
-                                            handleProposal(values);
+                                            handleOrder(values);
                                         }}
                                         enableReinitialize
                                     >

@@ -32,7 +32,6 @@ const ProductModal = ({ ...props }: Props) => {
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_product')}`),
         code: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_productCode')}`),
-        price: Yup.number().required(`${t('please_fill_status')}`),
         unitId: new Yup.ObjectSchema().required(`${t('please_fill_unit')}`),
         providerId: new Yup.ObjectSchema().required(`${t('please_fill_provider')}`),
         categoryId: new Yup.ObjectSchema().required(`${t('please_fill_category')}`)
@@ -41,8 +40,6 @@ const ProductModal = ({ ...props }: Props) => {
         const query = {
             "name": param.name,
             "code": param.code,
-            "price": Number(param.price),
-            "tax": Number(param.tax),
             "unitId": param.unitId.value,
             "description": param.description,
             "categoryId": param.categoryId.value
@@ -145,7 +142,6 @@ const ProductModal = ({ ...props }: Props) => {
                                             {
                                                 name: props?.data ? `${props?.data?.name}` : "",
                                                 code: props?.data ? `${props?.data?.code}` : "",
-                                                price: props?.data ? `${props?.data?.price}` : "",
                                                 unitId: props?.data ? {
                                                     value: `${props?.data?.unit.id}`,
                                                     label: `${props?.data?.unit.name}`
@@ -158,9 +154,7 @@ const ProductModal = ({ ...props }: Props) => {
                                                 providerId: props?.data ? {
                                                     value: `${props?.data?.provider?.id}`,
                                                     label: `${props?.data?.provider?.name}`
-                                                } : "",
-                                                tax: props?.data ? `${props?.data?.tax}` : ""
-
+                                                } : ""
                                             }
                                         }
                                         validationSchema={SubmittedForm}
@@ -183,20 +177,6 @@ const ProductModal = ({ ...props }: Props) => {
                                                     <Field name="code" type="text" id="code" placeholder={`${t('enter_code')}`} className="form-input" />
                                                     {errors.code ? (
                                                         <div className="text-danger mt-1"> {errors.code} </div>
-                                                    ) : null}
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="price" > {t('price')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="price" type="number" id="price" placeholder={`${t('enter_price')}`} className="form-input" />
-                                                    {errors.price ? (
-                                                        <div className="text-danger mt-1"> {errors.price} </div>
-                                                    ) : null}
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="tax" > {t('tax')} </label >
-                                                    <Field name="tax" type="number" id="tax" placeholder={`${t('enter_tax')}`} className="form-input" />
-                                                    {errors.tax ? (
-                                                        <div className="text-danger mt-1"> {errors.tax} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">

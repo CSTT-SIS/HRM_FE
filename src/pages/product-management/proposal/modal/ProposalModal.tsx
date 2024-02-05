@@ -49,7 +49,7 @@ const ProposalModal = ({ ...props }: Props) => {
             name: param.name,
             type: param.type.value,
             content: param.content,
-            repairRequestId: param.repairRequestId.value
+            repairRequestId: param?.repairRequestId?.value
         };
         if (props?.data) {
             EditProposal({ id: props?.data?.id, ...query }).then(() => {

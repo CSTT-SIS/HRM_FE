@@ -33,7 +33,7 @@ export const EditOrderDetail = (body: any) => {
 };
 
 export const DeleteOrderDetail = (body: any) => {
-    const endpoint = `/order/${body.id}/delete-item/${body.itemId}`;
+    const endpoint = `/order/${body.id}/remove-item/${body.itemId}`;
     return callApi(endpoint, 'DELETE', body);
 };
 
