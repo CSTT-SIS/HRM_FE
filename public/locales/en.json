@@ -472,5 +472,6 @@
 	"start_date": "Start date",
 	"end_date": "End date",
 	"tally": "Tally",
-	"counted_quantity": "Counted quantity"
+	"counted_quantity": "Counted quantity",
+	"auto_add": "Auto add"
 }

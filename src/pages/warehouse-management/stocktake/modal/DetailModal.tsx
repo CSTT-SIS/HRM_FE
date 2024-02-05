@@ -17,8 +17,9 @@ import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import HandleDetailModal from './HandleDetailModal';
 import { StocktakeDetail } from '@/services/swr/stocktake.twr';
-import { DeleteStocktakeDetail, StocktakeStart } from '@/services/apis/stocktake.api';
+import { AddStocktakeDetailAuto, DeleteStocktakeDetail, StocktakeStart } from '@/services/apis/stocktake.api';
 import TallyModal from './TallyModal';
+import IconArchive from '@/components/Icon/IconArchive';
 
 interface Props {
     [key: string]: any;
@@ -177,6 +178,16 @@ const DetailModal = ({ ...props }: Props) => {
         });
     }
 
+    const handleAutoAdd = () => {
+        AddStocktakeDetailAuto({ id: props.idDetail }).then(() => {
+            props.stocktakeMutate();
+            props.setOpenModalDetail(false);
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
     return (
         <Transition appear show={props.openModalDetail ?? false} as={Fragment}>
             <Dialog as="div" open={props.openModalDetail} onClose={() => props.setOpenModalDetail(false)} className="relative z-50" >
@@ -228,6 +239,13 @@ const DetailModal = ({ ...props }: Props) => {
                                                     <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                                                     {t('add')}
                                                 </button>
+                                                {
+                                                    props.tally === false &&
+                                                    <button type="button" onClick={(e) => handleAutoAdd()} className="btn btn-primary btn-sm m-1 " >
+                                                        <IconArchive className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                                        {t('auto_add')}
+                                                    </button>
+                                                }
                                             </div>
 
                                             <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
