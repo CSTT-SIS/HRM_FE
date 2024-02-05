@@ -46,6 +46,7 @@ import { IconRole } from '../Icon/IconRole';
 import IconFolder from '../Icon/IconFolder';
 import IconShoppingCart from '../Icon/IconShoppingCart';
 import { IconRepair } from '../Icon/IconRepair';
+import IconListCheck from '../Icon/IconListCheck';
 
 const Sidebar = () => {
     const router = useRouter();
@@ -390,6 +391,23 @@ const Sidebar = () => {
                                                 </li>
                                             </ul>
                                         </AnimateHeight>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
+                                <span>{t('warehouse_management')}</span>
+                            </h2>
+
+                            <li className="nav-item">
+                                <ul>
+                                    <li className="nav-item">
+                                        <Link href="/warehouse-management/stocktake" className="group">
+                                            <div className="flex items-center">
+                                                <IconListCheck className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('stocktake')}</span>
+                                            </div>
+                                        </Link>
                                     </li>
                                 </ul>
                             </li>

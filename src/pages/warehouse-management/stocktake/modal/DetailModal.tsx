@@ -6,18 +6,21 @@ import { Dialog, Transition } from '@headlessui/react';
 import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
-import { DeleteProposalDetail, ProposalPending } from '@/services/apis/proposal.api';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPencil from '@/components/Icon/IconPencil';
 import IconPlus from '@/components/Icon/IconPlus';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
-import { ProposalDetails } from '@/services/swr/proposal.twr';
 import { setPageTitle } from '@/store/themeConfigSlice';
 import Tippy from '@tippyjs/react';
 import { DataTableSortStatus, DataTable } from 'mantine-datatable';
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import HandleDetailModal from './HandleDetailModal';
+import { DeleteOrderDetail, OrderPlace } from '@/services/apis/order.api';
+import { OrderDetails } from '@/services/swr/order.twr';
+import { StocktakeDetail } from '@/services/swr/stocktake.twr';
+import { StocktakeStart } from '@/services/apis/stocktake.api';
+import TallyModal from './TallyModal';
 
 interface Props {
     [key: string]: any;
@@ -32,23 +35,28 @@ const DetailModal = ({ ...props }: Props) => {
     const [showLoader, setShowLoader] = useState(true);
     const [data, setData] = useState<any>();
     const [openModal, setOpenModal] = useState(false);
+    const [openModalTally, setOpenModalTally] = useState(false);
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
 
     // get data
-    const { data: ProposalDetail, pagination, mutate } = ProposalDetails({ id: props.idDetail, ...router.query });
+    const { data: stocktakeDetails, pagination, mutate } = StocktakeDetail({ id: props.idDetail, ...router.query });
 
     useEffect(() => {
-        dispatch(setPageTitle(`${t('proposal')}`));
+        dispatch(setPageTitle(`${t('Order')}`));
     });
 
     useEffect(() => {
         setShowLoader(false);
-    }, [ProposalDetail])
+    }, [stocktakeDetails])
 
     const handleEdit = (data: any) => {
-        setOpenModal(true);
+        if (props?.tally === true) {
+            setOpenModalTally(true)
+        } else {
+            setOpenModal(true);
+        }
         setData(data);
     };
 
@@ -72,7 +80,7 @@ const DetailModal = ({ ...props }: Props) => {
             })
             .then((result) => {
                 if (result.value) {
-                    DeleteProposalDetail({ id: props.idDetail, detailId: id }).then(() => {
+                    DeleteOrderDetail({ id: props.idDetail, detailId: id }).then(() => {
                         mutate();
                         showMessage(`${t('delete_product_success')}`, 'success');
                     }).catch((err) => {
@@ -122,8 +130,15 @@ const DetailModal = ({ ...props }: Props) => {
             render: ({ product }: any) => <span>{product?.name}</span>,
             sortable: false
         },
-        { accessor: 'quantity', title: 'Số lượng', sortable: false },
-        { accessor: 'price', title: 'Giá', sortable: false },
+        {
+            accessor: 'name',
+            title: 'Đvt',
+            render: ({ product }: any) => <span>{product?.unit.name}</span>,
+            sortable: false
+        },
+        { accessor: 'countedQuantity', title: 'Số lượng đã đếm', sortable: false },
+        { accessor: 'openingQuantity', title: 'Số lượng khai trương', sortable: false },
+        { accessor: 'quantityDifference', title: 'Số lượng Chênh lệch', sortable: false },
         { accessor: 'note', title: 'Ghi chú', sortable: false },
         {
             accessor: 'action',
@@ -136,11 +151,14 @@ const DetailModal = ({ ...props }: Props) => {
                             <IconPencil />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('delete')}`}>
-                        <button type="button" onClick={() => handleDelete(records)}>
-                            <IconTrashLines />
-                        </button>
-                    </Tippy>
+                    {
+                        props.tally !== true &&
+                        <Tippy content={`${t('delete')}`}>
+                            <button type="button" onClick={() => handleDelete(records)}>
+                                <IconTrashLines />
+                            </button>
+                        </Tippy>
+                    }
                 </div>
             ),
         },
@@ -148,11 +166,12 @@ const DetailModal = ({ ...props }: Props) => {
 
     const handleCancel = () => {
         props.setOpenModalDetail(false);
+        props.setTally(false);
     };
 
     const handleChangeComplete = () => {
-        ProposalPending({ id: props.idDetail }).then(() => {
-            props.proposalMutate();
+        StocktakeStart({ id: props.idDetail }).then(() => {
+            props.stocktakeMutate();
             props.setOpenModalDetail(false);
             showMessage(`${t('update_success')}`, 'success');
         }).catch((err) => {
@@ -195,7 +214,7 @@ const DetailModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {'Proposal detail'}
+                                    {'Stocktake Detail'}
                                 </div>
 
                                 <div>
@@ -219,7 +238,7 @@ const DetailModal = ({ ...props }: Props) => {
                                             <DataTable
                                                 highlightOnHover
                                                 className="whitespace-nowrap table-hover"
-                                                records={ProposalDetail?.data}
+                                                records={stocktakeDetails?.data}
                                                 columns={columns}
                                                 totalRecords={pagination?.totalRecords}
                                                 recordsPerPage={pagination?.perPage}
@@ -240,7 +259,18 @@ const DetailModal = ({ ...props }: Props) => {
                                                     Pending
                                                 </button>
                                                 <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={() => handleChangeComplete()}>
-                                                    Complete
+                                                    {props.tally === true ? "Finish" : "Complete"}
+                                                </button>
+                                            </div>
+                                        }
+                                        {
+                                            props.status === "IN_PROGRESS" && props.tally === true &&
+                                            <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
+                                                <button type="button" className="btn btn-outline-warning" onClick={() => handleCancel()}>
+                                                    Pending
+                                                </button>
+                                                <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={() => handleChangeComplete()}>
+                                                    Finish
                                                 </button>
                                             </div>
                                         }
@@ -250,9 +280,15 @@ const DetailModal = ({ ...props }: Props) => {
                                         setOpenModal={setOpenModal}
                                         data={data}
                                         setData={setData}
-                                        proposalDetailMutate={mutate}
+                                        stocktakeDetailMutate={mutate}
                                         idDetail={props.idDetail}
-                                        type={props.type}
+                                    />
+                                    <TallyModal
+                                        openModal={openModalTally}
+                                        setOpenModal={setOpenModalTally}
+                                        data={data}
+                                        setData={setData}
+                                        stocktakeDetailMutate={mutate}
                                     />
                                 </div>
                             </Dialog.Panel>

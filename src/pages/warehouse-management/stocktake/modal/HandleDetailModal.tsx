@@ -9,8 +9,8 @@ import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
-import { AddProposalDetail, EditProposalDetail } from '@/services/apis/proposal.api';
 import { DropdownProducts } from '@/services/swr/dropdown.twr';
+import { AddStocktakeDetail, EditStocktakeDetail } from '@/services/apis/stocktake.api';
 
 interface Props {
     [key: string]: any;
@@ -26,29 +26,25 @@ const HandleDetailModal = ({ ...props }: Props) => {
 
     const SubmittedForm = Yup.object().shape({
         productId: new Yup.ObjectSchema().required(`${t('please_fill_product')}`),
-        quantity: Yup.string().required(`${t('please_fill_quantity')}`),
     });
 
     const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ page: page });
 
-    const handleProposal = (param: any) => {
+    const handleStocktake = (param: any) => {
         const query = {
-            productId: Number(param.productId.value),
-            quantity: Number(param.quantity),
-            note: param.note,
-            price: param.price
+            productId: Number(param.productId.value)
         };
         if (props?.data) {
-            EditProposalDetail({ id: props.idDetail, detailId: props?.data?.id, ...query }).then(() => {
-                props.proposalDetailMutate();
+            EditStocktakeDetail({ id: props.idDetail, itemId: props?.data?.id, ...query }).then(() => {
+                props.stocktakeMutate();
                 handleCancel();
                 showMessage(`${t('edit_success')}`, 'success');
             }).catch((err) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
         } else {
-            AddProposalDetail({ id: props.idDetail, ...query }).then(() => {
-                props.proposalDetailMutate();
+            AddStocktakeDetail({ id: props.idDetail, ...query }).then(() => {
+                props.stocktakeMutate();
                 handleCancel();
                 showMessage(`${t('create_success')}`, 'success');
             }).catch((err) => {
@@ -65,16 +61,12 @@ const HandleDetailModal = ({ ...props }: Props) => {
 
     useEffect(() => {
         setInitialValue({
-            quantity: props?.data ? `${props?.data?.quantity}` : "",
             productId: props?.data ? {
                 value: `${props?.data?.product?.id}`,
                 label: `${props?.data?.product?.name}`
             } : "",
-            note: props?.data ? `${props?.data?.note}` : "",
-            price: props?.data ? props?.data.price : ""
         })
     }, [props?.data, router]);
-
 
     useEffect(() => {
         if (productPagination?.page === undefined) return;
@@ -127,14 +119,14 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {'Add proposal detail'}
+                                    {props.data ? 'Add stocktake detail' : 'Update stocktake detail'}
                                 </div>
                                 <div className="p-5">
                                     <Formik
                                         initialValues={initialValue}
                                         validationSchema={SubmittedForm}
                                         onSubmit={values => {
-                                            handleProposal(values);
+                                            handleStocktake(values);
                                         }}
                                         enableReinitialize
                                     >
@@ -148,7 +140,6 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                             name='productId'
                                                             options={dataProductDropdown}
                                                             onMenuOpen={() => setPage(1)}
-                                                            onMenuClose={() => setDataProductDropdown([])}
                                                             onMenuScrollToBottom={handleMenuScrollToBottom}
                                                             isLoading={productLoading}
                                                             maxMenuHeight={160}
@@ -161,42 +152,6 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                             <div className="text-danger mt-1"> {`${errors.productId}`} </div>
                                                         ) : null}
                                                     </div>
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="quantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field
-                                                        name="quantity"
-                                                        type="number"
-                                                        id="quantity"
-                                                        placeholder={`${t('enter_quantity')}`}
-                                                        className="form-input"
-                                                    />
-                                                    {errors.quantity ? (
-                                                        <div className="text-danger mt-1"> {`${errors.quantity}`} </div>
-                                                    ) : null}
-                                                </div>
-                                                {
-                                                    props.type === "PURCHASE" &&
-                                                    <div className="mb-5">
-                                                        <label htmlFor="price" > {t('price')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Field name="price" type="number" id="price" placeholder={`${t('enter_price')}`} className="form-input" />
-                                                        {errors.price ? (
-                                                            <div className="text-danger mt-1"> {`${errors.price}`} </div>
-                                                        ) : null}
-                                                    </div>
-                                                }
-                                                <div className="mb-5">
-                                                    <label htmlFor="note" > {t('description')} </label >
-                                                    <Field
-                                                        name="note"
-                                                        type="text"
-                                                        id="note"
-                                                        placeholder={`${t('enter_description')}`}
-                                                        className="form-input"
-                                                    />
-                                                    {errors.note ? (
-                                                        <div className="text-danger mt-1"> {`${errors.note}`} </div>
-                                                    ) : null}
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                                     <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>

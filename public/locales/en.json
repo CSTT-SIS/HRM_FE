@@ -463,5 +463,14 @@
 	"min_quantity": "Min quantity",
 	"max_quantity": "Max quantity",
 	"enter_max_quantity": "Enter max quantity",
-	"enter_min_quantity": "Enter min quantity"
+	"enter_min_quantity": "Enter min quantity",
+	"warehouse_management": "Warehouse Management",
+	"stocktake": "Stocktake",
+	"delete_stocktake": "Delete stocktake",
+	"add_detail": "Add detail",
+	"finish": "Finish",
+	"start_date": "Start date",
+	"end_date": "End date",
+	"tally": "Tally",
+	"counted_quantity": "Counted quantity"
 }
