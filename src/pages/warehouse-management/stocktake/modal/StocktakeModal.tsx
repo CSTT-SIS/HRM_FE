@@ -9,8 +9,7 @@ import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
-import { DropdownOrderType, DropdownProposals, DropdownProviders, DropdownUsers, DropdownWarehouses } from '@/services/swr/dropdown.twr';
-import { CreateOrder, EditOrder } from '@/services/apis/order.api';
+import { DropdownUsers, DropdownWarehouses } from '@/services/swr/dropdown.twr';
 import moment from 'moment';
 import { CreateStocktake, EditStocktake } from '@/services/apis/stocktake.api';
 
@@ -18,7 +17,7 @@ interface Props {
     [key: string]: any;
 }
 
-const OrderModal = ({ ...props }: Props) => {
+const StocktakeModal = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
     const router = useRouter();
@@ -290,4 +289,4 @@ const OrderModal = ({ ...props }: Props) => {
     );
 };
 
-export default OrderModal;
+export default StocktakeModal;

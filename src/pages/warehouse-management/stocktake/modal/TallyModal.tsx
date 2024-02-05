@@ -8,9 +8,7 @@ import { Field, Form, Formik } from 'formik';
 import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
-import Select, { components } from 'react-select';
-import { DropdownProducts } from '@/services/swr/dropdown.twr';
-import { AddStocktakeDetail, EditStocktakeDetail } from '@/services/apis/stocktake.api';
+import { EditStocktakeDetail } from '@/services/apis/stocktake.api';
 
 interface Props {
     [key: string]: any;
@@ -31,7 +29,7 @@ const TallyModal = ({ ...props }: Props) => {
             countedQuantity: Number(param.countedQuantity)
         };
         EditStocktakeDetail({ id: props.idDetail, itemId: props?.data?.id, ...query }).then(() => {
-            props.orderDetailMutate();
+            props.stocktakeDetailMutate();
             handleCancel();
             showMessage(`${t('edit_success')}`, 'success');
         }).catch((err) => {

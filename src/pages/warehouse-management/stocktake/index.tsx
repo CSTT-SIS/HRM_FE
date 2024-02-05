@@ -25,10 +25,10 @@ import IconXCircle from '@/components/Icon/IconXCircle';
 import IconChecks from '@/components/Icon/IconChecks';
 import IconCircleCheck from '@/components/Icon/IconCircleCheck';
 import IconRestore from '@/components/Icon/IconRestore';
+import { IconInventory } from '@/components/Icon/IconInventory';
 // modal
 import DetailModal from './modal/DetailModal';
 import StocktakeModal from './modal/StocktakeModal';
-import { IconInventory } from '@/components/Icon/IconInventory';
 
 
 

@@ -16,10 +16,8 @@ import { DataTableSortStatus, DataTable } from 'mantine-datatable';
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import HandleDetailModal from './HandleDetailModal';
-import { DeleteOrderDetail, OrderPlace } from '@/services/apis/order.api';
-import { OrderDetails } from '@/services/swr/order.twr';
 import { StocktakeDetail } from '@/services/swr/stocktake.twr';
-import { StocktakeStart } from '@/services/apis/stocktake.api';
+import { DeleteStocktakeDetail, StocktakeStart } from '@/services/apis/stocktake.api';
 import TallyModal from './TallyModal';
 
 interface Props {
@@ -80,7 +78,7 @@ const DetailModal = ({ ...props }: Props) => {
             })
             .then((result) => {
                 if (result.value) {
-                    DeleteOrderDetail({ id: props.idDetail, detailId: id }).then(() => {
+                    DeleteStocktakeDetail({ id: props.idDetail, detailId: id }).then(() => {
                         mutate();
                         showMessage(`${t('delete_product_success')}`, 'success');
                     }).catch((err) => {
