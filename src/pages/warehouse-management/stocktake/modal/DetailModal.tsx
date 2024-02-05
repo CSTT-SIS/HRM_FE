@@ -44,7 +44,7 @@ const DetailModal = ({ ...props }: Props) => {
     const { data: stocktakeDetails, pagination, mutate } = StocktakeDetail({ id: props.idDetail, ...router.query });
 
     useEffect(() => {
-        dispatch(setPageTitle(`${t('Order')}`));
+        dispatch(setPageTitle(`${t('Stocktake')}`));
     });
 
     useEffect(() => {
