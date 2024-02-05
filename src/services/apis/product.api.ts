@@ -17,6 +17,11 @@ export const DeleteProduct = (body: any) => {
     return callApi(endpoint, 'DELETE', body);
 };
 
+export const LimitProduct = (body: any) => {
+    const endpoint = `/product/${body.id}/limit`;
+    return callApi(endpoint, 'PATCH', body);
+};
+
 export const CreateProductCategory = (body: any) => {
     const endpoint = '/product-category';
     return callApi(endpoint, 'POST', body);

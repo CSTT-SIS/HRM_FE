@@ -20,9 +20,11 @@ import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
 import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
-import ProductModal from './ProductModal';
+import { IconRepair } from '@/components/Icon/IconRepair';
 
 // modal
+import ProductModal from './ProductModal';
+import ProductLimitModal from './ProductLimitModal';
 
 
 
@@ -38,13 +40,15 @@ const ProductCategoryPage = ({ ...props }: Props) => {
 
     const [showLoader, setShowLoader] = useState(true);
     const [data, setData] = useState<any>();
+    const [dataLimit, setDataLimit] = useState<any>();
     const [openModal, setOpenModal] = useState(false);
+    const [openModalLimit, setOpenModalLimit] = useState(false);
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
-
     // get data
     const { data: product, pagination, mutate } = Products({ sortBy: 'id.ASC', ...router.query });
+
     useEffect(() => {
         dispatch(setPageTitle(`${t('product')}`));
     });
@@ -116,6 +120,11 @@ const ProductCategoryPage = ({ ...props }: Props) => {
         return pageSize;
     };
 
+    const handleLimit = (records: any) => {
+        setOpenModalLimit(true);
+        setDataLimit(records);
+    }
+
     const columns = [
         {
             accessor: 'id',
@@ -148,6 +157,11 @@ const ProductCategoryPage = ({ ...props }: Props) => {
                     <Tippy content={`${t('edit')}`}>
                         <button type="button" onClick={() => handleEdit(records)}>
                             <IconPencil />
+                        </button>
+                    </Tippy>
+                    <Tippy content={`${t('limit')}`}>
+                        <button type="button" onClick={() => handleLimit(records)}>
+                            <IconRepair />
                         </button>
                     </Tippy>
                     <Tippy content={`${t('delete')}`}>
@@ -203,6 +217,13 @@ const ProductCategoryPage = ({ ...props }: Props) => {
                 setOpenModal={setOpenModal}
                 data={data}
                 setData={setData}
+                productMutate={mutate}
+            />
+            <ProductLimitModal
+                openModal={openModalLimit}
+                setOpenModal={setOpenModalLimit}
+                data={dataLimit}
+                setData={setDataLimit}
                 productMutate={mutate}
             />
         </div>

@@ -457,5 +457,11 @@
 	"code": "Code",
 	"Type": "Type",
 	"broken_part": "Broken part",
-	"enter_broken_part": "Enter broken part"
+	"enter_broken_part": "Enter broken part",
+	"please_fill_min": "Please fill min quantity",
+	"please_fill_max": "Please fill max quantity",
+	"min_quantity": "Min quantity",
+	"max_quantity": "Max quantity",
+	"enter_max_quantity": "Enter max quantity",
+	"enter_min_quantity": "Enter min quantity"
 }
