@@ -83,7 +83,7 @@ const WarehouseTypePage = ({ ...props }: Props) => {
                         mutate();
                         showMessage(`${t('delete_warehouse_success')}`, 'success');
                     }).catch((err) => {
-                        showMessage(`${t('delete_warehouse_error')}`, 'error');
+                        showMessage(`${err?.response?.data?.message}`, 'error');
                     });
                 }
             });
@@ -174,7 +174,7 @@ const WarehouseTypePage = ({ ...props }: Props) => {
                         totalRecords={pagination?.totalRecords}
                         recordsPerPage={pagination?.perPage}
                         page={pagination?.page}
-                        onPageChange={(p) => handleChangePage(pagination?.page, pagination?.perPage)}
+                        onPageChange={(p) => handleChangePage(p, pagination?.perPage)}
                         recordsPerPageOptions={PAGE_SIZES}
                         onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
                         sortStatus={sortStatus}

@@ -1,7 +1,6 @@
 import { useEffect, Fragment, useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
-import { lazy } from 'react';
 import { setPageTitle } from '@/store/themeConfigSlice';
 // Third party libs
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
@@ -10,8 +9,8 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
-import { ProductCategorys } from '@/services/swr/product.twr';
-import { DeleteProductCategory } from '@/services/apis/product.api';
+import { Repairs } from '@/services/swr/repair.twr';
+import { DeleteRepair, RepairComplete } from '@/services/apis/repair.api';
 // constants
 import { PAGE_SIZES } from '@/utils/constants';
 // helper
@@ -21,16 +20,16 @@ import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
 import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
-
+import IconCircleCheck from '@/components/Icon/IconCircleCheck';
 // modal
-import CategoryModal from './CategoryModal';
-
+import DetailModal from './modal/DetailModal';
+import RepairModal from './modal/RepairModal';
 
 interface Props {
     [key: string]: any;
 }
 
-const ProductCategoryPage = ({ ...props }: Props) => {
+const RepairPage = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -39,20 +38,23 @@ const ProductCategoryPage = ({ ...props }: Props) => {
     const [showLoader, setShowLoader] = useState(true);
     const [data, setData] = useState<any>();
     const [openModal, setOpenModal] = useState(false);
+    const [openModalDetail, setOpenModalDetail] = useState(false);
+    const [idDetail, setIdDetail] = useState();
+    const [status, setStatus] = useState();
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
 
     // get data
-    const { data: category, pagination, mutate } = ProductCategorys({ sortBy: 'id.ASC', ...router.query });
+    const { data: repairs, pagination, mutate } = Repairs({ ...router.query });
 
     useEffect(() => {
-        dispatch(setPageTitle(`${t('category')}`));
+        dispatch(setPageTitle(`${t('Repair')}`));
     });
 
     useEffect(() => {
         setShowLoader(false);
-    }, [category])
+    }, [repairs])
 
     const handleEdit = (data: any) => {
         setOpenModal(true);
@@ -71,7 +73,7 @@ const ProductCategoryPage = ({ ...props }: Props) => {
         swalDeletes
             .fire({
                 icon: 'question',
-                title: `${t('delete_category')}`,
+                title: `${t('delete_order')}`,
                 text: `${t('delete')} ${name}`,
                 padding: '2em',
                 showCancelButton: true,
@@ -79,11 +81,11 @@ const ProductCategoryPage = ({ ...props }: Props) => {
             })
             .then((result) => {
                 if (result.value) {
-                    DeleteProductCategory({ id }).then(() => {
+                    DeleteRepair({ id }).then(() => {
                         mutate();
-                        showMessage(`${t('delete_category_success')}`, 'success');
+                        showMessage(`${t('delete_success')}`, 'success');
                     }).catch((err) => {
-                        showMessage(`${t('delete_category_error')}`, 'error');
+                        showMessage(`${err?.response?.data?.message}`, 'error');
                     });
                 }
             });
@@ -117,20 +119,51 @@ const ProductCategoryPage = ({ ...props }: Props) => {
         return pageSize;
     };
 
+    const handleDetail = (value: any) => {
+        setOpenModalDetail(true);
+        setIdDetail(value.id);
+        setStatus(value.status);
+    }
+
+    const handleComplete = ({ id }: any) => {
+        RepairComplete({ id }).then(() => {
+            mutate();
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
     const columns = [
         {
             accessor: 'id',
             title: '#',
             render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
-        { accessor: 'name', title: 'Tên loại', sortable: false },
+        { accessor: 'name', title: 'Tên đơn hàng', sortable: false },
+        {
+            accessor: 'vehicle',
+            title: 'Số đăng ký xe',
+            render: ({ vehicle }: any) => <span>{vehicle?.registrationNumber}</span>,
+        },
+        {
+            accessor: 'repairBy',
+            title: 'Người phụ trách',
+            render: ({ repairBy }: any) => <span>{repairBy?.fullName}</span>,
+        },
         { accessor: 'description', title: 'Ghi chú', sortable: false },
+        { accessor: 'status', title: 'Trạng thái', sortable: false },
         {
             accessor: 'action',
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
+                    <Tippy content={`${t('add detail')}`}>
+                        <button type="button" onClick={() => handleDetail(records)}>
+                            <IconPlus />
+                        </button>
+                    </Tippy>
                     <Tippy content={`${t('edit')}`}>
                         <button type="button" onClick={() => handleEdit(records)}>
                             <IconPencil />
@@ -139,6 +172,11 @@ const ProductCategoryPage = ({ ...props }: Props) => {
                     <Tippy content={`${t('delete')}`}>
                         <button type="button" onClick={() => handleDelete(records)}>
                             <IconTrashLines />
+                        </button>
+                    </Tippy>
+                    <Tippy content={`${t('complete')}`}>
+                        <button type="button" onClick={() => handleComplete(records)}>
+                            <IconCircleCheck size={20} />
                         </button>
                     </Tippy>
                 </div>
@@ -153,7 +191,7 @@ const ProductCategoryPage = ({ ...props }: Props) => {
                     <IconLoading />
                 </div>
             )}
-            <title>category</title>
+            <title>product</title>
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
@@ -169,7 +207,7 @@ const ProductCategoryPage = ({ ...props }: Props) => {
                     <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover"
-                        records={category?.data}
+                        records={repairs?.data}
                         columns={columns}
                         totalRecords={pagination?.totalRecords}
                         recordsPerPage={pagination?.perPage}
@@ -184,15 +222,22 @@ const ProductCategoryPage = ({ ...props }: Props) => {
                     />
                 </div>
             </div>
-            <CategoryModal
+            <RepairModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}
                 data={data}
                 setData={setData}
-                categoryMutate={mutate}
+                repairMutate={mutate}
+            />
+            <DetailModal
+                openModalDetail={openModalDetail}
+                setOpenModalDetail={setOpenModalDetail}
+                idDetail={idDetail}
+                status={status}
+                repairMutate={mutate}
             />
         </div>
     );
 };
 
-export default ProductCategoryPage;
+export default RepairPage;

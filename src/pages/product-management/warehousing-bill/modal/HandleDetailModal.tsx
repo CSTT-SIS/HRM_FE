@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, Fragment, useState, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Dialog, Transition } from '@headlessui/react';
@@ -7,45 +7,46 @@ import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
 import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
-import { CreateWarehouseType, EditWarehouseType } from '@/services/apis/warehouse.api';
+import { useRouter } from 'next/router';
+import { CheckWarehousingBillDetail } from '@/services/apis/warehousing-bill.api';
 
 interface Props {
     [key: string]: any;
 }
 
-const WarehouseTypeModal = ({ ...props }: Props) => {
+const HandleDetailModal = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
-
+    const router = useRouter();
+    const [initialValue, setInitialValue] = useState<any>();
 
     const SubmittedForm = Yup.object().shape({
-        name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_warehouse')}`),
+        quantity: Yup.string().required(`${t('please_fill_quantity')}`),
     });
 
-    const handleWarehouse = (param: any) => {
-        if (props?.data) {
-            EditWarehouseType({ id: props.data.id, ...param }).then(() => {
-                props.warehouseMutateType();
-                handleCancel();
-                showMessage(`${t('edit_warehouse_success')}`, 'success');
-            }).catch((err) => {
-                showMessage(`${t('edit_warehouse_error')}`, 'error');
-            });
-        } else {
-            CreateWarehouseType(param).then(() => {
-                props.warehouseMutateType();
-                handleCancel();
-                showMessage(`${t('create_warehouse_success')}`, 'success');
-            }).catch((err) => {
-                showMessage(`${t('create_warehouse_error')}`, 'error');
-            });
-        }
+    const handleProposal = (param: any) => {
+        CheckWarehousingBillDetail({ ...param }).then(() => {
+            props.warehousingDetailMutate();
+            handleCancel();
+            showMessage(`${t('edit_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
     }
 
     const handleCancel = () => {
         props.setOpenModal(false);
         props.setData();
+        setInitialValue({});
     };
+
+    useEffect(() => {
+        setInitialValue({
+            id: props?.idDetail,
+            quantity: "",
+            detailId: props?.data?.id
+        })
+    }, [props?.data?.id, props?.idDetail, router]);
 
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
@@ -82,36 +83,30 @@ const WarehouseTypeModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data !== undefined ? 'Edit Warehouse Type' : 'Add Warehouse Type'}
+                                    {'Update quantity'}
                                 </div>
                                 <div className="p-5">
                                     <Formik
-                                        initialValues={
-                                            {
-                                                name: props?.data ? `${props?.data?.name}` : "",
-                                                description: props?.data ? `${props?.data?.description}` : ""
-                                            }
-                                        }
+                                        initialValues={initialValue}
                                         validationSchema={SubmittedForm}
                                         onSubmit={values => {
-                                            handleWarehouse(values);
+                                            handleProposal(values);
                                         }}
+                                        enableReinitialize
                                     >
-
-                                        {({ errors, setFieldValue, values }) => (
+                                        {({ errors, values, setFieldValue }) => (
                                             <Form className="space-y-5" >
                                                 <div className="mb-5">
-                                                    <label htmlFor="name" > {t('name')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name')}`} className="form-input" />
-                                                    {errors.name ? (
-                                                        <div className="text-danger mt-1"> {errors.name} </div>
-                                                    ) : null}
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="description" > {t('description')} </label >
-                                                    <Field name="description" type="text" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
-                                                    {errors.description ? (
-                                                        <div className="text-danger mt-1"> {errors.description} </div>
+                                                    <label htmlFor="quantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field
+                                                        name="quantity"
+                                                        type="number"
+                                                        id="quantity"
+                                                        placeholder={`${t('enter_quantity')}`}
+                                                        className="form-input"
+                                                    />
+                                                    {errors.quantity ? (
+                                                        <div className="text-danger mt-1"> {`${errors.quantity}`} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
@@ -122,7 +117,6 @@ const WarehouseTypeModal = ({ ...props }: Props) => {
                                                         {props.data !== undefined ? 'Update' : 'Add'}
                                                     </button>
                                                 </div>
-
                                             </Form>
                                         )}
                                     </Formik>
@@ -136,5 +130,4 @@ const WarehouseTypeModal = ({ ...props }: Props) => {
         </Transition>
     );
 };
-
-export default WarehouseTypeModal;
+export default HandleDetailModal;

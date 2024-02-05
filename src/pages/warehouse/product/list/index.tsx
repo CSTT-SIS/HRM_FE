@@ -45,7 +45,6 @@ const ProductCategoryPage = ({ ...props }: Props) => {
 
     // get data
     const { data: product, pagination, mutate } = Products({ sortBy: 'id.ASC', ...router.query });
-
     useEffect(() => {
         dispatch(setPageTitle(`${t('product')}`));
     });
@@ -83,7 +82,7 @@ const ProductCategoryPage = ({ ...props }: Props) => {
                         mutate();
                         showMessage(`${t('delete_product_success')}`, 'success');
                     }).catch((err) => {
-                        showMessage(`${t('delete_product_error')}`, 'error');
+                        showMessage(`${err?.response?.data?.message}`, 'error');
                     });
                 }
             });
@@ -139,12 +138,6 @@ const ProductCategoryPage = ({ ...props }: Props) => {
             render: ({ category }: any) => <span >{category?.name}</span>,
             sortable: false
         },
-        {
-            accessor: 'provider',
-            title: 'Nhà phân phối',
-            render: ({ provider }: any) => <span >{provider?.name}</span>,
-            sortable: false
-        },
         { accessor: 'description', title: 'Ghi chú', sortable: false },
         {
             accessor: 'action',
@@ -195,7 +188,7 @@ const ProductCategoryPage = ({ ...props }: Props) => {
                         totalRecords={pagination?.totalRecords}
                         recordsPerPage={pagination?.perPage}
                         page={pagination?.page}
-                        onPageChange={(p) => handleChangePage(pagination?.page, pagination?.perPage)}
+                        onPageChange={(p) => handleChangePage(p, pagination?.perPage)}
                         recordsPerPageOptions={PAGE_SIZES}
                         onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
                         sortStatus={sortStatus}
