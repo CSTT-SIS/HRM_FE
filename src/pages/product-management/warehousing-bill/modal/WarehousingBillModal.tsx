@@ -79,7 +79,6 @@ const WarehousingBillModal = ({ ...props }: Props) => {
         setInitialValue({});
         setProposalQuery({ ...proposalQuery, type: "" })
     };
-    console.log("🚀 ~ handleCancel ~ orderQuery:", proposalQuery)
 
     useEffect(() => {
         setInitialValue({
