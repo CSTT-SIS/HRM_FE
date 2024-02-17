@@ -80,9 +80,11 @@ const Header = () => {
 		}
 	};
 	const [flag, setFlag] = useState('');
+
 	useEffect(() => {
 		setLocale(localStorage.getItem('i18nextLng') || themeConfig.locale);
 	}, []);
+
 	const dispatch = useDispatch();
 
 	function createMarkup(messages: any) {
@@ -129,7 +131,7 @@ const Header = () => {
 	// noti
 	const [query, setQuery] = useState<any>();
 	const [dataNoti, setDataNoti] = useState<any>([]);
-	const { data: notifications, mutate, pagination } = Notifications(query);
+	const { data: notifications, mutate, pagination } = Notifications({ ...query, lang: themeConfig.locale });
 
 	useEffect(() => {
 		if (Number(pagination?.page) === 1) {
@@ -154,7 +156,7 @@ const Header = () => {
 
 	const handleNoti = (data: any) => {
 		router.push(`${data?.link}`);
-		MarkRead(data?.id)
+		MarkRead({ id: data?.id })
 			.then((res: any) => {
 				mutate
 			})
@@ -173,6 +175,10 @@ const Header = () => {
 				console.error('ERR ~ ', err);
 				throw err;
 			});
+	}
+
+	const handleLoadNoti = () => {
+		router.push("/notications")
 	}
 
 	return (
@@ -382,7 +388,7 @@ const Header = () => {
 									</li>
 									{dataNoti?.length > 0 ? (
 										<>
-											{dataNoti?.map((item: any, index: any) => {
+											{dataNoti?.map((item: any) => {
 												return (
 													<li key={item?.id} className={"dark:text-white-light/90"} style={{ cursor: "pointer" }} onClick={(e) => handleNoti(item)}>
 														<div className={"group flex items-center px-4 py-2" + `${item?.isRead === 0 ? " bg-slate-50 dark: bg-gray-800" : ""}`}>
@@ -414,9 +420,10 @@ const Header = () => {
 													</li>
 												);
 											})}
-											{/* <AlwaysScrollToBottom /> */}
 											<li>
 												<div className="p-4">
+													<button className="block w-full" onClick={e => handleLoadNoti()}>Load more ...</button>
+													<div className='p-1'></div>
 													<button className="btn btn-primary btn-small block w-full" onClick={e => handleReadAll()}>Read All Notifications</button>
 												</div>
 											</li>

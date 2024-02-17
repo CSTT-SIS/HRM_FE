@@ -483,5 +483,6 @@
 	"proposal_status": "Proposal status",
 	"warehousing_type": "Warehousing type",
 	"warehousing_status": "Warehousing status",
-	"inventory": "Inventory"
+	"inventory": "Inventory",
+	"read_success": "Read success"
 }

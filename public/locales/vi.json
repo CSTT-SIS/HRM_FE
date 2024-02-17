@@ -483,6 +483,7 @@
   "warehousing_type": "Loại kho bãi",
   "warehousing_status": "Tình trạng kho bãi",
   "inventory": "Hàng tồn kho",
+  "read_success": "Đọc thành công",
   "//_START_ASSET": "================>>> BẮT ĐẦU TÀI SẢN <<<================",
   "add_asset": "Thêm tài sản",
   "edit_asset": "Sửa tài sản",
