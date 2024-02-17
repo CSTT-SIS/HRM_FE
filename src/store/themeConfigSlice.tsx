@@ -13,8 +13,8 @@ const initialState = {
     locale: themeConfig.locale,
     semidark: themeConfig.semidark,
     languageList: [
-        { code: 'vn', name: 'Việt Nam' },
-        { code: 'la', name: 'Laos' },
+        { code: 'vi', name: 'Việt Nam' },
+        { code: 'lo', name: 'Laos' },
         { code: 'en', name: 'English' }
     ],
 };

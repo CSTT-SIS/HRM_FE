@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+/* eslint-disable @next/next/no-img-element */
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -33,6 +34,9 @@ import IconMenuForms from '@/components/Icon/Menu/IconMenuForms';
 import IconMenuPages from '@/components/Icon/Menu/IconMenuPages';
 import IconMenuMore from '@/components/Icon/Menu/IconMenuMore';
 import IconLock from '../Icon/IconLock';
+import { Notifications } from '@/services/swr/notication.twr';
+import moment from 'moment';
+import { MarkAllRead, MarkRead } from '@/services/apis/notication.api';
 
 const Header = () => {
 	const router = useRouter();
@@ -66,7 +70,6 @@ const Header = () => {
 	}, [router.pathname]);
 
 	const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl' ? true : false;
-
 	const themeConfig = useSelector((state: IRootState) => state.themeConfig);
 	const setLocale = (flag: string) => {
 		setFlag(flag);
@@ -119,35 +122,58 @@ const Header = () => {
 	const removeMessage = (value: number) => {
 		setMessages(messages.filter((user) => user.id !== value));
 	};
-
-	const [notifications, setNotifications] = useState([
-		{
-			id: 1,
-			profile: 'user-profile.jpeg',
-			message: '<strong class="text-sm mr-1">Quản lý Nhân sự</strong> đã gửi 1 thông báo!',
-			time: '45 min ago',
-		},
-		{
-			id: 2,
-			profile: 'profile-34.jpeg',
-			message: '<strong class="text-sm mr-1">Trưởng phòng Kế hoạch</strong>đã gửi 1 thông báo!',
-			time: '9h Ago',
-		},
-		{
-			id: 3,
-			profile: 'profile-16.jpeg',
-			message: '<strong class="text-sm mr-1">Giám đốc</strong>đã gửi 1 thông báo!',
-			time: '9h Ago',
-		},
-	]);
-
-	const removeNotification = (value: number) => {
-		setNotifications(notifications.filter((user) => user.id !== value));
-	};
-
 	const [search, setSearch] = useState(false);
 
 	const { t, i18n } = useTranslation();
+
+	// noti
+	const [query, setQuery] = useState<any>();
+	const [dataNoti, setDataNoti] = useState<any>([]);
+	const { data: notifications, mutate, pagination } = Notifications(query);
+
+	useEffect(() => {
+		if (Number(pagination?.page) === 1) {
+			setDataNoti(notifications?.data)
+		} else {
+			setDataNoti([...dataNoti, notifications?.data])
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [pagination])
+
+	const handleTime = (start: any) => {
+		const now = moment();
+		const duration = moment.duration(now.diff(start))
+		var dates = duration.asDays();
+		var hours = duration.asHours();
+		if (dates >= 1) {
+			return `${dates.toFixed()}` + ' day ago'
+		} else {
+			return `${hours.toFixed()}` + ' hours ago'
+		}
+	}
+
+	const handleNoti = (data: any) => {
+		router.push(`${data?.link}`);
+		MarkRead(data?.id)
+			.then((res: any) => {
+				mutate
+			})
+			.catch((err: any) => {
+				console.error('ERR ~ ', err);
+				throw err;
+			});
+	}
+
+	const handleReadAll = () => {
+		MarkAllRead()
+			.then((res: any) => {
+				mutate
+			})
+			.catch((err: any) => {
+				console.error('ERR ~ ', err);
+				throw err;
+			});
+	}
 
 	return (
 		<header className={`z-40 ${themeConfig.semidark && themeConfig.menu === 'horizontal' ? 'dark' : ''}`}>
@@ -217,10 +243,9 @@ const Header = () => {
 						<div>
 							{themeConfig.theme === 'light' ? (
 								<button
-									className={`${
-										themeConfig.theme === 'light' &&
+									className={`${themeConfig.theme === 'light' &&
 										'flex items-center rounded-full bg-white-light/40 p-2 hover:bg-white-light/90 hover:text-primary dark:bg-dark/40 dark:hover:bg-dark/60'
-									}`}
+										}`}
 									onClick={() => dispatch(toggleTheme('dark'))}
 								>
 									<IconSun />
@@ -230,10 +255,9 @@ const Header = () => {
 							)}
 							{themeConfig.theme === 'dark' && (
 								<button
-									className={`${
-										themeConfig.theme === 'dark' &&
+									className={`${themeConfig.theme === 'dark' &&
 										'flex items-center rounded-full bg-white-light/40 p-2 hover:bg-white-light/90 hover:text-primary dark:bg-dark/40 dark:hover:bg-dark/60'
-									}`}
+										}`}
 									onClick={() => dispatch(toggleTheme('system'))}
 								>
 									<IconMoon />
@@ -241,10 +265,9 @@ const Header = () => {
 							)}
 							{themeConfig.theme === 'system' && (
 								<button
-									className={`${
-										themeConfig.theme === 'system' &&
+									className={`${themeConfig.theme === 'system' &&
 										'flex items-center rounded-full bg-white-light/40 p-2 hover:bg-white-light/90 hover:text-primary dark:bg-dark/40 dark:hover:bg-dark/60'
-									}`}
+										}`}
 									onClick={() => dispatch(toggleTheme('light'))}
 								>
 									<IconLaptop />
@@ -350,49 +373,51 @@ const Header = () => {
 									</span>
 								}
 							>
-								<ul className="w-[300px] divide-y !py-0 text-dark dark:divide-white/10 dark:text-white-dark sm:w-[350px]">
+								<ul className="w-[300px] divide-y !py-0 text-dark dark:divide-white/10 dark:text-white-dark sm:w-[350px] overflow-y-auto h-[30.5rem]">
 									<li onClick={(e) => e.stopPropagation()}>
 										<div className="flex items-center justify-between px-4 py-2 font-semibold">
 											<h4 className="text-lg">{t('notifications')}</h4>
-											{notifications.length ? <span className="badge bg-primary/80">{notifications.length}New</span> : ''}
+											{dataNoti?.length ? <span className="badge bg-primary/80">{dataNoti?.length} New</span> : ''}
 										</div>
 									</li>
-									{notifications.length > 0 ? (
+									{dataNoti?.length > 0 ? (
 										<>
-											{notifications.map((notification) => {
+											{dataNoti?.map((item: any, index: any) => {
 												return (
-													<li key={notification.id} className="dark:text-white-light/90" onClick={(e) => e.stopPropagation()}>
-														<div className="group flex items-center px-4 py-2">
+													<li key={item?.id} className={"dark:text-white-light/90"} style={{ cursor: "pointer" }} onClick={(e) => handleNoti(item)}>
+														<div className={"group flex items-center px-4 py-2" + `${item?.isRead === 0 ? " bg-slate-50 dark: bg-gray-800" : ""}`}>
 															<div className="grid place-content-center rounded">
 																<div className="relative h-12 w-12">
-																	<img className="h-12 w-12 rounded-full object-cover" alt="profile" src={`/assets/images/${notification.profile}`} />
-																	<span className="absolute bottom-0 right-[6px] block h-2 w-2 rounded-full bg-success"></span>
+																	<img className="h-12 w-12 rounded-full object-cover" alt="profile" src={`${item?.profile}`} />
+																	{/* <span className="absolute bottom-0 right-[6px] block h-2 w-2 rounded-full bg-success"></span> */}
 																</div>
 															</div>
 															<div className="flex flex-auto ltr:pl-3 rtl:pr-3">
 																<div className="ltr:pr-3 rtl:pl-3">
 																	<h6
-																		dangerouslySetInnerHTML={{
-																			__html: notification.message,
-																		}}
-																	></h6>
-																	<span className="block text-xs font-normal dark:text-gray-500">{notification.time}</span>
+																	// dangerouslySetInnerHTML={{
+																	// 	__html: item?.details.content,
+																	// }}
+																	>
+																		{item?.details[0].content}</h6>
+																	<span className="block text-xs font-normal dark:text-gray-500">{handleTime(item?.createdAt)}</span>
 																</div>
-																<button
+																{/* <button
 																	type="button"
 																	className="text-neutral-300 opacity-0 hover:text-danger group-hover:opacity-100 ltr:ml-auto rtl:mr-auto"
 																	onClick={() => removeNotification(notification.id)}
 																>
 																	<IconXCircle />
-																</button>
+																</button> */}
 															</div>
 														</div>
 													</li>
 												);
 											})}
+											{/* <AlwaysScrollToBottom /> */}
 											<li>
 												<div className="p-4">
-													<button className="btn btn-primary btn-small block w-full">Read All Notifications</button>
+													<button className="btn btn-primary btn-small block w-full" onClick={e => handleReadAll()}>Read All Notifications</button>
 												</div>
 											</li>
 										</>
