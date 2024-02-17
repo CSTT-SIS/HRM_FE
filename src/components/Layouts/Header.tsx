@@ -122,13 +122,14 @@ const Header = () => {
 	const removeMessage = (value: number) => {
 		setMessages(messages.filter((user) => user.id !== value));
 	};
-	const [query, setQuery] = useState<any>();
-	const [dataNoti, setDataNoti] = useState<any>([]);
-	const { data: notifications, mutate, pagination } = Notifications(query);
-
 	const [search, setSearch] = useState(false);
 
 	const { t, i18n } = useTranslation();
+
+	// noti
+	const [query, setQuery] = useState<any>();
+	const [dataNoti, setDataNoti] = useState<any>([]);
+	const { data: notifications, mutate, pagination } = Notifications(query);
 
 	useEffect(() => {
 		if (Number(pagination?.page) === 1) {
@@ -173,11 +174,6 @@ const Header = () => {
 				throw err;
 			});
 	}
-
-
-	const AlwaysScrollToBottom = () => {
-		setQuery({ ...router.query, page: pagination?.page + 1 })
-	};
 
 	return (
 		<header className={`z-40 ${themeConfig.semidark && themeConfig.menu === 'horizontal' ? 'dark' : ''}`}>
@@ -367,7 +363,6 @@ const Header = () => {
 								offset={[0, 8]}
 								placement={`${isRtl ? 'bottom-start' : 'bottom-end'}`}
 								btnClassName="relative block p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60"
-								onMenuScrollToBottom={AlwaysScrollToBottom}
 								button={
 									<span>
 										<IconBellBing />
@@ -382,18 +377,18 @@ const Header = () => {
 									<li onClick={(e) => e.stopPropagation()}>
 										<div className="flex items-center justify-between px-4 py-2 font-semibold">
 											<h4 className="text-lg">{t('notifications')}</h4>
-											{dataNoti?.length ? <span className="badge bg-primary/80">{dataNoti?.length}New</span> : ''}
+											{dataNoti?.length ? <span className="badge bg-primary/80">{dataNoti?.length} New</span> : ''}
 										</div>
 									</li>
 									{dataNoti?.length > 0 ? (
 										<>
-											{dataNoti?.map((item: any) => {
+											{dataNoti?.map((item: any, index: any) => {
 												return (
 													<li key={item?.id} className={"dark:text-white-light/90"} style={{ cursor: "pointer" }} onClick={(e) => handleNoti(item)}>
 														<div className={"group flex items-center px-4 py-2" + `${item?.isRead === 0 ? " bg-slate-50 dark: bg-gray-800" : ""}`}>
 															<div className="grid place-content-center rounded">
 																<div className="relative h-12 w-12">
-																	<img className="h-12 w-12 rounded-full object-cover" alt="profile" src={`/assets/images/${item?.profile}`} />
+																	<img className="h-12 w-12 rounded-full object-cover" alt="profile" src={`${item?.profile}`} />
 																	{/* <span className="absolute bottom-0 right-[6px] block h-2 w-2 rounded-full bg-success"></span> */}
 																</div>
 															</div>

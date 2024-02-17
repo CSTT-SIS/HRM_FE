@@ -409,8 +409,56 @@ const Sidebar = () => {
                                             </div>
                                         </Link>
                                     </li>
+                                    <li className="menu nav-item">
+                                        <button type="button" className={`${currentMenu === 'statistic' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('statistic')}>
+                                            <div className="flex items-center">
+                                                <IconMenuCharts className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('statistic')}</span>
+                                            </div>
+
+                                            <div className={currentMenu !== 'statistic' ? '-rotate-90 rtl:rotate-90' : ''}>
+                                                <IconCaretDown />
+                                            </div>
+                                        </button>
+
+                                        <AnimateHeight duration={300} height={currentMenu === 'statistic' ? 'auto' : 0}>
+                                            <ul className="sub-menu text-gray-500">
+                                                <li>
+                                                    <Link href="/warehouse-management/statistic/product-categories">{t('product_categories')}</Link>
+                                                </li>
+                                                <li>
+                                                    <Link href="/warehouse-management/statistic/warehouses">{t('warehouses')}</Link>
+                                                </li>
+                                                <li>
+                                                    <Link href="/warehouse-management/statistic/order-type">{t('order_type')}</Link>
+                                                </li>
+                                                <li>
+                                                    <Link href="/warehouse-management/statistic/order-status">{t('order_status')}</Link>
+                                                </li>
+                                                <li>
+                                                    <Link href="/warehouse-management/statistic/repair-status">{t('repair_status')}</Link>
+                                                </li>
+                                                <li>
+                                                    <Link href="/warehouse-management/statistic/proposal-tpye">{t('proposal_tpye')}</Link>
+                                                </li>
+                                                <li>
+                                                    <Link href="/warehouse-management/statistic/proposal-status">{t('proposal_status')}</Link>
+                                                </li>
+                                                <li>
+                                                    <Link href="/warehouse-management/statistic/warehousing-type">{t('warehousing_type')}</Link>
+                                                </li>
+                                                <li>
+                                                    <Link href="/warehouse-management/statistic/warehousing-status">{t('warehousing_status')}</Link>
+                                                </li>
+                                                <li>
+                                                    <Link href="/warehouse-management/statistic/inventory">{t('inventory')}</Link>
+                                                </li>
+                                            </ul>
+                                        </AnimateHeight>
+                                    </li>
                                 </ul>
                             </li>
+
                             <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
                                 <span>{t('product_management')}</span>
                             </h2>

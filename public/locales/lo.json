@@ -473,5 +473,15 @@
   "end_date": "ວັນທີສິ້ນສຸດ",
   "tally": "ນັບ",
   "counted_quantity": "ປະລິມານນັບ",
-  "auto_add": "ເພີ່ມອັດຕະໂນມັດ"
+  "auto_add": "ເພີ່ມອັດຕະໂນມັດ",
+  "product_categories": "ປະເພດຜະລິດຕະພັນ",
+  "warehouses": "ສາງ",
+  "order_type": "ປະເພດຄໍາສັ່ງ",
+  "order_status": "ສະຖານະການສັ່ງຊື້",
+  "repair_status": "ສະຖານະການສ້ອມແປງ",
+  "proposal_tpye": "ຂໍ້ສະເໜີ tpye",
+  "proposal_status": "ສະຖານະຂໍ້ສະເໜີ",
+  "warehousing_type": "ປະເພດສາງ",
+  "warehousing_status": "ສະຖານະສາງ",
+  "inventory": "ສິນຄ້າຄົງຄັງ"
 }

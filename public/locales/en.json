@@ -473,5 +473,15 @@
 	"end_date": "End date",
 	"tally": "Tally",
 	"counted_quantity": "Counted quantity",
-	"auto_add": "Auto add"
+	"auto_add": "Auto add",
+	"product_categories": "Product categories",
+	"warehouses": "Warehouses",
+	"order_type": "Order type",
+	"order_status": "Order status",
+	"repair_status": "Repair status",
+	"proposal_tpye": "Proposal tpye",
+	"proposal_status": "Proposal status",
+	"warehousing_type": "Warehousing type",
+	"warehousing_status": "Warehousing status",
+	"inventory": "Inventory"
 }
