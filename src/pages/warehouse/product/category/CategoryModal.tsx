@@ -20,7 +20,7 @@ const CategoryModal = ({ ...props }: Props) => {
     const [disabled, setDisabled] = useState(false);
 
     const SubmittedForm = Yup.object().shape({
-        name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_category')}`)
+        name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name')}`)
     });
 
     const handleCategory = (param: any) => {
@@ -82,7 +82,7 @@ const CategoryModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data !== undefined ? 'Edit category' : 'Add category'}
+                                    {props.data !== undefined ? 'Edit Category' : 'Add Category'}
                                 </div>
                                 <div className="p-5">
                                     <Formik
@@ -102,8 +102,8 @@ const CategoryModal = ({ ...props }: Props) => {
                                         {({ errors, touched }) => (
                                             <Form className="space-y-5" >
                                                 <div className="mb-5">
-                                                    <label htmlFor="name" > {t('name_category')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name_category')}`} className="form-input" />
+                                                    <label htmlFor="name" > {t('name')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name')}`} className="form-input" />
                                                     {errors.name ? (
                                                         <div className="text-danger mt-1"> {errors.name} </div>
                                                     ) : null}

@@ -1,5 +1,7 @@
 import { useEffect, Fragment, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
+import { setPageTitle } from '../../../store/themeConfigSlice';
+import { lazy } from 'react';
 // Third party libs
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
 import Swal from 'sweetalert2';
@@ -10,30 +12,34 @@ import { useTranslation } from 'react-i18next';
 // constants
 import { PAGE_SIZES, PAGE_SIZES_DEFAULT, PAGE_NUMBER_DEFAULT } from '@/utils/constants';
 // helper
+import { capitalize, formatDate, showMessage } from '@/@core/utils';
 // icons
+import IconPencil from '../../../components/Icon/IconPencil';
+import IconTrashLines from '../../../components/Icon/IconTrashLines';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
-import IconPencil from '@/components/Icon/IconPencil';
-import IconTrashLines from '@/components/Icon/IconTrashLines';
-import IconCircleCheck from '@/components/Icon/IconCircleCheck';
 
 import { useRouter } from 'next/router';
-import { setPageTitle } from '@/store/themeConfigSlice';
 
 // json
-import ImportModal from './ImportModal';
-import IconXCircle from '@/components/Icon/IconXCircle';
+import shiftList from './shift.json';
+import ShiftModal from './modal/ShiftModal';
+import DetailModal from './modal/DetailModal';
+import IconFolderMinus from '@/components/Icon/IconFolderMinus';
+import IconDownload from '@/components/Icon/IconDownload';
+import IconChecks from '@/components/Icon/IconChecks';
+
 
 interface Props {
     [key: string]: any;
 }
 
-const ImportPage = ({ ...props }: Props) => {
+const Shift = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
     useEffect(() => {
-        dispatch(setPageTitle(`${t('Import')}`));
+        dispatch(setPageTitle(`${t('shift')}`));
     });
 
     const router = useRouter();
@@ -49,6 +55,19 @@ const ImportPage = ({ ...props }: Props) => {
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
     const [openModal, setOpenModal] = useState(false);
+    const [openDetail, setOpenDetail] = useState(false);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const data = localStorage.getItem('shiftList');
+            if (data) {
+                setGetStorge(JSON.parse(data));
+            } else {
+                localStorage.setItem('shiftList', JSON.stringify(shiftList));
+            }
+
+        }
+    }, [])
 
     useEffect(() => {
         setTotal(getStorge?.length);
@@ -64,7 +83,10 @@ const ImportPage = ({ ...props }: Props) => {
         setOpenModal(true);
         setData(data);
     };
-
+    const handleDetail = (data: any) => {
+        setOpenDetail(true);
+        setData(data);
+    };
     const handleDelete = (data: any) => {
         const swalDeletes = Swal.mixin({
             customClass: {
@@ -77,8 +99,8 @@ const ImportPage = ({ ...props }: Props) => {
         swalDeletes
             .fire({
                 icon: 'question',
-                title: `${t('delete_import')}`,
-                text: `${t('delete')} ${data.name}`,
+                title: `${t('delete_form')}`,
+                text: `${t('delete_form')} ${data.name}`,
                 padding: '2em',
                 showCancelButton: true,
                 reverseButtons: true,
@@ -86,8 +108,35 @@ const ImportPage = ({ ...props }: Props) => {
             .then((result) => {
                 if (result.value) {
                     const value = getStorge.filter((item: any) => { return (item.id !== data.id) });
-                    localStorage.setItem('importList', JSON.stringify(value));
+                    localStorage.setItem('lateEarlyFormList', JSON.stringify(value));
                     setGetStorge(value);
+                    showMessage(`${t('delete_form_success')}`, 'success')
+                }
+            });
+    };
+
+    const handleCheck = (data: any) => {
+        const swalDeletes = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'sweet-alerts',
+            },
+            buttonsStyling: false,
+        });
+        swalDeletes
+            .fire({
+                icon: 'question',
+                title: `${t('check_form')}`,
+                text: `${t('check')} ${data.name}`,
+                padding: '2em',
+                showCancelButton: true,
+                reverseButtons: true,
+            })
+            .then((result) => {
+                if (result.value) {
+                    const value = getStorge.filter((item: any) => { return (item.id !== data.id) });
+                    showMessage(`${t('check_form_success')}`, 'success')
                 }
             });
     };
@@ -107,61 +156,43 @@ const ImportPage = ({ ...props }: Props) => {
         {
             accessor: 'id',
             title: '#',
-            render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
+            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{(page - 1) * pageSize + index + 1}</span>,
         },
-        { accessor: 'code', title: 'Mã vật tư', sortable: false },
-        { accessor: 'name', title: 'Tên vật tư', sortable: false },
-        { accessor: 'unit', title: 'Đvt', sortable: false },
-        { accessor: 'quantity', title: 'Số lượng', sortable: false },
-        { accessor: 'unitPrice', title: 'Đơn giá', sortable: false },
-        { accessor: 'totalAmount', title: 'Thành tiền', sortable: false },
-        {
-            accessor: 'status',
-            title: 'Trạng thái',
-            sortable: false,
-            render: ({ status }: any) => <span className={`badge badge-outline-${status === "approved" ? "success" : status === "pending" ? "warning" : "danger"} `}>{status}</span>,
-        },
-
+        { accessor: 'name_shift', title: `${t('name_shift')}`, sortable: false,
+        render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.name_shift}</span>
+    },
+        { accessor: 'type_shift', title: `${t('type_shift')}`, sortable: false,
+        render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.type_shift}</span>
+    },
+        { accessor: 'department_apply', title: `${t('department_apply')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.department_apply}</span>
+    },
+        { accessor: 'from_time', title: `${t('from_time')}`, sortable: false,         render: (records: any, index: any) => <span onClick={(records) => handleDetail(records)}>{records?.from_time}</span>
+    },
+        { accessor: 'end_time', title: `${t('end_time')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.end_time}</span>
+    },
+    { accessor: 'time', title: `${t('time_shift')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.time}</span>
+},
         {
             accessor: 'action',
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    {
-                        records.status === "pending" ?
-                            <>
-                                <Tippy content={`${t('edit')}`}>
-                                    <button type="button" onClick={() => handleEdit(records)}>
-                                        <IconPencil />
-                                    </button>
-                                </Tippy>
-                                <Tippy content={`${t('delete')}`}>
-                                    <button type="button" onClick={() => handleDelete(records)}>
-                                        <IconTrashLines />
-                                    </button>
-                                </Tippy>
-                            </>
-                            : ""
-                    }
-                    {
-                        records.status === "pending" ?
-                            <>
-                                <Tippy content={`${t('approve')}`}>
-                                    <button type="button">
-                                        <IconCircleCheck size={20} />
-                                    </button>
-                                </Tippy>
-                                <Tippy content={`${t('unapprove')}`}>
-                                    <button type="button">
-                                        <IconXCircle />
-                                    </button>
-                                </Tippy>
-                            </>
-                            : ""
-                    }
-
-
+                    <Tippy content={`${t('edit')}`}>
+                        <button type="button" onClick={() => handleEdit(records)}>
+                            <IconPencil />
+                        </button>
+                    </Tippy>
+                    <Tippy content={`${t('check')}`}>
+                        <button type="button" onClick={() => handleCheck(records)}>
+                            <IconChecks />
+                        </button>
+                    </Tippy>
+                    <Tippy content={`${t('delete')}`}>
+                        <button type="button" onClick={() => handleDelete(records)}>
+                            <IconTrashLines />
+                        </button>
+                    </Tippy>
                 </div>
             ),
         },
@@ -174,7 +205,7 @@ const ImportPage = ({ ...props }: Props) => {
                     <IconLoading />
                 </div>
             )}
-            <title>Import</title>
+            <title>{t('department')}</title>
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
@@ -182,8 +213,15 @@ const ImportPage = ({ ...props }: Props) => {
                             <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                             {t('add')}
                         </button>
+                        <button type="button" className="btn btn-primary btn-sm m-1" >
+                            <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
+                            Nhập file
+                        </button>
+                        <button type="button" className="btn btn-primary btn-sm m-1" >
+                            <IconDownload className="ltr:mr-2 rtl:ml-2" />
+                            Xuất file excel
+                        </button>
                     </div>
-
                     <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
                 </div>
                 <div className="datatables">
@@ -205,9 +243,17 @@ const ImportPage = ({ ...props }: Props) => {
                     />
                 </div>
             </div>
-            <ImportModal
+            <ShiftModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}
+                data={data}
+                totalData={getStorge}
+                setData={setData}
+                setGetStorge={setGetStorge}
+            />
+             <DetailModal
+                openModal={openDetail}
+                setOpenModal={setOpenDetail}
                 data={data}
                 totalData={getStorge}
                 setData={setData}
@@ -217,4 +263,4 @@ const ImportPage = ({ ...props }: Props) => {
     );
 };
 
-export default ImportPage;
+export default Shift;

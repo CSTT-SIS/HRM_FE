@@ -131,7 +131,8 @@ const TaskModal = ({ ...props }: Props) => {
 									>
 										{({ errors, touched }) => (
 											<Form className="space-y-5">
-												<div className="mb-3">
+                                                <div className='flex justify-between gap-5'>
+                                                <div className="mb-3 w-1/2">
 													<label htmlFor="name">
 														{' '}
 														{t('name_task')} <span style={{ color: 'red' }}>* </span>
@@ -139,7 +140,7 @@ const TaskModal = ({ ...props }: Props) => {
 													<Field name="name" type="text" id="name" placeholder={`${t('enter_name_task')}`} className="form-input" />
 													{errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null}
 												</div>
-												<div className="mb-3">
+												<div className="mb-3 w-1/2">
 													<label htmlFor="creator">
 														{' '}
 														{t('creator_task')} <span style={{ color: 'red' }}>* </span>
@@ -151,7 +152,9 @@ const TaskModal = ({ ...props }: Props) => {
 													</Field>
 													{errors.creator ? <div className="mt-1 text-danger"> {errors.creator} </div> : null}
 												</div>
-												<div className="mb-3">
+                                                </div>
+                                                <div className='flex justify-between gap-5'>
+												<div className="mb-3 w-1/2">
 													<label htmlFor="executor">
 														{' '}
 														{t('executor_task')} <span style={{ color: 'red' }}>* </span>
@@ -163,7 +166,7 @@ const TaskModal = ({ ...props }: Props) => {
 													</Field>
 													{errors.executor ? <div className="mt-1 text-danger"> {errors.executor} </div> : null}
 												</div>
-												<div className="mb-3">
+												<div className="mb-3 w-1/2">
 													<label htmlFor="collaborator"> {t('collaborator_task')}</label>
 
 													<Field as="select" name="collaborator" id="collaborator" className="form-input">
@@ -172,14 +175,8 @@ const TaskModal = ({ ...props }: Props) => {
 														<option value="Người người phối hợp 2">Người phối hợp 2</option>
 													</Field>
 												</div>
-												<div className="mb-3">
-													<label htmlFor="description">
-														{' '}
-														{t('description_task')} <span style={{ color: 'red' }}>* </span>
-													</label>
-													<Field name="description" as="textarea" rows="4" id="description" placeholder={`${t('enter_description_task')}`} className="form-input" />
-												</div>
-												<div className="mb-3">
+                                                </div>
+                                                <div className="mb-3">
 													<label htmlFor="deadline">
 														{t('deadline_task')} <span style={{ color: 'red' }}>* </span>
 													</label>
@@ -187,8 +184,15 @@ const TaskModal = ({ ...props }: Props) => {
 													{errors.deadline ? <div className="mt-1 text-danger"> {errors.deadline} </div> : null}
 												</div>
 												<div className="mb-3">
+													<label htmlFor="description">
+														{' '}
+														{t('description_task')} <span style={{ color: 'red' }}>* </span>
+													</label>
+													<Field name="description" as="textarea" rows="2" id="description" placeholder={`${t('enter_description_task')}`} className="form-input" />
+												</div>
+												<div className="mb-3">
 													<label htmlFor="directive"> {t('directive_task')}</label>
-													<Field name="directive" as="textarea" rows="4" id="directive" placeholder={`${t('enter_directive_task')}`} className="form-input" />
+													<Field name="directive" as="textarea" rows="2" id="directive" placeholder={`${t('enter_directive_task')}`} className="form-input" />
 												</div>
 												{props.data !== undefined && (
 													<div className="mb-3">
@@ -218,10 +222,10 @@ const TaskModal = ({ ...props }: Props) => {
 												</div> */}
 												<div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
 													<button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
-														Cancel
+														{t('cancel')}
 													</button>
 													<button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4" disabled={disabled}>
-														{props.data !== undefined ? 'Update' : 'Add'}
+														{props.data !== undefined ? `${t('update')}` : `${t('add')}`}
 													</button>
 												</div>
 											</Form>

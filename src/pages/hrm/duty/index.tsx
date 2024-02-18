@@ -1,5 +1,7 @@
 import { useEffect, Fragment, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
+import { setPageTitle } from '../../../store/themeConfigSlice';
+import { lazy } from 'react';
 // Third party libs
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
 import Swal from 'sweetalert2';
@@ -10,31 +12,29 @@ import { useTranslation } from 'react-i18next';
 // constants
 import { PAGE_SIZES, PAGE_SIZES_DEFAULT, PAGE_NUMBER_DEFAULT } from '@/utils/constants';
 // helper
+import { capitalize, formatDate, showMessage } from '@/@core/utils';
 // icons
-import { IconLoading } from '@/components/Icon/IconLoading';
-import IconPlus from '@/components/Icon/IconPlus';
 import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
-import IconCircleCheck from '@/components/Icon/IconCircleCheck';
+import { IconLoading } from '@/components/Icon/IconLoading';
+import IconPlus from '@/components/Icon/IconPlus';
 
 import { useRouter } from 'next/router';
-import { setPageTitle } from '@/store/themeConfigSlice';
 
 // json
+import DutyList from './duty_list.json';
+import DutyModal from './modal/DutyModal';
 
-import ExportModal from './ExportModal';
-import IconXCircle from '@/components/Icon/IconXCircle';
 
 interface Props {
     [key: string]: any;
 }
 
-const ExportPage = ({ ...props }: Props) => {
-
+const DutyPage = ({ ...props }: Props) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     useEffect(() => {
-        dispatch(setPageTitle(`${t('Export')}`));
+        dispatch(setPageTitle(`${t('duty')}`));
     });
 
     const router = useRouter();
@@ -50,6 +50,18 @@ const ExportPage = ({ ...props }: Props) => {
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
     const [openModal, setOpenModal] = useState(false);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const data = localStorage.getItem('dutyList');
+            if (data) {
+                setGetStorge(JSON.parse(data));
+            } else {
+                localStorage.setItem('dutyList', JSON.stringify(DutyList));
+            }
+
+        }
+    }, [])
 
     useEffect(() => {
         setTotal(getStorge?.length);
@@ -78,7 +90,7 @@ const ExportPage = ({ ...props }: Props) => {
         swalDeletes
             .fire({
                 icon: 'question',
-                title: `${t('delete_export')}`,
+                title: `${t('delete_duty')}`,
                 text: `${t('delete')} ${data.name}`,
                 padding: '2em',
                 showCancelButton: true,
@@ -87,8 +99,9 @@ const ExportPage = ({ ...props }: Props) => {
             .then((result) => {
                 if (result.value) {
                     const value = getStorge.filter((item: any) => { return (item.id !== data.id) });
-                    localStorage.setItem('exportList', JSON.stringify(value));
+                    localStorage.setItem('dutyList', JSON.stringify(value));
                     setGetStorge(value);
+                    showMessage(`${t('delete_duty_success')}`, 'success')
                 }
             });
     };
@@ -110,17 +123,13 @@ const ExportPage = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
         },
-        { accessor: 'code', title: 'Mã vật tư', sortable: false },
-        { accessor: 'name', title: 'Tên vật tư', sortable: false },
-        { accessor: 'unit', title: 'Đvt', sortable: false },
-        { accessor: 'quantity', title: 'Số lượng', sortable: false },
-        { accessor: 'unitPrice', title: 'Đơn giá', sortable: false },
-        { accessor: 'totalAmount', title: 'Thành tiền', sortable: false },
+        { accessor: 'name', title: 'Tên chức vụ', sortable: false },
+        { accessor: 'code', title: 'Mã Chức vụ', sortable: false },
         {
             accessor: 'status',
             title: 'Trạng thái',
             sortable: false,
-            render: ({ status }: any) => <span className={`badge badge-outline-${status === "approved" ? "success" : status === "pending" ? "warning" : "danger"} `}>{status}</span>,
+            render: ({ status }: any) => <span className={`badge badge-outline-${status === "active" ? "success" : "danger"} `}>{status}</span>,
         },
 
         {
@@ -129,40 +138,16 @@ const ExportPage = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    {
-                        records.status === "pending" ?
-                            <>
-                                <Tippy content={`${t('edit')}`}>
-                                    <button type="button" onClick={() => handleEdit(records)}>
-                                        <IconPencil />
-                                    </button>
-                                </Tippy>
-                                <Tippy content={`${t('delete')}`}>
-                                    <button type="button" onClick={() => handleDelete(records)}>
-                                        <IconTrashLines />
-                                    </button>
-                                </Tippy>
-                            </>
-                            : ""
-                    }
-                    {
-                        records.status === "pending" ?
-                            <>
-                                <Tippy content={`${t('approve')}`}>
-                                    <button type="button">
-                                        <IconCircleCheck size={20} />
-                                    </button>
-                                </Tippy>
-                                <Tippy content={`${t('unapprove')}`}>
-                                    <button type="button">
-                                        <IconXCircle />
-                                    </button>
-                                </Tippy>
-                            </>
-                            : ""
-                    }
-
-
+                    <Tippy content={`${t('edit')}`}>
+                        <button type="button" onClick={() => handleEdit(records)}>
+                            <IconPencil />
+                        </button>
+                    </Tippy>
+                    <Tippy content={`${t('delete')}`}>
+                        <button type="button" onClick={() => handleDelete(records)}>
+                            <IconTrashLines />
+                        </button>
+                    </Tippy>
                 </div>
             ),
         },
@@ -175,7 +160,7 @@ const ExportPage = ({ ...props }: Props) => {
                     <IconLoading />
                 </div>
             )}
-            <title>Export</title>
+            <title>Duty</title>
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
@@ -206,7 +191,7 @@ const ExportPage = ({ ...props }: Props) => {
                     />
                 </div>
             </div>
-            <ExportModal
+            <DutyModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}
                 data={data}
@@ -218,4 +203,4 @@ const ExportPage = ({ ...props }: Props) => {
     );
 };
 
-export default ExportPage;
+export default DutyPage;

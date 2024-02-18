@@ -35,7 +35,7 @@ const RoleDetailPage = ({ ...props }: Props) => {
     const [checkAll, setCheckAll] = useState<any>(false);
     const [dataPermission, setDataPermission] = useState<any>();
     // get data
-    const { data: permission } = Permissions({ sortBy: 'id.ASC', ...router.query });
+    const { data: permission } = Permissions({ perPage: 0, ...router.query });
 
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().required(`${t('please_fill_name_role')}`),
@@ -179,7 +179,7 @@ const RoleDetailPage = ({ ...props }: Props) => {
                                 </div>
                             </div>
                             <div className="space-y-5 panel mt-6">
-                                <div className='flex items-center justify-between flex-row'>
+                                <div className='flex items-center justify-between flex-row border-b-2 border-current leading-10 py-2'>
                                     <div className="text-2xl">Permissions</div>
                                     <label className='flex items-center justify-between'>
                                         <Field
@@ -195,8 +195,8 @@ const RoleDetailPage = ({ ...props }: Props) => {
                                     dataPermission && Object.keys(dataPermission).map((key: any) => {
                                         return (
                                             <div className="mb-5" key={key}>
-                                                <label className="text-xl mb-2"> {t(key)}</label>
-                                                <div className='flex flex-row' role="group" aria-labelledby="checkbox-group">
+                                                <label className="text-xl mb-4"> {t(key)}</label>
+                                                <div className="grid grid-cols-4 gap-4 pl-2.5">
                                                     {
                                                         dataPermission[key].map((item: any) => {
                                                             return (
@@ -215,7 +215,6 @@ const RoleDetailPage = ({ ...props }: Props) => {
                                                         })
                                                     }
                                                 </div>
-
                                             </div>
                                         )
                                     })

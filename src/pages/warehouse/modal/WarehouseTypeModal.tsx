@@ -82,7 +82,7 @@ const WarehouseTypeModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data !== undefined ? 'Edit Warehouse' : 'Add Warehouse'}
+                                    {props.data !== undefined ? 'Edit Warehouse Type' : 'Add Warehouse Type'}
                                 </div>
                                 <div className="p-5">
                                     <Formik
@@ -101,8 +101,8 @@ const WarehouseTypeModal = ({ ...props }: Props) => {
                                         {({ errors, setFieldValue, values }) => (
                                             <Form className="space-y-5" >
                                                 <div className="mb-5">
-                                                    <label htmlFor="name" > {t('name_warehouse_type')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name_warehouse_type')}`} className="form-input" />
+                                                    <label htmlFor="name" > {t('name')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name')}`} className="form-input" />
                                                     {errors.name ? (
                                                         <div className="text-danger mt-1"> {errors.name} </div>
                                                     ) : null}

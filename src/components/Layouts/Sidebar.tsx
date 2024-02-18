@@ -44,8 +44,15 @@ import { IconItem } from '../Icon/IconItem';
 import IconUser from '../Icon/IconUser';
 import { IconTypeWarehouse } from '../Icon/IconTypeWarehouse';
 import { IconRole } from '../Icon/IconRole';
+<<<<<<< HEAD
 =======
 >>>>>>> d86d90a756955514e055ef29d81076cef86e46c6
+=======
+import IconFolder from '../Icon/IconFolder';
+import IconShoppingCart from '../Icon/IconShoppingCart';
+import { IconRepair } from '../Icon/IconRepair';
+import IconListCheck from '../Icon/IconListCheck';
+>>>>>>> 79e0de934ce95cb59545d8faa8638d3529c21956
 
 const Sidebar = () => {
     const router = useRouter();
@@ -202,7 +209,7 @@ const Sidebar = () => {
                                         </Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link href="#" className="group">
+                                        <Link href="/hrm/shift" className="group">
                                             <div className="flex items-center">
                                                 <IconMenuMailbox className="shrink-0 group-hover:!text-primary" />
                                                 <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('shift')}</span>
@@ -222,30 +229,6 @@ const Sidebar = () => {
                                             <div className="flex items-center">
                                                 <IconMenuNotes className="shrink-0 group-hover:!text-primary" />
                                                 <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('dayoff')}</span>
-                                            </div>
-                                        </Link>
-                                    </li>
-                                    <li className="nav-item">
-                                        <Link href="#" className="group">
-                                            <div className="flex items-center">
-                                                <IconMenuFontIcons className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('on_leave')}</span>
-                                            </div>
-                                        </Link>
-                                    </li>
-                                    <li className="nav-item">
-                                        <Link href="#" className="group">
-                                            <div className="flex items-center">
-                                                <IconMenuFontIcons className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('forget_timekeeping')}</span>
-                                            </div>
-                                        </Link>
-                                    </li>
-                                    <li className="nav-item">
-                                        <Link href="#" className="group">
-                                            <div className="flex items-center">
-                                                <IconMenuChat className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('ot_form')}</span>
                                             </div>
                                         </Link>
                                     </li>
@@ -291,6 +274,46 @@ const Sidebar = () => {
                                     </li>
                                 </ul>
                             </li>
+                            {/* === QUẢN LÝ ĐƠN */}
+                            <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
+                                <IconMinus className="hidden h-5 w-4 flex-none" />
+                                <span>{t('form_management')}</span>
+                            </h2>
+                            <li className="nav-item">
+                                <ul>
+                                    <li className="nav-item">
+                                        <Link href="/hrm/late-early-form" className="group">
+                                            <div className="flex items-center">
+                                                <IconMenuTables className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('late_early_form')}</span>
+                                            </div>
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link href="/hrm/overtime-form" className="group">
+                                            <div className="flex items-center">
+                                                <IconMenuDatatables className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('ot_form')}</span>
+                                            </div>
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link href="/hrm/forget-form" className="group">
+                                            <div className="flex items-center">
+                                                <IconMenuElements className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('forget_timekeeping_form')}</span>
+                                            </div>
+                                        </Link>
+                                        <Link href="/hrm/exempt-form" className="group">
+                                            <div className="flex items-center">
+                                                <IconFolder className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('exempt_form')}</span>
+                                            </div>
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </li>
+                            {/* === KẾT THÚC MENU QUẢN LÝ ĐƠN */}
                             <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
 <<<<<<< HEAD
                                 <IconMinus className="hidden h-5 w-4 flex-none" />
@@ -324,6 +347,7 @@ const Sidebar = () => {
                                     </li>
                                 </ul>
                             </li>
+
                             <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
                                 <span>{t('warehouse')}</span>
                             </h2>
@@ -375,81 +399,114 @@ const Sidebar = () => {
                                             </ul>
                                         </AnimateHeight>
                                     </li>
-                                    {/* <li className="nav-item">
-								</ul>
-							</li>
+                                </ul>
+                            </li>
 
-							<h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
-								<span>{t('warehouse')}</span>
-							</h2>
+                            <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
+                                <span>{t('warehouse_management')}</span>
+                            </h2>
 
-							<li className="nav-item">
-								<ul>
-									<li className="nav-item">
-										<Link href="/warehouse" className="group">
-											<div className="flex items-center">
-												<IconWarehouse className="shrink-0 group-hover:!text-primary" />
-												<span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('warehouse_list')}</span>
-											</div>
-										</Link>
-									</li>
-									<li className="nav-item">
-										<Link href="/warehouse-type" className="group">
-											<div className="flex items-center">
-												<IconTypeWarehouse className="shrink-0 group-hover:!text-primary" />
-												<span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('type_list')}</span>
-											</div>
-										</Link>
-									</li>
-									<li className="menu nav-item">
-										<button type="button" className={`${currentMenu === 'product' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('product')}>
-											<div className="flex items-center">
-												<IconItem className="shrink-0 group-hover:!text-primary" />
-												<span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('product')}</span>
-											</div>
-
-											<div className={currentMenu !== 'product' ? '-rotate-90 rtl:rotate-90' : ''}>
-												<IconCaretDown />
-											</div>
-										</button>
-
-										<AnimateHeight duration={300} height={currentMenu === 'product' ? 'auto' : 0}>
-											<ul className="sub-menu text-gray-500">
-												<li>
-													<Link href="/warehouse/product/list">{t('product_list')}</Link>
-												</li>
-												<li>
-													<Link href="/warehouse/product/category">{t('product_category')}</Link>
-												</li>
-												<li>
-													<Link href="/warehouse/product/unit">{t('product_unit')}</Link>
-												</li>
-												<li>
-													<Link href="/warehouse/product/provider">{t('product_provider')}</Link>
-												</li>
-											</ul>
-										</AnimateHeight>
-									</li>
-									{/* <li className="nav-item">
-                                        <Link href="/warehouse/import-product" className="group">
+                            <li className="nav-item">
+                                <ul>
+                                    <li className="nav-item">
+                                        <Link href="/warehouse-management/stocktake" className="group">
                                             <div className="flex items-center">
-                                                <IconDownload className="shrink-0 group-hover:!text-primary" size={20} />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('import_product')}</span>
+                                                <IconListCheck className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('stocktake')}</span>
+                                            </div>
+                                        </Link>
+                                    </li>
+                                    <li className="menu nav-item">
+                                        <button type="button" className={`${currentMenu === 'statistic' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('statistic')}>
+                                            <div className="flex items-center">
+                                                <IconMenuCharts className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('statistic')}</span>
+                                            </div>
+
+                                            <div className={currentMenu !== 'statistic' ? '-rotate-90 rtl:rotate-90' : ''}>
+                                                <IconCaretDown />
+                                            </div>
+                                        </button>
+
+                                        <AnimateHeight duration={300} height={currentMenu === 'statistic' ? 'auto' : 0}>
+                                            <ul className="sub-menu text-gray-500">
+                                                <li>
+                                                    <Link href="/warehouse-management/statistic/product-categories">{t('product_categories')}</Link>
+                                                </li>
+                                                <li>
+                                                    <Link href="/warehouse-management/statistic/warehouses">{t('warehouses')}</Link>
+                                                </li>
+                                                <li>
+                                                    <Link href="/warehouse-management/statistic/order-type">{t('order_type')}</Link>
+                                                </li>
+                                                <li>
+                                                    <Link href="/warehouse-management/statistic/order-status">{t('order_status')}</Link>
+                                                </li>
+                                                <li>
+                                                    <Link href="/warehouse-management/statistic/repair-status">{t('repair_status')}</Link>
+                                                </li>
+                                                <li>
+                                                    <Link href="/warehouse-management/statistic/proposal-tpye">{t('proposal_tpye')}</Link>
+                                                </li>
+                                                <li>
+                                                    <Link href="/warehouse-management/statistic/proposal-status">{t('proposal_status')}</Link>
+                                                </li>
+                                                <li>
+                                                    <Link href="/warehouse-management/statistic/warehousing-type">{t('warehousing_type')}</Link>
+                                                </li>
+                                                <li>
+                                                    <Link href="/warehouse-management/statistic/warehousing-status">{t('warehousing_status')}</Link>
+                                                </li>
+                                                <li>
+                                                    <Link href="/warehouse-management/statistic/inventory">{t('inventory')}</Link>
+                                                </li>
+                                            </ul>
+                                        </AnimateHeight>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
+                                <span>{t('product_management')}</span>
+                            </h2>
+
+                            <li className="nav-item">
+                                <ul>
+                                    <li className="nav-item">
+                                        <Link href="/product-management/proposal" className="group">
+                                            <div className="flex items-center">
+                                                <IconMenuTables className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('proposal')}</span>
                                             </div>
                                         </Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link href="/warehouse/export-product" className="group">
+                                        <Link href="/product-management/order" className="group">
                                             <div className="flex items-center">
-                                                <IconLogout className="shrink-0 group-hover:!text-primary" size={20} />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('export_product')}</span>
+                                                <IconShoppingCart className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('order_product')}</span>
                                             </div>
                                         </Link>
-                                    </li> */}
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link href="/product-management/repair" className="group">
+                                            <div className="flex items-center">
+                                                <IconRepair className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('repair')}</span>
+                                            </div>
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link href="/product-management/warehousing-bill" className="group">
+                                            <div className="flex items-center">
+                                                <IconMenuDocumentation className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('warehousing_bill')}</span>
+                                            </div>
+                                        </Link>
+                                    </li>
                                 </ul>
                             </li>
                             {/*
-
                             <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
 =======
 >>>>>>> d86d90a756955514e055ef29d81076cef86e46c6

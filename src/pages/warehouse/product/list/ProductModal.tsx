@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import Select, { components } from 'react-select';
-import { ProductCategorys, Providers, Units } from '@/services/swr/product.twr';
+import { DropdownProductCategorys, DropdownProviders, DropdownUnits } from '@/services/swr/dropdown.twr';
 import { CreateProduct, EditProduct } from '@/services/apis/product.api';
 
 interface Props {
@@ -20,32 +20,29 @@ const ProductModal = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
     const [disabled, setDisabled] = useState(false);
-    const [query, setQuery] = useState<any>();
+    const [pageCategory, setSizeCategory] = useState<any>(1);
+    const [pageUnit, setSizeUnit] = useState<any>(1);
+    const [dataCategoryDropdown, setDataCategoryDropdown] = useState<any>([]);
+    const [dataUnitDropdown, setDataUnitDropdown] = useState<any>([]);
 
     //get data
-    const { data: categorys } = ProductCategorys(query);
-    const { data: providers } = Providers(query);
-    const { data: units } = Units(query);
+    const { data: categorys, pagination: paginationCategory, isLoading: CategoryLoading } = DropdownProductCategorys({ page: pageCategory });
+    const { data: units, pagination: paginationUnit, isLoading: UnitLoading } = DropdownUnits({ page: pageUnit });
 
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_product')}`),
         code: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_productCode')}`),
-        price: Yup.number().required(`${t('please_fill_status')}`),
         unitId: new Yup.ObjectSchema().required(`${t('please_fill_unit')}`),
         providerId: new Yup.ObjectSchema().required(`${t('please_fill_provider')}`),
         categoryId: new Yup.ObjectSchema().required(`${t('please_fill_category')}`)
     });
-
     const handleProduct = (param: any) => {
         const query = {
             "name": param.name,
             "code": param.code,
-            "price": Number(param.price),
-            "tax": Number(param.tax),
-            "unitId": param.unitId.id,
+            "unitId": param.unitId.value,
             "description": param.description,
-            "categoryId": param.categoryId.id,
-            "providerId": param.providerId.id
+            "categoryId": param.categoryId.value
         }
         if (props?.data) {
             EditProduct({ id: props.data.id, ...query }).then(() => {
@@ -53,7 +50,7 @@ const ProductModal = ({ ...props }: Props) => {
                 handleCancel();
                 showMessage(`${t('edit_product_success')}`, 'success');
             }).catch((err) => {
-                showMessage(`${t('edit_product_error')}`, 'error');
+                showMessage(`${err?.response?.data?.message}`, 'error');
             });
         } else {
             CreateProduct(query).then(() => {
@@ -61,7 +58,7 @@ const ProductModal = ({ ...props }: Props) => {
                 handleCancel();
                 showMessage(`${t('create_product_success')}`, 'success');
             }).catch((err) => {
-                showMessage(`${t('create_product_error')}`, 'error');
+                showMessage(`${err?.response?.data?.message}`, 'error');
             });
         }
     }
@@ -70,32 +67,37 @@ const ProductModal = ({ ...props }: Props) => {
         props.setOpenModal(false);
         props.setData(undefined);
     };
+    useEffect(() => {
+        if (paginationCategory?.page === undefined) return;
+        if (paginationCategory?.page === 1) {
+            setDataCategoryDropdown(categorys?.data)
+        } else {
+            setDataCategoryDropdown([...dataCategoryDropdown, ...categorys?.data])
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [paginationCategory])
 
-    const handleSearch = (param: any) => {
-        setQuery({ search: param });
+    useEffect(() => {
+        if (paginationUnit?.page === undefined) return;
+        if (paginationUnit?.page === 1) {
+            setDataUnitDropdown(units?.data)
+        } else {
+            setDataUnitDropdown([...dataUnitDropdown, ...units?.data])
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [paginationUnit])
+
+    const handleMenuScrollToBottomCategory = () => {
+        setTimeout(() => {
+            setSizeCategory(paginationCategory?.page + 1);
+        }, 1000);
     }
 
-    const category = categorys?.data.filter((item: any) => {
-        return (
-            item.value = item.id,
-            item.label = item.name,
-            delete item.createdAt
-        )
-    })
-    const provider = providers?.data.filter((item: any) => {
-        return (
-            item.value = item.id,
-            item.label = item.name
-        )
-    })
-
-    const unit = units?.data.filter((item: any) => {
-        return (
-            item.value = item.id,
-            item.label = item.name
-        )
-    })
-
+    const handleMenuScrollToBottomUnit = () => {
+        setTimeout(() => {
+            setSizeUnit(paginationUnit?.page + 1);
+        }, 1000);
+    }
 
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
@@ -140,7 +142,6 @@ const ProductModal = ({ ...props }: Props) => {
                                             {
                                                 name: props?.data ? `${props?.data?.name}` : "",
                                                 code: props?.data ? `${props?.data?.code}` : "",
-                                                price: props?.data ? `${props?.data?.price}` : "",
                                                 unitId: props?.data ? {
                                                     value: `${props?.data?.unit.id}`,
                                                     label: `${props?.data?.unit.name}`
@@ -151,11 +152,9 @@ const ProductModal = ({ ...props }: Props) => {
                                                     label: `${props?.data?.category.name}`
                                                 } : "",
                                                 providerId: props?.data ? {
-                                                    value: `${props?.data?.provider.id}`,
-                                                    label: `${props?.data?.provider.name}`
-                                                } : "",
-                                                tax: props?.data ? `${props?.data?.tax}` : ""
-
+                                                    value: `${props?.data?.provider?.id}`,
+                                                    label: `${props?.data?.provider?.name}`
+                                                } : ""
                                             }
                                         }
                                         validationSchema={SubmittedForm}
@@ -167,31 +166,17 @@ const ProductModal = ({ ...props }: Props) => {
                                         {({ errors, values, setFieldValue }) => (
                                             <Form className="space-y-5" >
                                                 <div className="mb-5">
-                                                    <label htmlFor="name" > {t('name_product')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name_product')}`} className="form-input" />
+                                                    <label htmlFor="name" > {t('name')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name')}`} className="form-input" />
                                                     {errors.name ? (
                                                         <div className="text-danger mt-1"> {errors.name} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
-                                                    <label htmlFor="code" > {t('code_product')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="code" type="text" id="code" placeholder={`${t('enter_code_product')}`} className="form-input" />
+                                                    <label htmlFor="code" > {t('code')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="code" type="text" id="code" placeholder={`${t('enter_code')}`} className="form-input" />
                                                     {errors.code ? (
                                                         <div className="text-danger mt-1"> {errors.code} </div>
-                                                    ) : null}
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="price" > {t('price_product')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="price" type="number" id="price" placeholder={`${t('enter_price_product')}`} className="form-input" />
-                                                    {errors.price ? (
-                                                        <div className="text-danger mt-1"> {errors.price} </div>
-                                                    ) : null}
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="tax" > {t('tax')} </label >
-                                                    <Field name="tax" type="number" id="tax" placeholder={`${t('enter_tax_product')}`} className="form-input" />
-                                                    {errors.tax ? (
-                                                        <div className="text-danger mt-1"> {errors.tax} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
@@ -199,10 +184,12 @@ const ProductModal = ({ ...props }: Props) => {
                                                     <Select
                                                         id='unitId'
                                                         name='unitId'
-                                                        onInputChange={e => handleSearch(e)}
-                                                        options={unit}
+                                                        options={dataUnitDropdown}
+                                                        onMenuOpen={() => setSizeUnit(1)}
+                                                        onMenuScrollToBottom={handleMenuScrollToBottomUnit}
                                                         maxMenuHeight={160}
                                                         value={values.unitId}
+                                                        isLoading={UnitLoading}
                                                         onChange={e => {
                                                             setFieldValue('unitId', e)
                                                         }}
@@ -216,8 +203,10 @@ const ProductModal = ({ ...props }: Props) => {
                                                     <Select
                                                         id='categoryId'
                                                         name='categoryId'
-                                                        onInputChange={e => handleSearch(e)}
-                                                        options={category}
+                                                        options={dataCategoryDropdown}
+                                                        onMenuOpen={() => setSizeCategory(1)}
+                                                        onMenuScrollToBottom={handleMenuScrollToBottomCategory}
+                                                        isLoading={CategoryLoading}
                                                         maxMenuHeight={160}
                                                         value={values.categoryId}
                                                         onChange={e => {
@@ -227,25 +216,6 @@ const ProductModal = ({ ...props }: Props) => {
                                                     {errors.categoryId ? (
                                                         <div className="text-danger mt-1"> {errors.categoryId} </div>
                                                     ) : null}
-                                                </div>
-                                                <div className="mb-5 flex justify-between gap-4">
-                                                    <div className="flex-1">
-                                                        <label htmlFor="providerId" > {t('provider')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Select
-                                                            id='providerId'
-                                                            name='providerId'
-                                                            onInputChange={e => handleSearch(e)}
-                                                            options={provider}
-                                                            maxMenuHeight={160}
-                                                            value={values.providerId}
-                                                            onChange={e => {
-                                                                setFieldValue('providerId', e)
-                                                            }}
-                                                        />
-                                                        {errors.providerId ? (
-                                                            <div className="text-danger mt-1"> {errors.providerId} </div>
-                                                        ) : null}
-                                                    </div>
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="description" > {t('description')} </label >

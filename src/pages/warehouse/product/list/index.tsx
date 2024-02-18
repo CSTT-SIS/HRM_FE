@@ -20,9 +20,11 @@ import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
 import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
-import ProductModal from './ProductModal';
+import { IconRepair } from '@/components/Icon/IconRepair';
 
 // modal
+import ProductModal from './ProductModal';
+import ProductLimitModal from './ProductLimitModal';
 
 
 
@@ -38,10 +40,11 @@ const ProductCategoryPage = ({ ...props }: Props) => {
 
     const [showLoader, setShowLoader] = useState(true);
     const [data, setData] = useState<any>();
+    const [dataLimit, setDataLimit] = useState<any>();
     const [openModal, setOpenModal] = useState(false);
+    const [openModalLimit, setOpenModalLimit] = useState(false);
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
-
 
     // get data
     const { data: product, pagination, mutate } = Products({ sortBy: 'id.ASC', ...router.query });
@@ -83,7 +86,7 @@ const ProductCategoryPage = ({ ...props }: Props) => {
                         mutate();
                         showMessage(`${t('delete_product_success')}`, 'success');
                     }).catch((err) => {
-                        showMessage(`${t('delete_product_error')}`, 'error');
+                        showMessage(`${err?.response?.data?.message}`, 'error');
                     });
                 }
             });
@@ -117,6 +120,11 @@ const ProductCategoryPage = ({ ...props }: Props) => {
         return pageSize;
     };
 
+    const handleLimit = (records: any) => {
+        setOpenModalLimit(true);
+        setDataLimit(records);
+    }
+
     const columns = [
         {
             accessor: 'id',
@@ -139,12 +147,6 @@ const ProductCategoryPage = ({ ...props }: Props) => {
             render: ({ category }: any) => <span >{category?.name}</span>,
             sortable: false
         },
-        {
-            accessor: 'provider',
-            title: 'Nhà phân phối',
-            render: ({ provider }: any) => <span >{provider?.name}</span>,
-            sortable: false
-        },
         { accessor: 'description', title: 'Ghi chú', sortable: false },
         {
             accessor: 'action',
@@ -155,6 +157,11 @@ const ProductCategoryPage = ({ ...props }: Props) => {
                     <Tippy content={`${t('edit')}`}>
                         <button type="button" onClick={() => handleEdit(records)}>
                             <IconPencil />
+                        </button>
+                    </Tippy>
+                    <Tippy content={`${t('limit')}`}>
+                        <button type="button" onClick={() => handleLimit(records)}>
+                            <IconRepair />
                         </button>
                     </Tippy>
                     <Tippy content={`${t('delete')}`}>
@@ -195,7 +202,7 @@ const ProductCategoryPage = ({ ...props }: Props) => {
                         totalRecords={pagination?.totalRecords}
                         recordsPerPage={pagination?.perPage}
                         page={pagination?.page}
-                        onPageChange={(p) => handleChangePage(pagination?.page, pagination?.perPage)}
+                        onPageChange={(p) => handleChangePage(p, pagination?.perPage)}
                         recordsPerPageOptions={PAGE_SIZES}
                         onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
                         sortStatus={sortStatus}
@@ -210,6 +217,13 @@ const ProductCategoryPage = ({ ...props }: Props) => {
                 setOpenModal={setOpenModal}
                 data={data}
                 setData={setData}
+                productMutate={mutate}
+            />
+            <ProductLimitModal
+                openModal={openModalLimit}
+                setOpenModal={setOpenModalLimit}
+                data={dataLimit}
+                setData={setDataLimit}
                 productMutate={mutate}
             />
         </div>
