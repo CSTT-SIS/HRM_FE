@@ -128,6 +128,8 @@ const ShelfPage = ({ ...props }: Props) => {
         },
         { accessor: 'name', title: 'Tên Chức vụ', sortable: false },
         { accessor: 'code', title: 'Mã Chức vụ', sortable: false },
+        { accessor: 'duty_group', title: 'Nhóm chức vụ', sortable: false },
+        { accessor: 'description', title: 'Mô tả', sortable: false },
         {
             accessor: 'status',
             title: 'Trạng thái',

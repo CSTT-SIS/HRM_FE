@@ -31,6 +31,7 @@ const ShiftModal = ({ ...props }: Props) => {
         time: Yup.date().typeError(`${t('please_choose_from_day')}`),
         from_time: Yup.date().typeError(`${t('please_fill_from_time')}`),
         end_time: Yup.date().typeError(`${t('please_fill_end_time')}`),
+        alo: Yup.string().required('alo')
 	});
 
 	const handleDepartment = (value: any) => {

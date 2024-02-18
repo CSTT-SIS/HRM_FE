@@ -1,31 +1,46 @@
 [
     {
         "id": 1,
+        "code_shift": "CA001",
         "name_shift": "Ca ngày hành chính",
-        "type_shift": "Cả ngày",
+        "type_shift": "Ca theo thời gian",
         "status": "active",
-        "time": "8",
+        "time_total": "8",
         "department_apply": "Công ty",
         "from_time": "08:00",
-        "end_time": "16:00"
+        "end_time": "16:00",
+        "description": "",
+        "work_coefficient": 2,
+        "break_from_time": "08:00",
+        "break_end_time": "16:00"
     },
     {
         "id": 2,
+        "code_shift": "CA002",
         "name_shift": "Ca ngày nghỉ",
-        "type_shift": "Nửa buổi",
+        "type_shift": "Ca theo thời gian",
         "status": "active",
-        "time": "5",
+        "time_total": "5",
         "department_apply": "Công ty",
         "from_time": "08:00",
-        "end_time": "13:00"
+        "end_time": "13:00",
+        "description": "",
+        "work_coefficient": 2,
+        "break_from_time": "08:00",
+        "break_end_time": "16:00"
     },
     {
         "id": 3,
+        "code_shift": "CA003",
         "name_shift": "Ca làm thêm",
-        "type_shift": "Nửa buổi",
-        "time": "5",
+        "type_shift": "Ca theo tổng số giờ",
+        "time_total": "5",
         "department_apply": "Công ty",
-        "from_time": "08:00",
-        "end_time": "13:00"
+        "from_time": "",
+        "end_time": "",
+        "description": "",
+        "work_coefficient": 2,
+        "break_from_time": "",
+        "break_end_time": ""
     }
 ]

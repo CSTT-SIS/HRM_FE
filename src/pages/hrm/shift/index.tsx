@@ -2,6 +2,8 @@ import { useEffect, Fragment, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { setPageTitle } from '../../../store/themeConfigSlice';
 import { lazy } from 'react';
+import Link from 'next/link';
+
 // Third party libs
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
 import Swal from 'sweetalert2';
@@ -18,6 +20,7 @@ import IconPencil from '../../../components/Icon/IconPencil';
 import IconTrashLines from '../../../components/Icon/IconTrashLines';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
+import IconEye from '@/components/Icon/IconEye';
 
 import { useRouter } from 'next/router';
 
@@ -35,7 +38,6 @@ interface Props {
 }
 
 const Shift = ({ ...props }: Props) => {
-
     const dispatch = useDispatch();
     const { t } = useTranslation();
     useEffect(() => {
@@ -158,26 +160,56 @@ const Shift = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{(page - 1) * pageSize + index + 1}</span>,
         },
-        { accessor: 'name_shift', title: `${t('name_shift')}`, sortable: false,
-        render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.name_shift}</span>
+        {
+            accessor: 'code_shift',
+            title: `${t('code_shift')}`,
+            sortable: false,
+            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.code_shift}</span>
+        },
+        {
+            accessor: 'name_shift',
+            title: `${t('name_shift')}`,
+            sortable: false,
+            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.name_shift}</span>
+        },
+        {
+            accessor: 'type_shift',
+            title: `${t('type_shift')}`,
+            sortable: false,
+            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.type_shift}</span>
+        },
+        {
+            accessor: 'from_time',
+            title: `${t('from_time')}`,
+            sortable: false,
+            render: (records: any, index: any) => <span onClick={(records) => handleDetail(records)}>{records?.from_time}</span>
+        },
+        {
+            accessor: 'end_time',
+            title: `${t('end_time')}`,
+            sortable: false,
+            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.end_time}</span>
+        },
+            { accessor: 'break_from_time',
+            title: `${t('break_from_time')}`, sortable: false,         render: (records: any, index: any) => <span onClick={(records) => handleDetail(records)}>{records?.break_from_time}</span>
+        },
+        { accessor: 'break_end_time',
+         title: `${t('break_end_time')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.break_end_time}</span>
     },
-        { accessor: 'type_shift', title: `${t('type_shift')}`, sortable: false,
-        render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.type_shift}</span>
-    },
-        { accessor: 'department_apply', title: `${t('department_apply')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.department_apply}</span>
-    },
-        { accessor: 'from_time', title: `${t('from_time')}`, sortable: false,         render: (records: any, index: any) => <span onClick={(records) => handleDetail(records)}>{records?.from_time}</span>
-    },
-        { accessor: 'end_time', title: `${t('end_time')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.end_time}</span>
-    },
-    { accessor: 'time', title: `${t('time_shift')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.time}</span>
+    { accessor: 'time_total', title: `${t('time_shift')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.time_total}</span>
+},
+{ accessor: 'description', title: `${t('description')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.description}</span>
 },
         {
             accessor: 'action',
             title: 'Thao tác',
-            titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
+                     <Tippy content={`${t('detail_shift_employee')}`}>
+                        <Link href={`/hrm/shift/detail-shift-employee/${records?.id}`}>
+                            <IconEye />
+                            </Link>
+                    </Tippy>
                     <Tippy content={`${t('edit')}`}>
                         <button type="button" onClick={() => handleEdit(records)}>
                             <IconPencil />
@@ -207,7 +239,7 @@ const Shift = ({ ...props }: Props) => {
             )}
             <title>{t('department')}</title>
             <div className="panel mt-6">
-                <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
+                <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-3">
                     <div className="flex items-center flex-wrap">
                         <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >
                             <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
@@ -222,7 +254,17 @@ const Shift = ({ ...props }: Props) => {
                             Xuất file excel
                         </button>
                     </div>
+                    <div className='flex gap-2'>
+                        <div className='flex gap-1'>
+                        <div className="flex items-center w-auto">Hiển thị</div>
+                            <select className="form-select w-auto">
+                                <option>Tất cả</option>
+                                <option>Ca theo thời gian</option>
+                                <option>Ca theo tổng số giờ</option>
+                            </select>
+                        </div>
                     <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                        </div>
                 </div>
                 <div className="datatables">
                     <DataTable

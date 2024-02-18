@@ -406,5 +406,12 @@
 	"please_fill_name_role": "Please fill name role",
 	"delete_role_error": "Delete role error",
 	"delete_role_success": "Delete role success",
-	"delete_role": "Delete role"
+	"delete_role": "Delete role",
+    "//_SHIFT": "START SHIFT",
+    "code_shift": "Shift code",
+    "time_total": "Total time",
+    "work_coefficient": "Work coefficient",
+    "break_from_time": "Break from time",
+    "break_end_time": "Nghỉ giữa ca đến",
+    "//_END": "END SHIFT"
 }

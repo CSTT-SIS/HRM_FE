@@ -190,9 +190,17 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 									>
 										{({ errors, touched }) => (
 											<Form className="space-y-5">
+                                                <div className="mb-3">
+													<label htmlFor="title">
+														Tiêu đề lịch làm việc
+														<span style={{ color: 'red' }}> *</span>
+													</label>
+													<Field name="title" type="text" id="title" placeholder="Nhập tiêu đề lịch công việc" className="form-input" />
+													{errors.title ? <div className="mt-1 text-danger"> {errors.title} </div> : null}
+												</div>
 												<div className="mb-3">
 													<label htmlFor="user">
-														Nhân viên
+														Người tham gia
 														<span style={{ color: 'red' }}> *</span>
 													</label>
 													<Field as="select" name="user" id="user" className="form-input">
@@ -205,31 +213,24 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 													</Field>
 													{errors.user ? <div className="mt-1 text-danger"> {errors.user} </div> : null}
 												</div>
-												<div className="mb-3">
-													<label htmlFor="title">
-														Tiêu đề lịch làm việc
-														<span style={{ color: 'red' }}> *</span>
-													</label>
-													<Field name="title" type="text" id="title" placeholder="Nhập tiêu đề lịch công việc" className="form-input" />
-													{errors.title ? <div className="mt-1 text-danger"> {errors.title} </div> : null}
-												</div>
+
 												<div className="mb-3">
 													<label htmlFor="dateStart">
 														Thời gian bắt đầu <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field id="start" type="datetime-local" name="start" className="form-input" placeholder="Thời gian bắt đầu" min={minStartDate} />
+													<Field id="start" type="datetime-local" name="start" className="form-input" placeholder="Giờ bắt đầu" min={minStartDate} />
 													{errors.start ? <div className="mt-1 text-danger"> {errors.start} </div> : null}
 												</div>
 												<div className="mb-3">
 													<label htmlFor="dateEnd">
 														Thời gian kết thúc <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field id="end" type="datetime-local" name="end" className="form-input" placeholder="Thời gian kết thúc" min={minEndDate} />
+													<Field id="end" type="datetime-local" name="end" className="form-input" placeholder="Giờ kết thúc" min={minEndDate} />
 													{errors.end ? <div className="mt-1 text-danger"> {errors.end} </div> : null}
 												</div>
 												<div className="mb-3">
-													<label htmlFor="description">Mô tả công việc</label>
-													<Field id="description" as="textarea" rows="5" name="description" className="form-input" placeholder="Mô tả công việc" />
+													<label htmlFor="description">Mô tả</label>
+													<Field id="description" as="textarea" rows="2" name="description" className="form-input" placeholder="Mô tả công việc" />
 												</div>
 												<div>
 													<label>Mức độ:</label>
