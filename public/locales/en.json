@@ -484,5 +484,6 @@
 	"warehousing_type": "Warehousing type",
 	"warehousing_status": "Warehousing status",
 	"inventory": "Inventory",
-	"read_success": "Read success"
+	"read_success": "Read success",
+	"statistic": "Statistic"
 }
