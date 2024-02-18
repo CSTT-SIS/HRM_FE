@@ -8,7 +8,7 @@ import { Field, Form, Formik } from 'formik';
 import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { CreateWarehouse, EditWarehouse } from '@/services/apis/warehouse.api';
-import { WarehouseTpyes } from '@/services/swr/warehouse.twr';
+import { DropdownWarehouseTypes } from '@/services/swr/dropdown.twr';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
 import WarehouseTypeModal from './WarehouseTypeModal';
@@ -20,12 +20,14 @@ interface Props {
 const WarehouseModal = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
-    const [query, setQuery] = useState<any>();
     const [openModal, setOpenModal] = useState(false);
-    const [data, setData] = useState();
+    const [dataWarehouseTypeDropdown, setDataWarehouseTypeDropdown] = useState<any>([]);
+    const [page, setPage] = useState(1);
 
     // get data 
-    const { data: warehouseType, pagination, mutate } = WarehouseTpyes(query);
+    const { data: dropdownWarehouseType, pagination: paginationWarehousetype, isLoading, mutate } = DropdownWarehouseTypes({ page: page });
+
+
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_warehouse')}`),
         code: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_warehouseCode')}`),
@@ -36,7 +38,7 @@ const WarehouseModal = ({ ...props }: Props) => {
         const query = {
             name: param.name,
             code: param.code,
-            typeId: param.typeId.id,
+            typeId: param.typeId.value,
             description: param.description
         }
         if (props?.data) {
@@ -48,7 +50,6 @@ const WarehouseModal = ({ ...props }: Props) => {
                 showMessage(`${t('edit_warehouse_error')}`, 'error');
             });
         } else {
-            // const query = 
             CreateWarehouse(query).then(() => {
                 props.warehouseMutate();
                 handleCancel();
@@ -63,6 +64,22 @@ const WarehouseModal = ({ ...props }: Props) => {
         props.setOpenModal(false);
         props.setData();
     };
+
+    useEffect(() => {
+        if (paginationWarehousetype?.page === undefined) return;
+        if (paginationWarehousetype?.page === 1) {
+            setDataWarehouseTypeDropdown(dropdownWarehouseType?.data)
+        } else {
+            setDataWarehouseTypeDropdown([...dataWarehouseTypeDropdown, ...dropdownWarehouseType?.data])
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [paginationWarehousetype])
+
+    const handleMenuScrollToBottom = () => {
+        setTimeout(() => {
+            setPage(paginationWarehousetype?.page + 1);
+        }, 1000);
+    }
 
     const SelectMenuButton = (props: any) => {
         return (
@@ -81,17 +98,6 @@ const WarehouseModal = ({ ...props }: Props) => {
             </components.MenuList >
         )
     }
-
-    const handleSearch = (param: any) => {
-        setQuery({ search: param });
-    }
-
-    const options = warehouseType?.data.filter((item: any) => {
-        return (
-            item.value = item.id,
-            item.label = item.name
-        )
-    })
 
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
@@ -152,30 +158,32 @@ const WarehouseModal = ({ ...props }: Props) => {
                                         {({ errors, setFieldValue, values }) => (
                                             <Form className="space-y-5" >
                                                 <div className="mb-5">
-                                                    <label htmlFor="name" > {t('name_warehouse')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name_warehouse')}`} className="form-input" />
+                                                    <label htmlFor="name" > {t('name')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name')}`} className="form-input" />
                                                     {errors.name ? (
                                                         <div className="text-danger mt-1"> {errors.name} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
-                                                    <label htmlFor="code" > {t('code_warehouse')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="code" type="text" id="code" placeholder={`${t('enter_code_warehouse')}`} className="form-input" />
+                                                    <label htmlFor="code" > {t('code')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="code" type="text" id="code" placeholder={`${t('enter_code')}`} className="form-input" />
                                                     {errors.code ? (
                                                         <div className="text-danger mt-1"> {errors.code} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5 flex justify-between gap-4">
                                                     <div className="flex-1">
-                                                        <label htmlFor="typeId" > {t('type_warehouse')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <label htmlFor="typeId" > {t('type')} < span style={{ color: 'red' }}>* </span></label >
                                                         <Select
                                                             id='typeId'
                                                             name='typeId'
-                                                            onInputChange={e => handleSearch(e)}
-                                                            options={options}
+                                                            options={dataWarehouseTypeDropdown}
                                                             components={{ MenuList: SelectMenuButton }}
+                                                            onMenuOpen={() => setPage(1)}
+                                                            onMenuScrollToBottom={handleMenuScrollToBottom}
                                                             maxMenuHeight={160}
                                                             value={values.typeId}
+                                                            isLoading={isLoading}
                                                             onChange={e => {
                                                                 setFieldValue('typeId', e)
                                                             }}
@@ -214,7 +222,6 @@ const WarehouseModal = ({ ...props }: Props) => {
                     openModal={openModal}
                     setOpenModal={setOpenModal}
                     warehouseMutateType={mutate}
-                    setData={setData}
                 />
             </Dialog>
         </Transition>

@@ -4,8 +4,6 @@ import { useRouter } from 'next/router';
 import { setPageTitle } from '@/store/themeConfigSlice';
 // Third party libs
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
-import Swal from 'sweetalert2';
-import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
@@ -17,10 +15,9 @@ import { PAGE_SIZES } from '@/utils/constants';
 // icons
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
-import ImportModal from '../import-product/ImportModal';
+//modal
+import ImportModal from '../modal/ImportModal';
 
-
-// json
 interface Props {
     [key: string]: any;
 }
@@ -88,12 +85,6 @@ const ShelfPage = ({ ...props }: Props) => {
             accessor: 'product',
             title: 'Thuế',
             render: ({ product }: any) => <span >{product?.tax}</span>,
-            sortable: false
-        },
-        {
-            accessor: 'product',
-            title: 'Nhà phân phối',
-            render: ({ product }: any) => <span >{product?.provider.name}</span>,
             sortable: false
         },
         { accessor: 'quantity', title: 'Số lương', sortable: false },
@@ -242,7 +233,7 @@ const ShelfPage = ({ ...props }: Props) => {
                                                 totalRecords={pagination?.totalRecords}
                                                 recordsPerPage={pagination?.perPage}
                                                 page={pagination?.page}
-                                                onPageChange={(p) => handleChangePage(pagination?.page, pagination?.perPage)}
+                                                onPageChange={(p) => handleChangePage(p, pagination?.perPage)}
                                                 recordsPerPageOptions={PAGE_SIZES}
                                                 onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
                                                 sortStatus={sortStatus}
