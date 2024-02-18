@@ -33,8 +33,6 @@ import IconMenuPages from '@/components/Icon/Menu/IconMenuPages';
 import IconMenuAuthentication from '@/components/Icon/Menu/IconMenuAuthentication';
 import IconMenuDocumentation from '@/components/Icon/Menu/IconMenuDocumentation';
 import IconUsersGroup from '../Icon/IconUsersGroup';
-<<<<<<< HEAD
-import { IconDuty } from '../Icon/IconDuty';
 import IconDownload from '../Icon/IconDownload';
 import IconLogout from '../Icon/IconLogout';
 import IconUsers from '../Icon/IconUsers';
@@ -44,15 +42,10 @@ import { IconItem } from '../Icon/IconItem';
 import IconUser from '../Icon/IconUser';
 import { IconTypeWarehouse } from '../Icon/IconTypeWarehouse';
 import { IconRole } from '../Icon/IconRole';
-<<<<<<< HEAD
-=======
->>>>>>> d86d90a756955514e055ef29d81076cef86e46c6
-=======
 import IconFolder from '../Icon/IconFolder';
 import IconShoppingCart from '../Icon/IconShoppingCart';
 import { IconRepair } from '../Icon/IconRepair';
 import IconListCheck from '../Icon/IconListCheck';
->>>>>>> 79e0de934ce95cb59545d8faa8638d3529c21956
 
 const Sidebar = () => {
     const router = useRouter();
@@ -315,7 +308,6 @@ const Sidebar = () => {
                             </li>
                             {/* === KẾT THÚC MENU QUẢN LÝ ĐƠN */}
                             <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
-<<<<<<< HEAD
                                 <IconMinus className="hidden h-5 w-4 flex-none" />
                                 <span>{t('timekeeping_manage')}</span>
                             </h2>
@@ -416,52 +408,13 @@ const Sidebar = () => {
                                             </div>
                                         </Link>
                                     </li>
-                                    <li className="menu nav-item">
-                                        <button type="button" className={`${currentMenu === 'statistic' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('statistic')}>
+                                    <li className="nav-item">
+                                        <Link href="/warehouse-management/statistic" className="group">
                                             <div className="flex items-center">
                                                 <IconMenuCharts className="shrink-0 group-hover:!text-primary" />
                                                 <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('statistic')}</span>
                                             </div>
-
-                                            <div className={currentMenu !== 'statistic' ? '-rotate-90 rtl:rotate-90' : ''}>
-                                                <IconCaretDown />
-                                            </div>
-                                        </button>
-
-                                        <AnimateHeight duration={300} height={currentMenu === 'statistic' ? 'auto' : 0}>
-                                            <ul className="sub-menu text-gray-500">
-                                                <li>
-                                                    <Link href="/warehouse-management/statistic/product-categories">{t('product_categories')}</Link>
-                                                </li>
-                                                <li>
-                                                    <Link href="/warehouse-management/statistic/warehouses">{t('warehouses')}</Link>
-                                                </li>
-                                                <li>
-                                                    <Link href="/warehouse-management/statistic/order-type">{t('order_type')}</Link>
-                                                </li>
-                                                <li>
-                                                    <Link href="/warehouse-management/statistic/order-status">{t('order_status')}</Link>
-                                                </li>
-                                                <li>
-                                                    <Link href="/warehouse-management/statistic/repair-status">{t('repair_status')}</Link>
-                                                </li>
-                                                <li>
-                                                    <Link href="/warehouse-management/statistic/proposal-tpye">{t('proposal_tpye')}</Link>
-                                                </li>
-                                                <li>
-                                                    <Link href="/warehouse-management/statistic/proposal-status">{t('proposal_status')}</Link>
-                                                </li>
-                                                <li>
-                                                    <Link href="/warehouse-management/statistic/warehousing-type">{t('warehousing_type')}</Link>
-                                                </li>
-                                                <li>
-                                                    <Link href="/warehouse-management/statistic/warehousing-status">{t('warehousing_status')}</Link>
-                                                </li>
-                                                <li>
-                                                    <Link href="/warehouse-management/statistic/inventory">{t('inventory')}</Link>
-                                                </li>
-                                            </ul>
-                                        </AnimateHeight>
+                                        </Link>
                                     </li>
                                 </ul>
                             </li>
@@ -508,8 +461,6 @@ const Sidebar = () => {
                             </li>
                             {/*
                             <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
-=======
->>>>>>> d86d90a756955514e055ef29d81076cef86e46c6
                                 <IconMinus className="hidden h-5 w-4 flex-none" />
                                 <span>{t('user_interface')}</span>
                             </h2>

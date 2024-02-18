@@ -4,7 +4,7 @@ import { getEndpoint } from '@core/utils';
 
 export const ProductCategories = (queries?: any) => swr(getEndpoint('/statistic/product-categories', queries));
 export const Warehouses = (queries?: any) => swr(getEndpoint('/statistic/warehouses', queries));
-export const OrderType = (queries?: any) => swr(getEndpoint('/statistic/orders/type', queries));
+export const OrderTypes = (queries?: any) => swr(getEndpoint('/statistic/orders/type', queries));
 export const OrderStatus = (queries?: any) => swr(getEndpoint('/statistic/orders/status', queries));
 export const RepairStatus = (queries?: any) => swr(getEndpoint('/statistic/repair-requests/status', queries));
 export const ProposalType = (queries?: any) => swr(getEndpoint('/statistic/proposals/type', queries));
