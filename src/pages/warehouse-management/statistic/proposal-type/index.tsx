@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setPageTitle } from '@/store/themeConfigSlice';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
-import { OrderTypes } from '@/services/swr/statistic.twr';
+import { ProposalType } from '@/services/swr/statistic.twr';
 import { IRootState } from '@/store';
 import dynamic from 'next/dynamic';
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
@@ -15,35 +15,35 @@ interface Props {
     [key: string]: any;
 }
 
-const OrderTypeChart = ({ ...props }: Props) => {
+const ProposalTypeChart = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const router = useRouter();
 
     const [showLoader, setShowLoader] = useState(true);
-    const [dataOrderType, setDataOrderType] = useState<any>();
+    const [dataProposalType, setDataProposalType] = useState<any>();
 
     const isDark = useSelector((state: IRootState) => state.themeConfig.theme === 'dark' || state.themeConfig.isDarkMode);
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl' ? true : false;
 
     // get data
-    const { data: orderType } = OrderTypes({ ...router.query });
+    const { data: proposalType } = ProposalType({ ...router.query });
 
     useEffect(() => {
         var a: any = [];
         var b: any = [];
-        (orderType?.data.map((item: any) => {
+        (proposalType?.data.map((item: any) => {
             return a.push(item.count) && b.push(item.type)
         }))
-        setDataOrderType(
+        setDataProposalType(
             {
                 series: [{ data: a }],
                 name: b
             }
         );
         setShowLoader(true);
-    }, [orderType?.data]);
+    }, [proposalType?.data]);
 
     const options: any = {
         chart: {
@@ -92,7 +92,7 @@ const OrderTypeChart = ({ ...props }: Props) => {
             },
         },
         xaxis: {
-            categories: dataOrderType?.name || [],
+            categories: dataProposalType?.name || [],
             axisBorder: {
                 show: true,
                 color: isDark ? '#3b3f5c' : '#e0e6ed',
@@ -126,12 +126,12 @@ const OrderTypeChart = ({ ...props }: Props) => {
     return (
         <div className="panel h-full mb-8 lg:col-span-2">
             <div className="mb-5 flex items-start justify-between border-b border-white-light p-5  dark:border-[#1b2e4b] dark:text-white-light">
-                <h5 className="text-lg font-semibold ">{t('order_type')}</h5>
+                <h5 className="text-lg font-semibold ">{t('proposal_type')}</h5>
             </div>
-            {showLoader && <ReactApexChart options={options} series={dataOrderType?.series} type="bar" height={360} width={'100%'} />}
+            {showLoader && <ReactApexChart options={options} series={dataProposalType?.series} type="bar" height={360} width={'100%'} />}
 
         </div>
     );
 };
 
-export default OrderTypeChart;
+export default ProposalTypeChart;

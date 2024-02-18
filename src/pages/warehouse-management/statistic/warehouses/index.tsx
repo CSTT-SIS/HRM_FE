@@ -1,100 +1,137 @@
-import { useEffect, Fragment, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setPageTitle } from '@/store/themeConfigSlice';
-// Third party libs
-import { DataTable, DataTableSortStatus } from 'mantine-datatable';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
-import { PAGE_SIZES } from '@/utils/constants';
-import { IconLoading } from '@/components/Icon/IconLoading';
-import { Warehouses } from '@/services/swr/statistic.twr';
+import { ProposalType, Warehouses } from '@/services/swr/statistic.twr';
+import { IRootState } from '@/store';
+import dynamic from 'next/dynamic';
+const ReactApexChart = dynamic(() => import('react-apexcharts'), {
+    ssr: false,
+});
 
 interface Props {
     [key: string]: any;
 }
 
-const StocktakePage = ({ ...props }: Props) => {
+const WarehouseChart = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const router = useRouter();
 
     const [showLoader, setShowLoader] = useState(true);
+    const [dataWarehouses, setDataWarehouses] = useState<any>();
 
-    const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
+    const isDark = useSelector((state: IRootState) => state.themeConfig.theme === 'dark' || state.themeConfig.isDarkMode);
+    const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl' ? true : false;
 
     // get data
-    const { data: warehouse, pagination } = Warehouses({ ...router.query });
+    const { data: warehouse } = Warehouses({ ...router.query });
 
     useEffect(() => {
-        dispatch(setPageTitle(`${t('Warehouses')}`));
-    });
-
-    useEffect(() => {
-        setShowLoader(false);
-    }, [warehouse]);
-
-    const handleChangePage = (page: number, pageSize: number) => {
-        router.replace(
+        var a: any = [];
+        var b: any = [];
+        (warehouse?.data.map((item: any) => {
+            return a.push(item.products) && b.push(item.name)
+        }))
+        setDataWarehouses(
             {
-                pathname: router.pathname,
-                query: {
-                    ...router.query,
-                    page: page,
-                    perPage: pageSize,
-                },
-            },
-            undefined,
-            { shallow: true },
+                series: [{ data: a }],
+                name: b
+            }
         );
-        return pageSize;
-    };
+        setShowLoader(true);
+    }, [warehouse?.data]);
 
-
-    const columns = [
-        {
-            accessor: 'id',
-            title: '#',
-            render: (records: any, index: any) => <span>{index + 1}</span>,
+    const options: any = {
+        chart: {
+            height: 360,
+            type: 'bar',
+            fontFamily: 'Nunito, sans-serif',
+            toolbar: {
+                show: false,
+            },
         },
-        { accessor: 'name', title: 'Tên kho', sortable: false },
-        { accessor: 'products', title: 'Số lượng sản phẩm', sortable: false },
-    ]
-
+        dataLabels: {
+            enabled: false,
+        },
+        stroke: {
+            width: 2,
+            colors: ['transparent'],
+        },
+        dropShadow: {
+            enabled: true,
+            blur: 3,
+            color: '#515365',
+            opacity: 0.4,
+        },
+        plotOptions: {
+            bar: {
+                horizontal: false,
+                columnWidth: '55%',
+                borderRadius: 8,
+                borderRadiusApplication: 'end',
+            },
+        },
+        legend: {
+            position: 'bottom',
+            horizontalAlign: 'center',
+            fontSize: '14px',
+            itemMargin: {
+                horizontal: 8,
+                vertical: 8,
+            },
+        },
+        grid: {
+            borderColor: isDark ? '#191e3a' : '#e0e6ed',
+            padding: {
+                left: 20,
+                right: 20,
+            },
+        },
+        xaxis: {
+            categories: dataWarehouses?.name || [],
+            axisBorder: {
+                show: true,
+                color: isDark ? '#3b3f5c' : '#e0e6ed',
+            },
+        },
+        yaxis: {
+            tickAmount: 6,
+            opposite: isRtl ? true : false,
+            labels: {
+                offsetX: isRtl ? -10 : 0,
+            },
+        },
+        fill: {
+            type: 'gradient',
+            gradient: {
+                shade: isDark ? 'dark' : 'light',
+                type: 'vertical',
+                shadeIntensity: 0.3,
+                inverseColors: false,
+                opacityFrom: 1,
+                opacityTo: 0.8,
+                stops: [0, 100],
+            },
+        },
+        tooltip: {
+            marker: {
+                show: true,
+            },
+        },
+    }
     return (
-        <div>
-            {showLoader && (
-                <div className="screen_loader fixed inset-0 bg-[#fafafa] dark:bg-[#060818] z-[60] grid place-content-center animate__animated">
-                    <IconLoading />
-                </div>
-            )}
-            <title>Warehouses</title>
-            <div className="panel mt-6">
-                <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
-                    <div className="flex items-center flex-wrap"></div>
-                </div>
-                <div className="datatables">
-                    <DataTable
-                        highlightOnHover
-                        className="whitespace-nowrap table-hover"
-                        records={warehouse?.data}
-                        columns={columns}
-                        totalRecords={pagination?.totalRecords}
-                        recordsPerPage={pagination?.perPage}
-                        page={pagination?.page}
-                        onPageChange={(p) => handleChangePage(p, pagination?.perPage)}
-                        recordsPerPageOptions={PAGE_SIZES}
-                        onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
-                        sortStatus={sortStatus}
-                        onSortStatusChange={setSortStatus}
-                        minHeight={200}
-                        paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
-                    />
-                </div>
+        <div className="panel h-full mb-8 lg:col-span-2">
+            <div className="mb-5 flex items-start justify-between border-b border-white-light p-5  dark:border-[#1b2e4b] dark:text-white-light">
+                <h5 className="text-lg font-semibold ">{t('warehouses')}</h5>
             </div>
+            {showLoader && <ReactApexChart options={options} series={dataWarehouses?.series} type="bar" height={360} width={'100%'} />}
+
         </div>
     );
 };
 
-export default StocktakePage;
+export default WarehouseChart;
