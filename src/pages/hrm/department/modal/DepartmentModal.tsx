@@ -8,6 +8,9 @@ import { Field, Form, Formik } from 'formik';
 import Swal from 'sweetalert2';
 import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
+import Select, { components } from 'react-select';
+import { ProductCategorys, Providers } from '@/services/swr/product.twr';
+
 
 interface Props {
 	[key: string]: any;
@@ -16,7 +19,10 @@ interface Props {
 const DepartmentModal = ({ ...props }: Props) => {
 	const { t } = useTranslation();
 	const [disabled, setDisabled] = useState(false);
+	const [query, setQuery] = useState<any>();
 
+	const { data: departmentparents } = ProductCategorys(query);
+	const { data: manages } = Providers(query);
 	const SubmittedForm = Yup.object().shape({
 		name: Yup.string()
 			.min(2, 'Too Short!')
@@ -24,8 +30,27 @@ const DepartmentModal = ({ ...props }: Props) => {
 		code: Yup.string()
 			.min(2, 'Too Short!')
 			.required(`${t('please_fill_departmentCode')}`),
+		abbreviated: Yup.string()
+			.min(2, 'Too Short!')
+			.required(`please fill abbreviated name`),
 	});
+	const handleSearch = (param: any) => {
+		setQuery({ search: param });
+	}
+	const departmentparent = departmentparents?.data.filter((item: any) => {
+		return (
+			item.value = item.id,
+			item.label = item.name,
+			delete item.createdAt
+		)
+	})
 
+	const manage = manages?.data.filter((item: any) => {
+		return (
+			item.value = item.id,
+			item.label = item.name
+		)
+	})
 	const handleDepartment = (value: any) => {
 		if (props?.data) {
 			const reNew = props.totalData.filter((item: any) => item.id !== props.data.id);
@@ -93,13 +118,22 @@ const DepartmentModal = ({ ...props }: Props) => {
 										initialValues={{
 											name: props?.data ? `${props?.data?.name}` : '',
 											code: props?.data ? `${props?.data?.code}` : '',
+											abbreviated: props?.data ? `${props?.data?.abbreviated}` : '',
+											manageId: props?.data ? {
+												value: `${props?.data?.manage.id}`,
+												label: `${props?.data?.manage.name}`
+											} : "",
+											departmentparentId: props?.data ? {
+												value: `${props?.data?.departmentparent.id}`,
+												label: `${props?.data?.departmentparent.name}`
+											} : "",
 										}}
 										validationSchema={SubmittedForm}
 										onSubmit={(values) => {
 											handleDepartment(values);
 										}}
 									>
-										{({ errors, touched }) => (
+										{({ errors, values, setFieldValue }) => (
 											<Form className="space-y-5">
 												<div className="mb-5">
 													<label htmlFor="name">
@@ -116,6 +150,48 @@ const DepartmentModal = ({ ...props }: Props) => {
 													</label>
 													<Field name="code" type="text" id="code" placeholder={`${t('enter_code_department')}`} className="form-input" />
 													{errors.code ? <div className="mt-1 text-danger"> {errors.code} </div> : null}
+												</div>
+												<div className="mb-5">
+													<label htmlFor="code">
+														{' '}
+														Abbreviated name <span style={{ color: 'red' }}>* </span>
+													</label>
+													<Field name="abbreviated" type="text" id="abbreviated" placeholder={`Enter abbreviated name}`} className="form-input" />
+													{errors.abbreviated ? <div className="mt-1 text-danger"> {errors.abbreviated} </div> : null}
+												</div>
+												<div className="mb-5">
+													<label htmlFor="departmentparentId" > Department Parent < span style={{ color: 'red' }}>* </span></label >
+													<Select
+														id='unidepartmentparentIdtId'
+														name='departmentparentId'
+														onInputChange={e => handleSearch(e)}
+														options={departmentparent}
+														maxMenuHeight={160}
+														value={values.departmentparentId}
+														onChange={e => {
+															setFieldValue('departmentparentId', e)
+														}}
+													/>
+													{errors.departmentparentId ? (
+														<div className="text-danger mt-1"> {errors.departmentparentId} </div>
+													) : null}
+												</div>
+												<div className="mb-5">
+													<label htmlFor="manageId" >Manager < span style={{ color: 'red' }}>* </span></label >
+													<Select
+														id='manageId'
+														name='manageId'
+														onInputChange={e => handleSearch(e)}
+														options={manage}
+														maxMenuHeight={160}
+														value={values.manageId}
+														onChange={e => {
+															setFieldValue('manageId', e)
+														}}
+													/>
+													{errors.manageId ? (
+														<div className="text-danger mt-1"> {errors.manageId} </div>
+													) : null}
 												</div>
 												<div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
 													<button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>

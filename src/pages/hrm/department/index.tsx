@@ -150,7 +150,7 @@ const Department = ({ ...props }: Props) => {
             ),
         },
     ]
-
+    
     return (
         <div>
             {showLoader && (
