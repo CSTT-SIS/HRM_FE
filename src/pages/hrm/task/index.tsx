@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import IconDownload from '@/components/Icon/IconDownload';
 import { useDispatch } from 'react-redux';
@@ -15,9 +15,8 @@ import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
-import IconFolderMinus from '@/components/Icon/IconFolderMinus';
 import TaskModal from './modal/TaskModal';
-
+import { ActionIcon, Button, Checkbox, MultiSelect, Stack, TextInput } from '@mantine/core';
 interface Props {
 	[key: string]: any;
 }
@@ -32,7 +31,7 @@ const Task = ({ ...props }: Props) => {
 	const [showLoader, setShowLoader] = useState(true);
 	const [page, setPage] = useState<any>(PAGE_NUMBER_DEFAULT);
 	const [pageSize, setPageSize] = useState(PAGE_SIZES_DEFAULT);
-	const [recordsData, setRecordsData] = useState<any>();
+	const [recordsData, setRecordsData] = useState<any>([]);
 	const [total, setTotal] = useState(0);
 	const [getStorge, setGetStorge] = useState<any>();
 	const [data, setData] = useState<any>();
@@ -40,6 +39,8 @@ const Task = ({ ...props }: Props) => {
 	const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
 	const [openModal, setOpenModal] = useState(false);
+
+	const [selectedDepartments, setSelectedDepartments] = useState<string[]>([]);
 
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
@@ -121,6 +122,28 @@ const Task = ({ ...props }: Props) => {
 		},
 		{ accessor: 'creator', title: 'Người tạo', sortable: false },
 		{ accessor: 'name', title: 'Tên nhiệm vụ', sortable: false },
+		{
+			accessor: 'department',
+			title: 'Phòng',
+			filter: (
+				<MultiSelect
+					label="Departments"
+					description="Show all employees working at the selected departments"
+					data={[
+						{
+							name: 'Phòng 1',
+							value: '1'
+						}
+					]}
+					value={selectedDepartments}
+					placeholder="Search departments…"
+					onChange={setSelectedDepartments}
+					clearable
+					searchable
+				/>
+			),
+			filtering: selectedDepartments.length > 0,
+		},
 		{ accessor: 'executor', title: 'Người thực hiện', sortable: false },
 		// { accessor: 'collaborator', title: 'Người phối hợp thực hiện', sortable: false },
 		// { accessor: 'description', title: 'Mô tả nhiệm vụ', sortable: false },
