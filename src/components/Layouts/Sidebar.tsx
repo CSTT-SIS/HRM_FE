@@ -33,6 +33,7 @@ import IconMenuPages from '@/components/Icon/Menu/IconMenuPages';
 import IconMenuAuthentication from '@/components/Icon/Menu/IconMenuAuthentication';
 import IconMenuDocumentation from '@/components/Icon/Menu/IconMenuDocumentation';
 import IconUsersGroup from '../Icon/IconUsersGroup';
+<<<<<<< HEAD
 import { IconDuty } from '../Icon/IconDuty';
 import IconDownload from '../Icon/IconDownload';
 import IconLogout from '../Icon/IconLogout';
@@ -43,6 +44,8 @@ import { IconItem } from '../Icon/IconItem';
 import IconUser from '../Icon/IconUser';
 import { IconTypeWarehouse } from '../Icon/IconTypeWarehouse';
 import { IconRole } from '../Icon/IconRole';
+=======
+>>>>>>> d86d90a756955514e055ef29d81076cef86e46c6
 
 const Sidebar = () => {
     const router = useRouter();
@@ -289,6 +292,7 @@ const Sidebar = () => {
                                 </ul>
                             </li>
                             <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
+<<<<<<< HEAD
                                 <IconMinus className="hidden h-5 w-4 flex-none" />
                                 <span>{t('timekeeping_manage')}</span>
                             </h2>
@@ -447,6 +451,8 @@ const Sidebar = () => {
                             {/*
 
                             <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
+=======
+>>>>>>> d86d90a756955514e055ef29d81076cef86e46c6
                                 <IconMinus className="hidden h-5 w-4 flex-none" />
                                 <span>{t('user_interface')}</span>
                             </h2>
