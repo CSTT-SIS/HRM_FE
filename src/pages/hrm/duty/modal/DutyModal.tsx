@@ -93,7 +93,7 @@ const DutyModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data !== undefined ? 'Edit Duty' : 'Add Duty'}
+                                    {props.data !== undefined ? t('edit_duty') : t('add_duty')}
                                 </div>
                                 <div className="p-5">
                                     <Formik
@@ -101,7 +101,9 @@ const DutyModal = ({ ...props }: Props) => {
                                             {
                                                 name: props?.data ? `${props?.data?.name}` : "",
                                                 code: props?.data ? `${props?.data?.code}` : "",
-                                                status: props?.data ? `${props?.data?.status}` : ""
+                                                status: props?.data ? `${props?.data?.status}` : "",
+                                                duty_group: props?.data ? `${props?.data?.duty_group}` : "",
+                                                description: props?.data ? `${props?.data?.description}` : ""
                                             }
                                         }
                                         validationSchema={SubmittedForm}
@@ -128,11 +130,31 @@ const DutyModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mb-5 flex justify-between gap-4">
                                                     <div className="flex-1">
+                                                        <label htmlFor="duty_group" > {t('duty_group')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <Field as="select" name="duty_group" id="duty_group" className="form-input">
+                                                            <option value="active">Quản lý</option>
+                                                            <option value="inActive">Nhân viên</option>
+                                                        </Field>
+                                                        {errors.duty_group ? (
+                                                            <div className="text-danger mt-1"> {errors.duty_group} </div>
+                                                        ) : null}
+                                                    </div>
+                                                </div>
+                                                <div className="mb-5">
+                                                    <label htmlFor="description" > {t('duty_description')}</label >
+                                                    <Field name="duty_description" type="text" id="duty_description" placeholder={`${t('enter_description')}`} className="form-input" />
+                                                    {errors.description ? (
+                                                        <div className="text-danger mt-1"> {errors.description} </div>
+                                                    ) : null}
+                                                </div>
+                                                <div className="mb-5 flex justify-between gap-4">
+                                                    <div className="flex-1">
                                                         <label htmlFor="status" > {t('status')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Field as="select" name="status" id="status" className="form-input">
-                                                            <option value="">---</option>
-                                                            <option value="active">Active</option>
-                                                            <option value="inActive">InActive</option>
+                                                        <Field as="select" name="status" id="status"
+                                                        placeholder={t('enter_duty_status')}
+                                                        className="form-input">
+                                                            <option value="active">{t('active')}</option>
+                                                            <option value="inActive">{t('inactive')}</option>
                                                         </Field>
                                                         {errors.status ? (
                                                             <div className="text-danger mt-1"> {errors.status} </div>
@@ -144,7 +166,7 @@ const DutyModal = ({ ...props }: Props) => {
                                                         {t('cancel')}
                                                     </button>
                                                     <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4" disabled={disabled}>
-                                                        {props.data !== undefined ? 'Update' : 'Add'}
+                                                        {props.data !== undefined ? t('update') : t('add')}
                                                     </button>
                                                 </div>
 

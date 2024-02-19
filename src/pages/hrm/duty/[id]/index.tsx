@@ -1,6 +1,5 @@
 import { useEffect, Fragment, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { setPageTitle } from '../../../store/themeConfigSlice';
 import { lazy } from 'react';
 // Third party libs
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
@@ -12,29 +11,29 @@ import { useTranslation } from 'react-i18next';
 // constants
 import { PAGE_SIZES, PAGE_SIZES_DEFAULT, PAGE_NUMBER_DEFAULT } from '@/utils/constants';
 // helper
-import { capitalize, formatDate, showMessage } from '@/@core/utils';
 // icons
-import IconPencil from '@/components/Icon/IconPencil';
-import IconTrashLines from '@/components/Icon/IconTrashLines';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
 
 import { useRouter } from 'next/router';
+import IconPencil from '@/components/Icon/IconPencil';
+import IconTrashLines from '@/components/Icon/IconTrashLines';
+import { setPageTitle } from '@/store/themeConfigSlice';
 
 // json
-// import DutyList from './duty_list.json';
-import DutyModal from './modal/DutyModal';
-
+// import shelfList from '../shelf_list.json';
+// import ShelfModal from '../modal/ShelfModal';
 
 interface Props {
     [key: string]: any;
 }
 
-const DutyPage = ({ ...props }: Props) => {
+const ShelfPage = ({ ...props }: Props) => {
+
     const dispatch = useDispatch();
     const { t } = useTranslation();
     useEffect(() => {
-        dispatch(setPageTitle(`${t('duty')}`));
+        dispatch(setPageTitle(`${t('Shelf')}`));
     });
 
     const router = useRouter();
@@ -51,23 +50,24 @@ const DutyPage = ({ ...props }: Props) => {
 
     const [openModal, setOpenModal] = useState(false);
 
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const data = localStorage.getItem('dutyList');
-            if (data) {
-                setGetStorge(JSON.parse(data));
-            } else {
-                // localStorage.setItem('dutyList', JSON.stringify(DutyList));
-            }
+    // useEffect(() => {
+    //     if (typeof window !== 'undefined') {
+    //         const data = localStorage.getItem('shelfList');
+    //         if (data) {
+    //             setGetStorge(JSON.parse(data));
+    //         } else {
+    //             localStorage.setItem('shelfList', JSON.stringify(shelfList));
+    //         }
 
-        }
-    }, [])
+    //     }
+    // }, [])
 
     useEffect(() => {
         setTotal(getStorge?.length);
         setPageSize(PAGE_SIZES_DEFAULT);
-        setRecordsData(getStorge?.filter((item: any, index: any) => { return index <= 9 && page === 1 ? item : index >= 10 && index <= (page * 9) ? item : null }));
-    }, [getStorge, getStorge?.length, page])
+        filterData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [getStorge, page])
 
     useEffect(() => {
         setShowLoader(false);
@@ -77,6 +77,10 @@ const DutyPage = ({ ...props }: Props) => {
         setOpenModal(true);
         setData(data);
     };
+
+    const filterData = () => {
+        setRecordsData(getStorge?.filter((item: any, index: any) => { return index <= 9 && page === 1 ? item : index >= 10 && index <= (page * 9) ? item : null }));
+    }
 
     const handleDelete = (data: any) => {
         const swalDeletes = Swal.mixin({
@@ -90,7 +94,7 @@ const DutyPage = ({ ...props }: Props) => {
         swalDeletes
             .fire({
                 icon: 'question',
-                title: `${t('delete_duty')}`,
+                title: `${t('delete_shelf')}`,
                 text: `${t('delete')} ${data.name}`,
                 padding: '2em',
                 showCancelButton: true,
@@ -99,16 +103,15 @@ const DutyPage = ({ ...props }: Props) => {
             .then((result) => {
                 if (result.value) {
                     const value = getStorge.filter((item: any) => { return (item.id !== data.id) });
-                    localStorage.setItem('dutyList', JSON.stringify(value));
+                    localStorage.setItem('shelfList', JSON.stringify(value));
                     setGetStorge(value);
-                    showMessage(`${t('delete_duty_success')}`, 'success')
                 }
             });
     };
 
     const handleSearch = (e: any) => {
         if (e.target.value === "") {
-            setRecordsData(getStorge);
+            filterData();
         } else {
             setRecordsData(
                 getStorge.filter((item: any) => {
@@ -123,7 +126,7 @@ const DutyPage = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
         },
-        { accessor: 'name', title: 'Tên chức vụ', sortable: false },
+        { accessor: 'name', title: 'Tên Chức vụ', sortable: false },
         { accessor: 'code', title: 'Mã Chức vụ', sortable: false },
         { accessor: 'duty_group', title: 'Nhóm chức vụ', sortable: false },
         { accessor: 'description', title: 'Mô tả', sortable: false },
@@ -162,7 +165,7 @@ const DutyPage = ({ ...props }: Props) => {
                     <IconLoading />
                 </div>
             )}
-            <title>Duty</title>
+            <title>ShelfPage</title>
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
@@ -193,16 +196,16 @@ const DutyPage = ({ ...props }: Props) => {
                     />
                 </div>
             </div>
-            <DutyModal
+            {/* <ShelfModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}
                 data={data}
                 totalData={getStorge}
                 setData={setData}
                 setGetStorge={setGetStorge}
-            />
+            /> */}
         </div>
     );
 };
 
-export default DutyPage;
+export default ShelfPage;

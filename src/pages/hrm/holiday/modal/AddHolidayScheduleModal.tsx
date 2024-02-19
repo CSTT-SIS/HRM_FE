@@ -212,16 +212,16 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 												</div>
 												<div className="mb-3">
 													<label htmlFor="dateStart">
-														Thời gian bắt đầu <span style={{ color: 'red' }}>* </span>
+														Giờ bắt đầu <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field id="start" type="datetime-local" name="start" className="form-input" placeholder="Thời gian bắt đầu" min={minStartDate} />
+													<Field id="start" type="datetime-local" name="start" className="form-input" placeholder="Giờ bắt đầu" min={minStartDate} />
 													{errors.start ? <div className="mt-1 text-danger"> {errors.start} </div> : null}
 												</div>
 												<div className="mb-3">
 													<label htmlFor="dateEnd">
-														Thời gian kết thúc <span style={{ color: 'red' }}>* </span>
+														Giờ kết thúc <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field id="end" type="datetime-local" name="end" className="form-input" placeholder="Thời gian kết thúc" min={minEndDate} />
+													<Field id="end" type="datetime-local" name="end" className="form-input" placeholder="Giờ kết thúc" min={minEndDate} />
 													{errors.end ? <div className="mt-1 text-danger"> {errors.end} </div> : null}
 												</div>
 												<div className="mb-3">
