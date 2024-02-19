@@ -133,7 +133,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                         {({ errors, values, setFieldValue }) => (
                                             <Form className="space-y-5" >
                                                 <div className="mb-5 flex justify-between gap-4">
-                                                    <div className="flex-1">
+                                                    <div className="flex-1 mb-24">
                                                         <label htmlFor="productId" > {t('product')} < span style={{ color: 'red' }}>* </span></label >
                                                         <Select
                                                             id='productId'
