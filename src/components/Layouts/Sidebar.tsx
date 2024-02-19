@@ -265,15 +265,15 @@ const Sidebar = () => {
                                             </div>
                                         </Link>
                                     </li>
-                                </ul>
+</ul>
                             </li>
                             {/* === QUẢN LÝ ĐƠN */}
                             <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
                                 <IconMinus className="hidden h-5 w-4 flex-none" />
                                 <span>{t('form_management')}</span>
                             </h2>
-                            <li className="nav-item">
-                                <ul>
+                                    <li className="nav-item">
+                                        <ul>
                                     <li className="nav-item">
                                         <Link href="/hrm/late-early-form" className="group">
                                             <div className="flex items-center">
@@ -306,7 +306,7 @@ const Sidebar = () => {
                                     </li>
                                 </ul>
                             </li>
-                            {/* === KẾT THÚC MENU QUẢN LÝ ĐƠN */}
+{/* === KẾT THÚC MENU QUẢN LÝ ĐƠN */}
                             <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
                                 <IconMinus className="hidden h-5 w-4 flex-none" />
                                 <span>{t('timekeeping_manage')}</span>
