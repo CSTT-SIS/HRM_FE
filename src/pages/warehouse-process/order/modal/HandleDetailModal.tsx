@@ -10,7 +10,7 @@ import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
 import { DropdownProducts } from '@/services/swr/dropdown.twr';
-import { AddRepairDetail, EditRepairDetail } from '@/services/apis/repair.api';
+import { AddOrderDetail, EditOrderDetail } from '@/services/apis/order.api';
 
 interface Props {
     [key: string]: any;
@@ -25,22 +25,20 @@ const HandleDetailModal = ({ ...props }: Props) => {
     const [page, setPage] = useState(1);
 
     const SubmittedForm = Yup.object().shape({
-        replacementPartId: new Yup.ObjectSchema().required(`${t('please_fill_product')}`),
+        productId: new Yup.ObjectSchema().required(`${t('please_fill_product')}`),
         quantity: Yup.string().required(`${t('please_fill_quantity')}`),
     });
 
     const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ page: page });
 
-
-    const handleRepairDetail = (param: any) => {
+    const handleOrder = (param: any) => {
         const query = {
-            replacementPartId: Number(param.replacementPartId.value),
+            productId: Number(param.productId.value),
             quantity: Number(param.quantity),
-            brokenPart: param.brokenPart,
-            description: param.description
+            note: param.note
         };
         if (props?.data) {
-            EditRepairDetail({ id: props.idDetail, detailId: props?.data?.id, ...query }).then(() => {
+            EditOrderDetail({ id: router.query.id, itemId: props?.data?.id, ...query }).then(() => {
                 props.orderDetailMutate();
                 handleCancel();
                 showMessage(`${t('edit_success')}`, 'success');
@@ -48,7 +46,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
         } else {
-            AddRepairDetail({ id: props.idDetail, ...query }).then(() => {
+            AddOrderDetail({ id: router.query.id, ...query }).then(() => {
                 props.orderDetailMutate();
                 handleCancel();
                 showMessage(`${t('create_success')}`, 'success');
@@ -67,12 +65,11 @@ const HandleDetailModal = ({ ...props }: Props) => {
     useEffect(() => {
         setInitialValue({
             quantity: props?.data ? `${props?.data?.quantity}` : "",
-            replacementPartId: props?.data ? {
-                value: `${props?.data?.replacementPart?.id}`,
-                label: `${props?.data?.replacementPart?.name}`
+            productId: props?.data ? {
+                value: `${props?.data?.product?.id}`,
+                label: `${props?.data?.product?.name}`
             } : "",
-            brokenPart: props?.data ? props?.data.brokenPart : "",
-            description: props?.data ? props?.data.description : ""
+            note: props?.data ? `${props?.data?.note}` : "",
         })
     }, [props?.data, router]);
 
@@ -91,7 +88,6 @@ const HandleDetailModal = ({ ...props }: Props) => {
             setPage(productPagination?.page + 1);
         }, 1000);
     }
-
 
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
@@ -128,14 +124,14 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {'Add repair detail'}
+                                    {t('order_detail')}
                                 </div>
                                 <div className="p-5">
                                     <Formik
                                         initialValues={initialValue}
                                         validationSchema={SubmittedForm}
                                         onSubmit={values => {
-                                            handleRepairDetail(values);
+                                            handleOrder(values);
                                         }}
                                         enableReinitialize
                                     >
@@ -143,22 +139,22 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                             <Form className="space-y-5" >
                                                 <div className="mb-5 flex justify-between gap-4">
                                                     <div className="flex-1">
-                                                        <label htmlFor="replacementPartId" > {t('product')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <label htmlFor="productId" > {t('product')} < span style={{ color: 'red' }}>* </span></label >
                                                         <Select
-                                                            id='replacementPartId'
-                                                            name='replacementPartId'
+                                                            id='productId'
+                                                            name='productId'
                                                             options={dataProductDropdown}
                                                             onMenuOpen={() => setPage(1)}
                                                             onMenuScrollToBottom={handleMenuScrollToBottom}
                                                             isLoading={productLoading}
                                                             maxMenuHeight={160}
-                                                            value={values.replacementPartId}
+                                                            value={values.productId}
                                                             onChange={e => {
-                                                                setFieldValue('replacementPartId', e)
+                                                                setFieldValue('productId', e)
                                                             }}
                                                         />
-                                                        {errors.replacementPartId ? (
-                                                            <div className="text-danger mt-1"> {`${errors.replacementPartId}`} </div>
+                                                        {errors.productId ? (
+                                                            <div className="text-danger mt-1"> {`${errors.productId}`} </div>
                                                         ) : null}
                                                     </div>
                                                 </div>
@@ -176,29 +172,16 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
-                                                    <label htmlFor="brokenPart" > {t('broken_part')} </label >
+                                                    <label htmlFor="note" > {t('description')} </label >
                                                     <Field
-                                                        name="brokenPart"
+                                                        name="note"
                                                         type="text"
-                                                        id="brokenPart"
-                                                        placeholder={`${t('enter_broken_part')}`}
-                                                        className="form-input"
-                                                    />
-                                                    {errors.brokenPart ? (
-                                                        <div className="text-danger mt-1"> {`${errors.brokenPart}`} </div>
-                                                    ) : null}
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="description" > {t('description')}</label >
-                                                    <Field
-                                                        name="description"
-                                                        type="text"
-                                                        id="description"
+                                                        id="note"
                                                         placeholder={`${t('enter_description')}`}
                                                         className="form-input"
                                                     />
-                                                    {errors.description ? (
-                                                        <div className="text-danger mt-1"> {`${errors.description}`} </div>
+                                                    {errors.note ? (
+                                                        <div className="text-danger mt-1"> {`${errors.note}`} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">

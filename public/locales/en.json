@@ -206,7 +206,7 @@
 	"edit_staff_err": "Edit staff error",
 	"delete_staff_err": "Delete department error",
 	"warehouse": "warehouse",
-	"product_management": "Product management",
+	"warehouse_process": "Warehouse process",
 	"warehouse_list": "Warehouse list",
 	"type_list": "Warehouse type list",
 	"delete_warehouse": "Delete Department",

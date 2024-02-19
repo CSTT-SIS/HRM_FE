@@ -9,8 +9,8 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
-import { Proposals } from '@/services/swr/proposal.twr';
-import { DeleteProposal, ProposalApprove, ProposalReject, ProposalReturn } from '@/services/apis/proposal.api';
+import { Repairs } from '@/services/swr/repair.twr';
+import { DeleteRepair, RepairComplete } from '@/services/apis/repair.api';
 // constants
 import { PAGE_SIZES } from '@/utils/constants';
 // helper
@@ -21,20 +21,15 @@ import IconPlus from '@/components/Icon/IconPlus';
 import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
 import IconCircleCheck from '@/components/Icon/IconCircleCheck';
-import IconXCircle from '@/components/Icon/IconXCircle';
-import IconRestore from '@/components/Icon/IconRestore';
 // modal
-import ProposalModal from './modal/ProposalModal';
 import DetailModal from './modal/DetailModal';
-
-
-
+import RepairModal from './modal/RepairModal';
 
 interface Props {
     [key: string]: any;
 }
 
-const ProposalPage = ({ ...props }: Props) => {
+const RepairPage = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -46,21 +41,20 @@ const ProposalPage = ({ ...props }: Props) => {
     const [openModalDetail, setOpenModalDetail] = useState(false);
     const [idDetail, setIdDetail] = useState();
     const [status, setStatus] = useState();
-    const [type, setType] = useState();
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
 
     // get data
-    const { data: proposal, pagination, mutate } = Proposals({ sortBy: 'id.ASC', ...router.query });
+    const { data: repairs, pagination, mutate } = Repairs({ ...router.query });
 
     useEffect(() => {
-        dispatch(setPageTitle(`${t('proposal')}`));
+        dispatch(setPageTitle(`${t('Repair')}`));
     });
 
     useEffect(() => {
         setShowLoader(false);
-    }, [proposal])
+    }, [repairs])
 
     const handleEdit = (data: any) => {
         setOpenModal(true);
@@ -79,7 +73,7 @@ const ProposalPage = ({ ...props }: Props) => {
         swalDeletes
             .fire({
                 icon: 'question',
-                title: `${t('delete_proposal')}`,
+                title: `${t('delete_order')}`,
                 text: `${t('delete')} ${name}`,
                 padding: '2em',
                 showCancelButton: true,
@@ -87,7 +81,7 @@ const ProposalPage = ({ ...props }: Props) => {
             })
             .then((result) => {
                 if (result.value) {
-                    DeleteProposal({ id }).then(() => {
+                    DeleteRepair({ id }).then(() => {
                         mutate();
                         showMessage(`${t('delete_success')}`, 'success');
                     }).catch((err) => {
@@ -126,32 +120,14 @@ const ProposalPage = ({ ...props }: Props) => {
     };
 
     const handleDetail = (value: any) => {
-        setType(value.type)
-        setOpenModalDetail(true);
-        setIdDetail(value.id);
-        setStatus(value.status);
+        // setOpenModalDetail(true);
+        // setIdDetail(value.id);
+        // setStatus(value.status);
+        router.push(`/warehouse-process/repair/${value.id}?status=${value.status}`)
     }
 
-    const handleApprove = ({ id }: any) => {
-        ProposalApprove({ id }).then(() => {
-            mutate();
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
-
-    const handleReject = ({ id }: any) => {
-        ProposalReject({ id }).then(() => {
-            mutate();
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
-
-    const handleReturn = ({ id }: any) => {
-        ProposalReturn({ id }).then(() => {
+    const handleComplete = ({ id }: any) => {
+        RepairComplete({ id }).then(() => {
             mutate();
             showMessage(`${t('update_success')}`, 'success');
         }).catch((err) => {
@@ -165,9 +141,18 @@ const ProposalPage = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
-        { accessor: 'name', title: 'Tên đề xuất', sortable: false },
-        { accessor: 'type', title: 'Loại đề xuất', sortable: false },
-        { accessor: 'content', title: 'Nội dung', sortable: false },
+        { accessor: 'name', title: 'Tên đơn hàng', sortable: false },
+        {
+            accessor: 'vehicle',
+            title: 'Số đăng ký xe',
+            render: ({ vehicle }: any) => <span>{vehicle?.registrationNumber}</span>,
+        },
+        {
+            accessor: 'repairBy',
+            title: 'Người phụ trách',
+            render: ({ repairBy }: any) => <span>{repairBy?.fullName}</span>,
+        },
+        { accessor: 'description', title: 'Ghi chú', sortable: false },
         { accessor: 'status', title: 'Trạng thái', sortable: false },
         {
             accessor: 'action',
@@ -175,7 +160,7 @@ const ProposalPage = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('add detail')}`}>
+                    <Tippy content={`${t('add_detail')}`}>
                         <button type="button" onClick={() => handleDetail(records)}>
                             <IconPlus />
                         </button>
@@ -190,19 +175,9 @@ const ProposalPage = ({ ...props }: Props) => {
                             <IconTrashLines />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('approve')}`}>
-                        <button type="button" onClick={() => handleApprove(records)}>
+                    <Tippy content={`${t('complete')}`}>
+                        <button type="button" onClick={() => handleComplete(records)}>
                             <IconCircleCheck size={20} />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('reject')}`}>
-                        <button type="button" onClick={() => handleReject(records)}>
-                            <IconXCircle />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('return')}`}>
-                        <button type="button" onClick={() => handleReturn(records)}>
-                            <IconRestore />
                         </button>
                     </Tippy>
                 </div>
@@ -233,7 +208,7 @@ const ProposalPage = ({ ...props }: Props) => {
                     <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover"
-                        records={proposal?.data}
+                        records={repairs?.data}
                         columns={columns}
                         totalRecords={pagination?.totalRecords}
                         recordsPerPage={pagination?.perPage}
@@ -248,23 +223,22 @@ const ProposalPage = ({ ...props }: Props) => {
                     />
                 </div>
             </div>
-            <ProposalModal
+            <RepairModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}
                 data={data}
                 setData={setData}
-                proposalMutate={mutate}
+                repairMutate={mutate}
             />
-            <DetailModal
+            {/* <DetailModal
                 openModalDetail={openModalDetail}
                 setOpenModalDetail={setOpenModalDetail}
                 idDetail={idDetail}
                 status={status}
-                proposalMutate={mutate}
-                type={type}
-            />
+                repairMutate={mutate}
+            /> */}
         </div>
     );
 };
 
-export default ProposalPage;
+export default RepairPage;

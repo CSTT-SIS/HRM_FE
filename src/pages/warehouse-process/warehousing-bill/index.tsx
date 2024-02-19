@@ -9,8 +9,8 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
-import { Repairs } from '@/services/swr/repair.twr';
-import { DeleteRepair, RepairComplete } from '@/services/apis/repair.api';
+import { WarehousingBill } from '@/services/swr/warehousing-bill.twr';
+import { DeleteWarehousingBill, WarehousingBillApprove, WarehousingBillReject } from '@/services/apis/warehousing-bill.api';
 // constants
 import { PAGE_SIZES } from '@/utils/constants';
 // helper
@@ -20,16 +20,21 @@ import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
 import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
+import IconXCircle from '@/components/Icon/IconXCircle';
 import IconCircleCheck from '@/components/Icon/IconCircleCheck';
 // modal
+import WarehousingBillModal from './modal/WarehousingBillModal';
 import DetailModal from './modal/DetailModal';
-import RepairModal from './modal/RepairModal';
+
+
+
+
 
 interface Props {
     [key: string]: any;
 }
 
-const RepairPage = ({ ...props }: Props) => {
+const WarehousingPage = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -46,15 +51,14 @@ const RepairPage = ({ ...props }: Props) => {
 
 
     // get data
-    const { data: repairs, pagination, mutate } = Repairs({ ...router.query });
-
+    const { data: warehousing, pagination, mutate } = WarehousingBill({ ...router.query });
     useEffect(() => {
-        dispatch(setPageTitle(`${t('Repair')}`));
+        dispatch(setPageTitle(`${t('proposal')}`));
     });
 
     useEffect(() => {
         setShowLoader(false);
-    }, [repairs])
+    }, [warehousing])
 
     const handleEdit = (data: any) => {
         setOpenModal(true);
@@ -81,7 +85,7 @@ const RepairPage = ({ ...props }: Props) => {
             })
             .then((result) => {
                 if (result.value) {
-                    DeleteRepair({ id }).then(() => {
+                    DeleteWarehousingBill({ id }).then(() => {
                         mutate();
                         showMessage(`${t('delete_success')}`, 'success');
                     }).catch((err) => {
@@ -120,13 +124,23 @@ const RepairPage = ({ ...props }: Props) => {
     };
 
     const handleDetail = (value: any) => {
-        setOpenModalDetail(true);
-        setIdDetail(value.id);
-        setStatus(value.status);
+        // setOpenModalDetail(true);
+        // setIdDetail(value.id);
+        // setStatus(value.status);
+        router.push(`/warehouse-process/warehousing-bill/${value.id}?status=${value.status}`)
     }
 
-    const handleComplete = ({ id }: any) => {
-        RepairComplete({ id }).then(() => {
+    const handleApprove = ({ id }: any) => {
+        WarehousingBillApprove({ id }).then(() => {
+            mutate();
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
+    const handleReject = ({ id }: any) => {
+        WarehousingBillReject({ id }).then(() => {
             mutate();
             showMessage(`${t('update_success')}`, 'success');
         }).catch((err) => {
@@ -140,26 +154,32 @@ const RepairPage = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
-        { accessor: 'name', title: 'Tên đơn hàng', sortable: false },
+        { accessor: 'name', title: 'Tên hoá đơn kho', sortable: false },
+        { accessor: 'type', title: 'Loại đơn hàng', sortable: false },
         {
-            accessor: 'vehicle',
-            title: 'Số đăng ký xe',
-            render: ({ vehicle }: any) => <span>{vehicle?.registrationNumber}</span>,
+            accessor: 'proposal',
+            title: 'Tên đề xuất',
+            render: ({ proposal }: any) => <span>{proposal?.name}</span>,
         },
         {
-            accessor: 'repairBy',
-            title: 'Người phụ trách',
-            render: ({ repairBy }: any) => <span>{repairBy?.fullName}</span>,
+            accessor: 'order',
+            title: 'Tên đặt hàng',
+            render: ({ order }: any) => <span>{order?.name}</span>,
         },
-        { accessor: 'description', title: 'Ghi chú', sortable: false },
+        {
+            accessor: 'warehouse',
+            title: 'Tên kho',
+            render: ({ warehouse }: any) => <span>{warehouse?.name}</span>,
+        },
         { accessor: 'status', title: 'Trạng thái', sortable: false },
+        { accessor: 'note', title: 'Ghi chú', sortable: false },
         {
             accessor: 'action',
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('add detail')}`}>
+                    <Tippy content={`${t('check_quantity')}`}>
                         <button type="button" onClick={() => handleDetail(records)}>
                             <IconPlus />
                         </button>
@@ -174,9 +194,14 @@ const RepairPage = ({ ...props }: Props) => {
                             <IconTrashLines />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('complete')}`}>
-                        <button type="button" onClick={() => handleComplete(records)}>
+                    <Tippy content={`${t('approve')}`}>
+                        <button type="button" onClick={() => handleApprove(records)}>
                             <IconCircleCheck size={20} />
+                        </button>
+                    </Tippy>
+                    <Tippy content={`${t('reject')}`}>
+                        <button type="button" onClick={() => handleReject(records)}>
+                            <IconXCircle />
                         </button>
                     </Tippy>
                 </div>
@@ -207,7 +232,7 @@ const RepairPage = ({ ...props }: Props) => {
                     <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover"
-                        records={repairs?.data}
+                        records={warehousing?.data}
                         columns={columns}
                         totalRecords={pagination?.totalRecords}
                         recordsPerPage={pagination?.perPage}
@@ -222,22 +247,22 @@ const RepairPage = ({ ...props }: Props) => {
                     />
                 </div>
             </div>
-            <RepairModal
+            <WarehousingBillModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}
                 data={data}
                 setData={setData}
-                repairMutate={mutate}
+                warehousingMutate={mutate}
             />
-            <DetailModal
+            {/* <DetailModal
                 openModalDetail={openModalDetail}
                 setOpenModalDetail={setOpenModalDetail}
                 idDetail={idDetail}
                 status={status}
-                repairMutate={mutate}
-            />
+                warehousingMutate={mutate}
+            /> */}
         </div>
     );
 };
 
-export default RepairPage;
+export default WarehousingPage;

@@ -9,64 +9,66 @@ import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
-import { DropdownOrderType, DropdownProposals, DropdownProviders } from '@/services/swr/dropdown.twr';
-import { CreateOrder, EditOrder } from '@/services/apis/order.api';
-import moment from 'moment';
+import { DropdownOrder, DropdownOrderType, DropdownProposals, DropdownWarehouses, DropdownWarehousingType } from '@/services/swr/dropdown.twr';
+import { CreateWarehousingBill, EditWarehousingBill } from '@/services/apis/warehousing-bill.api';
 
 interface Props {
     [key: string]: any;
 }
 
-const OrderModal = ({ ...props }: Props) => {
+const WarehousingBillModal = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
     const router = useRouter();
     const [initialValue, setInitialValue] = useState<any>();
+    const [proposalStatus, setproposalStatus] = useState(true);
     const [pageProposal, setPageProposal] = useState(1);
-    const [pageProvider, setPageProvider] = useState(1);
+    const [pageOder, setPageOrder] = useState(1);
+    const [pageWarehouse, setPageWarehouse] = useState(1);
     const [dataProposalDropdown, setDataProposalDropdown] = useState<any>([]);
-    const [dataProviderDropdown, setDataProviderDropdown] = useState<any>([]);
+    const [dataOrderDropdown, setDataOrderDropdown] = useState<any>([]);
+    const [dataWarehouseDropdown, setDataWarehouseDropdown] = useState<any>([]);
 
 
+    const [proposalQuery, setProposalQuery] = useState<any>({ page: pageProposal, status: "APPROVED" });
+    const [orderQuery, setOrderQuery] = useState<any>({ page: pageOder, status: "RECEIVED" });
 
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().required(`${t('please_fill_name')}`),
         type: new Yup.ObjectSchema().required(`${t('please_fill_type')}`),
-        code: Yup.string().required(`${t('please_fill_code')}`),
         proposalId: new Yup.ObjectSchema().required(`${t('please_fill_proposal')}`),
-        providerId: new Yup.ObjectSchema().required(`${t('please_fill_provider')}`),
-        estimatedDeliveryDate: Yup.string().required(`${t('please_fill_date')}`),
-
+        warehouseId: new Yup.ObjectSchema().required(`${t('please_fill_warehouse')}`),
     });
 
-    const { data: proposals, pagination: proposalPagiantion, isLoading: proposalLoading } = DropdownProposals({ page: pageProposal, type: "PURCHASE" });
-    const { data: orderTypes } = DropdownOrderType({ perPage: 0 });
-    const { data: providers, pagination: providerPagiantion, isLoading: providerLoading } = DropdownProviders({ page: pageProvider });
+    const { data: proposals, pagination: proposalPagination, isLoading: proposalLoading } = DropdownProposals(proposalQuery);
+    const { data: orders, pagination: orderPagination, isLoading: orderLoading } = DropdownOrder(orderQuery);
+    const { data: warehouses, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({ page: pageWarehouse });
+    const { data: warehousingBill, pagination: warehousingPagination, isLoading: warehousingLoading } = DropdownWarehousingType({ perPage: 0 });
 
-    const handleOrder = (param: any) => {
+    const handleWarehousing = (param: any) => {
         const query = {
-            name: param.name,
             proposalId: Number(param.proposalId.value),
+            orderId: Number(param.orderId.value),
+            warehouseId: Number(param.warehouseId.value),
             type: param.type.value,
-            code: param.code,
-            estimatedDeliveryDate: param.estimatedDeliveryDate,
-            providerId: Number(param.providerId.value)
+            note: param.note,
+            name: param.name
         };
         if (props?.data) {
-            EditOrder({ id: props?.data?.id, ...query }).then(() => {
-                props.orderMutate();
+            EditWarehousingBill({ id: props?.data?.id, ...query }).then(() => {
+                props.warehousingMutate();
                 handleCancel();
                 showMessage(`${t('edit_success')}`, 'success');
             }).catch((err) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
         } else {
-            CreateOrder(query).then(() => {
-                props.orderMutate();
+            CreateWarehousingBill(query).then(() => {
+                props.warehousingMutate();
                 handleCancel();
                 showMessage(`${t('create_success')}`, 'success');
             }).catch((err) => {
-                showMessage(`${err?.response?.data?.message[0].error}`, 'error');
+                showMessage(`${err?.response?.data?.message}`, 'error');
             });
         }
     }
@@ -75,59 +77,80 @@ const OrderModal = ({ ...props }: Props) => {
         props.setOpenModal(false);
         props.setData();
         setInitialValue({});
+        setProposalQuery({ ...proposalQuery, type: "" })
     };
 
     useEffect(() => {
         setInitialValue({
-            name: props?.data ? `${props?.data?.name}` : "",
             proposalId: props?.data ? {
                 value: `${props?.data?.proposal.id}`,
                 label: `${props?.data?.proposal.name}`
             } : "",
-            type: props?.data ? props?.data?.type === "PURCHASE" ? {
+            orderId: props?.data ? {
+                value: `${props?.data?.order.id}`,
+                label: `${props?.data?.order.name}`
+            } : "",
+            warehouseId: props?.data ? {
+                value: `${props?.data?.warehouse.id}`,
+                label: `${props?.data?.warehouse.name}`
+            } : "",
+            type: props?.data ? props?.data?.type === "IMPORT" ? {
                 value: `${props?.data?.type}`,
-                label: `Đơn hàng mua`
+                label: `Phiếu nhập kho`
             } : {
                 value: `${props?.data?.type}`,
-                label: `Đơn hàng bán`
+                label: `Phiếu xuất kho`
             } : "",
-            code: props?.data ? `${props?.data?.code}` : "",
-            estimatedDeliveryDate: props?.data ? moment(`${props?.data?.estimatedDeliveryDate}`).format("YYYY-MM-DD") : "",
-            providerId: props?.data ? {
-                value: `${props?.data?.provider?.id}`,
-                label: `${props?.data?.provider?.name}`
-            } : "",
+            note: props?.data ? `${props?.data?.note}` : "",
+            name: props?.data ? `${props?.data?.name}` : ""
         })
     }, [props?.data, router]);
 
     useEffect(() => {
-        if (providerPagiantion?.page === undefined) return;
-        if (providerPagiantion?.page === 1) {
-            setDataProviderDropdown(providers?.data)
-        } else {
-            setDataProviderDropdown([...dataProviderDropdown, ...providers?.data])
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [providerPagiantion])
-
-    useEffect(() => {
-        if (proposalPagiantion?.page === undefined) return;
-        if (proposalPagiantion?.page === 1) {
+        if (proposalPagination?.page === undefined) return;
+        if (proposalPagination?.page === 1) {
             setDataProposalDropdown(proposals?.data)
         } else {
             setDataProposalDropdown([...dataProposalDropdown, ...proposals?.data])
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [proposalPagiantion])
+    }, [proposalPagination])
+
+    useEffect(() => {
+        if (orderPagination?.page === undefined) return;
+        if (orderPagination?.page === 1) {
+            setDataOrderDropdown(orders?.data)
+        } else {
+            setDataOrderDropdown([...dataOrderDropdown, ...orders?.data])
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [orderPagination])
+
+    useEffect(() => {
+        if (warehousePagination?.page === undefined) return;
+        if (warehousePagination?.page === 1) {
+            setDataWarehouseDropdown(warehouses?.data)
+        } else {
+            setDataWarehouseDropdown([...dataWarehouseDropdown, ...warehouses?.data])
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [warehousePagination])
 
     const handleMenuScrollToBottomProposal = () => {
         setTimeout(() => {
-            setPageProposal(proposalPagiantion?.page + 1);
+            setPageProposal(proposalPagination?.page + 1);
         }, 1000);
     }
-    const handleMenuScrollToBottomProvider = () => {
+
+    const handleMenuScrollToBottomOrder = () => {
         setTimeout(() => {
-            setPageProvider(providerPagiantion?.page + 1);
+            setPageOrder(orderPagination?.page + 1);
+        }, 1000);
+    }
+
+    const handleMenuScrollToBottomWarehouse = () => {
+        setTimeout(() => {
+            setPageWarehouse(warehousePagination?.page + 1);
         }, 1000);
     }
 
@@ -166,14 +189,14 @@ const OrderModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data !== undefined ? 'Edit order' : 'Add order'}
+                                    {t('warehousing_bill')}
                                 </div>
                                 <div className="p-5">
                                     <Formik
                                         initialValues={initialValue}
                                         validationSchema={SubmittedForm}
                                         onSubmit={values => {
-                                            handleOrder(values);
+                                            handleWarehousing(values);
                                         }}
                                         enableReinitialize
                                     >
@@ -181,7 +204,7 @@ const OrderModal = ({ ...props }: Props) => {
                                         {({ errors, values, setFieldValue }) => (
                                             <Form className="space-y-5" >
                                                 <div className="mb-5">
-                                                    <label htmlFor="name" > {t('name')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <label htmlFor="name" > {t('name')}< span style={{ color: 'red' }}>* </span></label >
                                                     <Field
                                                         name="name"
                                                         type="text"
@@ -195,35 +218,21 @@ const OrderModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mb-5 flex justify-between gap-4">
                                                     <div className="flex-1">
-                                                        <label htmlFor="proposalId" > {t('proposal')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Select
-                                                            id='proposalId'
-                                                            name='proposalId'
-                                                            options={dataProposalDropdown}
-                                                            onMenuOpen={() => setPageProposal(1)}
-                                                            onMenuScrollToBottom={handleMenuScrollToBottomProposal}
-                                                            isLoading={proposalLoading}
-                                                            maxMenuHeight={160}
-                                                            value={values.proposalId}
-                                                            onChange={e => {
-                                                                setFieldValue('proposalId', e)
-                                                            }}
-                                                        />
-                                                        {errors.proposalId ? (
-                                                            <div className="text-danger mt-1"> {`${errors.proposalId}`} </div>
-                                                        ) : null}
-                                                    </div>
-                                                </div>
-                                                <div className="mb-5 flex justify-between gap-4">
-                                                    <div className="flex-1">
-                                                        <label htmlFor="type" > {t('type')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <label htmlFor="type" > {t('type')}</label >
                                                         <Select
                                                             id='type'
                                                             name='type'
-                                                            options={orderTypes?.data}
+                                                            options={warehousingBill?.data}
+                                                            isLoading={warehousingLoading}
                                                             maxMenuHeight={160}
                                                             value={values.type}
                                                             onChange={e => {
+                                                                if (e.value === "IMPORT") {
+                                                                    setProposalQuery({ ...proposalQuery, type: "PURCHASE" })
+                                                                } else {
+                                                                    setProposalQuery({ ...proposalQuery, type: "REPAIR" })
+                                                                }
+                                                                setproposalStatus(false)
                                                                 setFieldValue('type', e)
                                                             }}
                                                         />
@@ -234,48 +243,84 @@ const OrderModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mb-5 flex justify-between gap-4">
                                                     <div className="flex-1">
-                                                        <label htmlFor="providerId" > {t('provider')}< span style={{ color: 'red' }}>* </span></label >
+                                                        <label htmlFor="proposalId" > {t('proposal')} < span style={{ color: 'red' }}>* </span></label >
                                                         <Select
-                                                            id='providerId'
-                                                            name='providerId'
-                                                            options={dataProviderDropdown}
-                                                            onMenuOpen={() => setPageProvider(1)}
-                                                            onMenuScrollToBottom={handleMenuScrollToBottomProvider}
-                                                            isLoading={providerLoading}
+                                                            id='proposalId'
+                                                            name='proposalId'
+                                                            options={dataProposalDropdown}
+                                                            onMenuOpen={() => setPageProposal(1)}
+                                                            onMenuScrollToBottom={handleMenuScrollToBottomProposal}
+                                                            isLoading={proposalLoading}
                                                             maxMenuHeight={160}
-                                                            value={values.providerId}
+                                                            value={values.proposalId}
+                                                            isDisabled={proposalStatus}
                                                             onChange={e => {
-                                                                setFieldValue('providerId', e)
+                                                                setOrderQuery({ ...orderQuery, proposalId: e.value })
+                                                                setFieldValue('proposalId', e)
+                                                                setFieldValue('orderId', "")
                                                             }}
                                                         />
-                                                        {errors.providerId ? (
-                                                            <div className="text-danger mt-1"> {`${errors.providerId}`} </div>
+                                                        {errors.proposalId ? (
+                                                            <div className="text-danger mt-1"> {`${errors.proposalId}`} </div>
+                                                        ) : null}
+                                                    </div>
+                                                </div>
+                                                {
+                                                    orders?.data.length > 0 && proposalQuery?.type === "PURCHASE" &&
+                                                    <div className="mb-5 flex justify-between gap-4">
+                                                        <div className="flex-1">
+                                                            <label htmlFor="orderId" > {t('order')}</label >
+                                                            <Select
+                                                                id='orderId'
+                                                                name='orderId'
+                                                                options={dataOrderDropdown}
+                                                                onMenuOpen={() => setPageOrder(1)}
+                                                                onMenuScrollToBottom={handleMenuScrollToBottomOrder}
+                                                                isLoading={orderLoading}
+                                                                maxMenuHeight={160}
+                                                                value={values.orderId}
+                                                                onChange={e => {
+                                                                    setFieldValue('orderId', e)
+                                                                }}
+                                                            />
+                                                            {errors.orderId ? (
+                                                                <div className="text-danger mt-1"> {`${errors.orderId}`} </div>
+                                                            ) : null}
+                                                        </div>
+                                                    </div>
+                                                }
+                                                <div className="mb-5 flex justify-between gap-4">
+                                                    <div className="flex-1">
+                                                        <label htmlFor="warehouseId" > {t('warehouse')}</label >
+                                                        <Select
+                                                            id='warehouseId'
+                                                            name='warehouseId'
+                                                            options={dataWarehouseDropdown}
+                                                            onMenuOpen={() => setPageWarehouse(1)}
+                                                            onMenuScrollToBottom={handleMenuScrollToBottomWarehouse}
+                                                            isLoading={warehouseLoading}
+                                                            maxMenuHeight={160}
+                                                            value={values.warehouseId}
+                                                            onChange={e => {
+                                                                setFieldValue('warehouseId', e)
+                                                            }}
+                                                        />
+                                                        {errors.warehouseId ? (
+                                                            <div className="text-danger mt-1"> {`${errors.warehouseId}`} </div>
                                                         ) : null}
                                                     </div>
                                                 </div>
                                                 <div className="mb-5">
-                                                    <label htmlFor="code" > {t('code')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <label htmlFor="note" > {t('note')}</label >
                                                     <Field
-                                                        name="code"
+                                                        name="note"
                                                         type="text"
-                                                        id="code"
-                                                        placeholder={`${t('enter_code')}`}
+                                                        id="note"
+                                                        placeholder={`${t('enter_note')}`}
                                                         className="form-input"
                                                     />
-                                                    {errors.code ? (
-                                                        <div className="text-danger mt-1"> {`${errors.code}`} </div>
-                                                    ) : null}
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="estimatedDeliveryDate" > {t('estimated_delivery_date')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field
-                                                        name="estimatedDeliveryDate"
-                                                        type="date"
-                                                        id="estimatedDeliveryDate"
-                                                        className="form-input"
-                                                    />
-                                                    {errors.estimatedDeliveryDate ? (
-                                                        <div className="text-danger mt-1"> {`${errors.estimatedDeliveryDate}`} </div>
+                                                    {errors.note ? (
+                                                        <div className="text-danger mt-1"> {`${errors.note}`} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
@@ -301,4 +346,4 @@ const OrderModal = ({ ...props }: Props) => {
     );
 };
 
-export default OrderModal;
+export default WarehousingBillModal;
