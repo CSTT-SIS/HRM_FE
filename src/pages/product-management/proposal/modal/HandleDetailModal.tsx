@@ -127,7 +127,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {'Add proposal detail'}
+                                    Yêu cầu chi tiết
                                 </div>
                                 <div className="p-5">
                                     <Formik
