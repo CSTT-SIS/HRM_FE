@@ -22,7 +22,7 @@ import IconPlus from '@/components/Icon/IconPlus';
 import { useRouter } from 'next/router';
 
 // json
-import DutyList from './duty_list.json';
+// import DutyList from './duty_list.json';
 import DutyModal from './modal/DutyModal';
 
 
@@ -57,7 +57,7 @@ const DutyPage = ({ ...props }: Props) => {
             if (data) {
                 setGetStorge(JSON.parse(data));
             } else {
-                localStorage.setItem('dutyList', JSON.stringify(DutyList));
+                // localStorage.setItem('dutyList', JSON.stringify(DutyList));
             }
 
         }

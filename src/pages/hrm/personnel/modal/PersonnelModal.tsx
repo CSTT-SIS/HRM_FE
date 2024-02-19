@@ -94,6 +94,16 @@ const PersonnelModal = ({ ...props }: Props) => {
 										initialValues={{
 											name: props?.data ? `${props?.data?.name}` : '',
 											code: props?.data ? `${props?.data?.code}` : '',
+											surname: props?.data ? `${props?.data?.surname}` : '',
+											email: props?.data ? `${props?.data?.email}` : '',
+											phone: props?.data ? `${props?.data?.phone}` : '',
+											userName: props?.data ? `${props?.data?.userName}` : '',
+											othername: props?.data ? `${props?.data?.othername}` : '',
+											dateofbirth: props?.data ? `${props?.data?.dateofbirth}` : '',
+											sex: props?.data ? `${props?.data?.sex}` : '',
+											IDnumber: props?.data ? `${props?.data?.IDnumber}` : '',
+											dateissue: props?.data ? `${props?.data?.dateissue}` : '',
+
 										}}
 										validationSchema={SubmittedForm}
 										onSubmit={(values) => {
@@ -106,11 +116,19 @@ const PersonnelModal = ({ ...props }: Props) => {
 													<div className="space-y-2 font-semibold">
 														<div className="rounded border border-[#d3d3d3] dark:border-[#1b2e4b]">
 															<button type="button" className={`flex w-full items-center p-4 !text-primary text-white-dark dark:bg-[#1b2e4b]`}>
-																Thông tin cá nhân
+																General information
 															</button>
 															<div>
 																<AnimateHeight duration={300} height={'auto'}>
 																	<div className="space-y-2 border-t border-[#d3d3d3] p-4 text-[13px] text-white-dark dark:border-[#1b2e4b]">
+																		<div className="mb-5">
+																			<label htmlFor="code">
+																				{' '}
+																				{t('code_staff')} <span style={{ color: 'red' }}>* </span>
+																			</label>
+																			<Field name="code" type="text" id="code" placeholder={`${t('enter_code_staff')}`} className="form-input" />
+																			{errors.code ? <div className="mt-1 text-danger"> {errors.code} </div> : null}
+																		</div>
 																		<div className="mb-5">
 																			<label htmlFor="name">
 																				{' '}
@@ -120,12 +138,146 @@ const PersonnelModal = ({ ...props }: Props) => {
 																			{errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null}
 																		</div>
 																		<div className="mb-5">
-																			<label htmlFor="code">
+																			<label htmlFor="surname">
 																				{' '}
-																				{t('code_staff')} <span style={{ color: 'red' }}>* </span>
+																				Surname and middle name <span style={{ color: 'red' }}>* </span>
 																			</label>
-																			<Field name="code" type="text" id="code" placeholder={`${t('enter_code_staff')}`} className="form-input" />
-																			{errors.code ? <div className="mt-1 text-danger"> {errors.code} </div> : null}
+																			<Field name="surname" type="text" id="surname" placeholder={`Enter surname and middle name`} className="form-input" />
+																			{errors.surname ? <div className="mt-1 text-danger"> {errors.surname} </div> : null}
+																		</div>
+																		<div className="mb-5">
+																			<label htmlFor="email">
+																				{' '}
+																				Email <span style={{ color: 'red' }}>* </span>
+																			</label>
+																			<Field name="email" type="text" id="email" placeholder={`Enter email`} className="form-input" />
+																			{errors.email ? <div className="mt-1 text-danger"> {errors.email} </div> : null}
+																		</div>
+																		<div className="mb-5">
+																			<label htmlFor="phone">
+																				{' '}
+																				Phone number <span style={{ color: 'red' }}>* </span>
+																			</label>
+																			<Field name="phone" type="text" id="phone" placeholder={`Enter phone`} className="form-input" />
+																			{errors.phone ? <div className="mt-1 text-danger"> {errors.phone} </div> : null}
+																		</div>
+																		<div className="mb-5">
+																			<label htmlFor="userName">
+																				{' '}
+																				User name <span style={{ color: 'red' }}>* </span>
+																			</label>
+																			<Field name="userName" type="text" id="userName" placeholder={`Enter user name`} className="form-input" />
+																			{errors.userName ? <div className="mt-1 text-danger"> {errors.userName} </div> : null}
+																		</div>
+																	</div>
+																	<button type="button" className="btn btn-outline-danger" style={{ margin: '18px' }} onClick={() => handleCancel()}>
+																		Reset password
+																	</button>
+																</AnimateHeight>
+															</div>
+														</div>
+														<div className="rounded border border-[#d3d3d3] dark:border-[#1b2e4b]">
+															<button type="button" className={`flex w-full items-center p-4 !text-primary text-white-dark dark:bg-[#1b2e4b]`}>
+																Personal information
+															</button>
+															<div>
+																<AnimateHeight duration={300} height={'auto'}>
+																	<div className="space-y-2 border-t border-[#d3d3d3] p-4 text-[13px] text-white-dark dark:border-[#1b2e4b]">
+																		<div className="mb-5">
+																			<label htmlFor="othername">
+																				{' '}
+																				Other name <span style={{ color: 'red' }}>* </span>
+																			</label>
+																			<Field name="othername" type="text" id="othername" placeholder={`Enter other name`} className="form-input" />
+																			{errors.othername ? <div className="mt-1 text-danger"> {errors.othername} </div> : null}
+																		</div>
+																		<div className="mb-5">
+																			<label htmlFor="dateofbirth">
+																				{' '}
+																				Date of birth <span style={{ color: 'red' }}>* </span>
+																			</label>
+																			<Field name="dateofbirth" type="text" id="dateofbirth" placeholder={`Enter date of birth`} className="form-input" />
+																			{errors.dateofbirth ? <div className="mt-1 text-danger"> {errors.dateofbirth} </div> : null}
+																		</div>
+																		<div className="mb-5">
+																			<label htmlFor="sex">
+																				{' '}
+																				Sex <span style={{ color: 'red' }}>* </span>
+																			</label>
+																			<Field name="sex" type="text" id="sex" placeholder={`Enter sex`} className="form-input" />
+																			{errors.sex ? <div className="mt-1 text-danger"> {errors.sex} </div> : null}
+																		</div>
+																		<div className="mb-5">
+																			<label htmlFor="IDnumber">
+																				{' '}
+																				ID number <span style={{ color: 'red' }}>* </span>
+																			</label>
+																			<Field name="IDnumber" type="text" id="IDnumber" placeholder={`Enter ID number`} className="form-input" />
+																			{errors.IDnumber ? <div className="mt-1 text-danger"> {errors.IDnumber} </div> : null}
+																		</div>
+																		<div className="mb-5">
+																			<label htmlFor="dateissue">
+																				{' '}
+																				Date of issue, place of issue of ID card <span style={{ color: 'red' }}>* </span>
+																			</label>
+																			<Field name="dateissue" type="text" id="dateissue" placeholder={`Enter date of issue`} className="form-input" />
+																			{errors.dateissue ? <div className="mt-1 text-danger"> {errors.dateissue} </div> : null}
+																		</div>
+																		<div className="mb-5">
+																			<label htmlFor="IDnumber">
+																				{' '}
+																				ID number <span style={{ color: 'red' }}>* </span>
+																			</label>
+																			<Field name="IDnumber" type="text" id="IDnumber" placeholder={`Enter ID number`} className="form-input" />
+																			{errors.IDnumber ? <div className="mt-1 text-danger"> {errors.IDnumber} </div> : null}
+																		</div>
+																		<div className="mb-5">
+																			<label htmlFor="dateissue">
+																				{' '}
+																				Date of issue, place of issue of ID card <span style={{ color: 'red' }}>* </span>
+																			</label>
+																			<Field name="dateissue" type="text" id="dateissue" placeholder={`Enter date of issue`} className="form-input" />
+																			{errors.dateissue ? <div className="mt-1 text-danger"> {errors.dateissue} </div> : null}
+																		</div>
+																		<div className="mb-5">
+																			<label htmlFor="IDnumber">
+																				{' '}
+																				ID number <span style={{ color: 'red' }}>* </span>
+																			</label>
+																			<Field name="IDnumber" type="text" id="IDnumber" placeholder={`Enter ID number`} className="form-input" />
+																			{errors.IDnumber ? <div className="mt-1 text-danger"> {errors.IDnumber} </div> : null}
+																		</div>
+																		<div className="mb-5">
+																			<label htmlFor="dateissue">
+																				{' '}
+																				Date of issue, place of issue of ID card <span style={{ color: 'red' }}>* </span>
+																			</label>
+																			<Field name="dateissue" type="text" id="dateissue" placeholder={`Enter date of issue`} className="form-input" />
+																			{errors.dateissue ? <div className="mt-1 text-danger"> {errors.dateissue} </div> : null}
+																		</div>
+																		<div className="mb-5">
+																			<label htmlFor="IDnumber">
+																				{' '}
+																				ID number <span style={{ color: 'red' }}>* </span>
+																			</label>
+																			<Field name="IDnumber" type="text" id="IDnumber" placeholder={`Enter ID number`} className="form-input" />
+																			{errors.IDnumber ? <div className="mt-1 text-danger"> {errors.IDnumber} </div> : null}
+																		</div>
+																		<div className="mb-5">
+																			<label htmlFor="dateissue">
+																				{' '}
+																				Date of issue, place of issue of ID card <span style={{ color: 'red' }}>* </span>
+																			</label>
+																			<Field name="dateissue" type="text" id="dateissue" placeholder={`Enter date of issue`} className="form-input" />
+																			{errors.dateissue ? <div className="mt-1 text-danger"> {errors.dateissue} </div> : null}
+																		</div>
+																		<div className="mb-5">
+																			<label htmlFor="dateissue">
+																				{' '}
+																				Date of issue, place of issue of ID card <span style={{ color: 'red' }}>* </span>
+																			</label>
+																			<Field name="dateissue" type="text" id="dateissue" placeholder={`Enter date of issue`} className="form-input" />
+																			{errors.dateissue ? <div className="mt-1 text-danger"> {errors.dateissue} </div> : null}
 																		</div>
 																	</div>
 																</AnimateHeight>
@@ -133,17 +285,7 @@ const PersonnelModal = ({ ...props }: Props) => {
 														</div>
 														<div className="rounded border border-[#d3d3d3] dark:border-[#1b2e4b]">
 															<button type="button" className={`flex w-full items-center p-4 !text-primary text-white-dark dark:bg-[#1b2e4b]`}>
-																Đào tạo, bồi dưỡng về chuyên môn
-															</button>
-															<div>
-																<AnimateHeight duration={300} height={'auto'}>
-																	<div className="border-t border-[#d3d3d3] p-4 text-[13px] dark:border-[#1b2e4b]"></div>
-																</AnimateHeight>
-															</div>
-														</div>
-														<div className="rounded border border-[#d3d3d3] dark:border-[#1b2e4b]">
-															<button type="button" className={`flex w-full items-center p-4 !text-primary text-white-dark dark:bg-[#1b2e4b]`}>
-																Tóm tắt quá trình công tác
+																Job information
 															</button>
 															<div>
 																<AnimateHeight duration={300} height={'auto'}>

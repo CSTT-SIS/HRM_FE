@@ -11,7 +11,7 @@ import IconX from '@/components/Icon/IconX';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import Select from 'react-select';
-import dutyList from '../../duty/duty_list.json';
+// import dutyList from '../../duty/duty_list.json';
 
 interface Props {
 	[key: string]: any;
@@ -141,7 +141,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                             <>
                                                                 <Select
                                                                     {...field}
-                                                                    options={dutyList}
+                                                                    // options={dutyList}
                                                                     isSearchable
                                                                     placeholder={`${t('choose_position')}`}
                                                                     />
@@ -165,7 +165,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                             <>
                                                                 <Select
                                                                     {...field}
-                                                                    options={dutyList}
+                                                                    // options={dutyList}
                                                                     isSearchable
                                                                     placeholder={`${t('choose_department')}`}
                                                                     />
@@ -253,7 +253,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                             <>
                                                                 <Select
                                                                     {...field}
-                                                                    options={dutyList}
+                                                                    // options={dutyList}
                                                                     isSearchable
                                                                     placeholder={`${t('choose_shift')}`}
                                                                     />

@@ -33,7 +33,6 @@ import IconMenuPages from '@/components/Icon/Menu/IconMenuPages';
 import IconMenuAuthentication from '@/components/Icon/Menu/IconMenuAuthentication';
 import IconMenuDocumentation from '@/components/Icon/Menu/IconMenuDocumentation';
 import IconUsersGroup from '../Icon/IconUsersGroup';
-import { IconDuty } from '../Icon/IconDuty';
 import IconDownload from '../Icon/IconDownload';
 import IconLogout from '../Icon/IconLogout';
 import IconUsers from '../Icon/IconUsers';
@@ -409,52 +408,13 @@ const Sidebar = () => {
                                             </div>
                                         </Link>
                                     </li>
-                                    <li className="menu nav-item">
-                                        <button type="button" className={`${currentMenu === 'statistic' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('statistic')}>
+                                    <li className="nav-item">
+                                        <Link href="/warehouse-management/statistic" className="group">
                                             <div className="flex items-center">
                                                 <IconMenuCharts className="shrink-0 group-hover:!text-primary" />
                                                 <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('statistic')}</span>
                                             </div>
-
-                                            <div className={currentMenu !== 'statistic' ? '-rotate-90 rtl:rotate-90' : ''}>
-                                                <IconCaretDown />
-                                            </div>
-                                        </button>
-
-                                        <AnimateHeight duration={300} height={currentMenu === 'statistic' ? 'auto' : 0}>
-                                            <ul className="sub-menu text-gray-500">
-                                                <li>
-                                                    <Link href="/warehouse-management/statistic/product-categories">{t('product_categories')}</Link>
-                                                </li>
-                                                <li>
-                                                    <Link href="/warehouse-management/statistic/warehouses">{t('warehouses')}</Link>
-                                                </li>
-                                                <li>
-                                                    <Link href="/warehouse-management/statistic/order-type">{t('order_type')}</Link>
-                                                </li>
-                                                <li>
-                                                    <Link href="/warehouse-management/statistic/order-status">{t('order_status')}</Link>
-                                                </li>
-                                                <li>
-                                                    <Link href="/warehouse-management/statistic/repair-status">{t('repair_status')}</Link>
-                                                </li>
-                                                <li>
-                                                    <Link href="/warehouse-management/statistic/proposal-tpye">{t('proposal_tpye')}</Link>
-                                                </li>
-                                                <li>
-                                                    <Link href="/warehouse-management/statistic/proposal-status">{t('proposal_status')}</Link>
-                                                </li>
-                                                <li>
-                                                    <Link href="/warehouse-management/statistic/warehousing-type">{t('warehousing_type')}</Link>
-                                                </li>
-                                                <li>
-                                                    <Link href="/warehouse-management/statistic/warehousing-status">{t('warehousing_status')}</Link>
-                                                </li>
-                                                <li>
-                                                    <Link href="/warehouse-management/statistic/inventory">{t('inventory')}</Link>
-                                                </li>
-                                            </ul>
-                                        </AnimateHeight>
+                                        </Link>
                                     </li>
                                 </ul>
                             </li>
