@@ -36,7 +36,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
         };
         if (props?.data) {
             EditStocktakeDetail({ id: props.idDetail, itemId: props?.data?.id, ...query }).then(() => {
-                props.stocktakeMutate();
+                props.stocktakeDetailMutate();
                 handleCancel();
                 showMessage(`${t('edit_success')}`, 'success');
             }).catch((err) => {
@@ -44,7 +44,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
             });
         } else {
             AddStocktakeDetail({ id: props.idDetail, ...query }).then(() => {
-                props.stocktakeMutate();
+                props.stocktakeDetailMutate();
                 handleCancel();
                 showMessage(`${t('create_success')}`, 'success');
             }).catch((err) => {
