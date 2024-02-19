@@ -6,17 +6,18 @@ import { Dialog, Transition } from '@headlessui/react';
 import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
+import { DeleteProposalDetail, ProposalPending } from '@/services/apis/proposal.api';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPencil from '@/components/Icon/IconPencil';
+import IconPlus from '@/components/Icon/IconPlus';
+import IconTrashLines from '@/components/Icon/IconTrashLines';
+import { ProposalDetails } from '@/services/swr/proposal.twr';
 import { setPageTitle } from '@/store/themeConfigSlice';
 import Tippy from '@tippyjs/react';
 import { DataTableSortStatus, DataTable } from 'mantine-datatable';
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import HandleDetailModal from './HandleDetailModal';
-import { DeleteOrderDetail, OrderPlace } from '@/services/apis/order.api';
-import { WarehousingBillDetail } from '@/services/swr/warehousing-bill.twr';
-import { WarehousingBillFinish } from '@/services/apis/warehousing-bill.api';
 
 interface Props {
     [key: string]: any;
@@ -36,14 +37,15 @@ const DetailModal = ({ ...props }: Props) => {
 
 
     // get data
-    const { data: warehousingBillDetail, pagination, mutate } = WarehousingBillDetail({ id: props.idDetail, page: 1, perPage: 10, ...router.query });
+    const { data: ProposalDetail, pagination, mutate } = ProposalDetails({ id: props.idDetail, ...router.query });
+
     useEffect(() => {
         dispatch(setPageTitle(`${t('proposal')}`));
     });
 
     useEffect(() => {
         setShowLoader(false);
-    }, [warehousingBillDetail])
+    }, [ProposalDetail])
 
     const handleEdit = (data: any) => {
         setOpenModal(true);
@@ -70,7 +72,7 @@ const DetailModal = ({ ...props }: Props) => {
             })
             .then((result) => {
                 if (result.value) {
-                    DeleteOrderDetail({ id: props.idDetail, detailId: id }).then(() => {
+                    DeleteProposalDetail({ id: props.idDetail, detailId: id }).then(() => {
                         mutate();
                         showMessage(`${t('delete_product_success')}`, 'success');
                     }).catch((err) => {
@@ -120,15 +122,23 @@ const DetailModal = ({ ...props }: Props) => {
             render: ({ product }: any) => <span>{product?.name}</span>,
             sortable: false
         },
+        { accessor: 'quantity', title: 'Số lượng', sortable: false },
+        { accessor: 'price', title: 'Giá', sortable: false },
+        { accessor: 'note', title: 'Ghi chú', sortable: false },
         {
             accessor: 'action',
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('enter_quantity')}`}>
+                    <Tippy content={`${t('edit')}`}>
                         <button type="button" onClick={() => handleEdit(records)}>
                             <IconPencil />
+                        </button>
+                    </Tippy>
+                    <Tippy content={`${t('delete')}`}>
+                        <button type="button" onClick={() => handleDelete(records)}>
+                            <IconTrashLines />
                         </button>
                     </Tippy>
                 </div>
@@ -141,8 +151,8 @@ const DetailModal = ({ ...props }: Props) => {
     };
 
     const handleChangeComplete = () => {
-        WarehousingBillFinish({ id: props.idDetail }).then(() => {
-            props.warehousingMutate();
+        ProposalPending({ id: props.idDetail }).then(() => {
+            props.proposalMutate();
             props.setOpenModalDetail(false);
             showMessage(`${t('update_success')}`, 'success');
         }).catch((err) => {
@@ -152,7 +162,7 @@ const DetailModal = ({ ...props }: Props) => {
 
     return (
         <Transition appear show={props.openModalDetail ?? false} as={Fragment}>
-            <Dialog as="div" open={props.openModalDetail} onClose={() => props.openModalDetail(false)} className="relative z-50" >
+            <Dialog as="div" open={props.openModalDetail} onClose={() => props.setOpenModalDetail(false)} className="relative z-50" >
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -185,7 +195,7 @@ const DetailModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {'Check quantity'}
+                                    {t('proposal')}
                                 </div>
 
                                 <div>
@@ -197,10 +207,10 @@ const DetailModal = ({ ...props }: Props) => {
                                     <div className="panel mt-6">
                                         <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                                             <div className="flex items-center flex-wrap">
-                                                {/* <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >
+                                                <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >
                                                     <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                                                     {t('add')}
-                                                </button> */}
+                                                </button>
                                             </div>
 
                                             <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
@@ -209,7 +219,7 @@ const DetailModal = ({ ...props }: Props) => {
                                             <DataTable
                                                 highlightOnHover
                                                 className="whitespace-nowrap table-hover"
-                                                records={warehousingBillDetail?.data}
+                                                records={ProposalDetail?.data}
                                                 columns={columns}
                                                 totalRecords={pagination?.totalRecords}
                                                 recordsPerPage={pagination?.perPage}
@@ -224,13 +234,13 @@ const DetailModal = ({ ...props }: Props) => {
                                             />
                                         </div>
                                         {
-                                            props.status !== "COMPLETED" &&
+                                            props.status === "DRAFT" &&
                                             <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                                 <button type="button" className="btn btn-outline-warning" onClick={() => handleCancel()}>
-                                                    Pending
+                                                    {t('pending')}
                                                 </button>
                                                 <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={() => handleChangeComplete()}>
-                                                    Complete
+                                                    {t('complete')}
                                                 </button>
                                             </div>
                                         }
@@ -240,8 +250,9 @@ const DetailModal = ({ ...props }: Props) => {
                                         setOpenModal={setOpenModal}
                                         data={data}
                                         setData={setData}
-                                        warehousingDetailMutate={mutate}
+                                        proposalDetailMutate={mutate}
                                         idDetail={props.idDetail}
+                                        type={props.type}
                                     />
                                 </div>
                             </Dialog.Panel>

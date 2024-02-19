@@ -9,8 +9,8 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
-import { WarehousingBill } from '@/services/swr/warehousing-bill.twr';
-import { DeleteWarehousingBill, WarehousingBillApprove, WarehousingBillFinish, WarehousingBillReject } from '@/services/apis/warehousing-bill.api';
+import { Orders } from '@/services/swr/order.twr';
+import { DeleteOrder, OrderCancel, OrderReceive, OrderShipping } from '@/services/apis/order.api';
 // constants
 import { PAGE_SIZES } from '@/utils/constants';
 // helper
@@ -21,12 +21,12 @@ import IconPlus from '@/components/Icon/IconPlus';
 import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
 import IconXCircle from '@/components/Icon/IconXCircle';
-import IconCircleCheck from '@/components/Icon/IconCircleCheck';
-import IconArchive from '@/components/Icon/IconArchive';
+import { IconCartCheck } from '@/components/Icon/IconCartCheck';
+import { IconShipping } from '@/components/Icon/IconShipping';
 // modal
-import WarehousingBillModal from './modal/WarehousingBillModal';
 import DetailModal from './modal/DetailModal';
-
+import moment from 'moment';
+import OrderModal from './modal/OrderModal';
 
 
 
@@ -35,7 +35,7 @@ interface Props {
     [key: string]: any;
 }
 
-const WarehousingPage = ({ ...props }: Props) => {
+const OrderPage = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -52,14 +52,15 @@ const WarehousingPage = ({ ...props }: Props) => {
 
 
     // get data
-    const { data: warehousing, pagination, mutate } = WarehousingBill({ ...router.query });
+    const { data: orders, pagination, mutate } = Orders({ ...router.query });
+
     useEffect(() => {
-        dispatch(setPageTitle(`${t('proposal')}`));
+        dispatch(setPageTitle(`${t('Order')}`));
     });
 
     useEffect(() => {
         setShowLoader(false);
-    }, [warehousing])
+    }, [orders])
 
     const handleEdit = (data: any) => {
         setOpenModal(true);
@@ -86,7 +87,7 @@ const WarehousingPage = ({ ...props }: Props) => {
             })
             .then((result) => {
                 if (result.value) {
-                    DeleteWarehousingBill({ id }).then(() => {
+                    DeleteOrder({ id }).then(() => {
                         mutate();
                         showMessage(`${t('delete_success')}`, 'success');
                     }).catch((err) => {
@@ -125,13 +126,14 @@ const WarehousingPage = ({ ...props }: Props) => {
     };
 
     const handleDetail = (value: any) => {
-        setOpenModalDetail(true);
-        setIdDetail(value.id);
-        setStatus(value.status);
+        // setOpenModalDetail(true);
+        // setIdDetail(value.id);
+        // setStatus(value.status);
+        router.push(`/warehouse-process/order/${value.id}?status=${value.status}`)
     }
 
-    const handleApprove = ({ id }: any) => {
-        WarehousingBillApprove({ id }).then(() => {
+    const handleShipping = ({ id }: any) => {
+        OrderShipping({ id }).then(() => {
             mutate();
             showMessage(`${t('update_success')}`, 'success');
         }).catch((err) => {
@@ -139,8 +141,17 @@ const WarehousingPage = ({ ...props }: Props) => {
         });
     }
 
-    const handleReject = ({ id }: any) => {
-        WarehousingBillReject({ id }).then(() => {
+    const handleCancel = ({ id }: any) => {
+        OrderCancel({ id }).then(() => {
+            mutate();
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
+    const handleReceive = ({ id }: any) => {
+        OrderReceive({ id }).then(() => {
             mutate();
             showMessage(`${t('update_success')}`, 'success');
         }).catch((err) => {
@@ -154,7 +165,8 @@ const WarehousingPage = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
-        { accessor: 'name', title: 'Tên hoá đơn kho', sortable: false },
+        { accessor: 'name', title: 'Tên đơn hàng', sortable: false },
+        { accessor: 'code', title: 'Mã đơn hàng', sortable: false },
         { accessor: 'type', title: 'Loại đơn hàng', sortable: false },
         {
             accessor: 'proposal',
@@ -162,24 +174,18 @@ const WarehousingPage = ({ ...props }: Props) => {
             render: ({ proposal }: any) => <span>{proposal?.name}</span>,
         },
         {
-            accessor: 'order',
-            title: 'Tên đặt hàng',
-            render: ({ order }: any) => <span>{order?.name}</span>,
-        },
-        {
-            accessor: 'warehouse',
-            title: 'Tên kho',
-            render: ({ warehouse }: any) => <span>{warehouse?.name}</span>,
+            accessor: 'estimatedDeliveryDate',
+            title: 'Nhận hàng dự kiến',
+            render: ({ estimatedDeliveryDate }: any) => <span>{moment(estimatedDeliveryDate).format("DD/MM/YYYY")}</span>,
         },
         { accessor: 'status', title: 'Trạng thái', sortable: false },
-        { accessor: 'note', title: 'Ghi chú', sortable: false },
         {
             accessor: 'action',
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('check quantity')}`}>
+                    <Tippy content={`${t('add_detail')}`}>
                         <button type="button" onClick={() => handleDetail(records)}>
                             <IconPlus />
                         </button>
@@ -194,13 +200,18 @@ const WarehousingPage = ({ ...props }: Props) => {
                             <IconTrashLines />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('approve')}`}>
-                        <button type="button" onClick={() => handleApprove(records)}>
-                            <IconCircleCheck size={20} />
+                    <Tippy content={`${t('shipping')}`}>
+                        <button type="button" onClick={() => handleShipping(records)}>
+                            <IconShipping size={20} />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('reject')}`}>
-                        <button type="button" onClick={() => handleReject(records)}>
+                    <Tippy content={`${t('receive')}`}>
+                        <button type="button" onClick={() => handleReceive(records)}>
+                            <IconCartCheck />
+                        </button>
+                    </Tippy>
+                    <Tippy content={`${t('cancel')}`}>
+                        <button type="button" onClick={() => handleCancel(records)}>
                             <IconXCircle />
                         </button>
                     </Tippy>
@@ -232,7 +243,7 @@ const WarehousingPage = ({ ...props }: Props) => {
                     <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover"
-                        records={warehousing?.data}
+                        records={orders?.data}
                         columns={columns}
                         totalRecords={pagination?.totalRecords}
                         recordsPerPage={pagination?.perPage}
@@ -247,22 +258,22 @@ const WarehousingPage = ({ ...props }: Props) => {
                     />
                 </div>
             </div>
-            <WarehousingBillModal
+            <OrderModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}
                 data={data}
                 setData={setData}
-                warehousingMutate={mutate}
+                orderMutate={mutate}
             />
-            <DetailModal
+            {/* <DetailModal
                 openModalDetail={openModalDetail}
                 setOpenModalDetail={setOpenModalDetail}
                 idDetail={idDetail}
                 status={status}
-                warehousingMutate={mutate}
-            />
+                orderMutate={mutate}
+            /> */}
         </div>
     );
 };
 
-export default WarehousingPage;
+export default OrderPage;
