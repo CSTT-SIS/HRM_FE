@@ -34,14 +34,16 @@ const ProposalTypeChart = ({ ...props }: Props) => {
         var a: any = [];
         var b: any = [];
         (proposalType?.data.map((item: any) => {
-            return a.push(item.count) && b.push(item.type)
+            return a.push(item.count[0]) && b.push(item.type)
         }))
+        
         setDataProposalType(
             {
                 series: [{ data: a }],
                 name: b
             }
         );
+
         setShowLoader(true);
     }, [proposalType?.data]);
 
@@ -69,6 +71,7 @@ const ProposalTypeChart = ({ ...props }: Props) => {
         },
         plotOptions: {
             bar: {
+                distributed: true,
                 horizontal: false,
                 columnWidth: '55%',
                 borderRadius: 8,
@@ -76,6 +79,7 @@ const ProposalTypeChart = ({ ...props }: Props) => {
             },
         },
         legend: {
+            show: false,
             position: 'bottom',
             horizontalAlign: 'center',
             fontSize: '14px',

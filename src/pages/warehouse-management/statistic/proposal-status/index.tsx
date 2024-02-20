@@ -33,15 +33,18 @@ const ProposalStatusChart = ({ ...props }: Props) => {
     useEffect(() => {
         var a: any = [];
         var b: any = [];
-        (proposalStatus?.data.map((item: any) => {
-            return a.push(item.count) && b.push(item.status)
-        }))
+
+        proposalStatus?.data.map((item: any) => {
+            return a.push(item.count[0]) && b.push(item.status)
+        })
+
         setDataProposalStatus(
             {
                 series: [{ data: a }],
                 name: b
             }
         );
+
         setShowLoader(true);
     }, [proposalStatus?.data]);
 
@@ -69,6 +72,7 @@ const ProposalStatusChart = ({ ...props }: Props) => {
         },
         plotOptions: {
             bar: {
+                distributed: true,
                 horizontal: false,
                 columnWidth: '55%',
                 borderRadius: 8,
@@ -76,6 +80,7 @@ const ProposalStatusChart = ({ ...props }: Props) => {
             },
         },
         legend: {
+            show: false,
             position: 'bottom',
             horizontalAlign: 'center',
             fontSize: '14px',

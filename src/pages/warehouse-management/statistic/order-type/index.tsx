@@ -34,7 +34,7 @@ const OrderTypeChart = ({ ...props }: Props) => {
         var a: any = [];
         var b: any = [];
         (orderType?.data.map((item: any) => {
-            return a.push(item.count) && b.push(item.type)
+            return a.push(item.count[0]) && b.push(item.type)
         }))
         setDataOrderType(
             {
@@ -69,6 +69,7 @@ const OrderTypeChart = ({ ...props }: Props) => {
         },
         plotOptions: {
             bar: {
+                distributed: true,
                 horizontal: false,
                 columnWidth: '55%',
                 borderRadius: 8,
@@ -76,6 +77,7 @@ const OrderTypeChart = ({ ...props }: Props) => {
             },
         },
         legend: {
+            show: false,
             position: 'bottom',
             horizontalAlign: 'center',
             fontSize: '14px',
