@@ -127,7 +127,7 @@ const ShiftModal = ({ ...props }: Props) => {
 														{' '}
 														{t('type_shift')} <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field name="type_shift" type="text" id="type_shift" placeholder={`${t('choose_type_shif')}`} className="form-input" />
+													<Field name="type_shift" type="text" id="type_shift" placeholder={`${t('choose_type_shift')}`} className="form-input" />
 													{errors.type_shift ? <div className="mt-1 text-danger"> {errors.type_shift} </div> : null}
 												</div>
                                                 </div>
