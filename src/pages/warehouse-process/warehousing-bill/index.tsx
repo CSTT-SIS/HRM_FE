@@ -155,15 +155,15 @@ const WarehousingPage = ({ ...props }: Props) => {
             render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
         { accessor: 'name', title: 'Tên hoá đơn kho', sortable: false },
-        { accessor: 'type', title: 'Loại đơn hàng', sortable: false },
+        { accessor: 'type', title: 'Loại phiếu', sortable: false },
         {
             accessor: 'proposal',
-            title: 'Tên đề xuất',
+            title: 'Yêu cầu',
             render: ({ proposal }: any) => <span>{proposal?.name}</span>,
         },
         {
             accessor: 'order',
-            title: 'Tên đặt hàng',
+            title: 'Đơn hàng',
             render: ({ order }: any) => <span>{order?.name}</span>,
         },
         {

@@ -163,8 +163,8 @@ const ProposalPage = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
-        { accessor: 'name', title: 'Tên đề xuất', sortable: false },
-        { accessor: 'type', title: 'Loại đề xuất', sortable: false },
+        { accessor: 'name', title: 'Tên yêu cầu', sortable: false },
+        { accessor: 'type', title: 'Loại yêu cầu', sortable: false },
         { accessor: 'content', title: 'Nội dung', sortable: false },
         { accessor: 'status', title: 'Trạng thái', sortable: false },
         {
