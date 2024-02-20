@@ -168,7 +168,7 @@ const SweetAlert = () => {
                 focusConfirm: false,
                 confirmButtonText: '<i className="flaticon-checked-1"></i> Great!',
                 confirmButtonAriaLabel: 'Thumbs up, great!',
-                cancelButtonText: '<i className="flaticon-cancel-circle"></i>{t('cancel')}',
+                cancelButtonText: `<i className="flaticon-cancel-circle"></i>Cancel`,
                 cancelButtonAriaLabel: 'Thumbs down',
                 padding: '2em',
                 customClass: 'sweet-alerts',

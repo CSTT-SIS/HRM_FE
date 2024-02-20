@@ -472,19 +472,19 @@ const Header = () => {
 									<li>
 										<Link href="/apps/change-password" className="dark:hover:text-white">
 											<IconLock className="h-4.5 w-4.5 shrink-0 ltr:mr-2 rtl:ml-2" />
-											Change password
+											{t('change_password')}
 										</Link>
 									</li>
 									<li>
 										<Link href="/auth/boxed-lockscreen" className="dark:hover:text-white">
 											<IconLockDots className="h-4.5 w-4.5 shrink-0 ltr:mr-2 rtl:ml-2" />
-											Lock Screen
+											{t('lock_screen')}
 										</Link>
 									</li>
 									<li className="border-t border-white-light dark:border-white-light/10">
 										<Link href="/auth/boxed-signin" className="!py-3 text-danger">
 											<IconLogout className="h-4.5 w-4.5 shrink-0 rotate-90 ltr:mr-2 rtl:ml-2" />
-											Sign Out
+											{t('sign_out')}
 										</Link>
 									</li>
 								</ul>

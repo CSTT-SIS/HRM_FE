@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '../../store';
 import Dropdown from '../../components/Dropdown';
 import { setPageTitle } from '../../store/themeConfigSlice';
+import { useTranslation } from 'react-i18next';
 import IconNotes from '@/components/Icon/IconNotes';
 import IconNotesEdit from '@/components/Icon/IconNotesEdit';
 import IconStar from '@/components/Icon/IconStar';
@@ -24,6 +25,7 @@ const Notes = () => {
     useEffect(() => {
         dispatch(setPageTitle('Notes'));
     });
+    const { t, i18n } = useTranslation();
     const [notesList, setNoteList] = useState([
         {
             id: 1,

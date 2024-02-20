@@ -5,6 +5,7 @@ import { IRootState } from '../../store';
 import { useState, Fragment, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import Swal from 'sweetalert2';
+import { useTranslation } from 'react-i18next';
 import { setPageTitle } from '../../store/themeConfigSlice';
 import IconPlus from '@/components/Icon/IconPlus';
 import IconPlusCircle from '@/components/Icon/IconPlusCircle';
@@ -20,6 +21,7 @@ const Scrumboard = () => {
     useEffect(() => {
         dispatch(setPageTitle('Scrumboard'));
     });
+    const { t, i18n } = useTranslation();
     const [projectList, setProjectList] = useState<any>([
         {
             id: 1,

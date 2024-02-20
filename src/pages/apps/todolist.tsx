@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '../../store';
 import { setPageTitle } from '../../store/themeConfigSlice';
 import dynamic from 'next/dynamic';
+import { useTranslation } from 'react-i18next';
 import IconClipboardText from '@/components/Icon/IconClipboardText';
 import IconListCheck from '@/components/Icon/IconListCheck';
 import IconThumbUp from '@/components/Icon/IconThumbUp';
@@ -30,6 +31,7 @@ const Todolist = () => {
     useEffect(() => {
         dispatch(setPageTitle('Todolist'));
     });
+    const { t, i18n } = useTranslation();
     const defaultParams = {
         id: null,
         title: '',

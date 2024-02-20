@@ -3,6 +3,7 @@ import { useState, Fragment, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import Swal from 'sweetalert2';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { setPageTitle } from '../../store/themeConfigSlice';
 import IconUserPlus from '@/components/Icon/IconUserPlus';
 import IconListCheck from '@/components/Icon/IconListCheck';
@@ -21,6 +22,7 @@ const Contacts = () => {
         dispatch(setPageTitle('Contacts'));
     });
     const [addContactModal, setAddContactModal] = useState<any>(false);
+	const { t, i18n } = useTranslation();
 
     const [value, setValue] = useState<any>('list');
     const [defaultParams] = useState({
