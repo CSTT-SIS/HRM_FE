@@ -32,15 +32,16 @@ const InventoryChart = ({ ...props }: Props) => {
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl' ? true : false;
 
     // get data
-    const { data: inventory, pagination } = ProductInventory({ ...router.query });
-    const { data: dropdownWarehouse, pagination: paginationWarehousetype, isLoading, mutate } = DropdownWarehouses({ page: page });
+    const { data: inventory } = ProductInventory({ ...router.query });
+    const { data: dropdownWarehouse, pagination: paginationWarehousetype, isLoading } = DropdownWarehouses({ page: page });
 
     useEffect(() => {
         var a: any = [];
         var b: any = [];
-        (inventory?.data.map((item: any) => {
-            return a.push(item.quantity) && b.push(item.name)
-        }))
+        inventory?.data.map((item: any) => {
+            a.push(item.quantity[0]) && b.push(item.name)
+        })
+
         setDataProductInventory(
             {
                 series: [{ data: a }],
@@ -106,9 +107,11 @@ const InventoryChart = ({ ...props }: Props) => {
                 columnWidth: '55%',
                 borderRadius: 8,
                 borderRadiusApplication: 'end',
+                distributed: true
             },
         },
         legend: {
+            show: false,
             position: 'bottom',
             horizontalAlign: 'center',
             fontSize: '14px',
