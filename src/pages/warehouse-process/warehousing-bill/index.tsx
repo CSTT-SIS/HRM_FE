@@ -154,7 +154,7 @@ const WarehousingPage = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
-        { accessor: 'name', title: 'Tên hoá đơn kho', sortable: false },
+        { accessor: 'name', title: 'Tên phiếu kho', sortable: false },
         { accessor: 'type', title: 'Loại phiếu', sortable: false },
         {
             accessor: 'proposal',
