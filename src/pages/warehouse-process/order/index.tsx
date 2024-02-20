@@ -167,10 +167,10 @@ const OrderPage = ({ ...props }: Props) => {
         },
         { accessor: 'name', title: 'Tên đơn hàng', sortable: false },
         { accessor: 'code', title: 'Mã đơn hàng', sortable: false },
-        { accessor: 'type', title: 'Loại đơn hàng', sortable: false },
+        { accessor: 'type', title: 'Loại phiếu', sortable: false },
         {
             accessor: 'proposal',
-            title: 'Tên đề xuất',
+            title: 'Yêu cầu',
             render: ({ proposal }: any) => <span>{proposal?.name}</span>,
         },
         {

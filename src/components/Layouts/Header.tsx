@@ -37,6 +37,7 @@ import IconLock from '../Icon/IconLock';
 import { Notifications } from '@/services/swr/notication.twr';
 import moment from 'moment';
 import { MarkAllRead, MarkRead } from '@/services/apis/notication.api';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const Header = () => {
 	const router = useRouter();
@@ -129,17 +130,17 @@ const Header = () => {
 	const { t, i18n } = useTranslation();
 
 	// noti
-	const [query, setQuery] = useState<any>();
+	const [page, setPage] = useState<any>();
 	const [dataNoti, setDataNoti] = useState<any>([]);
-	const { data: notifications, mutate, pagination } = Notifications({ ...query, lang: themeConfig.locale });
+	const { data: notifications, mutate, pagination } = Notifications({ page: page || 1, lang: themeConfig.locale || "vi" });
 
 	useEffect(() => {
+		if (pagination?.page === undefined) return;
 		if (Number(pagination?.page) === 1) {
 			setDataNoti(notifications?.data)
 		} else {
-			setDataNoti([...dataNoti, notifications?.data])
+			setDataNoti([...dataNoti, ...notifications?.data])
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [pagination])
 
 	const handleTime = (start: any) => {
@@ -177,9 +178,11 @@ const Header = () => {
 			});
 	}
 
-	const handleLoadNoti = () => {
-		router.push("/notications")
-	}
+	const fetchMoreData = () => {
+		setTimeout(() => {
+			setPage(pagination.page + 1)
+		}, 100);
+	};
 
 	return (
 		<header className={`z-40 ${themeConfig.semidark && themeConfig.menu === 'horizontal' ? 'dark' : ''}`}>
@@ -379,66 +382,74 @@ const Header = () => {
 									</span>
 								}
 							>
-								<ul className="w-[300px] divide-y !py-0 text-dark dark:divide-white/10 dark:text-white-dark sm:w-[350px] overflow-y-auto h-[30.5rem]">
-									<li onClick={(e) => e.stopPropagation()}>
-										<div className="flex items-center justify-between px-4 py-2 font-semibold">
-											<h4 className="text-lg">{t('notifications')}</h4>
-											{dataNoti?.length ? <span className="badge bg-primary/80">{dataNoti?.length} New</span> : ''}
-										</div>
-									</li>
-									{dataNoti?.length > 0 ? (
-										<>
-											{dataNoti?.map((item: any) => {
-												return (
-													<li key={item?.id} className={"dark:text-white-light/90"} style={{ cursor: "pointer" }} onClick={(e) => handleNoti(item)}>
-														<div className={"group flex items-center px-4 py-2" + `${item?.isRead === 0 ? " bg-slate-50 dark: bg-gray-800" : ""}`}>
-															<div className="grid place-content-center rounded">
-																<div className="relative h-12 w-12">
-																	<img className="h-12 w-12 rounded-full object-cover" alt="profile" src={`${item?.profile}`} />
-																	{/* <span className="absolute bottom-0 right-[6px] block h-2 w-2 rounded-full bg-success"></span> */}
+								<InfiniteScroll
+									dataLength={10}
+									next={fetchMoreData}
+									onScroll={e => fetchMoreData}
+									scrollableTarget="scrollableDiv"
+									hasMore={true}
+									loader={<h4></h4>}
+								>
+									<ul id="scrollableDiv" className="w-[300px] divide-y !py-0 text-dark dark:divide-white/10 dark:text-white-dark sm:w-[400px] overflow-y-auto h-[30.5rem]">
+										<li onClick={(e) => e.stopPropagation()}>
+											<div className="flex items-center justify-between px-4 py-2 font-semibold gap-x-2">
+												<button className="btn btn-primary btn-small block" onClick={e => handleReadAll()}>Mark all as read</button>
+												{/* <h4 className="text-lg">{t('notifications')}</h4> */}
+												{dataNoti?.length ? <span className="badge bg-primary/80">{pagination?.totalRecords} New</span> : ''}
+											</div>
+										</li>
+										{dataNoti?.length > 0 ? (
+											<>
+												{dataNoti?.map((item: any) => {
+													return (
+														<li key={item?.id} className={"dark:text-white-light/90"} style={{ cursor: "pointer" }} onClick={(e) => handleNoti(item)}>
+															<div className={"group flex items-center px-4 py-2" + `${item?.isRead === 0 ? " bg-slate-50 dark: bg-gray-800" : ""}`}>
+																<div className="grid place-content-center rounded">
+																	<div className="relative h-12 w-12">
+																		<img className="h-12 w-12 rounded-full object-cover" alt="profile" src={`${item?.profile}`} />
+																		{/* <span className="absolute bottom-0 right-[6px] block h-2 w-2 rounded-full bg-success"></span> */}
+																	</div>
 																</div>
-															</div>
-															<div className="flex flex-auto ltr:pl-3 rtl:pr-3">
-																<div className="ltr:pr-3 rtl:pl-3">
-																	<h6
-																	// dangerouslySetInnerHTML={{
-																	// 	__html: item?.details.content,
-																	// }}
-																	>
-																		{item?.details[0].content}</h6>
-																	<span className="block text-xs font-normal dark:text-gray-500">{handleTime(item?.createdAt)}</span>
-																</div>
-																{/* <button
+																<div className="flex flex-auto ltr:pl-3 rtl:pr-3">
+																	<div className="ltr:pr-3 rtl:pl-3">
+																		<h6
+																		// dangerouslySetInnerHTML={{
+																		// 	__html: item?.details.content,
+																		// }}
+																		>
+																			{item?.details?.[0]?.content}</h6>
+																		<span className="block text-xs font-normal dark:text-gray-500">{handleTime(item?.createdAt)}</span>
+																	</div>
+																	{/* <button
 																	type="button"
 																	className="text-neutral-300 opacity-0 hover:text-danger group-hover:opacity-100 ltr:ml-auto rtl:mr-auto"
 																	onClick={() => removeNotification(notification.id)}
 																>
 																	<IconXCircle />
 																</button> */}
+																</div>
 															</div>
-														</div>
-													</li>
-												);
-											})}
-											<li>
-												<div className="p-4">
-													<button className="block w-full" onClick={e => handleLoadNoti()}>Load more ...</button>
-													<div className='p-1'></div>
-													<button className="btn btn-primary btn-small block w-full" onClick={e => handleReadAll()}>Read All Notifications</button>
-												</div>
+														</li>
+													);
+												})}
+												{/* <li>
+													<div className="p-4">
+														<button className="btn btn-primary btn-small block w-full" onClick={e => handleReadAll()}>Mark all as read</button>
+													</div>
+												</li> */}
+											</>
+										) : (
+											<li onClick={(e) => e.stopPropagation()}>
+												<button type="button" className="!grid min-h-[200px] place-content-center text-lg hover:!bg-transparent">
+													<div className="mx-auto mb-4 rounded-full ring-4 ring-primary/30">
+														<IconInfoCircle fill={true} className="h-10 w-10 text-primary" />
+													</div>
+													No data available.
+												</button>
 											</li>
-										</>
-									) : (
-										<li onClick={(e) => e.stopPropagation()}>
-											<button type="button" className="!grid min-h-[200px] place-content-center text-lg hover:!bg-transparent">
-												<div className="mx-auto mb-4 rounded-full ring-4 ring-primary/30">
-													<IconInfoCircle fill={true} className="h-10 w-10 text-primary" />
-												</div>
-												No data available.
-											</button>
-										</li>
-									)}
-								</ul>
+										)}
+									</ul>
+								</InfiniteScroll>
 							</Dropdown>
 						</div>
 						<div className="dropdown flex shrink-0">
@@ -1012,7 +1023,7 @@ const Header = () => {
 					</li>
 				</ul>
 			</div>
-		</header>
+		</header >
 	);
 };
 

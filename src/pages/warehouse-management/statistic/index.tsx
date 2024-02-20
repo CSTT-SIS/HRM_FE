@@ -31,16 +31,16 @@ const StatisticPage = ({ ...props }: Props) => {
 
     return (
         <div className="panel">
-            <InventoryChart />
-            <OrderStatusChart />
-            <OrderTypeChart />
-            <ProductCategoryChart />
-            <ProposalStatusChart />
-            <ProposalTypeChart />
-            <RepairStatusChart />
             <WarehouseChart />
-            <WarehousingStatusChart />
-            <WarehousingTypeChart />
+            <InventoryChart />
+            <ProductCategoryChart />
+            <ProposalTypeChart />
+            <ProposalStatusChart />
+            <RepairStatusChart />
+            <OrderStatusChart />
+            {/* <OrderTypeChart /> */}
+            {/* <WarehousingStatusChart /> */}
+            {/* <WarehousingTypeChart /> */}
         </div>
     );
 };
