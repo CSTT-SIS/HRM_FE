@@ -24,7 +24,7 @@ const WarehouseModal = ({ ...props }: Props) => {
     const [dataWarehouseTypeDropdown, setDataWarehouseTypeDropdown] = useState<any>([]);
     const [page, setPage] = useState(1);
 
-    // get data 
+    // get data
     const { data: dropdownWarehouseType, pagination: paginationWarehousetype, isLoading, mutate } = DropdownWarehouseTypes({ page: page });
 
 
@@ -202,10 +202,10 @@ const WarehouseModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                                     <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
-                                                        Cancel
+                                                       {t('cancel')}
                                                     </button>
                                                     <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4">
-                                                        {props.data !== undefined ? 'Update' : 'Add'}
+                                                        {props.data !== undefined ? t('update') : t('add')}
                                                     </button>
                                                 </div>
 

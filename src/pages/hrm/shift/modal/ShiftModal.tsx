@@ -11,7 +11,6 @@ import IconX from '@/components/Icon/IconX';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import Select from 'react-select';
-// import dutyList from '../../duty/duty_list.json';
 
 interface Props {
 	[key: string]: any;
@@ -20,7 +19,7 @@ interface Props {
 const ShiftModal = ({ ...props }: Props) => {
 	const { t } = useTranslation();
 	const [disabled, setDisabled] = useState(false);
-
+    const [typeShift, setTypeShift] = useState("0"); // 0: time, 1: total hours
 	const SubmittedForm = Yup.object().shape({
 		name_shift: Yup.object()
 			.typeError(`${t('please_fill_name_shift')}`),
@@ -63,6 +62,10 @@ const ShiftModal = ({ ...props }: Props) => {
 		}
 	};
 
+    const handleChangeTypeShift = (e: any) => {
+        setTypeShift(e);
+    }
+
 	const handleCancel = () => {
 		props.setOpenModal(false);
 		props.setData(undefined);
@@ -99,11 +102,15 @@ const ShiftModal = ({ ...props }: Props) => {
 								<div className="p-5">
 									<Formik
 										initialValues={{
+                                            code_shift: props?.data ? `${props?.data?.code_shift}` : '',
 											name_shift: props?.data ? `${props?.data?.name_shift}` : '',
 											type_shift: props?.data ? `${props?.data?.type_shift}` : '',
+                                            work_coefficient: props?.data ? `${props?.data?.work_coefficient}` : '',
                                             department_apply: props?.data ? `${props?.data?.department_apply}` : '',
                                             from_time: props?.data ? `${props?.data?.from_time}` : '',
                                             end_time: props?.data ? `${props?.data?.end_time}` : '',
+                                            break_from_time: props?.data ? `${props?.data?.from_time}` : '',
+                                            break_end_time: props?.data ? `${props?.data?.end_time}` : '',
                                             time: props?.data ? `${props?.data?.time}` : '',
 										}}
 										validationSchema={SubmittedForm}
@@ -115,6 +122,14 @@ const ShiftModal = ({ ...props }: Props) => {
 											<Form className="space-y-5">
                                                 <div className='flex justify-between gap-5'>
                                                 <div className="mb-5 w-1/2">
+													<label htmlFor="code_shift">
+														{' '}
+														{t('code_shift')} <span style={{ color: 'red' }}>* </span>
+													</label>
+													<Field name="code_shift" type="text" id="code_shift" placeholder={`${t('fill_code_shift')}`} className="form-input" />
+													{errors.code_shift ? <div className="mt-1 text-danger"> {errors.code_shift} </div> : null}
+												</div>
+                                                <div className="mb-5 w-1/2">
 													<label htmlFor="name_shift">
 														{' '}
 														{t('name_shift')} <span style={{ color: 'red' }}>* </span>
@@ -122,16 +137,31 @@ const ShiftModal = ({ ...props }: Props) => {
 													<Field name="name_shift" type="text" id="name_shift" placeholder={`${t('fill_name_shift')}`} className="form-input" />
 													{errors.name_shift ? <div className="mt-1 text-danger"> {errors.name_shift} </div> : null}
 												</div>
+                                                </div>
+                                                <div className='flex justify-between gap-5'>
                                                 <div className="mb-5 w-1/2">
 													<label htmlFor="type_shift">
 														{' '}
 														{t('type_shift')} <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field name="type_shift" type="text" id="type_shift" placeholder={`${t('choose_type_shif')}`} className="form-input" />
+                                                    <select className='form-select' value={typeShift}
+                                                    onChange={e => handleChangeTypeShift(e.target.value)}
+                                                    >
+                                                    <option value={0}>Ca theo thời gian</option>
+                                                    <option value={1}>Ca theo số giờ</option>
+                                                    </select>
 													{errors.type_shift ? <div className="mt-1 text-danger"> {errors.type_shift} </div> : null}
 												</div>
+                                                <div className="mb-5 w-1/2">
+													<label htmlFor="work_coefficient">
+														{' '}
+														{t('work_coefficient')} <span style={{ color: 'red' }}>* </span>
+													</label>
+													<Field name="work_coefficient" type="number" id="work_coefficient" placeholder="" className="form-input" />
+													{errors.work_coefficient ? <div className="mt-1 text-danger"> {errors.work_coefficient} </div> : null}
+												</div>
                                                 </div>
-                                                <div className='flex justify-between gap-5'>
+                                                {typeShift === "0" && <> <div className='flex justify-between gap-5'>
                                                 <div className="mb-5 w-1/2">
 													<label htmlFor="from_time">
 														{' '}
@@ -177,27 +207,60 @@ const ShiftModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
                                                 <div className="mb-5 w-1/2">
-													<label htmlFor="department_apply">
+													<label htmlFor="break_from_time">
 														{' '}
-														{t('department_apply')} <span style={{ color: 'red' }}>* </span>
+														{t('break_from_time')} <span style={{ color: 'red' }}>* </span>
 													</label>
                                                     <Field
-                                                        name="department_apply"
-                                                        render={({ field }: any) => (
-                                                            <>
-                                                                <Select
-                                                                    {...field}
-                                                                    // options={dutyList}
-                                                                    isSearchable
-                                                                    placeholder={`${t('choose_department_apply')}`}
-                                                                    />
-                                                                </>
+                                                            name="break_from_time"
+                                                            render={({ field }: any) => (
+                                                                <Flatpickr
+                                                                    data-enable-time
+                                                                    placeholder={`${t('choose_break_from_time')}`}
+                                                                    options={{
+                                                                        enableTime: true,
+                                                                        dateFormat: 'H:i'
+                                                                    }}
+                                                                    className="form-input"
+                                                                />
                                                             )}
                                                         />
-                                                        {errors.department_apply ? <div className="mt-1 text-danger"> {errors.department_apply} </div> : null}
+                                                        {errors.break_from_time ? <div className="mt-1 text-danger"> {errors.break_from_time} </div> : null}
 												</div>
                                                 <div className="mb-5 w-1/2">
+													<label htmlFor="break_end_time">
+														{' '}
+														{t('break_end_time')} <span style={{ color: 'red' }}>* </span>
+													</label>
+                                                    <Field
+                                                            name="break_end_time"
+                                                            render={({ field }: any) => (
+                                                                <Flatpickr
+                                                                    data-enable-time
+                                                                    placeholder={`${t('choose_break_end_time')}`}
+                                                                    options={{
+                                                                        enableTime: true,
+                                                                        dateFormat: 'Y-m-d H:i'
+                                                                    }}
+                                                                    className="form-input"
+                                                                />
+                                                            )}
+                                                        />
+                                                        {errors.break_end_time ? <div className="mt-1 text-danger"> {errors.break_end_time} </div> : null}
+												</div>
+                                                </div>
+                                                </> }
+                                                <div className='flex justify-between gap-5'>
+                                                <div className="mb-5 w-1/2">
 													<label htmlFor="time">
+														{' '}
+														{t('description')} <span style={{ color: 'red' }}>* </span>
+													</label>
+													<Field disabled name="time" type="text" id="time" placeholder="" className="form-input" />
+													{errors.time ? <div className="mt-1 text-danger"> {errors.time} </div> : null}
+												</div>
+                                                <div className="mb-5 w-1/2">
+													<label htmlFor="description">
 														{' '}
 														{t('time_shift')} <span style={{ color: 'red' }}>* </span>
 													</label>
