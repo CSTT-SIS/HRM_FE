@@ -8,27 +8,26 @@ import { Field, Form, Formik } from 'formik';
 import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
-import { EditStocktakeDetail } from '@/services/apis/stocktake.api';
+import { CheckStocktakeDetail } from '@/services/apis/stocktake.api';
 
 interface Props {
     [key: string]: any;
 }
 
 const TallyModal = ({ ...props }: Props) => {
-
     const { t } = useTranslation();
     const router = useRouter();
     const [initialValue, setInitialValue] = useState<any>();
 
     const SubmittedForm = Yup.object().shape({
-        productId: new Yup.ObjectSchema().required(`${t('please_fill_product')}`),
+        countedQuantity: Yup.number().required(`${t('please_fill_quantity')}`),
     });
 
     const handleTally = (param: any) => {
         const query = {
             countedQuantity: Number(param.countedQuantity)
         };
-        EditStocktakeDetail({ id: props.idDetail, itemId: props?.data?.id, ...query }).then(() => {
+        CheckStocktakeDetail({ id: props.idDetail, detailId: props?.data?.id, ...query }).then(() => {
             props.stocktakeDetailMutate();
             handleCancel();
             showMessage(`${t('edit_success')}`, 'success');
@@ -111,10 +110,10 @@ const TallyModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                                     <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
-                                                        Cancel
+                                                       {t('cancel')}
                                                     </button>
                                                     <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4">
-                                                        {props.data !== undefined ? 'Update' : 'Add'}
+                                                        {props.data !== undefined ? t('update') : t('add')}
                                                     </button>
                                                 </div>
                                             </Form>

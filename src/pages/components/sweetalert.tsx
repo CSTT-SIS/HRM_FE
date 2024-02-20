@@ -168,7 +168,7 @@ const SweetAlert = () => {
                 focusConfirm: false,
                 confirmButtonText: '<i className="flaticon-checked-1"></i> Great!',
                 confirmButtonAriaLabel: 'Thumbs up, great!',
-                cancelButtonText: '<i className="flaticon-cancel-circle"></i> Cancel',
+                cancelButtonText: '<i className="flaticon-cancel-circle"></i>{t('cancel')}',
                 cancelButtonAriaLabel: 'Thumbs down',
                 padding: '2em',
                 customClass: 'sweet-alerts',
@@ -774,7 +774,7 @@ const showAlert = async (type: number) => {
             focusConfirm: false,
             confirmButtonText: '<i className="flaticon-checked-1"></i> Great!',
             confirmButtonAriaLabel: 'Thumbs up, great!',
-            cancelButtonText: '<i className="flaticon-cancel-circle"></i> Cancel',
+            cancelButtonText: '<i className="flaticon-cancel-circle"></i>{t('cancel')}',
             cancelButtonAriaLabel: 'Thumbs down',
             padding: '2em',
             customClass: 'sweet-alerts',
@@ -847,7 +847,7 @@ const showAlert = async (type: number) => {
                         )}
                     </div>
 
-                    {/* Cancel */}
+                    {/*{t('cancel')} */}
                     <div className="panel">
                         <div className="mb-5 flex items-center justify-between">
                             <h5 className="text-lg font-semibold dark:text-white-light">{`Execute something else for "Cancel".`}</h5>

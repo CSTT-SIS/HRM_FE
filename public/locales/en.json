@@ -206,7 +206,7 @@
 	"edit_staff_err": "Edit staff error",
 	"delete_staff_err": "Delete department error",
 	"warehouse": "warehouse",
-	"product_management": "Product management",
+	"warehouse_process": "Warehouse process",
 	"warehouse_list": "Warehouse list",
 	"type_list": "Warehouse type list",
 	"delete_warehouse": "Delete Department",
@@ -511,5 +511,8 @@
     "fill_name_shift": "Fill name of shift",
     "choose_type_shift": "Choose type of shift",
     "choose_from_time": "Choose from time",
-    "choose_end_time": "Choose end time"
+    "choose_end_time": "Choose end time",
+    "choose_break_from_time": "Break between shifts from",
+    "choose_break_end_time": "Break between shifts end",
+    "fill_code_shift": "Fill code of shift"
 }

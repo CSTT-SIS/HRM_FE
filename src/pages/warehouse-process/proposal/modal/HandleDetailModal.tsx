@@ -36,10 +36,10 @@ const HandleDetailModal = ({ ...props }: Props) => {
             productId: Number(param.productId.value),
             quantity: Number(param.quantity),
             note: param.note,
-            price: param?.price
+            price: param?.price ? param?.price : 0
         };
         if (props?.data) {
-            EditProposalDetail({ id: props.idDetail, detailId: props?.data?.id, ...query }).then(() => {
+            EditProposalDetail({ id: router.query.id, detailId: props?.data?.id, ...query }).then(() => {
                 props.proposalDetailMutate();
                 handleCancel();
                 showMessage(`${t('edit_success')}`, 'success');
@@ -47,7 +47,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
         } else {
-            AddProposalDetail({ id: props.idDetail, ...query }).then(() => {
+            AddProposalDetail({ id: router.query.id, ...query }).then(() => {
                 props.proposalDetailMutate();
                 handleCancel();
                 showMessage(`${t('create_success')}`, 'success');
@@ -127,7 +127,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {'Add proposal detail'}
+                                    {t("proposal_detail")}
                                 </div>
                                 <div className="p-5">
                                     <Formik
@@ -148,7 +148,6 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                             name='productId'
                                                             options={dataProductDropdown}
                                                             onMenuOpen={() => setPage(1)}
-                                                            onMenuClose={() => setDataProductDropdown([])}
                                                             onMenuScrollToBottom={handleMenuScrollToBottom}
                                                             isLoading={productLoading}
                                                             maxMenuHeight={160}
@@ -176,7 +175,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                     ) : null}
                                                 </div>
                                                 {
-                                                    props.type === "PURCHASE" &&
+                                                    router.query.type === "PURCHASE" &&
                                                     <div className="mb-5">
                                                         <label htmlFor="price" > {t('price')} < span style={{ color: 'red' }}>* </span></label >
                                                         <Field name="price" type="number" id="price" placeholder={`${t('enter_price')}`} className="form-input" />
@@ -200,10 +199,10 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                                     <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
-                                                        Cancel
+                                                       {t('cancel')}
                                                     </button>
                                                     <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4">
-                                                        {props.data !== undefined ? 'Update' : 'Add'}
+                                                        {props.data !== undefined ? t('update') : t('add')}
                                                     </button>
                                                 </div>
                                             </Form>

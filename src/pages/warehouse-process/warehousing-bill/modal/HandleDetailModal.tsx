@@ -23,9 +23,13 @@ const HandleDetailModal = ({ ...props }: Props) => {
     const SubmittedForm = Yup.object().shape({
         quantity: Yup.string().required(`${t('please_fill_quantity')}`),
     });
-
-    const handleProposal = (param: any) => {
-        CheckWarehousingBillDetail({ ...param }).then(() => {
+    const handleWarehousingBill = (param: any) => {
+        const query = {
+            id: router.query.id,
+            detailId: param.detailId,
+            quantity: param.quantity
+        }
+        CheckWarehousingBillDetail({ ...query }).then(() => {
             props.warehousingDetailMutate();
             handleCancel();
             showMessage(`${t('edit_success')}`, 'success');
@@ -83,14 +87,14 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {'Update quantity'}
+                                    {t('update_quantity')}
                                 </div>
                                 <div className="p-5">
                                     <Formik
                                         initialValues={initialValue}
                                         validationSchema={SubmittedForm}
                                         onSubmit={values => {
-                                            handleProposal(values);
+                                            handleWarehousingBill(values);
                                         }}
                                         enableReinitialize
                                     >
@@ -111,10 +115,10 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                                     <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
-                                                        Cancel
+                                                       {t('cancel')}
                                                     </button>
                                                     <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4">
-                                                        {props.data !== undefined ? 'Update' : 'Add'}
+                                                        {props.data !== undefined ? t('update') : t('add')}
                                                     </button>
                                                 </div>
                                             </Form>

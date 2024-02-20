@@ -17,8 +17,7 @@ import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import HandleDetailModal from './HandleDetailModal';
 import { DeleteOrderDetail, OrderPlace } from '@/services/apis/order.api';
-import { RepairDetails } from '@/services/swr/repair.twr';
-import { DeleteRepairDetail, RepairInprogress } from '@/services/apis/repair.api';
+import { OrderDetails } from '@/services/swr/order.twr';
 
 interface Props {
     [key: string]: any;
@@ -38,15 +37,15 @@ const DetailModal = ({ ...props }: Props) => {
 
 
     // get data
-    const { data: repairDetails, pagination, mutate } = RepairDetails({ id: props.idDetail, ...router.query });
+    const { data: orderDetails, pagination, mutate } = OrderDetails({ id: props.idDetail, ...router.query });
 
     useEffect(() => {
-        dispatch(setPageTitle(`${t('Repair')}`));
+        dispatch(setPageTitle(`${t('Order')}`));
     });
 
     useEffect(() => {
         setShowLoader(false);
-    }, [repairDetails])
+    }, [orderDetails])
 
     const handleEdit = (data: any) => {
         setOpenModal(true);
@@ -73,7 +72,7 @@ const DetailModal = ({ ...props }: Props) => {
             })
             .then((result) => {
                 if (result.value) {
-                    DeleteRepairDetail({ id: props.idDetail, detailId: id }).then(() => {
+                    DeleteOrderDetail({ id: props.idDetail, detailId: id }).then(() => {
                         mutate();
                         showMessage(`${t('delete_product_success')}`, 'success');
                     }).catch((err) => {
@@ -118,14 +117,13 @@ const DetailModal = ({ ...props }: Props) => {
             render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
         {
-            accessor: 'replacementPart',
+            accessor: 'name',
             title: 'Tên sản phẩm',
-            render: ({ replacementPart }: any) => <span>{replacementPart?.name}</span>,
+            render: ({ product }: any) => <span>{product?.name}</span>,
             sortable: false
         },
         { accessor: 'quantity', title: 'số lượng', sortable: false },
-        { accessor: 'brokenPart', title: 'Phần bị hỏng', sortable: false },
-        { accessor: 'description', title: 'Ghi chú', sortable: false },
+        { accessor: 'note', title: 'Ghi chú', sortable: false },
         {
             accessor: 'action',
             title: 'Thao tác',
@@ -152,8 +150,8 @@ const DetailModal = ({ ...props }: Props) => {
     };
 
     const handleChangeComplete = () => {
-        RepairInprogress({ id: props.idDetail }).then(() => {
-            props.repairMutate();
+        OrderPlace({ id: props.idDetail }).then(() => {
+            props.orderMutate();
             props.setOpenModalDetail(false);
             showMessage(`${t('update_success')}`, 'success');
         }).catch((err) => {
@@ -196,7 +194,7 @@ const DetailModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {'Repair detail'}
+                                    {'order_detail'}
                                 </div>
 
                                 <div>
@@ -220,7 +218,7 @@ const DetailModal = ({ ...props }: Props) => {
                                             <DataTable
                                                 highlightOnHover
                                                 className="whitespace-nowrap table-hover"
-                                                records={repairDetails?.data}
+                                                records={orderDetails?.data}
                                                 columns={columns}
                                                 totalRecords={pagination?.totalRecords}
                                                 recordsPerPage={pagination?.perPage}
@@ -238,10 +236,10 @@ const DetailModal = ({ ...props }: Props) => {
                                             props.status === "PENDING" &&
                                             <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                                 <button type="button" className="btn btn-outline-warning" onClick={() => handleCancel()}>
-                                                    Pending
+                                                    {t('pending')}
                                                 </button>
                                                 <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={() => handleChangeComplete()}>
-                                                    Complete
+                                                    {t('complete')}
                                                 </button>
                                             </div>
                                         }

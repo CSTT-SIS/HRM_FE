@@ -509,10 +509,10 @@ const Contacts = () => {
                                             </div>
                                             <div className="mt-8 flex items-center justify-end">
                                                 <button type="button" className="btn btn-outline-danger" onClick={() => setAddContactModal(false)}>
-                                                    Cancel
+                                                   {t('cancel')}
                                                 </button>
                                                 <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={saveUser}>
-                                                    {params.id ? 'Update' : 'Add'}
+                                                    {params.id ? t('update') : t('add')}
                                                 </button>
                                             </div>
                                         </form>

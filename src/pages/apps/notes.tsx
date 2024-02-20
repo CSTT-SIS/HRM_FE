@@ -741,7 +741,7 @@ const Notes = () => {
                                                     </div>
                                                     <div className="mt-8 flex items-center justify-end">
                                                         <button type="button" className="btn btn-outline-danger gap-2" onClick={() => setAddContactModal(false)}>
-                                                            Cancel
+                                                           {t('cancel')}
                                                         </button>
                                                         <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={saveNote}>
                                                             {params.id ? 'Update Note' : 'Add Note'}
@@ -798,7 +798,7 @@ const Notes = () => {
 
                                                 <div className="mt-8 flex items-center justify-center">
                                                     <button type="button" className="btn btn-outline-danger" onClick={() => setIsDeleteNoteModal(false)}>
-                                                        Cancel
+                                                       {t('cancel')}
                                                     </button>
                                                     <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={deleteNote}>
                                                         Delete

@@ -82,7 +82,7 @@ const CategoryModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data !== undefined ? 'Edit Category' : 'Add Category'}
+                                    {props.data !== undefined ? t('edit_category') : t('add_category')}
                                 </div>
                                 <div className="p-5">
                                     <Formik
@@ -117,10 +117,10 @@ const CategoryModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                                     <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
-                                                        Cancel
+                                                       {t('cancel')}
                                                     </button>
                                                     <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4" disabled={disabled}>
-                                                        {props.data !== undefined ? 'Update' : 'Add'}
+                                                        {props.data !== undefined ? t('update') : t('add')}
                                                     </button>
                                                 </div>
 

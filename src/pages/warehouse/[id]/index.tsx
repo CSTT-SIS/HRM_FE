@@ -129,6 +129,7 @@ const ShelfPage = ({ ...props }: Props) => {
         delete data?.parentId;
         delete data?.parentPath;
         delete data?.typeId;
+        delete data?.managerId;
         typeof data?.type === 'object' && (data.type = data?.type.name);
         return (
             <>
@@ -180,7 +181,7 @@ const ShelfPage = ({ ...props }: Props) => {
                                     href="#link1"
                                     role="tablist"
                                 >
-                                    warehouse details
+                                    {t('warehouse_info')}
                                 </a>
                             </li>
                             <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
@@ -199,7 +200,7 @@ const ShelfPage = ({ ...props }: Props) => {
                                     href="#link2"
                                     role="tablist"
                                 >
-                                    Warehouse products
+                                   {t('product_in_warehouse')}
                                 </a>
                             </li>
                         </ul>

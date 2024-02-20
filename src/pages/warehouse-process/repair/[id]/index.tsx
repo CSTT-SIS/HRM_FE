@@ -1,41 +1,30 @@
-import { useEffect, Fragment, useState, useCallback } from 'react';
-import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
-import { setPageTitle } from '@/store/themeConfigSlice';
-// Third party libs
-import { DataTable, DataTableSortStatus } from 'mantine-datatable';
-import Swal from 'sweetalert2';
-import Tippy from '@tippyjs/react';
-import 'tippy.js/dist/tippy.css';
+import { useEffect, Fragment, useState, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
-// API
-import { Orders } from '@/services/swr/order.twr';
-import { DeleteOrder, OrderCancel, OrderReceive, OrderShipping } from '@/services/apis/order.api';
-// constants
-import { PAGE_SIZES } from '@/utils/constants';
-// helper
+
+import { Dialog, Transition } from '@headlessui/react';
+
 import { showMessage } from '@/@core/utils';
-// icons
+import IconX from '@/components/Icon/IconX';
+import { useRouter } from 'next/router';
 import { IconLoading } from '@/components/Icon/IconLoading';
-import IconPlus from '@/components/Icon/IconPlus';
 import IconPencil from '@/components/Icon/IconPencil';
+import IconPlus from '@/components/Icon/IconPlus';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
-import IconXCircle from '@/components/Icon/IconXCircle';
-import { IconCartCheck } from '@/components/Icon/IconCartCheck';
-import { IconShipping } from '@/components/Icon/IconShipping';
-// modal
-import DetailModal from './modal/DetailModal';
-import moment from 'moment';
-import OrderModal from './modal/OrderModal';
-
-
-
+import { setPageTitle } from '@/store/themeConfigSlice';
+import Tippy from '@tippyjs/react';
+import { DataTableSortStatus, DataTable } from 'mantine-datatable';
+import { useDispatch } from 'react-redux';
+import Swal from 'sweetalert2';
+import HandleDetailModal from '../modal/HandleDetailModal';
+import { DeleteOrderDetail, OrderPlace } from '@/services/apis/order.api';
+import { RepairDetails } from '@/services/swr/repair.twr';
+import { DeleteRepairDetail, RepairInprogress } from '@/services/apis/repair.api';
 
 interface Props {
     [key: string]: any;
 }
 
-const OrderPage = ({ ...props }: Props) => {
+const DetailModal = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -44,30 +33,27 @@ const OrderPage = ({ ...props }: Props) => {
     const [showLoader, setShowLoader] = useState(true);
     const [data, setData] = useState<any>();
     const [openModal, setOpenModal] = useState(false);
-    const [openModalDetail, setOpenModalDetail] = useState(false);
-    const [idDetail, setIdDetail] = useState();
-    const [status, setStatus] = useState();
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
 
     // get data
-    const { data: orders, pagination, mutate } = Orders({ ...router.query });
+    const { data: repairDetails, pagination, mutate } = RepairDetails({ id: router.query.id, ...router.query });
 
     useEffect(() => {
-        dispatch(setPageTitle(`${t('Order')}`));
+        dispatch(setPageTitle(`${t('Repair')}`));
     });
 
     useEffect(() => {
         setShowLoader(false);
-    }, [orders])
+    }, [repairDetails])
 
     const handleEdit = (data: any) => {
         setOpenModal(true);
         setData(data);
     };
 
-    const handleDelete = ({ id, name }: any) => {
+    const handleDelete = ({ id, product }: any) => {
         const swalDeletes = Swal.mixin({
             customClass: {
                 confirmButton: 'btn btn-secondary',
@@ -79,17 +65,17 @@ const OrderPage = ({ ...props }: Props) => {
         swalDeletes
             .fire({
                 icon: 'question',
-                title: `${t('delete_order')}`,
-                text: `${t('delete')} ${name}`,
+                title: `${t('delete_product')}`,
+                text: `${t('delete')} ${product?.name}`,
                 padding: '2em',
                 showCancelButton: true,
                 reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
-                    DeleteOrder({ id }).then(() => {
+                    DeleteRepairDetail({ id: router.query.id, detailId: id }).then(() => {
                         mutate();
-                        showMessage(`${t('delete_success')}`, 'success');
+                        showMessage(`${t('delete_product_success')}`, 'success');
                     }).catch((err) => {
                         showMessage(`${err?.response?.data?.message}`, 'error');
                     });
@@ -125,70 +111,27 @@ const OrderPage = ({ ...props }: Props) => {
         return pageSize;
     };
 
-    const handleDetail = (value: any) => {
-        setOpenModalDetail(true);
-        setIdDetail(value.id);
-        setStatus(value.status);
-    }
-
-    const handleShipping = ({ id }: any) => {
-        OrderShipping({ id }).then(() => {
-            mutate();
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
-
-    const handleCancel = ({ id }: any) => {
-        OrderCancel({ id }).then(() => {
-            mutate();
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
-
-    const handleReceive = ({ id }: any) => {
-        OrderReceive({ id }).then(() => {
-            mutate();
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
-
     const columns = [
         {
             accessor: 'id',
             title: '#',
             render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
-        { accessor: 'name', title: 'Tên đơn hàng', sortable: false },
-        { accessor: 'code', title: 'Mã đơn hàng', sortable: false },
-        { accessor: 'type', title: 'Loại đơn hàng', sortable: false },
         {
-            accessor: 'proposal',
-            title: 'Tên đề xuất',
-            render: ({ proposal }: any) => <span>{proposal?.name}</span>,
+            accessor: 'replacementPart',
+            title: 'Tên sản phẩm',
+            render: ({ replacementPart }: any) => <span>{replacementPart?.name}</span>,
+            sortable: false
         },
-        {
-            accessor: 'estimatedDeliveryDate',
-            title: 'Nhận hàng dự kiến',
-            render: ({ estimatedDeliveryDate }: any) => <span>{moment(estimatedDeliveryDate).format("DD/MM/YYYY")}</span>,
-        },
-        { accessor: 'status', title: 'Trạng thái', sortable: false },
+        { accessor: 'quantity', title: 'số lượng', sortable: false },
+        { accessor: 'brokenPart', title: 'Phần bị hỏng', sortable: false },
+        { accessor: 'description', title: 'Ghi chú', sortable: false },
         {
             accessor: 'action',
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('add detail')}`}>
-                        <button type="button" onClick={() => handleDetail(records)}>
-                            <IconPlus />
-                        </button>
-                    </Tippy>
                     <Tippy content={`${t('edit')}`}>
                         <button type="button" onClick={() => handleEdit(records)}>
                             <IconPencil />
@@ -199,25 +142,23 @@ const OrderPage = ({ ...props }: Props) => {
                             <IconTrashLines />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('shipping')}`}>
-                        <button type="button" onClick={() => handleShipping(records)}>
-                            <IconShipping size={20} />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('receive')}`}>
-                        <button type="button" onClick={() => handleReceive(records)}>
-                            <IconCartCheck />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('cancel')}`}>
-                        <button type="button" onClick={() => handleCancel(records)}>
-                            <IconXCircle />
-                        </button>
-                    </Tippy>
                 </div>
             ),
         },
     ]
+
+    const handleCancel = () => {
+        router.push("/warehouse-process/repair");
+    };
+
+    const handleChangeComplete = () => {
+        RepairInprogress({ id: router.query.id }).then(() => {
+            router.push("/warehouse-process/repair");
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
 
     return (
         <div>
@@ -226,7 +167,6 @@ const OrderPage = ({ ...props }: Props) => {
                     <IconLoading />
                 </div>
             )}
-            <title>product</title>
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
@@ -242,37 +182,41 @@ const OrderPage = ({ ...props }: Props) => {
                     <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover"
-                        records={orders?.data}
+                        records={repairDetails?.data}
                         columns={columns}
                         totalRecords={pagination?.totalRecords}
                         recordsPerPage={pagination?.perPage}
                         page={pagination?.page}
                         onPageChange={(p) => handleChangePage(p, pagination?.perPage)}
-                        recordsPerPageOptions={PAGE_SIZES}
-                        onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
+                        // recordsPerPageOptions={PAGE_SIZES}
+                        // onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
                         sortStatus={sortStatus}
                         onSortStatusChange={setSortStatus}
                         minHeight={200}
-                        paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
+                        paginationText={({ from, to, totalRecords }) => ``}
                     />
                 </div>
+                {
+                    router.query.status === "PENDING" &&
+                    <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
+                        <button type="button" className="btn btn-outline-warning" onClick={() => handleCancel()}>
+                            {t('pending')}
+                        </button>
+                        <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={() => handleChangeComplete()}>
+                            {t('complete')}
+                        </button>
+                    </div>
+                }
             </div>
-            <OrderModal
+            <HandleDetailModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}
                 data={data}
                 setData={setData}
-                orderMutate={mutate}
-            />
-            <DetailModal
-                openModalDetail={openModalDetail}
-                setOpenModalDetail={setOpenModalDetail}
-                idDetail={idDetail}
-                status={status}
-                orderMutate={mutate}
+                orderDetailMutate={mutate}
+            // idDetail={props.idDetail}
             />
         </div>
     );
 };
-
-export default OrderPage;
+export default DetailModal;

@@ -301,7 +301,7 @@ const PersonnelModal = ({ ...props }: Props) => {
 														Cancel
 													</button>
 													<button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4" disabled={disabled}>
-														{props.data !== undefined ? 'Update' : 'Add'}
+														{props.data !== undefined ? t('update') : t('add')}
 													</button>
 												</div>
 											</Form>
