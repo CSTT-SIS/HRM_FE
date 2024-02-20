@@ -420,6 +420,8 @@
   "break_from_time": "Nghỉ giữa ca từ",
   "break_end_time": "Nghỉ giữa ca đến",
   "//_END": "KẾT THÚC SỰ CHUYỂN",
+  "name_proposal": "Tên yêu cầu",
+  "enter_name_proposal": "Nhập tên yêu cầu",
   "type_proposal": "Loại yêu cầu",
   "content_proposal": "Nội dung yêu cầu",
   "type_order": "Nhập đơn hàng",
