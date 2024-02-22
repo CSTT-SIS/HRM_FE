@@ -24,9 +24,8 @@ import IconXCircle from '@/components/Icon/IconXCircle';
 import { IconCartCheck } from '@/components/Icon/IconCartCheck';
 import { IconShipping } from '@/components/Icon/IconShipping';
 // modal
-import DetailModal from './modal/DetailModal';
 import moment from 'moment';
-import OrderModal from './modal/OrderModal';
+import OrderModal from './modal/OrderForm';
 
 
 
@@ -35,7 +34,7 @@ interface Props {
     [key: string]: any;
 }
 
-const OrderPage = ({ ...props }: Props) => {
+const OrderForm = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -61,11 +60,6 @@ const OrderPage = ({ ...props }: Props) => {
     useEffect(() => {
         setShowLoader(false);
     }, [orders])
-
-    const handleEdit = (data: any) => {
-        setOpenModal(true);
-        setData(data);
-    };
 
     const handleDelete = ({ id, name }: any) => {
         const swalDeletes = Swal.mixin({
@@ -185,13 +179,8 @@ const OrderPage = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('add_detail')}`}>
-                        <button type="button" onClick={() => handleDetail(records)}>
-                            <IconPlus />
-                        </button>
-                    </Tippy>
                     <Tippy content={`${t('edit')}`}>
-                        <button type="button" onClick={() => handleEdit(records)}>
+                        <button type="button" onClick={() => handleDetail(records)}>
                             <IconPencil />
                         </button>
                     </Tippy>
@@ -231,7 +220,7 @@ const OrderPage = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >
+                        <button type="button" onClick={(e) => router.push(`/warehouse-process/order/create`)} className="btn btn-primary btn-sm m-1 " >
                             <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                             {t('add')}
                         </button>
@@ -276,4 +265,4 @@ const OrderPage = ({ ...props }: Props) => {
     );
 };
 
-export default OrderPage;
+export default OrderForm;
