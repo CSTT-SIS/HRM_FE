@@ -21,7 +21,7 @@ interface Props {
     [key: string]: any;
 }
 
-const DetailModal = ({ ...props }: Props) => {
+const DetailPage = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -142,7 +142,7 @@ const DetailModal = ({ ...props }: Props) => {
                 </div>
             ),
         },
-    ]
+    ] 
 
     const handleCancel = () => {
         router.push(`/warehouse-process/proposal`)
@@ -225,6 +225,6 @@ const DetailModal = ({ ...props }: Props) => {
 
     );
 };
-export default DetailModal;
+export default DetailPage;
 
 
