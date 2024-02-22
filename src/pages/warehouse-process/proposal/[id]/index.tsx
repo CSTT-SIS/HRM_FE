@@ -1,15 +1,11 @@
-import { useEffect, Fragment, useState, SetStateAction } from 'react';
+import { useEffect, Fragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Dialog, Transition } from '@headlessui/react';
-
 import { showMessage } from '@/@core/utils';
-import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import { DeleteProposalDetail, ProposalPending } from '@/services/apis/proposal.api';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPencil from '@/components/Icon/IconPencil';
-import IconPlus from '@/components/Icon/IconPlus';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
 import { ProposalDetails } from '@/services/swr/proposal.twr';
 import { setPageTitle } from '@/store/themeConfigSlice';
@@ -17,7 +13,9 @@ import Tippy from '@tippyjs/react';
 import { DataTableSortStatus, DataTable } from 'mantine-datatable';
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
-import HandleDetailModal from '../modal/HandleDetailModal';
+import ProposalForm from '../form/ProposalForm';
+import HandleDetailModal from '../form/HandleDetailModal';
+import IconPlus from '@/components/Icon/IconPlus';
 
 interface Props {
     [key: string]: any;
@@ -48,8 +46,8 @@ const DetailModal = ({ ...props }: Props) => {
     }, [ProposalDetail])
 
     const handleEdit = (data: any) => {
-        setOpenModal(true);
         setData(data);
+        setOpenModal(true);
     };
 
     const handleDelete = ({ id, product }: any) => {
@@ -72,7 +70,7 @@ const DetailModal = ({ ...props }: Props) => {
             })
             .then((result) => {
                 if (result.value) {
-                    DeleteProposalDetail({ id: props.idDetail, detailId: id }).then(() => {
+                    DeleteProposalDetail({ id: router.query.id, detailId: id }).then(() => {
                         mutate();
                         showMessage(`${t('delete_product_success')}`, 'success');
                     }).catch((err) => {
@@ -166,57 +164,67 @@ const DetailModal = ({ ...props }: Props) => {
                     <IconLoading />
                 </div>
             )}
-            <div className="panel mt-6">
-                <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
-                    <div className="flex items-center flex-wrap">
-                        <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >
-                            <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                            {t('add')}
-                        </button>
+            <ProposalForm />
+            {
+                router.query.id !== "create" &&
+                <div className="panel mt-6">
+                    <div className="mt-3 mb-3 bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
+                        {t('proposal_detail')}
                     </div>
+                    <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
+                        <div className="flex items-center flex-wrap">
+                            <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >
+                                <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                {t('add')}
+                            </button>
+                        </div>
 
-                    <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
-                </div>
-                <div className="datatables">
-                    <DataTable
-                        highlightOnHover
-                        className="whitespace-nowrap table-hover"
-                        records={ProposalDetail?.data}
-                        columns={columns}
-                        totalRecords={pagination?.totalRecords}
-                        recordsPerPage={pagination?.perPage}
-                        page={pagination?.page}
-                        onPageChange={(p) => handleChangePage(p, pagination?.perPage)}
-                        // recordsPerPageOptions={PAGE_SIZES}
-                        // onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
-                        sortStatus={sortStatus}
-                        onSortStatusChange={setSortStatus}
-                        minHeight={200}
-                        paginationText={({ from, to, totalRecords }) => ``}
-                    />
-                </div>
-                {
-                    router.query.status === "DRAFT" &&
-                    <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
-                        <button type="button" className="btn btn-outline-warning" onClick={() => handleCancel()}>
-                            {t('pending')}
-                        </button>
-                        <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={() => handleChangeComplete()}>
-                            {t('complete')}
-                        </button>
+                        <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
                     </div>
-                }
-            </div>
+                    <div className="datatables">
+                        <DataTable
+                            highlightOnHover
+                            className="whitespace-nowrap table-hover"
+                            records={ProposalDetail?.data}
+                            columns={columns}
+                            totalRecords={pagination?.totalRecords}
+                            recordsPerPage={pagination?.perPage}
+                            page={pagination?.page}
+                            onPageChange={(p) => handleChangePage(p, pagination?.perPage)}
+                            // recordsPerPageOptions={PAGE_SIZES}
+                            // onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
+                            sortStatus={sortStatus}
+                            onSortStatusChange={setSortStatus}
+                            minHeight={200}
+                            paginationText={({ from, to, totalRecords }) => ``}
+                        />
+                    </div>
+                    {
+                        router.query.status === "DRAFT" &&
+                        <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
+                            <button type="button" className="btn btn-outline-warning" onClick={() => handleCancel()}>
+                                {t('pending')}
+                            </button>
+                            <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={() => handleChangeComplete()}>
+                                {t('complete')}
+                            </button>
+                        </div>
+                    }
+                </div>
+            }
             <HandleDetailModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}
                 data={data}
                 setData={setData}
                 proposalDetailMutate={mutate}
-                // idDetail={props.idDetail}
-                // type={props.type}
+            // idDetail={props.idDetail}
+            // type={props.type}
             />
         </div>
+
     );
 };
 export default DetailModal;
+
+
