@@ -42,7 +42,7 @@ const translate = () => {
 			let result = {};
 			for (let key of sourceKeys) {
 				const target = file.split('.')[0];
-				result[key] = toCapitalize(await makeTranslationAPI('en', target, sourceObject[key]));
+				result[key] = toCapitalize(await makeTranslationAPI(source, target, sourceObject[key]));
 			}
 
 			result = JSON.stringify(result, null, 2);

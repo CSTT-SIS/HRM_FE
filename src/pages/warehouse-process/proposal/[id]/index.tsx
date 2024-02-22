@@ -1,36 +1,29 @@
-import { useEffect, Fragment, useState, useCallback } from 'react';
-import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
-import { setPageTitle } from '../../store/themeConfigSlice';
-import { lazy } from 'react';
-// Third party libs
-import { DataTable, DataTableSortStatus } from 'mantine-datatable';
-import Swal from 'sweetalert2';
-import Tippy from '@tippyjs/react';
-import 'tippy.js/dist/tippy.css';
+import { useEffect, Fragment, useState, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
-// API
-import { Warehouses } from '@/services/swr/warehouse.twr';
-// constants
-import { PAGE_SIZES } from '@/utils/constants';
-// helper
-import { showMessage } from '@/@core/utils';
-// icons
-import IconPencil from '../../components/Icon/IconPencil';
-import IconTrashLines from '../../components/Icon/IconTrashLines';
-import { IconLoading } from '@/components/Icon/IconLoading';
-import IconPlus from '@/components/Icon/IconPlus';
-// modal
-import WarehouseModal from './modal/WarehouseModal';
-import { DeleteWarehouse } from '@/services/apis/warehouse.api';
-import IconEye from '@/components/Icon/IconEye';
 
+import { Dialog, Transition } from '@headlessui/react';
+
+import { showMessage } from '@/@core/utils';
+import IconX from '@/components/Icon/IconX';
+import { useRouter } from 'next/router';
+import { DeleteProposalDetail, ProposalPending } from '@/services/apis/proposal.api';
+import { IconLoading } from '@/components/Icon/IconLoading';
+import IconPencil from '@/components/Icon/IconPencil';
+import IconPlus from '@/components/Icon/IconPlus';
+import IconTrashLines from '@/components/Icon/IconTrashLines';
+import { ProposalDetails } from '@/services/swr/proposal.twr';
+import { setPageTitle } from '@/store/themeConfigSlice';
+import Tippy from '@tippyjs/react';
+import { DataTableSortStatus, DataTable } from 'mantine-datatable';
+import { useDispatch } from 'react-redux';
+import Swal from 'sweetalert2';
+import HandleDetailModal from '../modal/HandleDetailModal';
 
 interface Props {
     [key: string]: any;
 }
 
-const WarehousePage = ({ ...props }: Props) => {
+const DetailModal = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -44,22 +37,22 @@ const WarehousePage = ({ ...props }: Props) => {
 
 
     // get data
-    const { data: warehouse, pagination, mutate } = Warehouses({ sortBy: 'id.ASC', ...router.query });
+    const { data: ProposalDetail, pagination, mutate } = ProposalDetails({ id: props.idDetail, ...router.query });
 
     useEffect(() => {
-        dispatch(setPageTitle(`${t('warehouse')}`));
+        dispatch(setPageTitle(`${t('proposal')}`));
     });
 
     useEffect(() => {
         setShowLoader(false);
-    }, [warehouse])
+    }, [ProposalDetail])
 
     const handleEdit = (data: any) => {
         setOpenModal(true);
         setData(data);
     };
 
-    const handleDelete = ({ id, name }: any) => {
+    const handleDelete = ({ id, product }: any) => {
         const swalDeletes = Swal.mixin({
             customClass: {
                 confirmButton: 'btn btn-secondary',
@@ -71,17 +64,17 @@ const WarehousePage = ({ ...props }: Props) => {
         swalDeletes
             .fire({
                 icon: 'question',
-                title: `${t('delete_warehouse')}`,
-                text: `${t('delete')} ${name}`,
+                title: `${t('delete_product')}`,
+                text: `${t('delete')} ${product?.name}`,
                 padding: '2em',
                 showCancelButton: true,
                 reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
-                    DeleteWarehouse({ id }).then(() => {
+                    DeleteProposalDetail({ id: props.idDetail, detailId: id }).then(() => {
                         mutate();
-                        showMessage(`${t('delete_warehouse_success')}`, 'success');
+                        showMessage(`${t('delete_product_success')}`, 'success');
                     }).catch((err) => {
                         showMessage(`${err?.response?.data?.message}`, 'error');
                     });
@@ -123,26 +116,21 @@ const WarehousePage = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
-        { accessor: 'name', title: 'Tên kho', sortable: false },
-        { accessor: 'code', title: 'Mã kho', sortable: false },
-        { accessor: 'description', title: 'Ghi chú', sortable: false },
-        // {
-        //     accessor: 'type',
-        //     title: 'Loại kho',
-        //     render: ({ type }: any) => <span >{type?.name}</span>,
-        //     sortable: false
-        // },
+        {
+            accessor: 'name',
+            title: 'Tên sản phẩm',
+            render: ({ product }: any) => <span>{product?.name}</span>,
+            sortable: false
+        },
+        { accessor: 'quantity', title: 'Số lượng', sortable: false },
+        { accessor: 'price', title: 'Giá', sortable: false },
+        { accessor: 'note', title: 'Ghi chú', sortable: false },
         {
             accessor: 'action',
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('detail')}`}>
-                        <button type="button" onClick={() => router.push(`/warehouse/${records.id}`)}>
-                            <IconEye />
-                        </button>
-                    </Tippy>
                     <Tippy content={`${t('edit')}`}>
                         <button type="button" onClick={() => handleEdit(records)}>
                             <IconPencil />
@@ -158,6 +146,19 @@ const WarehousePage = ({ ...props }: Props) => {
         },
     ]
 
+    const handleCancel = () => {
+        router.push(`/warehouse-process/proposal`)
+    };
+
+    const handleChangeComplete = () => {
+        ProposalPending({ id: router.query.id }).then(() => {
+            showMessage(`${t('update_success')}`, 'success');
+            router.push("/warehouse-process/proposal")
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
     return (
         <div>
             {showLoader && (
@@ -165,7 +166,6 @@ const WarehousePage = ({ ...props }: Props) => {
                     <IconLoading />
                 </div>
             )}
-            <title>Warehouse</title>
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
@@ -181,30 +181,42 @@ const WarehousePage = ({ ...props }: Props) => {
                     <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover"
-                        records={warehouse?.data}
+                        records={ProposalDetail?.data}
                         columns={columns}
                         totalRecords={pagination?.totalRecords}
                         recordsPerPage={pagination?.perPage}
                         page={pagination?.page}
                         onPageChange={(p) => handleChangePage(p, pagination?.perPage)}
-                        recordsPerPageOptions={PAGE_SIZES}
-                        onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
+                        // recordsPerPageOptions={PAGE_SIZES}
+                        // onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
                         sortStatus={sortStatus}
                         onSortStatusChange={setSortStatus}
                         minHeight={200}
-                        paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
+                        paginationText={({ from, to, totalRecords }) => ``}
                     />
                 </div>
+                {
+                    router.query.status === "DRAFT" &&
+                    <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
+                        <button type="button" className="btn btn-outline-warning" onClick={() => handleCancel()}>
+                            {t('pending')}
+                        </button>
+                        <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={() => handleChangeComplete()}>
+                            {t('complete')}
+                        </button>
+                    </div>
+                }
             </div>
-            <WarehouseModal
+            <HandleDetailModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}
                 data={data}
                 setData={setData}
-                warehouseMutate={mutate}
+                proposalDetailMutate={mutate}
+                // idDetail={props.idDetail}
+                // type={props.type}
             />
         </div>
     );
 };
-
-export default WarehousePage;
+export default DetailModal;

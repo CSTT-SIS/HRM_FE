@@ -8,10 +8,9 @@ import Swal from 'sweetalert2';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
-import moment from 'moment';
 // API
-import { Stocktakes } from '@/services/swr/stocktake.twr';
-import { DeleteStocktake, StocktakeApprove, StocktakeCancel, StocktakeFinish, StocktakeReject } from '@/services/apis/stocktake.api';
+import { Repairs } from '@/services/swr/repair.twr';
+import { DeleteRepair, RepairComplete } from '@/services/apis/repair.api';
 // constants
 import { PAGE_SIZES } from '@/utils/constants';
 // helper
@@ -21,25 +20,16 @@ import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
 import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
-import IconXCircle from '@/components/Icon/IconXCircle';
-import IconChecks from '@/components/Icon/IconChecks';
 import IconCircleCheck from '@/components/Icon/IconCircleCheck';
-import IconRestore from '@/components/Icon/IconRestore';
-import { IconInventory } from '@/components/Icon/IconInventory';
 // modal
 import DetailModal from './modal/DetailModal';
-import StocktakeModal from './modal/StocktakeModal';
-
-
-
-
-
+import RepairModal from './modal/RepairModal';
 
 interface Props {
     [key: string]: any;
 }
 
-const StocktakePage = ({ ...props }: Props) => {
+const RepairPage = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -51,20 +41,20 @@ const StocktakePage = ({ ...props }: Props) => {
     const [openModalDetail, setOpenModalDetail] = useState(false);
     const [idDetail, setIdDetail] = useState();
     const [status, setStatus] = useState();
-    const [tally, setTally] = useState(false);
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
 
     // get data
-    const { data: stocktakes, pagination, mutate } = Stocktakes({ ...router.query });
+    const { data: repairs, pagination, mutate } = Repairs({ ...router.query });
+
     useEffect(() => {
-        dispatch(setPageTitle(`${t('Stocktake')}`));
+        dispatch(setPageTitle(`${t('Repair')}`));
     });
 
     useEffect(() => {
         setShowLoader(false);
-    }, [stocktakes])
+    }, [repairs])
 
     const handleEdit = (data: any) => {
         setOpenModal(true);
@@ -83,7 +73,7 @@ const StocktakePage = ({ ...props }: Props) => {
         swalDeletes
             .fire({
                 icon: 'question',
-                title: `${t('delete_stocktake')}`,
+                title: `${t('delete_order')}`,
                 text: `${t('delete')} ${name}`,
                 padding: '2em',
                 showCancelButton: true,
@@ -91,7 +81,7 @@ const StocktakePage = ({ ...props }: Props) => {
             })
             .then((result) => {
                 if (result.value) {
-                    DeleteStocktake({ id }).then(() => {
+                    DeleteRepair({ id }).then(() => {
                         mutate();
                         showMessage(`${t('delete_success')}`, 'success');
                     }).catch((err) => {
@@ -130,52 +120,19 @@ const StocktakePage = ({ ...props }: Props) => {
     };
 
     const handleDetail = (value: any) => {
-        setOpenModalDetail(true);
-        setIdDetail(value.id);
-        setStatus(value.status);
+        // setOpenModalDetail(true);
+        // setIdDetail(value.id);
+        // setStatus(value.status);
+        router.push(`/warehouse-process/repair/${value.id}?status=${value.status}`)
     }
 
-    const handleReject = ({ id }: any) => {
-        StocktakeReject({ id }).then(() => {
+    const handleComplete = ({ id }: any) => {
+        RepairComplete({ id }).then(() => {
             mutate();
             showMessage(`${t('update_success')}`, 'success');
         }).catch((err) => {
             showMessage(`${err?.response?.data?.message}`, 'error');
         });
-    }
-
-    const handleCancel = ({ id }: any) => {
-        StocktakeCancel({ id }).then(() => {
-            mutate();
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
-
-    const handleApprove = ({ id }: any) => {
-        StocktakeApprove({ id }).then(() => {
-            mutate();
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
-
-    const handleFinish = ({ id }: any) => {
-        StocktakeFinish({ id }).then(() => {
-            mutate();
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
-
-    const handleTally = (value: any) => {
-        setOpenModalDetail(true);
-        setIdDetail(value.id);
-        setStatus(value.status);
-        setTally(true);
     }
 
     const columns = [
@@ -186,30 +143,14 @@ const StocktakePage = ({ ...props }: Props) => {
         },
         { accessor: 'name', title: 'Tên phiếu sửa chữa', sortable: false },
         {
-            accessor: 'warehouse',
-            title: 'Tên kho',
-            render: ({ warehouse }: any) => <span>{warehouse?.name}</span>,
+            accessor: 'vehicle',
+            title: 'Số đăng ký xe',
+            render: ({ vehicle }: any) => <span>{vehicle?.registrationNumber}</span>,
         },
         {
-            accessor: 'participants',
-            title: 'Người tham gia',
-            render: ({ participants }: any) => {
-                return participants?.map((item: any, index: any) => {
-                    return (
-                        <span key={item}>{index + 1 < participants.length ? item?.fullName + ", " : item?.fullName}</span>
-                    )
-                })
-            }
-        },
-        {
-            accessor: 'startDate',
-            title: 'Ngày bắt đầu',
-            render: ({ startDate }: any) => <span>{moment(startDate).format("DD/MM/YYYY")}</span>,
-        },
-        {
-            accessor: 'EndDate',
-            title: 'Ngày kết thúc',
-            render: ({ EndDate }: any) => <span>{moment(EndDate).format("DD/MM/YYYY")}</span>,
+            accessor: 'repairBy',
+            title: 'Người phụ trách',
+            render: ({ repairBy }: any) => <span>{repairBy?.fullName}</span>,
         },
         { accessor: 'description', title: 'Ghi chú', sortable: false },
         { accessor: 'status', title: 'Trạng thái', sortable: false },
@@ -224,11 +165,6 @@ const StocktakePage = ({ ...props }: Props) => {
                             <IconPlus />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('tally')}`}>
-                        <button type="button" onClick={() => handleTally(records)}>
-                            <IconInventory />
-                        </button>
-                    </Tippy>
                     <Tippy content={`${t('edit')}`}>
                         <button type="button" onClick={() => handleEdit(records)}>
                             <IconPencil />
@@ -239,23 +175,8 @@ const StocktakePage = ({ ...props }: Props) => {
                             <IconTrashLines />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('finish')}`}>
-                        <button type="button" onClick={() => handleFinish(records)}>
-                            <IconChecks />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('reject')}`}>
-                        <button type="button" onClick={() => handleReject(records)}>
-                            <IconRestore />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('cancel')}`}>
-                        <button type="button" onClick={() => handleCancel(records)}>
-                            <IconXCircle />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('approve')}`}>
-                        <button type="button" onClick={() => handleApprove(records)}>
+                    <Tippy content={`${t('complete')}`}>
+                        <button type="button" onClick={() => handleComplete(records)}>
                             <IconCircleCheck size={20} />
                         </button>
                     </Tippy>
@@ -287,7 +208,7 @@ const StocktakePage = ({ ...props }: Props) => {
                     <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover"
-                        records={stocktakes?.data}
+                        records={repairs?.data}
                         columns={columns}
                         totalRecords={pagination?.totalRecords}
                         recordsPerPage={pagination?.perPage}
@@ -302,24 +223,22 @@ const StocktakePage = ({ ...props }: Props) => {
                     />
                 </div>
             </div>
-            <StocktakeModal
+            <RepairModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}
                 data={data}
                 setData={setData}
-                stocktakeMutate={mutate}
+                repairMutate={mutate}
             />
-            <DetailModal
+            {/* <DetailModal
                 openModalDetail={openModalDetail}
                 setOpenModalDetail={setOpenModalDetail}
                 idDetail={idDetail}
                 status={status}
-                stocktakeMutate={mutate}
-                tally={tally}
-                setTally={setTally}
-            />
+                repairMutate={mutate}
+            /> */}
         </div>
     );
 };
 
-export default StocktakePage;
+export default RepairPage;

@@ -31,7 +31,7 @@ const WarehouseModal = ({ ...props }: Props) => {
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_warehouse')}`),
         code: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_warehouseCode')}`),
-        typeId: new Yup.ObjectSchema().required(`${t('please_fill_type')}`)
+        // typeId: new Yup.ObjectSchema().required(`${t('please_fill_type')}`)
     });
 
     const handleWarehouse = (param: any) => {
@@ -134,7 +134,7 @@ const WarehouseModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data !== undefined ? 'Edit Warehouse' : 'Add Warehouse'}
+                                    {props.data !== undefined ? t('edit_warehouse') : t('add_warehouse')}
                                 </div>
                                 <div className="p-5">
                                     <Formik
@@ -142,10 +142,10 @@ const WarehouseModal = ({ ...props }: Props) => {
                                             {
                                                 name: props?.data ? `${props?.data?.name}` : "",
                                                 code: props?.data ? `${props?.data?.code}` : "",
-                                                typeId: props?.data ? {
-                                                    value: `${props?.data?.type.id}`,
-                                                    label: `${props?.data?.type.name}`
-                                                } : "",
+                                                // typeId: props?.data ? {
+                                                //     value: `${props?.data?.type.id}`,
+                                                //     label: `${props?.data?.type.name}`
+                                                // } : "",
                                                 description: props?.data ? `${props?.data?.description}` : ""
                                             }
                                         }
@@ -171,7 +171,7 @@ const WarehouseModal = ({ ...props }: Props) => {
                                                         <div className="text-danger mt-1"> {errors.code} </div>
                                                     ) : null}
                                                 </div>
-                                                <div className="mb-5 flex justify-between gap-4">
+                                                {/* <div className="mb-5 flex justify-between gap-4">
                                                     <div className="flex-1">
                                                         <label htmlFor="typeId" > {t('type')} < span style={{ color: 'red' }}>* </span></label >
                                                         <Select
@@ -192,7 +192,7 @@ const WarehouseModal = ({ ...props }: Props) => {
                                                             <div className="text-danger mt-1"> {errors.typeId} </div>
                                                         ) : null}
                                                     </div>
-                                                </div>
+                                                </div> */}
                                                 <div className="mb-5">
                                                     <label htmlFor="description" > {t('description')} </label >
                                                     <Field name="description" type="text" id="description" placeholder={`${t('enter_description')}`} className="form-input" />

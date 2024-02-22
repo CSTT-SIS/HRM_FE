@@ -9,8 +9,8 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
-import { Proposals } from '@/services/swr/proposal.twr';
-import { DeleteProposal, ProposalApprove, ProposalReject, ProposalReturn } from '@/services/apis/proposal.api';
+import { WarehousingBill } from '@/services/swr/warehousing-bill.twr';
+import { DeleteWarehousingBill, WarehousingBillApprove, WarehousingBillReject } from '@/services/apis/warehousing-bill.api';
 // constants
 import { PAGE_SIZES } from '@/utils/constants';
 // helper
@@ -20,12 +20,12 @@ import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
 import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
-import IconCircleCheck from '@/components/Icon/IconCircleCheck';
 import IconXCircle from '@/components/Icon/IconXCircle';
-import IconRestore from '@/components/Icon/IconRestore';
+import IconCircleCheck from '@/components/Icon/IconCircleCheck';
 // modal
-import ProposalModal from './modal/ProposalModal';
+import WarehousingBillModal from './modal/WarehousingBillModal';
 import DetailModal from './modal/DetailModal';
+
 
 
 
@@ -34,7 +34,7 @@ interface Props {
     [key: string]: any;
 }
 
-const ProposalPage = ({ ...props }: Props) => {
+const WarehousingPage = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -46,21 +46,19 @@ const ProposalPage = ({ ...props }: Props) => {
     const [openModalDetail, setOpenModalDetail] = useState(false);
     const [idDetail, setIdDetail] = useState();
     const [status, setStatus] = useState();
-    const [type, setType] = useState();
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
 
     // get data
-    const { data: proposal, pagination, mutate } = Proposals({ sortBy: 'id.ASC', ...router.query });
-
+    const { data: warehousing, pagination, mutate } = WarehousingBill({ ...router.query });
     useEffect(() => {
         dispatch(setPageTitle(`${t('proposal')}`));
     });
 
     useEffect(() => {
         setShowLoader(false);
-    }, [proposal])
+    }, [warehousing])
 
     const handleEdit = (data: any) => {
         setOpenModal(true);
@@ -79,7 +77,7 @@ const ProposalPage = ({ ...props }: Props) => {
         swalDeletes
             .fire({
                 icon: 'question',
-                title: `${t('delete_proposal')}`,
+                title: `${t('delete_order')}`,
                 text: `${t('delete')} ${name}`,
                 padding: '2em',
                 showCancelButton: true,
@@ -87,7 +85,7 @@ const ProposalPage = ({ ...props }: Props) => {
             })
             .then((result) => {
                 if (result.value) {
-                    DeleteProposal({ id }).then(() => {
+                    DeleteWarehousingBill({ id }).then(() => {
                         mutate();
                         showMessage(`${t('delete_success')}`, 'success');
                     }).catch((err) => {
@@ -126,14 +124,14 @@ const ProposalPage = ({ ...props }: Props) => {
     };
 
     const handleDetail = (value: any) => {
-        setType(value.type)
-        setOpenModalDetail(true);
-        setIdDetail(value.id);
-        setStatus(value.status);
+        // setOpenModalDetail(true);
+        // setIdDetail(value.id);
+        // setStatus(value.status);
+        router.push(`/warehouse-process/warehousing-bill/${value.id}?status=${value.status}`)
     }
 
     const handleApprove = ({ id }: any) => {
-        ProposalApprove({ id }).then(() => {
+        WarehousingBillApprove({ id }).then(() => {
             mutate();
             showMessage(`${t('update_success')}`, 'success');
         }).catch((err) => {
@@ -142,16 +140,7 @@ const ProposalPage = ({ ...props }: Props) => {
     }
 
     const handleReject = ({ id }: any) => {
-        ProposalReject({ id }).then(() => {
-            mutate();
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
-
-    const handleReturn = ({ id }: any) => {
-        ProposalReturn({ id }).then(() => {
+        WarehousingBillReject({ id }).then(() => {
             mutate();
             showMessage(`${t('update_success')}`, 'success');
         }).catch((err) => {
@@ -165,17 +154,32 @@ const ProposalPage = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
-        { accessor: 'name', title: 'Tên đề xuất', sortable: false },
-        { accessor: 'type', title: 'Loại đề xuất', sortable: false },
-        { accessor: 'content', title: 'Nội dung', sortable: false },
+        { accessor: 'name', title: 'Tên phiếu kho', sortable: false },
+        { accessor: 'type', title: 'Loại phiếu', sortable: false },
+        {
+            accessor: 'proposal',
+            title: 'Yêu cầu',
+            render: ({ proposal }: any) => <span>{proposal?.name}</span>,
+        },
+        {
+            accessor: 'order',
+            title: 'Đơn hàng',
+            render: ({ order }: any) => <span>{order?.name}</span>,
+        },
+        {
+            accessor: 'warehouse',
+            title: 'Tên kho',
+            render: ({ warehouse }: any) => <span>{warehouse?.name}</span>,
+        },
         { accessor: 'status', title: 'Trạng thái', sortable: false },
+        { accessor: 'note', title: 'Ghi chú', sortable: false },
         {
             accessor: 'action',
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('add detail')}`}>
+                    <Tippy content={`${t('check_quantity')}`}>
                         <button type="button" onClick={() => handleDetail(records)}>
                             <IconPlus />
                         </button>
@@ -198,11 +202,6 @@ const ProposalPage = ({ ...props }: Props) => {
                     <Tippy content={`${t('reject')}`}>
                         <button type="button" onClick={() => handleReject(records)}>
                             <IconXCircle />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('return')}`}>
-                        <button type="button" onClick={() => handleReturn(records)}>
-                            <IconRestore />
                         </button>
                     </Tippy>
                 </div>
@@ -233,7 +232,7 @@ const ProposalPage = ({ ...props }: Props) => {
                     <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover"
-                        records={proposal?.data}
+                        records={warehousing?.data}
                         columns={columns}
                         totalRecords={pagination?.totalRecords}
                         recordsPerPage={pagination?.perPage}
@@ -248,23 +247,22 @@ const ProposalPage = ({ ...props }: Props) => {
                     />
                 </div>
             </div>
-            <ProposalModal
+            <WarehousingBillModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}
                 data={data}
                 setData={setData}
-                proposalMutate={mutate}
+                warehousingMutate={mutate}
             />
-            <DetailModal
+            {/* <DetailModal
                 openModalDetail={openModalDetail}
                 setOpenModalDetail={setOpenModalDetail}
                 idDetail={idDetail}
                 status={status}
-                proposalMutate={mutate}
-                type={type}
-            />
+                warehousingMutate={mutate}
+            /> */}
         </div>
     );
 };
 
-export default ProposalPage;
+export default WarehousingPage;

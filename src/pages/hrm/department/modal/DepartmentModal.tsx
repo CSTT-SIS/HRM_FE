@@ -156,7 +156,7 @@ const DepartmentModal = ({ ...props }: Props) => {
 														{' '}
 														{t('Abbreviated_name')} <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field name="abbreviated" type="text" id="abbreviated" placeholder={`enter_abbreviated_name`} className="form-input" />
+													<Field name="abbreviated" type="text" id="abbreviated" placeholder={`${t('enter_abbreviated_name')}`} className="form-input" />
 													{errors.abbreviated ? <div className="mt-1 text-danger"> {errors.abbreviated} </div> : null}
 												</div>
 												<div className="mb-5">

@@ -33,15 +33,18 @@ const RepairStatusChart = ({ ...props }: Props) => {
     useEffect(() => {
         var a: any = [];
         var b: any = [];
-        (repairStatus?.data.map((item: any) => {
-            return a.push(item.count) && b.push(item.status)
-        }))
+
+        repairStatus?.data.map((item: any) => {
+            return a.push(item.count[0]) && b.push(item.status)
+        })
+
         setDataRepairStatus(
             {
                 series: [{ data: a }],
                 name: b
             }
         );
+
         setShowLoader(true);
     }, [repairStatus?.data]);
 
@@ -69,6 +72,7 @@ const RepairStatusChart = ({ ...props }: Props) => {
         },
         plotOptions: {
             bar: {
+                distributed: true,
                 horizontal: false,
                 columnWidth: '55%',
                 borderRadius: 8,
@@ -76,6 +80,7 @@ const RepairStatusChart = ({ ...props }: Props) => {
             },
         },
         legend: {
+            show: false,
             position: 'bottom',
             horizontalAlign: 'center',
             fontSize: '14px',
