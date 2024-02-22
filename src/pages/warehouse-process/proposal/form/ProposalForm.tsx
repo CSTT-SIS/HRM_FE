@@ -21,16 +21,12 @@ const ProposalForm = ({ ...props }: Props) => {
     const [pageRepair, setPageRepair] = useState<any>(1);
     const [dataRepairDropdown, setDataRepairDropdown] = useState<any>([]);
     const [data, setData] = useState<any>();
-    console.log("🚀 ~ ProposalForm ~ data:", data)
 
     useEffect(() => {
-        if (router.query.id !== "create") {
-            GetProposal({ id: router.query.id }).then((res) => {
-                setData(res.data);
-            }).catch((err) => {
-                showMessage(`${err?.response?.data?.message}`, 'error');
-            });
+        if (Number(router.query.id)) {
+            getData();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [router.query.id])
 
     useEffect(() => {
@@ -52,15 +48,19 @@ const ProposalForm = ({ ...props }: Props) => {
     const { data: dropdownRepair, pagination: repairPagination, isLoading: repairLoading } = DropdownRepair({ page: pageRepair })
 
     const handleProposal = (param: any) => {
-        const query = {
+        const query: any = {
             name: param.name,
             type: param.type.value,
             content: param.content,
-            repairRequestId: param?.repairRequestId?.value
         };
+
+        if (param?.repairRequestId.value !== "undefined") {
+            query.repairRequestId = param?.repairRequestId?.value
+        }
+
         if (data) {
-            EditProposal({ id: data?.id, ...query }).then(() => {
-                handleCancel();
+            EditProposal({ id: data?.id, ...query }).then((res) => {
+                getData();
                 showMessage(`${t('edit_success')}`, 'success');
             }).catch((err) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
@@ -71,8 +71,7 @@ const ProposalForm = ({ ...props }: Props) => {
                     pathname: `/warehouse-process/proposal/${res.data.id}`,
                     query: {
                         type: res.data.type,
-                        status: res.data.status,
-                        name: res.data.name
+                        status: res.data.status
                     }
                 })
                 showMessage(`${t('create_success')}`, 'success');
@@ -80,6 +79,21 @@ const ProposalForm = ({ ...props }: Props) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
         }
+    }
+
+    const getData = () => {
+        GetProposal({ id: router.query.id }).then((res) => {
+            setData(res.data);
+            router.push({
+                pathname: `/warehouse-process/proposal/${res.data.id}`,
+                query: {
+                    type: res.data.type,
+                    status: res.data.status
+                }
+            })
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
     }
 
     const handleCancel = () => {

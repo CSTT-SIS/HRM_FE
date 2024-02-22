@@ -89,7 +89,6 @@ const HandleDetailModal = ({ ...props }: Props) => {
             setPage(productPagination?.page + 1);
         }, 1000);
     }
-    console.log(props.data)
 
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>

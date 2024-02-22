@@ -28,7 +28,7 @@ const DetailModal = ({ ...props }: Props) => {
     const router = useRouter();
 
     const [showLoader, setShowLoader] = useState(true);
-    const [data, setData] = useState<any>();
+    const [dataDetail, setDataDetail] = useState<any>();
     const [openModal, setOpenModal] = useState(false);
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
@@ -46,7 +46,7 @@ const DetailModal = ({ ...props }: Props) => {
     }, [ProposalDetail])
 
     const handleEdit = (data: any) => {
-        setData(data);
+        setDataDetail(data);
         setOpenModal(true);
     };
 
@@ -175,7 +175,7 @@ const DetailModal = ({ ...props }: Props) => {
                         <div className="flex items-center flex-wrap">
                             <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >
                                 <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                                {t('add')}
+                                {t('add_detail')}
                             </button>
                         </div>
 
@@ -215,8 +215,8 @@ const DetailModal = ({ ...props }: Props) => {
             <HandleDetailModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}
-                data={data}
-                setData={setData}
+                data={dataDetail}
+                setData={setDataDetail}
                 proposalDetailMutate={mutate}
             // idDetail={props.idDetail}
             // type={props.type}

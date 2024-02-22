@@ -119,7 +119,7 @@ const ProposalPage = ({ ...props }: Props) => {
         // setOpenModalDetail(true);
         // setIdDetail(value.id);
         // setStatus(value.status);
-        router.push(`/warehouse-process/proposal/${value.id}?type=${value.type}&&status=${value.status}&&name=${value.name}`)
+        router.push(`/warehouse-process/proposal/${value.id}?type=${value.type}&&status=${value.status}`)
     }
 
     const handleApprove = ({ id }: any) => {
