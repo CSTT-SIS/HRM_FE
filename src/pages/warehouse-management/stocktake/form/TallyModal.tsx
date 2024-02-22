@@ -27,7 +27,7 @@ const TallyModal = ({ ...props }: Props) => {
         const query = {
             countedQuantity: Number(param.countedQuantity)
         };
-        CheckStocktakeDetail({ id: props.idDetail, detailId: props?.data?.id, ...query }).then(() => {
+        CheckStocktakeDetail({ id: router.query.id, detailId: props?.data?.id, ...query }).then(() => {
             props.stocktakeDetailMutate();
             handleCancel();
             showMessage(`${t('edit_success')}`, 'success');
@@ -110,7 +110,7 @@ const TallyModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                                     <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
-                                                       {t('cancel')}
+                                                        Cancel
                                                     </button>
                                                     <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4">
                                                         {props.data !== undefined ? t('update') : t('add')}

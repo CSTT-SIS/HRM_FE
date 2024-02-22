@@ -16,7 +16,7 @@ interface Props {
     [key: string]: any;
 }
 
-const HandleDetailModal = ({ ...props }: Props) => {
+const DetailModal = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
     const router = useRouter();
@@ -35,7 +35,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
             productId: Number(param.productId.value)
         };
         if (props?.data) {
-            EditStocktakeDetail({ id: props.idDetail, itemId: props?.data?.id, ...query }).then(() => {
+            EditStocktakeDetail({ id: router.query.id, itemId: props?.data?.id, ...query }).then(() => {
                 props.stocktakeDetailMutate();
                 handleCancel();
                 showMessage(`${t('edit_success')}`, 'success');
@@ -43,7 +43,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
         } else {
-            AddStocktakeDetail({ id: props.idDetail, ...query }).then(() => {
+            AddStocktakeDetail({ id: router.query.id, ...query }).then(() => {
                 props.stocktakeDetailMutate();
                 handleCancel();
                 showMessage(`${t('create_success')}`, 'success');
@@ -119,7 +119,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data ? 'Add stocktake detail' : 'Update stocktake detail'}
+                                    {props.data ? t('edit_product') : t('add_product')}
                                 </div>
                                 <div className="p-5">
                                     <Formik
@@ -155,7 +155,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                                     <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
-                                                       {t('cancel')}
+                                                        Cancel
                                                     </button>
                                                     <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4">
                                                         {props.data !== undefined ? t('update') : t('add')}
@@ -174,4 +174,4 @@ const HandleDetailModal = ({ ...props }: Props) => {
         </Transition>
     );
 };
-export default HandleDetailModal;
+export default DetailModal;

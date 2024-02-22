@@ -24,8 +24,6 @@ const RepairForm = ({ ...props }: Props) => {
     const [dataUserDropdown, setDataUserDropdown] = useState<any>([]);
     const [page, setPage] = useState(1);
     const [data, setData] = useState<any>();
-    console.log("🚀 ~ RepairForm ~ data:", data)
-
 
     const SubmittedForm = Yup.object().shape({
         vehicleRegistrationNumber: Yup.string().required(`${t('please_fill_name')}`),

@@ -65,7 +65,7 @@ const callApi = (
 	const responseType = isBlob ? 'blob' : 'json';
 	return axios({
 		url: url,
-		params: body || {},
+		// params: body || {},
 		method: method || 'GET',
 		data: body || {},
 		headers,

@@ -30,7 +30,7 @@ const ImportModal = ({ ...props }: Props) => {
 
     });
 
-    //get data
+    //get data 
     const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ page: page });
 
     const handleImport = (param: any) => {
@@ -179,7 +179,7 @@ const ImportModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                                     <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
-                                                       {t('cancel')}
+                                                        Cancel
                                                     </button>
                                                     <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4" disabled={disabled}>
                                                         {props.data !== undefined ? t('update') : t('add')}
