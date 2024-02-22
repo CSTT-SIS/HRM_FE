@@ -9,8 +9,8 @@ import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
-import { AddProposalDetail, EditProposalDetail } from '@/services/apis/proposal.api';
 import { DropdownProducts } from '@/services/swr/dropdown.twr';
+import { AddOrderDetail, EditOrderDetail } from '@/services/apis/order.api';
 
 interface Props {
     [key: string]: any;
@@ -31,24 +31,23 @@ const HandleDetailModal = ({ ...props }: Props) => {
 
     const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ page: page });
 
-    const handleProposal = (param: any) => {
+    const handleOrder = (param: any) => {
         const query = {
             productId: Number(param.productId.value),
             quantity: Number(param.quantity),
-            note: param.note,
-            price: param?.price ? param?.price : 0
+            note: param.note
         };
         if (props?.data) {
-            EditProposalDetail({ id: router.query.id, detailId: props?.data?.id, ...query }).then(() => {
-                props.proposalDetailMutate();
+            EditOrderDetail({ id: router.query.id, itemId: props?.data?.id, ...query }).then(() => {
+                props.orderDetailMutate();
                 handleCancel();
                 showMessage(`${t('edit_success')}`, 'success');
             }).catch((err) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
         } else {
-            AddProposalDetail({ id: router.query.id, ...query }).then(() => {
-                props.proposalDetailMutate();
+            AddOrderDetail({ id: router.query.id, ...query }).then(() => {
+                props.orderDetailMutate();
                 handleCancel();
                 showMessage(`${t('create_success')}`, 'success');
             }).catch((err) => {
@@ -70,11 +69,9 @@ const HandleDetailModal = ({ ...props }: Props) => {
                 value: `${props?.data?.product?.id}`,
                 label: `${props?.data?.product?.name}`
             } : "",
-            note: props?.data ? `${props?.data?.note}` : "",
-            price: props?.data ? props?.data.price : ""
+            note: props?.data?.note ? props?.data?.note : "",
         })
-    }, [props?.data, router]);
-
+    }, [props?.data]);
 
     useEffect(() => {
         if (productPagination?.page === undefined) return;
@@ -127,14 +124,14 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {t("proposal_detail")}
+                                    {props.data === undefined ? t('add_detail') : t('edit_detail')}
                                 </div>
                                 <div className="p-5">
                                     <Formik
                                         initialValues={initialValue}
                                         validationSchema={SubmittedForm}
                                         onSubmit={values => {
-                                            handleProposal(values);
+                                            handleOrder(values);
                                         }}
                                         enableReinitialize
                                     >
@@ -174,16 +171,6 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                         <div className="text-danger mt-1"> {`${errors.quantity}`} </div>
                                                     ) : null}
                                                 </div>
-                                                {
-                                                    router.query.type === "PURCHASE" &&
-                                                    <div className="mb-5">
-                                                        <label htmlFor="price" > {t('price')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Field name="price" type="number" id="price" placeholder={`${t('enter_price')}`} className="form-input" />
-                                                        {errors.price ? (
-                                                            <div className="text-danger mt-1"> {`${errors.price}`} </div>
-                                                        ) : null}
-                                                    </div>
-                                                }
                                                 <div className="mb-5">
                                                     <label htmlFor="note" > {t('description')} </label >
                                                     <Field
@@ -199,7 +186,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                                     <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
-                                                       {t('cancel')}
+                                                        {t('cancel')}
                                                     </button>
                                                     <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4">
                                                         {props.data !== undefined ? t('update') : t('add')}

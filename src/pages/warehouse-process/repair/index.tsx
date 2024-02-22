@@ -21,9 +21,6 @@ import IconPlus from '@/components/Icon/IconPlus';
 import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
 import IconCircleCheck from '@/components/Icon/IconCircleCheck';
-// modal
-import DetailModal from './modal/DetailModal';
-import RepairModal from './modal/RepairModal';
 
 interface Props {
     [key: string]: any;
@@ -36,11 +33,6 @@ const RepairPage = ({ ...props }: Props) => {
     const router = useRouter();
 
     const [showLoader, setShowLoader] = useState(true);
-    const [data, setData] = useState<any>();
-    const [openModal, setOpenModal] = useState(false);
-    const [openModalDetail, setOpenModalDetail] = useState(false);
-    const [idDetail, setIdDetail] = useState();
-    const [status, setStatus] = useState();
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
@@ -55,11 +47,6 @@ const RepairPage = ({ ...props }: Props) => {
     useEffect(() => {
         setShowLoader(false);
     }, [repairs])
-
-    const handleEdit = (data: any) => {
-        setOpenModal(true);
-        setData(data);
-    };
 
     const handleDelete = ({ id, name }: any) => {
         const swalDeletes = Swal.mixin({
@@ -120,9 +107,6 @@ const RepairPage = ({ ...props }: Props) => {
     };
 
     const handleDetail = (value: any) => {
-        // setOpenModalDetail(true);
-        // setIdDetail(value.id);
-        // setStatus(value.status);
         router.push(`/warehouse-process/repair/${value.id}?status=${value.status}`)
     }
 
@@ -160,13 +144,8 @@ const RepairPage = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('add_detail')}`}>
-                        <button type="button" onClick={() => handleDetail(records)}>
-                            <IconPlus />
-                        </button>
-                    </Tippy>
                     <Tippy content={`${t('edit')}`}>
-                        <button type="button" onClick={() => handleEdit(records)}>
+                        <button type="button" onClick={() => handleDetail(records)}>
                             <IconPencil />
                         </button>
                     </Tippy>
@@ -196,7 +175,7 @@ const RepairPage = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >
+                        <button type="button" onClick={(e) => router.push(`/warehouse-process/repair/create`)} className="btn btn-primary btn-sm m-1 " >
                             <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                             {t('add')}
                         </button>
@@ -223,20 +202,6 @@ const RepairPage = ({ ...props }: Props) => {
                     />
                 </div>
             </div>
-            <RepairModal
-                openModal={openModal}
-                setOpenModal={setOpenModal}
-                data={data}
-                setData={setData}
-                repairMutate={mutate}
-            />
-            {/* <DetailModal
-                openModalDetail={openModalDetail}
-                setOpenModalDetail={setOpenModalDetail}
-                idDetail={idDetail}
-                status={status}
-                repairMutate={mutate}
-            /> */}
         </div>
     );
 };

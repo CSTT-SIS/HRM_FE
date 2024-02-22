@@ -9,50 +9,51 @@ import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
-import { DropdownUsers } from '@/services/swr/dropdown.twr';
-import { CreateRepair, EditRepair } from '@/services/apis/repair.api';
+import { DropdownProducts } from '@/services/swr/dropdown.twr';
+import { AddRepairDetail, EditRepairDetail } from '@/services/apis/repair.api';
 
 interface Props {
     [key: string]: any;
 }
 
-const RepairModal = ({ ...props }: Props) => {
+const HandleDetailModal = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
     const router = useRouter();
     const [initialValue, setInitialValue] = useState<any>();
-    const [dataUserDropdown, setDataUserDropdown] = useState<any>([]);
+    const [dataProductDropdown, setDataProductDropdown] = useState<any>([]);
     const [page, setPage] = useState(1);
 
     const SubmittedForm = Yup.object().shape({
-        vehicleRegistrationNumber: Yup.string().required(`${t('please_fill_name')}`),
-        repairById: new Yup.ObjectSchema().required(`${t('please_fill_proposal')}`),
+        replacementPartId: new Yup.ObjectSchema().required(`${t('please_fill_product')}`),
+        quantity: Yup.string().required(`${t('please_fill_quantity')}`),
     });
 
-    const { data: users, pagination: paginationUser, isLoading: userLoading } = DropdownUsers({ page: page });
+    const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ page: page });
 
-    const handleRepair = (param: any) => {
+
+    const handleRepairDetail = (param: any) => {
         const query = {
-            vehicleRegistrationNumber: param.vehicleRegistrationNumber,
-            repairById: Number(param.repairById.value),
-            description: param.description,
-            damageLevel: param.damageLevel
+            replacementPartId: Number(param.replacementPartId.value),
+            quantity: Number(param.quantity),
+            brokenPart: param.brokenPart,
+            description: param.description
         };
         if (props?.data) {
-            EditRepair({ id: props?.data?.id, ...query }).then(() => {
-                props.repairMutate();
+            EditRepairDetail({ id: router.query.id, detailId: props?.data?.id, ...query }).then(() => {
+                props.orderDetailMutate();
                 handleCancel();
                 showMessage(`${t('edit_success')}`, 'success');
             }).catch((err) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
         } else {
-            CreateRepair(query).then(() => {
-                props.repairMutate();
+            AddRepairDetail({ id: router.query.id, ...query }).then(() => {
+                props.orderDetailMutate();
                 handleCancel();
                 showMessage(`${t('create_success')}`, 'success');
             }).catch((err) => {
-                showMessage(`${err?.response?.data?.message[0].error}`, 'error');
+                showMessage(`${err?.response?.data?.message}`, 'error');
             });
         }
     }
@@ -65,32 +66,32 @@ const RepairModal = ({ ...props }: Props) => {
 
     useEffect(() => {
         setInitialValue({
-            vehicleRegistrationNumber: props?.data ? `${props?.data?.vehicle?.registrationNumber}` : "",
-            repairById: props?.data ? {
-                value: `${props?.data?.repairBy?.id}`,
-                label: `${props?.data?.repairBy?.fullName}`
+            quantity: props?.data ? `${props?.data?.quantity}` : "",
+            replacementPartId: props?.data ? {
+                value: `${props?.data?.replacementPart?.id}`,
+                label: `${props?.data?.replacementPart?.name}`
             } : "",
-            description: props?.data ? `${props?.data?.description}` : "",
-            damageLevel: props?.data ? `${props?.data?.damageLevel}` : "",
+            brokenPart: props?.data ? props?.data.brokenPart : "",
+            description: props?.data ? props?.data.description : ""
         })
     }, [props?.data, router]);
 
-
     useEffect(() => {
-        if (paginationUser?.page === undefined) return;
-        if (paginationUser?.page === 1) {
-            setDataUserDropdown(users?.data)
+        if (productPagination?.page === undefined) return;
+        if (productPagination?.page === 1) {
+            setDataProductDropdown(productDropdown?.data)
         } else {
-            setDataUserDropdown([...dataUserDropdown, ...users?.data])
+            setDataProductDropdown([...dataProductDropdown, ...productDropdown?.data])
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [paginationUser])
+    }, [productPagination])
 
     const handleMenuScrollToBottom = () => {
         setTimeout(() => {
-            setPage(paginationUser?.page + 1);
+            setPage(productPagination?.page + 1);
         }, 1000);
     }
+
 
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
@@ -127,52 +128,64 @@ const RepairModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {t('repair')}
+                                    {props.data === undefined ? t('add_detail') : t('edit_detail')}
                                 </div>
                                 <div className="p-5">
                                     <Formik
                                         initialValues={initialValue}
                                         validationSchema={SubmittedForm}
                                         onSubmit={values => {
-                                            handleRepair(values);
+                                            handleRepairDetail(values);
                                         }}
                                         enableReinitialize
                                     >
-
                                         {({ errors, values, setFieldValue }) => (
                                             <Form className="space-y-5" >
                                                 <div className="mb-5 flex justify-between gap-4">
                                                     <div className="flex-1">
-                                                        <label htmlFor="repairById" > {t('repair_by_id')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <label htmlFor="replacementPartId" > {t('product')} < span style={{ color: 'red' }}>* </span></label >
                                                         <Select
-                                                            id='repairById'
-                                                            name='repairById'
-                                                            options={dataUserDropdown}
-                                                            maxMenuHeight={160}
-                                                            value={values.repairById}
+                                                            id='replacementPartId'
+                                                            name='replacementPartId'
+                                                            options={dataProductDropdown}
                                                             onMenuOpen={() => setPage(1)}
                                                             onMenuScrollToBottom={handleMenuScrollToBottom}
-                                                            isLoading={userLoading}
+                                                            isLoading={productLoading}
+                                                            maxMenuHeight={160}
+                                                            value={values.replacementPartId}
                                                             onChange={e => {
-                                                                setFieldValue('repairById', e)
+                                                                setFieldValue('replacementPartId', e)
                                                             }}
                                                         />
-                                                        {errors.repairById ? (
-                                                            <div className="text-danger mt-1"> {`${errors.repairById}`} </div>
+                                                        {errors.replacementPartId ? (
+                                                            <div className="text-danger mt-1"> {`${errors.replacementPartId}`} </div>
                                                         ) : null}
                                                     </div>
                                                 </div>
                                                 <div className="mb-5">
-                                                    <label htmlFor="type" > {t('vehicle_registration_number')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <label htmlFor="quantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
                                                     <Field
-                                                        name="vehicleRegistrationNumber"
-                                                        type="text"
-                                                        id="vehicleRegistrationNumber"
-                                                        placeholder={`${t('enter_type')}`}
+                                                        name="quantity"
+                                                        type="number"
+                                                        id="quantity"
+                                                        placeholder={`${t('enter_quantity')}`}
                                                         className="form-input"
                                                     />
-                                                    {errors.vehicleRegistrationNumber ? (
-                                                        <div className="text-danger mt-1"> {`${errors.vehicleRegistrationNumber}`} </div>
+                                                    {errors.quantity ? (
+                                                        <div className="text-danger mt-1"> {`${errors.quantity}`} </div>
+                                                    ) : null}
+                                                </div>
+                                                <div className="mb-5">
+                                                    <label htmlFor="brokenPart" > {t('broken_part')} </label >
+                                                    <Field
+                                                        name="brokenPart"
+                                                        type="text"
+                                                        id="brokenPart"
+                                                        placeholder={`${t('enter_broken_part')}`}
+                                                        className="form-input"
+                                                    />
+                                                    {errors.brokenPart ? (
+                                                        <div className="text-danger mt-1"> {`${errors.brokenPart}`} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
@@ -188,28 +201,14 @@ const RepairModal = ({ ...props }: Props) => {
                                                         <div className="text-danger mt-1"> {`${errors.description}`} </div>
                                                     ) : null}
                                                 </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="damageLevel" > {t('damage_level')} </label >
-                                                    <Field
-                                                        name="damageLevel"
-                                                        type="text"
-                                                        id="damageLevel"
-                                                        className="form-input"
-                                                        placeholder={`${t('enter_damage_level')}`}
-                                                    />
-                                                    {errors.damageLevel ? (
-                                                        <div className="text-danger mt-1"> {`${errors.damageLevel}`} </div>
-                                                    ) : null}
-                                                </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                                     <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
-                                                       {t('cancel')}
+                                                        {t('cancel')}
                                                     </button>
                                                     <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4">
                                                         {props.data !== undefined ? t('update') : t('add')}
                                                     </button>
                                                 </div>
-
                                             </Form>
                                         )}
                                     </Formik>
@@ -223,5 +222,4 @@ const RepairModal = ({ ...props }: Props) => {
         </Transition>
     );
 };
-
-export default RepairModal;
+export default HandleDetailModal;

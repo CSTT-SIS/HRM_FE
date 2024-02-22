@@ -10,13 +10,13 @@ import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
 import { DropdownProducts } from '@/services/swr/dropdown.twr';
-import { AddOrderDetail, EditOrderDetail } from '@/services/apis/order.api';
+import { AddStocktakeDetail, EditStocktakeDetail } from '@/services/apis/stocktake.api';
 
 interface Props {
     [key: string]: any;
 }
 
-const HandleDetailModal = ({ ...props }: Props) => {
+const DetailModal = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
     const router = useRouter();
@@ -26,28 +26,25 @@ const HandleDetailModal = ({ ...props }: Props) => {
 
     const SubmittedForm = Yup.object().shape({
         productId: new Yup.ObjectSchema().required(`${t('please_fill_product')}`),
-        quantity: Yup.string().required(`${t('please_fill_quantity')}`),
     });
 
     const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ page: page });
 
-    const handleOrder = (param: any) => {
+    const handleStocktake = (param: any) => {
         const query = {
-            productId: Number(param.productId.value),
-            quantity: Number(param.quantity),
-            note: param.note
+            productId: Number(param.productId.value)
         };
         if (props?.data) {
-            EditOrderDetail({ id: router.query.id, itemId: props?.data?.id, ...query }).then(() => {
-                props.orderDetailMutate();
+            EditStocktakeDetail({ id: router.query.id, itemId: props?.data?.id, ...query }).then(() => {
+                props.stocktakeDetailMutate();
                 handleCancel();
                 showMessage(`${t('edit_success')}`, 'success');
             }).catch((err) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
         } else {
-            AddOrderDetail({ id: router.query.id, ...query }).then(() => {
-                props.orderDetailMutate();
+            AddStocktakeDetail({ id: router.query.id, ...query }).then(() => {
+                props.stocktakeDetailMutate();
                 handleCancel();
                 showMessage(`${t('create_success')}`, 'success');
             }).catch((err) => {
@@ -64,12 +61,10 @@ const HandleDetailModal = ({ ...props }: Props) => {
 
     useEffect(() => {
         setInitialValue({
-            quantity: props?.data ? `${props?.data?.quantity}` : "",
             productId: props?.data ? {
                 value: `${props?.data?.product?.id}`,
                 label: `${props?.data?.product?.name}`
             } : "",
-            note: props?.data ? `${props?.data?.note}` : "",
         })
     }, [props?.data, router]);
 
@@ -124,21 +119,21 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {t('order_detail')}
+                                    {props.data ? t('edit_product') : t('add_product')}
                                 </div>
                                 <div className="p-5">
                                     <Formik
                                         initialValues={initialValue}
                                         validationSchema={SubmittedForm}
                                         onSubmit={values => {
-                                            handleOrder(values);
+                                            handleStocktake(values);
                                         }}
                                         enableReinitialize
                                     >
                                         {({ errors, values, setFieldValue }) => (
                                             <Form className="space-y-5" >
                                                 <div className="mb-5 flex justify-between gap-4">
-                                                    <div className="flex-1">
+                                                    <div className="flex-1 mb-24">
                                                         <label htmlFor="productId" > {t('product')} < span style={{ color: 'red' }}>* </span></label >
                                                         <Select
                                                             id='productId'
@@ -158,35 +153,9 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                         ) : null}
                                                     </div>
                                                 </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="quantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field
-                                                        name="quantity"
-                                                        type="number"
-                                                        id="quantity"
-                                                        placeholder={`${t('enter_quantity')}`}
-                                                        className="form-input"
-                                                    />
-                                                    {errors.quantity ? (
-                                                        <div className="text-danger mt-1"> {`${errors.quantity}`} </div>
-                                                    ) : null}
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="note" > {t('description')} </label >
-                                                    <Field
-                                                        name="note"
-                                                        type="text"
-                                                        id="note"
-                                                        placeholder={`${t('enter_description')}`}
-                                                        className="form-input"
-                                                    />
-                                                    {errors.note ? (
-                                                        <div className="text-danger mt-1"> {`${errors.note}`} </div>
-                                                    ) : null}
-                                                </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                                     <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
-                                                       {t('cancel')}
+                                                        {t('cancel')}
                                                     </button>
                                                     <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4">
                                                         {props.data !== undefined ? t('update') : t('add')}
@@ -205,4 +174,4 @@ const HandleDetailModal = ({ ...props }: Props) => {
         </Transition>
     );
 };
-export default HandleDetailModal;
+export default DetailModal;
