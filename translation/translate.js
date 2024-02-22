@@ -43,9 +43,6 @@ const translate = () => {
 			let result = {};
 			for (let key of sourceKeys) {
 				const target = file.split('.')[0];
-<<<<<<< HEAD
-				result[key] = toCapitalize(await makeTranslationAPI(source, target, sourceObject[key]));
-=======
 
 				let translated = '';
 				const targetPath = i18nFolderPath + '/' + file;
@@ -59,7 +56,6 @@ const translate = () => {
 				}
 
 				result[key] = translated;
->>>>>>> 7039f3ecb9bb3f61fe181d87eb5d37a6f5117612
 			}
 
 			result = JSON.stringify(result, null, 2);
