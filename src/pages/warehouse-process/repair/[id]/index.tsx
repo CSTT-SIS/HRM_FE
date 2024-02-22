@@ -15,10 +15,10 @@ import Tippy from '@tippyjs/react';
 import { DataTableSortStatus, DataTable } from 'mantine-datatable';
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
-import HandleDetailModal from '../modal/HandleDetailModal';
+import HandleDetailModal from '../form/DetailModal';
 import { RepairDetails } from '@/services/swr/repair.twr';
 import { DeleteRepairDetail, RepairInprogress } from '@/services/apis/repair.api';
-import RepairForm from '../modal/RepairForm';
+import RepairForm from '../form/RepairForm';
 
 interface Props {
     [key: string]: any;

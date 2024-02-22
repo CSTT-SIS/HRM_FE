@@ -25,10 +25,6 @@ import { IconCartCheck } from '@/components/Icon/IconCartCheck';
 import { IconShipping } from '@/components/Icon/IconShipping';
 // modal
 import moment from 'moment';
-import OrderModal from './modal/OrderForm';
-
-
-
 
 interface Props {
     [key: string]: any;
@@ -41,11 +37,6 @@ const OrderForm = ({ ...props }: Props) => {
     const router = useRouter();
 
     const [showLoader, setShowLoader] = useState(true);
-    const [data, setData] = useState<any>();
-    const [openModal, setOpenModal] = useState(false);
-    const [openModalDetail, setOpenModalDetail] = useState(false);
-    const [idDetail, setIdDetail] = useState();
-    const [status, setStatus] = useState();
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
@@ -120,9 +111,6 @@ const OrderForm = ({ ...props }: Props) => {
     };
 
     const handleDetail = (value: any) => {
-        // setOpenModalDetail(true);
-        // setIdDetail(value.id);
-        // setStatus(value.status);
         router.push(`/warehouse-process/order/${value.id}?status=${value.status}`)
     }
 
@@ -247,20 +235,6 @@ const OrderForm = ({ ...props }: Props) => {
                     />
                 </div>
             </div>
-            <OrderModal
-                openModal={openModal}
-                setOpenModal={setOpenModal}
-                data={data}
-                setData={setData}
-                orderMutate={mutate}
-            />
-            {/* <DetailModal
-                openModalDetail={openModalDetail}
-                setOpenModalDetail={setOpenModalDetail}
-                idDetail={idDetail}
-                status={status}
-                orderMutate={mutate}
-            /> */}
         </div>
     );
 };

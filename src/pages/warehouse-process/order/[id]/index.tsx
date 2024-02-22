@@ -13,16 +13,16 @@ import Tippy from '@tippyjs/react';
 import { DataTableSortStatus, DataTable } from 'mantine-datatable';
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
-import HandleDetailModal from '../modal/HandleDetailModal';
+import HandleDetailModal from '../form/DetailModal';
 import { DeleteOrderDetail, OrderPlace } from '@/services/apis/order.api';
 import { OrderDetails } from '@/services/swr/order.twr';
-import OrderForm from '../modal/OrderForm';
+import OrderForm from '../form/OrderForm';
 
 interface Props {
     [key: string]: any;
 }
 
-const DetailModal = ({ ...props }: Props) => {
+const DetailPage = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -220,4 +220,4 @@ const DetailModal = ({ ...props }: Props) => {
         </div>
     );
 };
-export default DetailModal;
+export default DetailPage;

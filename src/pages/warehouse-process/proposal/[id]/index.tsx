@@ -14,7 +14,7 @@ import { DataTableSortStatus, DataTable } from 'mantine-datatable';
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import ProposalForm from '../form/ProposalForm';
-import HandleDetailModal from '../form/HandleDetailModal';
+import HandleDetailModal from '../form/DetailModal';
 import IconPlus from '@/components/Icon/IconPlus';
 
 interface Props {
