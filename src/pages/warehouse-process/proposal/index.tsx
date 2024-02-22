@@ -23,9 +23,6 @@ import IconTrashLines from '@/components/Icon/IconTrashLines';
 import IconCircleCheck from '@/components/Icon/IconCircleCheck';
 import IconXCircle from '@/components/Icon/IconXCircle';
 import IconRestore from '@/components/Icon/IconRestore';
-// modal
-import ProposalModal from './modal/ProposalModal';
-import DetailModal from './modal/DetailModal';
 
 interface Props {
     [key: string]: any;
@@ -38,12 +35,6 @@ const ProposalPage = ({ ...props }: Props) => {
     const router = useRouter();
 
     const [showLoader, setShowLoader] = useState(true);
-    const [data, setData] = useState<any>();
-    const [openModal, setOpenModal] = useState(false);
-    const [openModalDetail, setOpenModalDetail] = useState(false);
-    const [idDetail, setIdDetail] = useState();
-    const [status, setStatus] = useState();
-    const [type, setType] = useState();
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
@@ -58,11 +49,6 @@ const ProposalPage = ({ ...props }: Props) => {
     useEffect(() => {
         setShowLoader(false);
     }, [proposal])
-
-    const handleEdit = (data: any) => {
-        setOpenModal(true);
-        setData(data);
-    };
 
     const handleDelete = ({ id, name }: any) => {
         const swalDeletes = Swal.mixin({
@@ -123,10 +109,6 @@ const ProposalPage = ({ ...props }: Props) => {
     };
 
     const handleDetail = (value: any) => {
-        // setType(value.type)
-        // setOpenModalDetail(true);
-        // setIdDetail(value.id);
-        // setStatus(value.status);
         router.push(`/warehouse-process/proposal/${value.id}?type=${value.type}&&status=${value.status}`)
     }
 
@@ -173,13 +155,8 @@ const ProposalPage = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('add_detail')}`}>
-                        <button type="button" onClick={() => handleDetail(records)}>
-                            <IconPlus />
-                        </button>
-                    </Tippy>
                     <Tippy content={`${t('edit')}`}>
-                        <button type="button" onClick={() => handleEdit(records)}>
+                        <button type="button" onClick={() => handleDetail(records)}>
                             <IconPencil />
                         </button>
                     </Tippy>
@@ -219,7 +196,7 @@ const ProposalPage = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >
+                        <button type="button" onClick={(e) => router.push(`/warehouse-process/proposal/create`)} className="btn btn-primary btn-sm m-1 " >
                             <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                             {t('add')}
                         </button>
@@ -246,21 +223,6 @@ const ProposalPage = ({ ...props }: Props) => {
                     />
                 </div>
             </div>
-            <ProposalModal
-                openModal={openModal}
-                setOpenModal={setOpenModal}
-                data={data}
-                setData={setData}
-                proposalMutate={mutate}
-            />
-            {/* <DetailModal
-                openModalDetail={openModalDetail}
-                setOpenModalDetail={setOpenModalDetail}
-                idDetail={idDetail}
-                status={status}
-                proposalMutate={mutate}
-                type={type}
-            /> */}
         </div>
     );
 };

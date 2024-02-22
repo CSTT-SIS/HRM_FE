@@ -23,30 +23,19 @@ import IconTrashLines from '@/components/Icon/IconTrashLines';
 import IconXCircle from '@/components/Icon/IconXCircle';
 import { IconCartCheck } from '@/components/Icon/IconCartCheck';
 import { IconShipping } from '@/components/Icon/IconShipping';
-// modal
-import DetailModal from './modal/DetailModal';
 import moment from 'moment';
-import OrderModal from './modal/OrderModal';
-
-
-
 
 interface Props {
     [key: string]: any;
 }
 
-const OrderPage = ({ ...props }: Props) => {
+const OrderForm = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const router = useRouter();
 
     const [showLoader, setShowLoader] = useState(true);
-    const [data, setData] = useState<any>();
-    const [openModal, setOpenModal] = useState(false);
-    const [openModalDetail, setOpenModalDetail] = useState(false);
-    const [idDetail, setIdDetail] = useState();
-    const [status, setStatus] = useState();
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
@@ -61,11 +50,6 @@ const OrderPage = ({ ...props }: Props) => {
     useEffect(() => {
         setShowLoader(false);
     }, [orders])
-
-    const handleEdit = (data: any) => {
-        setOpenModal(true);
-        setData(data);
-    };
 
     const handleDelete = ({ id, name }: any) => {
         const swalDeletes = Swal.mixin({
@@ -126,9 +110,6 @@ const OrderPage = ({ ...props }: Props) => {
     };
 
     const handleDetail = (value: any) => {
-        // setOpenModalDetail(true);
-        // setIdDetail(value.id);
-        // setStatus(value.status);
         router.push(`/warehouse-process/order/${value.id}?status=${value.status}`)
     }
 
@@ -185,13 +166,8 @@ const OrderPage = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('add_detail')}`}>
-                        <button type="button" onClick={() => handleDetail(records)}>
-                            <IconPlus />
-                        </button>
-                    </Tippy>
                     <Tippy content={`${t('edit')}`}>
-                        <button type="button" onClick={() => handleEdit(records)}>
+                        <button type="button" onClick={() => handleDetail(records)}>
                             <IconPencil />
                         </button>
                     </Tippy>
@@ -231,7 +207,7 @@ const OrderPage = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >
+                        <button type="button" onClick={(e) => router.push(`/warehouse-process/order/create`)} className="btn btn-primary btn-sm m-1 " >
                             <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                             {t('add')}
                         </button>
@@ -258,22 +234,8 @@ const OrderPage = ({ ...props }: Props) => {
                     />
                 </div>
             </div>
-            <OrderModal
-                openModal={openModal}
-                setOpenModal={setOpenModal}
-                data={data}
-                setData={setData}
-                orderMutate={mutate}
-            />
-            {/* <DetailModal
-                openModalDetail={openModalDetail}
-                setOpenModalDetail={setOpenModalDetail}
-                idDetail={idDetail}
-                status={status}
-                orderMutate={mutate}
-            /> */}
         </div>
     );
 };
 
-export default OrderPage;
+export default OrderForm;

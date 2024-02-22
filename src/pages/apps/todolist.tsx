@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '../../store';
 import { setPageTitle } from '../../store/themeConfigSlice';
 import dynamic from 'next/dynamic';
+import { useTranslation } from 'react-i18next';
 import IconClipboardText from '@/components/Icon/IconClipboardText';
 import IconListCheck from '@/components/Icon/IconListCheck';
 import IconThumbUp from '@/components/Icon/IconThumbUp';
@@ -30,6 +31,7 @@ const Todolist = () => {
     useEffect(() => {
         dispatch(setPageTitle('Todolist'));
     });
+    const { t, i18n } = useTranslation();
     const defaultParams = {
         id: null,
         title: '',
@@ -1118,10 +1120,10 @@ const Todolist = () => {
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                                     <button type="button" className="btn btn-outline-danger" onClick={() => setAddTaskModal(false)}>
-                                                        Cancel
+                                                       {t('cancel')}
                                                     </button>
                                                     <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={() => saveTask()}>
-                                                        {params.id ? 'Update' : 'Add'}
+                                                        {params.id ? t('update') : t('add')}
                                                     </button>
                                                 </div>
                                             </form>

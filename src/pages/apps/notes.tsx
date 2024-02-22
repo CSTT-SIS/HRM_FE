@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '../../store';
 import Dropdown from '../../components/Dropdown';
 import { setPageTitle } from '../../store/themeConfigSlice';
+import { useTranslation } from 'react-i18next';
 import IconNotes from '@/components/Icon/IconNotes';
 import IconNotesEdit from '@/components/Icon/IconNotesEdit';
 import IconStar from '@/components/Icon/IconStar';
@@ -24,6 +25,7 @@ const Notes = () => {
     useEffect(() => {
         dispatch(setPageTitle('Notes'));
     });
+    const { t, i18n } = useTranslation();
     const [notesList, setNoteList] = useState([
         {
             id: 1,
@@ -741,7 +743,7 @@ const Notes = () => {
                                                     </div>
                                                     <div className="mt-8 flex items-center justify-end">
                                                         <button type="button" className="btn btn-outline-danger gap-2" onClick={() => setAddContactModal(false)}>
-                                                            Cancel
+                                                           {t('cancel')}
                                                         </button>
                                                         <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={saveNote}>
                                                             {params.id ? 'Update Note' : 'Add Note'}
@@ -798,7 +800,7 @@ const Notes = () => {
 
                                                 <div className="mt-8 flex items-center justify-center">
                                                     <button type="button" className="btn btn-outline-danger" onClick={() => setIsDeleteNoteModal(false)}>
-                                                        Cancel
+                                                       {t('cancel')}
                                                     </button>
                                                     <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={deleteNote}>
                                                         Delete

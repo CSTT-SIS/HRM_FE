@@ -3,12 +3,18 @@
 	"version": "1.0.0",
 	"description": "",
 	"main": "translate.js",
+  "type": "module",
 	"scripts": {
 		"translate": "node translate.js"
 	},
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+<<<<<<< HEAD
 		"dotenv": "^16.4.5"
+=======
+		"dotenv": "^16.4.4",
+		"node-fetch": "^3.3.2"
+>>>>>>> 7039f3ecb9bb3f61fe181d87eb5d37a6f5117612
 	}
 }

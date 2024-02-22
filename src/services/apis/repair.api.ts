@@ -23,17 +23,17 @@ export const DeleteRepair = (body: any) => {
 };
 
 export const AddRepairDetail = (body: any) => {
-    const endpoint = `/repair-request/${body.id}/details`;
+    const endpoint = `/repair-request/${body.id}/detail`;
     return callApi(endpoint, 'POST', body);
 };
 
 export const EditRepairDetail = (body: any) => {
-    const endpoint = `/repair-request/${body.id}/details/${body.detailId}`;
+    const endpoint = `/repair-request/${body.id}/detail/${body.detailId}`;
     return callApi(endpoint, 'PATCH', body);
 };
 
 export const DeleteRepairDetail = (body: any) => {
-    const endpoint = `/repair-request/${body.id}/details/${body.detailId}`;
+    const endpoint = `/repair-request/${body.id}/detail/${body.detailId}`;
     return callApi(endpoint, 'DELETE', body);
 };
 

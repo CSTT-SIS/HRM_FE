@@ -1,6 +1,7 @@
 // curl 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=ar&dt=t&q=Airing%20Today'
-const fs = require('fs');
-const fetch = require('node-fetch');
+import fetch from 'node-fetch';
+import fs from 'fs';
+import dotenv from 'dotenv';
 
 const makeTranslationAPI = async (source, target, text) => {
 	const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${source}&tl=${target}&dt=t&q=${text}`;
@@ -42,7 +43,23 @@ const translate = () => {
 			let result = {};
 			for (let key of sourceKeys) {
 				const target = file.split('.')[0];
+<<<<<<< HEAD
 				result[key] = toCapitalize(await makeTranslationAPI(source, target, sourceObject[key]));
+=======
+
+				let translated = '';
+				const targetPath = i18nFolderPath + '/' + file;
+				if (!fs.existsSync(targetPath)) {
+					translated = toCapitalize(await makeTranslationAPI(source, target, sourceObject[key]));
+				} else {
+					const targetJSON = fs.readFileSync(targetPath, 'utf8');
+					const targetObject = JSON.parse(targetJSON);
+					if (key.startsWith('_t_')) translated = toCapitalize(await makeTranslationAPI(source, target, sourceObject[key]));
+					else translated = targetObject[key] || toCapitalize(await makeTranslationAPI(source, target, sourceObject[key]));
+				}
+
+				result[key] = translated;
+>>>>>>> 7039f3ecb9bb3f61fe181d87eb5d37a6f5117612
 			}
 
 			result = JSON.stringify(result, null, 2);
@@ -60,7 +77,7 @@ const prepareEnv = () => {
 		console.error('Please create .env file');
 		process.exit(1);
 	}
-	require('dotenv').config();
+	dotenv.config();
 };
 
 const main = async () => {

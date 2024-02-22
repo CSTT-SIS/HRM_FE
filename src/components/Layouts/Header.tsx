@@ -406,7 +406,7 @@ const Header = () => {
 															<div className={"group flex items-center px-4 py-2" + `${item?.isRead === 0 ? " bg-slate-50 dark: bg-gray-800" : ""}`}>
 																<div className="grid place-content-center rounded">
 																	<div className="relative h-12 w-12">
-																		<img className="h-12 w-12 rounded-full object-cover" alt="profile" src={`${item?.profile}`} />
+																		<img className="h-12 w-12 rounded-full object-cover" alt="profile" src={item?.profile ? `${process.env.NEXT_PUBLIC_BE_URL + "/" + item?.profile}` : "/assets/images/user-profile.jpeg"} />
 																		{/* <span className="absolute bottom-0 right-[6px] block h-2 w-2 rounded-full bg-success"></span> */}
 																	</div>
 																</div>
@@ -483,19 +483,19 @@ const Header = () => {
 									<li>
 										<Link href="/apps/change-password" className="dark:hover:text-white">
 											<IconLock className="h-4.5 w-4.5 shrink-0 ltr:mr-2 rtl:ml-2" />
-											Change password
+											{t('change_password')}
 										</Link>
 									</li>
 									<li>
 										<Link href="/auth/boxed-lockscreen" className="dark:hover:text-white">
 											<IconLockDots className="h-4.5 w-4.5 shrink-0 ltr:mr-2 rtl:ml-2" />
-											Lock Screen
+											{t('lock_screen')}
 										</Link>
 									</li>
 									<li className="border-t border-white-light dark:border-white-light/10">
 										<Link href="/auth/boxed-signin" className="!py-3 text-danger">
 											<IconLogout className="h-4.5 w-4.5 shrink-0 rotate-90 ltr:mr-2 rtl:ml-2" />
-											Sign Out
+											{t('sign_out')}
 										</Link>
 									</li>
 								</ul>

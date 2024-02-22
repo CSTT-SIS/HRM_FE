@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { setPageTitle } from '../../store/themeConfigSlice';
 import IconPlus from '@/components/Icon/IconPlus';
 import IconX from '@/components/Icon/IconX';
+import { t } from 'i18next';
 
 const Calendar = () => {
     const dispatch = useDispatch();
@@ -444,7 +445,7 @@ const Calendar = () => {
                                             </div>
                                             <div className="!mt-8 flex items-center justify-end">
                                                 <button type="button" className="btn btn-outline-danger" onClick={() => setIsAddEventModal(false)}>
-                                                    Cancel
+                                                    {t('cancel')}
                                                 </button>
                                                 <button type="button" onClick={() => saveEvent()} className="btn btn-primary ltr:ml-4 rtl:mr-4">
                                                     {params.id ? 'Update Event' : 'Create Event'}

@@ -1,21 +1,27 @@
-import { useEffect, Fragment, useState } from 'react';
+import { useEffect, Fragment, useState, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { Dialog, Transition } from '@headlessui/react';
+
 import { showMessage } from '@/@core/utils';
+import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
-import { DeleteProposalDetail, ProposalPending } from '@/services/apis/proposal.api';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPencil from '@/components/Icon/IconPencil';
+import IconPlus from '@/components/Icon/IconPlus';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
-import { ProposalDetails } from '@/services/swr/proposal.twr';
 import { setPageTitle } from '@/store/themeConfigSlice';
 import Tippy from '@tippyjs/react';
 import { DataTableSortStatus, DataTable } from 'mantine-datatable';
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
-import ProposalForm from '../form/ProposalForm';
 import HandleDetailModal from '../form/DetailModal';
-import IconPlus from '@/components/Icon/IconPlus';
+import { StocktakeDetail } from '@/services/swr/stocktake.twr';
+import { AddStocktakeDetailAuto, DeleteStocktakeDetail, GetStocktake, StocktakeFinish, StocktakeStart } from '@/services/apis/stocktake.api';
+import TallyModal from '../form/TallyModal';
+import IconArchive from '@/components/Icon/IconArchive';
+import StocktakeForm from '../form/StocktakeForm';
+import { IconInventory } from '@/components/Icon/IconInventory';
 
 interface Props {
     [key: string]: any;
@@ -28,34 +34,41 @@ const DetailPage = ({ ...props }: Props) => {
     const router = useRouter();
 
     const [showLoader, setShowLoader] = useState(true);
-    const [dataDetail, setDataDetail] = useState<any>();
+    const [data, setData] = useState<any>();
     const [openModal, setOpenModal] = useState(false);
-    const [query, setQuery] = useState<any>();
+    const [openModalTally, setOpenModalTally] = useState(false);
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
 
     // get data
-    const { data: ProposalDetail, pagination, mutate } = ProposalDetails({ ...query });
+    const { data: stocktakeDetails, pagination, mutate } = StocktakeDetail({ id: router.query.id, ...router.query });
 
     useEffect(() => {
-        dispatch(setPageTitle(`${t('proposal')}`));
+        dispatch(setPageTitle(`${t('Stocktake')}`));
     });
 
     useEffect(() => {
         setShowLoader(false);
-    }, [ProposalDetail])
+    }, [stocktakeDetails]);
 
-    useEffect(() => {
-        if (Number(router.query.id)) {
-            setQuery({ id: router.query.id, ...router.query })
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [router.query.id]);
+
+    const getData = () => {
+        GetStocktake({ id: router.query.id }).then((res) => {
+            router.push({
+                pathname: `/warehouse-management/stocktake/${res.data.id}`,
+                query: {
+                    status: res.data.status
+                }
+            })
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
 
     const handleEdit = (data: any) => {
-        setDataDetail(data);
         setOpenModal(true);
+        setData(data);
     };
 
     const handleDelete = ({ id, product }: any) => {
@@ -78,7 +91,7 @@ const DetailPage = ({ ...props }: Props) => {
             })
             .then((result) => {
                 if (result.value) {
-                    DeleteProposalDetail({ id: router.query.id, detailId: id }).then(() => {
+                    DeleteStocktakeDetail({ id: router.query.id, itemId: id }).then(() => {
                         mutate();
                         showMessage(`${t('delete_product_success')}`, 'success');
                     }).catch((err) => {
@@ -116,6 +129,11 @@ const DetailPage = ({ ...props }: Props) => {
         return pageSize;
     };
 
+    const handleOpenTally = (value: any) => {
+        setOpenModalTally(true);
+        setData(value);
+    }
+
     const columns = [
         {
             accessor: 'id',
@@ -128,8 +146,15 @@ const DetailPage = ({ ...props }: Props) => {
             render: ({ product }: any) => <span>{product?.name}</span>,
             sortable: false
         },
-        { accessor: 'quantity', title: 'Số lượng', sortable: false },
-        { accessor: 'price', title: 'Giá', sortable: false },
+        {
+            accessor: 'name',
+            title: 'Đvt',
+            render: ({ product }: any) => <span>{product?.unit.name}</span>,
+            sortable: false
+        },
+        { accessor: 'countedQuantity', title: 'Số lượng đã đếm', sortable: false },
+        { accessor: 'openingQuantity', title: 'Số lượng khai trương', sortable: false },
+        { accessor: 'quantityDifference', title: 'Số lượng Chênh lệch', sortable: false },
         { accessor: 'note', title: 'Ghi chú', sortable: false },
         {
             accessor: 'action',
@@ -142,24 +167,52 @@ const DetailPage = ({ ...props }: Props) => {
                             <IconPencil />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('delete')}`}>
-                        <button type="button" onClick={() => handleDelete(records)}>
-                            <IconTrashLines />
-                        </button>
-                    </Tippy>
+                    {
+                        router.query?.status !== "DRAFT" &&
+                        <Tippy content={`${t('tally')}`}>
+                            <button type="button" onClick={() => handleOpenTally(records)}>
+                                <IconInventory />
+                            </button>
+                        </Tippy>
+                    }
+                    {
+                        router.query?.status === "DRAFT" &&
+                        <Tippy content={`${t('delete')}`}>
+                            <button type="button" onClick={() => handleDelete(records)}>
+                                <IconTrashLines />
+                            </button>
+                        </Tippy>
+                    }
                 </div>
             ),
         },
     ]
 
     const handleCancel = () => {
-        router.push(`/warehouse-process/proposal`)
+        router.push('/warehouse-management/stocktake');
     };
 
     const handleChangeComplete = () => {
-        ProposalPending({ id: router.query.id }).then(() => {
+        StocktakeStart({ id: router.query.id }).then(() => {
             showMessage(`${t('update_success')}`, 'success');
-            router.push("/warehouse-process/proposal")
+            getData();
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
+    const handleAutoAdd = () => {
+        AddStocktakeDetailAuto({ id: router.query.id }).then(() => {
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
+    const handleFinish = () => {
+        StocktakeFinish({ id: router.query.id }).then(() => {
+            router.push('/warehouse-management/stocktake');
+            showMessage(`${t('update_success')}`, 'success');
         }).catch((err) => {
             showMessage(`${err?.response?.data?.message}`, 'error');
         });
@@ -172,18 +225,22 @@ const DetailPage = ({ ...props }: Props) => {
                     <IconLoading />
                 </div>
             )}
-            <ProposalForm />
+            <StocktakeForm />
             {
                 router.query.id !== "create" &&
                 <div className="panel mt-6">
-                    <div className="mt-3 mb-3 bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                        {t('proposal_detail')}
+                    <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
+                        {t('stocktake_detail')}
                     </div>
-                    <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
+                    <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5 mt-3">
                         <div className="flex items-center flex-wrap">
                             <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >
                                 <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                                 {t('add_detail')}
+                            </button>
+                            <button type="button" onClick={(e) => handleAutoAdd()} className="btn btn-primary btn-sm m-1 " >
+                                <IconArchive className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                {t('auto_add')}
                             </button>
                         </div>
 
@@ -193,7 +250,7 @@ const DetailPage = ({ ...props }: Props) => {
                         <DataTable
                             highlightOnHover
                             className="whitespace-nowrap table-hover"
-                            records={ProposalDetail?.data}
+                            records={stocktakeDetails?.data}
                             columns={columns}
                             totalRecords={pagination?.totalRecords}
                             recordsPerPage={pagination?.perPage}
@@ -208,31 +265,39 @@ const DetailPage = ({ ...props }: Props) => {
                         />
                     </div>
                     {
-                        router.query.status === "DRAFT" &&
-                        <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
-                            <button type="button" className="btn btn-outline-warning" onClick={() => handleCancel()}>
-                                {t('pending')}
-                            </button>
-                            <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={() => handleChangeComplete()}>
-                                {t('complete')}
-                            </button>
-                        </div>
+                        router.query?.status === "DRAFT" ?
+                            <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
+                                <button type="button" className="btn btn-outline-warning" onClick={() => handleCancel()}>
+                                    {t("pending")}
+                                </button>
+                                <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={() => handleChangeComplete()}>
+                                    {t("complete")}
+                                </button>
+                            </div>
+                            :
+                            <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
+                                <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={() => handleFinish()}>
+                                    {t("finish")}
+                                </button>
+                            </div>
                     }
                 </div>
             }
             <HandleDetailModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}
-                data={dataDetail}
-                setData={setDataDetail}
-                proposalDetailMutate={mutate}
-            // idDetail={props.idDetail}
-            // type={props.type}
+                data={data}
+                setData={setData}
+                stocktakeDetailMutate={mutate}
+            />
+            <TallyModal
+                openModal={openModalTally}
+                setOpenModal={setOpenModalTally}
+                data={data}
+                setData={setData}
+                stocktakeDetailMutate={mutate}
             />
         </div>
-
     );
 };
 export default DetailPage;
-
-

@@ -5,6 +5,7 @@ import { IRootState } from '../../store';
 import { useState, Fragment, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import Swal from 'sweetalert2';
+import { useTranslation } from 'react-i18next';
 import { setPageTitle } from '../../store/themeConfigSlice';
 import IconPlus from '@/components/Icon/IconPlus';
 import IconPlusCircle from '@/components/Icon/IconPlusCircle';
@@ -20,6 +21,7 @@ const Scrumboard = () => {
     useEffect(() => {
         dispatch(setPageTitle('Scrumboard'));
     });
+    const { t, i18n } = useTranslation();
     const [projectList, setProjectList] = useState<any>([
         {
             id: 1,
@@ -413,10 +415,10 @@ const Scrumboard = () => {
 
                                             <div className="mt-8 flex items-center justify-end">
                                                 <button type="button" className="btn btn-outline-danger" onClick={() => setIsAddProjectModal(false)}>
-                                                    Cancel
+                                                   {t('cancel')}
                                                 </button>
                                                 <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4">
-                                                    {params.id ? 'Update' : 'Add'}
+                                                    {params.id ? t('update') : t('add')}
                                                 </button>
                                             </div>
                                         </form>
@@ -464,10 +466,10 @@ const Scrumboard = () => {
                                         </div>
                                         <div className="mt-8 flex items-center justify-end">
                                             <button onClick={() => setIsAddTaskModal(false)} type="button" className="btn btn-outline-danger">
-                                                Cancel
+                                               {t('cancel')}
                                             </button>
                                             <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4">
-                                                {paramsTask.id ? 'Update' : 'Add'}
+                                                {paramsTask.id ? t('update') : t('add')}
                                             </button>
                                         </div>
                                     </form>
@@ -519,7 +521,7 @@ const Scrumboard = () => {
                                                 type="button"
                                                 className="btn btn-outline-danger"
                                             >
-                                                Cancel
+                                               {t('cancel')}
                                             </button>
                                             <button onClick={deleteTask} type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4">
                                                 Delete

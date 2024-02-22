@@ -8,9 +8,7 @@ import { Field, Form, Formik } from 'formik';
 import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
-import Select, { components } from 'react-select';
-import { DropdownProducts } from '@/services/swr/dropdown.twr';
-import { AddStocktakeDetail, EditStocktakeDetail } from '@/services/apis/stocktake.api';
+import { CheckWarehousingBillDetail } from '@/services/apis/warehousing-bill.api';
 
 interface Props {
     [key: string]: any;
@@ -21,36 +19,23 @@ const HandleDetailModal = ({ ...props }: Props) => {
     const { t } = useTranslation();
     const router = useRouter();
     const [initialValue, setInitialValue] = useState<any>();
-    const [dataProductDropdown, setDataProductDropdown] = useState<any>([]);
-    const [page, setPage] = useState(1);
 
     const SubmittedForm = Yup.object().shape({
-        productId: new Yup.ObjectSchema().required(`${t('please_fill_product')}`),
+        quantity: Yup.string().required(`${t('please_fill_quantity')}`),
     });
-
-    const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ page: page });
-
-    const handleStocktake = (param: any) => {
+    const handleWarehousingBill = (param: any) => {
         const query = {
-            productId: Number(param.productId.value)
-        };
-        if (props?.data) {
-            EditStocktakeDetail({ id: props.idDetail, itemId: props?.data?.id, ...query }).then(() => {
-                props.stocktakeDetailMutate();
-                handleCancel();
-                showMessage(`${t('edit_success')}`, 'success');
-            }).catch((err) => {
-                showMessage(`${err?.response?.data?.message}`, 'error');
-            });
-        } else {
-            AddStocktakeDetail({ id: props.idDetail, ...query }).then(() => {
-                props.stocktakeDetailMutate();
-                handleCancel();
-                showMessage(`${t('create_success')}`, 'success');
-            }).catch((err) => {
-                showMessage(`${err?.response?.data?.message}`, 'error');
-            });
+            id: router.query.id,
+            detailId: param.detailId,
+            quantity: param.quantity
         }
+        CheckWarehousingBillDetail({ ...query }).then(() => {
+            props.warehousingDetailMutate();
+            handleCancel();
+            showMessage(`${t('edit_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
     }
 
     const handleCancel = () => {
@@ -61,28 +46,11 @@ const HandleDetailModal = ({ ...props }: Props) => {
 
     useEffect(() => {
         setInitialValue({
-            productId: props?.data ? {
-                value: `${props?.data?.product?.id}`,
-                label: `${props?.data?.product?.name}`
-            } : "",
+            id: props?.idDetail,
+            quantity: "",
+            detailId: props?.data?.id
         })
-    }, [props?.data, router]);
-
-    useEffect(() => {
-        if (productPagination?.page === undefined) return;
-        if (productPagination?.page === 1) {
-            setDataProductDropdown(productDropdown?.data)
-        } else {
-            setDataProductDropdown([...dataProductDropdown, ...productDropdown?.data])
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [productPagination])
-
-    const handleMenuScrollToBottom = () => {
-        setTimeout(() => {
-            setPage(productPagination?.page + 1);
-        }, 1000);
-    }
+    }, [props?.data?.id, props?.idDetail, router]);
 
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
@@ -119,46 +87,38 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data ? 'Add stocktake detail' : 'Update stocktake detail'}
+                                    {t('update_quantity')}
                                 </div>
                                 <div className="p-5">
                                     <Formik
                                         initialValues={initialValue}
                                         validationSchema={SubmittedForm}
                                         onSubmit={values => {
-                                            handleStocktake(values);
+                                            handleWarehousingBill(values);
                                         }}
                                         enableReinitialize
                                     >
                                         {({ errors, values, setFieldValue }) => (
                                             <Form className="space-y-5" >
-                                                <div className="mb-5 flex justify-between gap-4">
-                                                    <div className="flex-1 mb-24">
-                                                        <label htmlFor="productId" > {t('product')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Select
-                                                            id='productId'
-                                                            name='productId'
-                                                            options={dataProductDropdown}
-                                                            onMenuOpen={() => setPage(1)}
-                                                            onMenuScrollToBottom={handleMenuScrollToBottom}
-                                                            isLoading={productLoading}
-                                                            maxMenuHeight={160}
-                                                            value={values.productId}
-                                                            onChange={e => {
-                                                                setFieldValue('productId', e)
-                                                            }}
-                                                        />
-                                                        {errors.productId ? (
-                                                            <div className="text-danger mt-1"> {`${errors.productId}`} </div>
-                                                        ) : null}
-                                                    </div>
+                                                <div className="mb-5">
+                                                    <label htmlFor="quantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field
+                                                        name="quantity"
+                                                        type="number"
+                                                        id="quantity"
+                                                        placeholder={`${t('enter_quantity')}`}
+                                                        className="form-input"
+                                                    />
+                                                    {errors.quantity ? (
+                                                        <div className="text-danger mt-1"> {`${errors.quantity}`} </div>
+                                                    ) : null}
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                                     <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
-                                                        Cancel
+                                                        {t('cancel')}
                                                     </button>
                                                     <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4">
-                                                        {props.data !== undefined ? 'Update' : 'Add'}
+                                                        {props.data !== undefined ? t('update') : t('add')}
                                                     </button>
                                                 </div>
                                             </Form>

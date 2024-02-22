@@ -3,4 +3,4 @@ import callApi from '@core/call-api';
 import { getEndpoint } from '@core/utils';
 
 export const Repairs = (queries?: any) => swr(getEndpoint('/repair-request', queries));
-export const RepairDetails = (queries?: any) => swr(getEndpoint(`/repair-request/${queries.id}/get-details`, queries));
+export const RepairDetails = (queries?: any) => swr(getEndpoint(`/repair-request/${queries.id}/detail`, queries));

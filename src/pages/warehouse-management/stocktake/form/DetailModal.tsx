@@ -10,13 +10,13 @@ import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
 import { DropdownProducts } from '@/services/swr/dropdown.twr';
-import { AddRepairDetail, EditRepairDetail } from '@/services/apis/repair.api';
+import { AddStocktakeDetail, EditStocktakeDetail } from '@/services/apis/stocktake.api';
 
 interface Props {
     [key: string]: any;
 }
 
-const HandleDetailModal = ({ ...props }: Props) => {
+const DetailModal = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
     const router = useRouter();
@@ -25,31 +25,26 @@ const HandleDetailModal = ({ ...props }: Props) => {
     const [page, setPage] = useState(1);
 
     const SubmittedForm = Yup.object().shape({
-        replacementPartId: new Yup.ObjectSchema().required(`${t('please_fill_product')}`),
-        quantity: Yup.string().required(`${t('please_fill_quantity')}`),
+        productId: new Yup.ObjectSchema().required(`${t('please_fill_product')}`),
     });
 
     const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ page: page });
 
-
-    const handleRepairDetail = (param: any) => {
+    const handleStocktake = (param: any) => {
         const query = {
-            replacementPartId: Number(param.replacementPartId.value),
-            quantity: Number(param.quantity),
-            brokenPart: param.brokenPart,
-            description: param.description
+            productId: Number(param.productId.value)
         };
         if (props?.data) {
-            EditRepairDetail({ id: router.query.id, detailId: props?.data?.id, ...query }).then(() => {
-                props.orderDetailMutate();
+            EditStocktakeDetail({ id: router.query.id, itemId: props?.data?.id, ...query }).then(() => {
+                props.stocktakeDetailMutate();
                 handleCancel();
                 showMessage(`${t('edit_success')}`, 'success');
             }).catch((err) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
         } else {
-            AddRepairDetail({ id: router.query.id, ...query }).then(() => {
-                props.orderDetailMutate();
+            AddStocktakeDetail({ id: router.query.id, ...query }).then(() => {
+                props.stocktakeDetailMutate();
                 handleCancel();
                 showMessage(`${t('create_success')}`, 'success');
             }).catch((err) => {
@@ -66,13 +61,10 @@ const HandleDetailModal = ({ ...props }: Props) => {
 
     useEffect(() => {
         setInitialValue({
-            quantity: props?.data ? `${props?.data?.quantity}` : "",
-            replacementPartId: props?.data ? {
-                value: `${props?.data?.replacementPart?.id}`,
-                label: `${props?.data?.replacementPart?.name}`
+            productId: props?.data ? {
+                value: `${props?.data?.product?.id}`,
+                label: `${props?.data?.product?.name}`
             } : "",
-            brokenPart: props?.data ? props?.data.brokenPart : "",
-            description: props?.data ? props?.data.description : ""
         })
     }, [props?.data, router]);
 
@@ -91,7 +83,6 @@ const HandleDetailModal = ({ ...props }: Props) => {
             setPage(productPagination?.page + 1);
         }, 1000);
     }
-
 
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
@@ -128,85 +119,46 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                Sửa chữa chi tiết
+                                    {props.data ? t('edit_product') : t('add_product')}
                                 </div>
                                 <div className="p-5">
                                     <Formik
                                         initialValues={initialValue}
                                         validationSchema={SubmittedForm}
                                         onSubmit={values => {
-                                            handleRepairDetail(values);
+                                            handleStocktake(values);
                                         }}
                                         enableReinitialize
                                     >
                                         {({ errors, values, setFieldValue }) => (
                                             <Form className="space-y-5" >
                                                 <div className="mb-5 flex justify-between gap-4">
-                                                    <div className="flex-1">
-                                                        <label htmlFor="replacementPartId" > {t('product')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <div className="flex-1 mb-24">
+                                                        <label htmlFor="productId" > {t('product')} < span style={{ color: 'red' }}>* </span></label >
                                                         <Select
-                                                            id='replacementPartId'
-                                                            name='replacementPartId'
+                                                            id='productId'
+                                                            name='productId'
                                                             options={dataProductDropdown}
                                                             onMenuOpen={() => setPage(1)}
                                                             onMenuScrollToBottom={handleMenuScrollToBottom}
                                                             isLoading={productLoading}
                                                             maxMenuHeight={160}
-                                                            value={values.replacementPartId}
+                                                            value={values.productId}
                                                             onChange={e => {
-                                                                setFieldValue('replacementPartId', e)
+                                                                setFieldValue('productId', e)
                                                             }}
                                                         />
-                                                        {errors.replacementPartId ? (
-                                                            <div className="text-danger mt-1"> {`${errors.replacementPartId}`} </div>
+                                                        {errors.productId ? (
+                                                            <div className="text-danger mt-1"> {`${errors.productId}`} </div>
                                                         ) : null}
                                                     </div>
                                                 </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="quantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field
-                                                        name="quantity"
-                                                        type="number"
-                                                        id="quantity"
-                                                        placeholder={`${t('enter_quantity')}`}
-                                                        className="form-input"
-                                                    />
-                                                    {errors.quantity ? (
-                                                        <div className="text-danger mt-1"> {`${errors.quantity}`} </div>
-                                                    ) : null}
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="brokenPart" > {t('broken_part')} </label >
-                                                    <Field
-                                                        name="brokenPart"
-                                                        type="text"
-                                                        id="brokenPart"
-                                                        placeholder={`${t('enter_broken_part')}`}
-                                                        className="form-input"
-                                                    />
-                                                    {errors.brokenPart ? (
-                                                        <div className="text-danger mt-1"> {`${errors.brokenPart}`} </div>
-                                                    ) : null}
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="description" > {t('description')}</label >
-                                                    <Field
-                                                        name="description"
-                                                        type="text"
-                                                        id="description"
-                                                        placeholder={`${t('enter_description')}`}
-                                                        className="form-input"
-                                                    />
-                                                    {errors.description ? (
-                                                        <div className="text-danger mt-1"> {`${errors.description}`} </div>
-                                                    ) : null}
-                                                </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                                     <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
-                                                        Cancel
+                                                        {t('cancel')}
                                                     </button>
                                                     <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4">
-                                                        {props.data !== undefined ? 'Update' : 'Add'}
+                                                        {props.data !== undefined ? t('update') : t('add')}
                                                     </button>
                                                 </div>
                                             </Form>
@@ -222,4 +174,4 @@ const HandleDetailModal = ({ ...props }: Props) => {
         </Transition>
     );
 };
-export default HandleDetailModal;
+export default DetailModal;
