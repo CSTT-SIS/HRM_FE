@@ -31,12 +31,13 @@ const DetailPage = ({ ...props }: Props) => {
     const [showLoader, setShowLoader] = useState(true);
     const [data, setData] = useState<any>();
     const [openModal, setOpenModal] = useState(false);
+    const [query, setQuery] = useState<any>();
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
 
     // get data
-    const { data: orderDetails, pagination, mutate } = OrderDetails({ id: router.query.id, ...router.query });
+    const { data: orderDetails, pagination, mutate } = OrderDetails({ ...query });
 
     useEffect(() => {
         dispatch(setPageTitle(`${t('Order')}`));
@@ -44,7 +45,14 @@ const DetailPage = ({ ...props }: Props) => {
 
     useEffect(() => {
         setShowLoader(false);
-    }, [orderDetails])
+    }, [orderDetails]);
+
+    useEffect(() => {
+        if (Number(router.query.id)) {
+            setQuery({ id: router.query.id, ...router.query })
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [router.query.id]);
 
     const handleEdit = (data: any) => {
         setOpenModal(true);

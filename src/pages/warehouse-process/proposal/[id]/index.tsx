@@ -30,12 +30,13 @@ const DetailPage = ({ ...props }: Props) => {
     const [showLoader, setShowLoader] = useState(true);
     const [dataDetail, setDataDetail] = useState<any>();
     const [openModal, setOpenModal] = useState(false);
+    const [query, setQuery] = useState<any>();
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
 
     // get data
-    const { data: ProposalDetail, pagination, mutate } = ProposalDetails({ id: props.idDetail, ...router.query });
+    const { data: ProposalDetail, pagination, mutate } = ProposalDetails({ ...query });
 
     useEffect(() => {
         dispatch(setPageTitle(`${t('proposal')}`));
@@ -44,6 +45,13 @@ const DetailPage = ({ ...props }: Props) => {
     useEffect(() => {
         setShowLoader(false);
     }, [ProposalDetail])
+
+    useEffect(() => {
+        if (Number(router.query.id)) {
+            setQuery({ id: router.query.id, ...router.query })
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [router.query.id]);
 
     const handleEdit = (data: any) => {
         setDataDetail(data);
@@ -142,7 +150,7 @@ const DetailPage = ({ ...props }: Props) => {
                 </div>
             ),
         },
-    ] 
+    ]
 
     const handleCancel = () => {
         router.push(`/warehouse-process/proposal`)
