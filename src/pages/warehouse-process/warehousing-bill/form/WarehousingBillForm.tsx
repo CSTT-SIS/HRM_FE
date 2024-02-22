@@ -9,7 +9,7 @@ import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
-import { DropdownOrder, DropdownOrderType, DropdownProposals, DropdownWarehouses, DropdownWarehousingType } from '@/services/swr/dropdown.twr';
+import { DropdownOrder, DropdownProposals, DropdownWarehouses, DropdownWarehousingType } from '@/services/swr/dropdown.twr';
 import { CreateWarehousingBill, EditWarehousingBill, GetWarehousingBill } from '@/services/apis/warehousing-bill.api';
 
 interface Props {

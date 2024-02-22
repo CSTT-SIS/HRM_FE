@@ -23,7 +23,6 @@ import IconTrashLines from '@/components/Icon/IconTrashLines';
 import IconXCircle from '@/components/Icon/IconXCircle';
 import { IconCartCheck } from '@/components/Icon/IconCartCheck';
 import { IconShipping } from '@/components/Icon/IconShipping';
-// modal
 import moment from 'moment';
 
 interface Props {

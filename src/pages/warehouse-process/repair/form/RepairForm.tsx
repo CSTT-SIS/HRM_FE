@@ -6,7 +6,6 @@ import { Dialog, Transition } from '@headlessui/react';
 import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
 import { showMessage } from '@/@core/utils';
-import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
 import { DropdownUsers } from '@/services/swr/dropdown.twr';

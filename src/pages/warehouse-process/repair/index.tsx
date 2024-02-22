@@ -125,7 +125,7 @@ const RepairPage = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
-        { accessor: 'name', title: 'Tên đơn hàng', sortable: false },
+        { accessor: 'name', title: 'Tên phiếu sửa chữa', sortable: false },
         {
             accessor: 'vehicle',
             title: 'Số đăng ký xe',

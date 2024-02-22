@@ -1,4 +1,4 @@
-import { useEffect, Fragment, useState, useCallback } from 'react';
+import { useEffect, Fragment, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { setPageTitle } from '@/store/themeConfigSlice';
@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 // API
 import { Stocktakes } from '@/services/swr/stocktake.twr';
-import { DeleteStocktake, StocktakeApprove, StocktakeCancel, StocktakeFinish, StocktakeReject } from '@/services/apis/stocktake.api';
+import { DeleteStocktake, StocktakeApprove, StocktakeCancel, StocktakeReject } from '@/services/apis/stocktake.api';
 // constants
 import { PAGE_SIZES } from '@/utils/constants';
 // helper
@@ -22,10 +22,8 @@ import IconPlus from '@/components/Icon/IconPlus';
 import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
 import IconXCircle from '@/components/Icon/IconXCircle';
-import IconChecks from '@/components/Icon/IconChecks';
 import IconCircleCheck from '@/components/Icon/IconCircleCheck';
 import IconRestore from '@/components/Icon/IconRestore';
-import { IconInventory } from '@/components/Icon/IconInventory';
 
 interface Props {
     [key: string]: any;
@@ -112,9 +110,6 @@ const StocktakePage = ({ ...props }: Props) => {
     };
 
     const handleDetail = (value: any) => {
-        // setOpenModalDetail(true);
-        // setIdDetail(value.id);
-        // setStatus(value.status);
         router.push(`/warehouse-management/stocktake/${value.id}?status=${value.status}`)
     }
 
@@ -145,29 +140,13 @@ const StocktakePage = ({ ...props }: Props) => {
         });
     }
 
-    // const handleFinish = ({ id }: any) => {
-    //     StocktakeFinish({ id }).then(() => {
-    //         mutate();
-    //         showMessage(`${t('update_success')}`, 'success');
-    //     }).catch((err) => {
-    //         showMessage(`${err?.response?.data?.message}`, 'error');
-    //     });
-    // }
-
-    const handleTally = (value: any) => {
-        // setOpenModalDetail(true);
-        // setIdDetail(value.id);
-        // setStatus(value.status);
-        // setTally(true);
-    }
-
     const columns = [
         {
             accessor: 'id',
             title: '#',
             render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
-        { accessor: 'name', title: 'Tên phiếu sửa chữa', sortable: false },
+        { accessor: 'name', title: 'Tên phiếu kiểm kê', sortable: false },
         {
             accessor: 'warehouse',
             title: 'Tên kho',
@@ -202,11 +181,6 @@ const StocktakePage = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    {/* <Tippy content={`${t('tally')}`}>
-                        <button type="button" onClick={() => handleTally(records)}>
-                            <IconInventory />
-                        </button>
-                    </Tippy> */}
                     <Tippy content={`${t('edit')}`}>
                         <button type="button" onClick={() => handleDetail(records)}>
                             <IconPencil />
@@ -217,11 +191,6 @@ const StocktakePage = ({ ...props }: Props) => {
                             <IconTrashLines />
                         </button>
                     </Tippy>
-                    {/* <Tippy content={`${t('finish')}`}>
-                        <button type="button" onClick={() => handleFinish(records)}>
-                            <IconChecks />
-                        </button>
-                    </Tippy> */}
                     <Tippy content={`${t('reject')}`}>
                         <button type="button" onClick={() => handleReject(records)}>
                             <IconRestore />

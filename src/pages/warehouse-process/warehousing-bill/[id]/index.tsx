@@ -1,10 +1,7 @@
 import { useEffect, Fragment, useState, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Dialog, Transition } from '@headlessui/react';
-
 import { showMessage } from '@/@core/utils';
-import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPencil from '@/components/Icon/IconPencil';
@@ -12,9 +9,7 @@ import { setPageTitle } from '@/store/themeConfigSlice';
 import Tippy from '@tippyjs/react';
 import { DataTableSortStatus, DataTable } from 'mantine-datatable';
 import { useDispatch } from 'react-redux';
-import Swal from 'sweetalert2';
 import HandleDetailModal from '../form/HandleDetailModal';
-import { DeleteOrderDetail, OrderPlace } from '@/services/apis/order.api';
 import { WarehousingBillDetail } from '@/services/swr/warehousing-bill.twr';
 import { WarehousingBillFinish } from '@/services/apis/warehousing-bill.api';
 import DetailPage from '../form/WarehousingBillForm';
@@ -178,7 +173,6 @@ const DetailModal = ({ ...props }: Props) => {
                 data={data}
                 setData={setData}
                 warehousingDetailMutate={mutate}
-            // idDetail={props.idDetail}
             />
         </div>
     );

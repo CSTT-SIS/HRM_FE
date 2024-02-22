@@ -35,12 +35,6 @@ const ProposalPage = ({ ...props }: Props) => {
     const router = useRouter();
 
     const [showLoader, setShowLoader] = useState(true);
-    const [data, setData] = useState<any>();
-    const [openModal, setOpenModal] = useState(false);
-    const [openModalDetail, setOpenModalDetail] = useState(false);
-    const [idDetail, setIdDetail] = useState();
-    const [status, setStatus] = useState();
-    const [type, setType] = useState();
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
@@ -115,10 +109,6 @@ const ProposalPage = ({ ...props }: Props) => {
     };
 
     const handleDetail = (value: any) => {
-        // setType(value.type)
-        // setOpenModalDetail(true);
-        // setIdDetail(value.id);
-        // setStatus(value.status);
         router.push(`/warehouse-process/proposal/${value.id}?type=${value.type}&&status=${value.status}`)
     }
 

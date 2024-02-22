@@ -1,8 +1,6 @@
 import { useEffect, Fragment, useState, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Dialog, Transition } from '@headlessui/react';
-
 import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
 import { showMessage } from '@/@core/utils';

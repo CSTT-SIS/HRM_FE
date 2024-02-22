@@ -320,7 +320,7 @@
   "code_shelf": "Kệ mã",
   "create_shelf_success": "Tạo kệ Thành công",
   "edit_shelf_success": "Chỉnh sửa kệ Thành công",
-  "import_product": "Nhập khẩu sản phẩm",
+  "import_product": "Nhập sản phẩm",
   "order_product": "Đặt mua sản phẩm",
   "order_detail": "Chi tiết đặt mua",
   "proposal": "Yêu cầu",
@@ -453,7 +453,7 @@
   "please_fill_code": "Vui lòng nhập mã",
   "please_fill_date": "Vui lòng nhập ngày",
   "please_fill_proposal": "Vui lòng nhập Yêu cầu",
-  "warehousing_bill": "Hóa đơn nhập kho",
+  "warehousing_bill": "Phiếu xuất/nhập kho",
   "enter_name": "Nhập tên",
   "enter_note": "Nhập ghi chú",
   "please_fill_warehouse": "Vui lòng nhập vào kho",
@@ -550,5 +550,18 @@
   "participant": "Người tham gia",
   "stocktake_detail": "Chi tiết kiểm kê",
   "add_product": "Thêm sản phẩm",
-  "edit_product": "Sửa sản phẩm"
+  "edit_product": "Sửa sản phẩm",
+  "add_warehouse": "Thêm kho",
+  "edit_warehouse": "Sửa kho",
+  "warehouse_info": "Thông tin kho",
+  "product_in_warehouse": "Sản phẩm trong kho",
+  "limit": "Giới hạn",
+  "limit_product": "Giới hạn của sản phẩm",
+  "add_category": "Thêm Loại sản phẩm",
+  "edit_category": "Sửa Loại sản phẩm",
+  "add_unit": "Thêm đơn vị",
+  "edit_unit": "Sửa đơn vị",
+  "add_provider": "Thêm nhà cung cấp",
+  "edit_provider": "Sửa nhà cung cấp"
+
 }
