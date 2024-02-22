@@ -27,19 +27,27 @@ const DetailModal = ({ ...props }: Props) => {
     const [showLoader, setShowLoader] = useState(true);
     const [data, setData] = useState<any>();
     const [openModal, setOpenModal] = useState(false);
+    const [query, setQuery] = useState<any>();
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
 
     // get data
-    const { data: warehousingBillDetail, pagination, mutate } = WarehousingBillDetail({ id: router.query.id, page: 1, perPage: 10, ...router.query });
+    const { data: warehousingBillDetail, pagination, mutate } = WarehousingBillDetail({ ...query });
     useEffect(() => {
         dispatch(setPageTitle(`${t('proposal')}`));
     });
 
     useEffect(() => {
         setShowLoader(false);
-    }, [warehousingBillDetail])
+    }, [warehousingBillDetail]);
+
+    useEffect(() => {
+        if (Number(router.query.id)) {
+            setQuery({ id: router.query.id, ...router.query })
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [router.query.id]);
 
     const handleEdit = (data: any) => {
         setOpenModal(true);
