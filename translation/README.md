@@ -13,15 +13,21 @@ To get started with the TRANSLATION submodule, follow these steps:
 
     ```env
     SOURCE=vi
-    TRANSLATION_FILES=en,fr
+    TRANSLATION_FILES=en,lo
     I18N_FOLDER_PATH=../public/locales
     ```
 
-    Replace the `SOURCE` value with the default language code. 
-    Replace the `TRANSLATION_FILES` value with a comma-separated list of language codes for the supported languages. 
-    Replace the `I18N_FOLDER_PATH` value with the path to the `public/locales` directory in the HRM_FE project.
+    -   Replace the `SOURCE` value with the default language code.
+    -   Replace the `TRANSLATION_FILES` value with a comma-separated list of language codes for the supported languages.
+    -   Replace the `I18N_FOLDER_PATH` value with the path to the `public/locales` directory in the HRM_FE project.
 
 5.  Start the development server by running `npm start`.
+
+**Note**:
+
+-   Only key with `_t_` prefix will be translated.
+-   Others will be ignored if they existed in the `target` file.
+-   Otherwise, they will be added to the `target` file with translated value.
 
 ## License
 
