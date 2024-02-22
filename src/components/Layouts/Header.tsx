@@ -406,7 +406,7 @@ const Header = () => {
 															<div className={"group flex items-center px-4 py-2" + `${item?.isRead === 0 ? " bg-slate-50 dark: bg-gray-800" : ""}`}>
 																<div className="grid place-content-center rounded">
 																	<div className="relative h-12 w-12">
-																		<img className="h-12 w-12 rounded-full object-cover" alt="profile" src={`${item?.profile}`} />
+																		<img className="h-12 w-12 rounded-full object-cover" alt="profile" src={item?.profile ? `${process.env.NEXT_PUBLIC_BE_URL + "/" + item?.profile}` : "/assets/images/user-profile.jpeg"} />
 																		{/* <span className="absolute bottom-0 right-[6px] block h-2 w-2 rounded-full bg-success"></span> */}
 																	</div>
 																</div>
