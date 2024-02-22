@@ -130,7 +130,7 @@ const OrderTypeChart = ({ ...props }: Props) => {
             <div className="mb-5 flex items-start justify-between border-b border-white-light p-5  dark:border-[#1b2e4b] dark:text-white-light">
                 <h5 className="text-lg font-semibold ">{t('order_type')}</h5>
             </div>
-            {showLoader && <ReactApexChart options={options} series={dataOrderType?.series} type="bar" height={360} width={'100%'} />}
+            {showLoader && <ReactApexChart options={options} series={dataOrderType?.series || []} type="bar" height={360} width={'100%'} />}
 
         </div>
     );

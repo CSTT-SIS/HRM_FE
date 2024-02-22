@@ -27,12 +27,13 @@ const InventoryChart = ({ ...props }: Props) => {
     const [dataProductInventory, setDataProductInventory] = useState<any>();
     const [dataWarehouseDropdown, setDataWarehouseDropdown] = useState<any>([]);
     const [page, setPage] = useState(1);
+    const [query, setQuery] = useState<any>();
 
     const isDark = useSelector((state: IRootState) => state.themeConfig.theme === 'dark' || state.themeConfig.isDarkMode);
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl' ? true : false;
 
     // get data
-    const { data: inventory } = ProductInventory({ ...router.query });
+    const { data: inventory } = ProductInventory({ ...query });
     const { data: dropdownWarehouse, pagination: paginationWarehousetype, isLoading } = DropdownWarehouses({ page: page });
 
     useEffect(() => {
@@ -68,15 +69,16 @@ const InventoryChart = ({ ...props }: Props) => {
     }
 
     const handleSearch = (param: any) => {
-        router.replace(
-            {
-                pathname: router.pathname,
-                query: {
-                    ...router.query,
-                    warehouseId: param?.value || ""
-                },
-            }
-        );
+        setQuery({ warehouseId: param?.value })
+        // router.replace(
+        //     {
+        //         pathname: router.pathname,
+        //         query: {
+        //             ...router.query,
+        //             warehouseId: param?.value || ""
+        //         },
+        //     }
+        // );
     }
 
     const options: any = {
@@ -174,7 +176,7 @@ const InventoryChart = ({ ...props }: Props) => {
                     onChange={e => handleSearch(e)}
                 />
             </div>
-            {showLoader && <ReactApexChart options={options} series={dataProductInventory?.series} type="bar" height={360} width={'100%'} />}
+            {showLoader && <ReactApexChart options={options} series={dataProductInventory?.series || []} type="bar" height={360} width={'100%'} />}
 
         </div>
     );

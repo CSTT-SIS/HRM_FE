@@ -34,8 +34,8 @@ const WarehouseChart = ({ ...props }: Props) => {
         var a: any = [];
         var b: any = [];
 
-        warehouse?.data.map((item: any) => {
-            return a.push(item.products[0]) && b.push(item.name)
+        warehouse?.data?.map((item: any) => {
+            return a.push(item?.products[0]) && b.push(item.name)
         })
 
         setDataWarehouses(
@@ -46,7 +46,7 @@ const WarehouseChart = ({ ...props }: Props) => {
         );
 
         setShowLoader(true);
-    }, [warehouse?.data]);
+    }, [warehouse]);
 
     const options: any = {
         chart: {
@@ -133,7 +133,7 @@ const WarehouseChart = ({ ...props }: Props) => {
             <div className="mb-5 flex items-start justify-between border-b border-white-light p-5  dark:border-[#1b2e4b] dark:text-white-light">
                 <h5 className="text-lg font-semibold ">{t('warehouses')}</h5>
             </div>
-            {showLoader && <ReactApexChart options={options} series={dataWarehouses?.series} type="bar" height={360} width={'100%'} />}
+            {showLoader && <ReactApexChart options={options} series={dataWarehouses?.series || []} type="bar" height={360} width={'100%'} />}
 
         </div>
     );
