@@ -393,9 +393,9 @@ const Header = () => {
 									<ul id="scrollableDiv" className="w-[300px] divide-y !py-0 text-dark dark:divide-white/10 dark:text-white-dark sm:w-[400px] overflow-y-auto h-[30.5rem]">
 										<li onClick={(e) => e.stopPropagation()}>
 											<div className="flex items-center justify-between px-4 py-2 font-semibold gap-x-2">
-												<button className="btn btn-primary btn-small block" onClick={e => handleReadAll()}>Mark all as read</button>
 												{/* <h4 className="text-lg">{t('notifications')}</h4> */}
 												{dataNoti?.length ? <span className="badge bg-primary/80">{pagination?.totalRecords} New</span> : ''}
+												<button className="badge" style={{backgroundColor: "rgb(67 97 238 / 0.8)"}} onClick={e => handleReadAll()}>Mark all as read</button>
 											</div>
 										</li>
 										{dataNoti?.length > 0 ? (
@@ -403,7 +403,7 @@ const Header = () => {
 												{dataNoti?.map((item: any) => {
 													return (
 														<li key={item?.id} className={"dark:text-white-light/90"} style={{ cursor: "pointer" }} onClick={(e) => handleNoti(item)}>
-															<div className={"group flex items-center px-4 py-2" + `${item?.isRead === 0 ? " bg-slate-50 dark: bg-gray-800" : ""}`}>
+															<div className={"group flex items-center px-4 py-2" + `${item?.isRead === 0 ? " bg-slate-50 dark: bg-slate-800" : ""}`}>
 																<div className="grid place-content-center rounded">
 																	<div className="relative h-12 w-12">
 																		<img className="h-12 w-12 rounded-full object-cover" alt="profile" src={item?.profile ? `${process.env.NEXT_PUBLIC_BE_URL + "/" + item?.profile}` : "/assets/images/user-profile.jpeg"} />
