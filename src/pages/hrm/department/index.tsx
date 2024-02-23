@@ -25,9 +25,8 @@ import { useRouter } from 'next/router';
 // json
 import DepartmentList from './department_list.json';
 import DepartmentModal from './modal/DepartmentModal';
-import IconFolderMinus from '@/components/Icon/IconFolderMinus';
+import IconFolderMinus from '@/components/Icon/IconFolderMinus'; 
 import IconDownload from '@/components/Icon/IconDownload';
-
 
 interface Props {
     [key: string]: any;
@@ -137,13 +136,13 @@ const Department = ({ ...props }: Props) => {
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
                     <Tippy content={`${t('edit')}`}>
-                        <button type="button" onClick={() => handleEdit(records)}>
-                            <IconPencil />
+                        <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
+                            <IconPencil /> Sửa
                         </button>
                     </Tippy>
                     <Tippy content={`${t('delete')}`}>
-                        <button type="button" onClick={() => handleDelete(records)}>
-                            <IconTrashLines />
+                        <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                            <IconTrashLines /> Xóa
                         </button>
                     </Tippy>
                 </div>
@@ -162,15 +161,15 @@ const Department = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >
+                        <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                             {t('add')}
                         </button>
-                        <button type="button" className="btn btn-primary btn-sm m-1" >
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
                             Nhập file
                         </button>
-                        <button type="button" className="btn btn-primary btn-sm m-1" >
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconDownload className="ltr:mr-2 rtl:ml-2" />
                             Xuất file excel
                         </button>
@@ -180,7 +179,7 @@ const Department = ({ ...props }: Props) => {
                 <div className="datatables">
                     <DataTable
                         highlightOnHover
-                        className="whitespace-nowrap table-hover"
+                        className="whitespace-nowrap table-hover custom_table"
                         records={recordsData}
                         columns={columns}
                         totalRecords={total}

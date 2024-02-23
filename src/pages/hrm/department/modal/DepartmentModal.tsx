@@ -32,7 +32,7 @@ const DepartmentModal = ({ ...props }: Props) => {
 			.required(`${t('please_fill_departmentCode')}`),
 		abbreviated: Yup.string()
 			.min(2, 'Too Short!')
-			.required(`please fill abbreviated name`),
+			.required(`${t('please_fill_abbreviated_name')}`),
 	});
 	const handleSearch = (param: any) => {
 		setQuery({ search: param });
@@ -154,13 +154,13 @@ const DepartmentModal = ({ ...props }: Props) => {
 												<div className="mb-5">
 													<label htmlFor="code">
 														{' '}
-														Abbreviated name <span style={{ color: 'red' }}>* </span>
+														{t('Abbreviated_name')} <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field name="abbreviated" type="text" id="abbreviated" placeholder={`Enter abbreviated name}`} className="form-input" />
+													<Field name="abbreviated" type="text" id="abbreviated" placeholder={`${t('enter_abbreviated_name')}`} className="form-input" />
 													{errors.abbreviated ? <div className="mt-1 text-danger"> {errors.abbreviated} </div> : null}
 												</div>
 												<div className="mb-5">
-													<label htmlFor="departmentparentId" > Department Parent < span style={{ color: 'red' }}>* </span></label >
+													<label htmlFor="departmentparentId" > {t('Department_Parent')} < span style={{ color: 'red' }}>* </span></label >
 													<Select
 														id='unidepartmentparentIdtId'
 														name='departmentparentId'
@@ -177,7 +177,7 @@ const DepartmentModal = ({ ...props }: Props) => {
 													) : null}
 												</div>
 												<div className="mb-5">
-													<label htmlFor="manageId" >Manager < span style={{ color: 'red' }}>* </span></label >
+													<label htmlFor="manageId" > {t('Manager')} < span style={{ color: 'red' }}>* </span></label >
 													<Select
 														id='manageId'
 														name='manageId'
