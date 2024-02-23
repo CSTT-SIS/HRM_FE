@@ -43,6 +43,7 @@
 @import './select2.css';
 
 @import './custom.css';
+@import './custom-table.css';
 
 @tailwind base;
 @tailwind components;

@@ -1,0 +1,58 @@
+.custom_table {
+    .mantine-Table-root>thead {
+        border-bottom: 1px #046738 double;
+
+        tr {
+            background-color: #EEECB1 !important;
+
+
+            th>div {
+                color: #046738;
+                font-size: 12px;
+                font-weight: 700;
+            }
+        }
+    }
+
+    .mantine-Table-root>tbody {
+        tr {
+            border-bottom: 1px #A3CCB8 double !important;
+
+        }
+        tr:hover {
+            background-color: #EBF6F1 !important;
+        }
+    }
+}
+
+.custom-button {
+    background-color: #046738 !important;
+    height: 32px;
+    border-radius: 20px !important;
+    padding: 0 16px !important;
+}
+.mantine-Pagination-item {
+    color: #046738 !important;
+}
+.mantine-Pagination-item[data-active] {
+    background-color:  #046738 !important;
+    color: #ffffff !important;
+
+}
+.button-edit, .button-delete {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 24px;
+    padding: 0 8px;
+    border-radius: 4px;
+    font-weight: 700 !important;
+}
+.button-edit {
+    background-color: #8CD7F7 !important;
+    color: black !important;
+}
+.button-delete {
+    background-color: #ED1B24 !important;
+    color: white !important;
+}
