@@ -24,3 +24,100 @@
 .reactOrgChart tr {
     border-style: none;
 }
+
+li.nav-item > ul > li.menu1 {
+    background-color: #EEECB1!important;
+    padding: 0.25rem;
+    border-radius: 5px;
+    /* margin-top: 1rem; */
+    margin-bottom: 0.25rem;
+}
+
+li.nav-item > ul > li li {
+    background-color: #fff!important;
+}
+
+.header-menu-color {
+    color: #7E8F12!important;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 15px;
+    letter-spacing: 0em;
+    text-align: left;
+}
+
+.menu1 > button {
+    justify-content: center!important;
+    display: flex;
+}
+
+li.nav-item {
+    border-radius: 5px;
+    background-color: #fff!important;
+
+}
+
+ul:nth-child(2) > li.nav-item:hover {
+    background: #D3D570!important;
+}
+
+ul:nth-child(2) > li.nav-item:active {
+    background: #7E8F12!important;
+    color: #fff;
+}
+
+a.active {
+    background: #7E8F12!important;
+}
+
+a.active span {
+    background: #7E8F12!important;
+    color: #fff!important;
+}
+
+li.menu > button {
+    border-radius: 8px;
+    gap: 12px;
+    background: linear-gradient(94.25deg, #D9EFE4 0%, #98C9B2 100%);
+    text-transform: uppercase;
+}
+
+li.menu > button:hover {
+    background: linear-gradient(94.25deg, #EAF3B2 0%, #A3B14D 100%);
+    color: #fff!important;
+}
+
+li.menu > button.active {
+    background: linear-gradient(94.25deg, #D8B810 0%, #4E7300 100%);
+    color: #fff!important;
+}
+
+li.menu > button.active span {
+    color: #fff!important;
+}
+
+li.menu ul > li:hover {
+    background: #D3D570!important;
+}
+
+#logo {
+    width: 97.33px;
+    height: 64px;
+}
+
+#expandButton {
+    width: 110px;
+    height: 32px;
+    padding: 8px 12px 8px 12px;
+    border-radius: 16px 4px 4px 16px;
+    gap: 8px;
+    background: #7E8F12;
+}
+
+#expandButton span {
+    color: #fff;
+}
+
+
+
+
