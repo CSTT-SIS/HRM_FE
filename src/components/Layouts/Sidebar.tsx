@@ -50,6 +50,7 @@ import IconListCheck from '../Icon/IconListCheck';
 const Sidebar = () => {
     const router = useRouter();
     const [currentMenu, setCurrentMenu] = useState<string>('');
+    const [currentSubMenu, setCurrentSubMenu] = useState<string>('');
     const [errorSubMenu, setErrorSubMenu] = useState(false);
     const themeConfig = useSelector((state: IRootState) => state.themeConfig);
     const semidark = useSelector((state: IRootState) => state.themeConfig.semidark);
@@ -58,7 +59,11 @@ const Sidebar = () => {
             return oldValue === value ? '' : value;
         });
     };
-
+    const toggleSubMenu = (value: string) => {
+        setCurrentSubMenu((oldValue) => {
+            return oldValue === value ? '' : value;
+        });
+    };
     useEffect(() => {
         const selector = document.querySelector('.sidebar ul a[href="' + window.location.pathname + '"]');
         if (selector) {
@@ -109,16 +114,17 @@ const Sidebar = () => {
                 <div className="h-full bg-white dark:bg-black">
                     <div className="flex items-center justify-between px-4 py-3">
                         <Link href="/" className="main-logo flex shrink-0 items-center">
-                            <img className="ml-[5px] w-8 flex-none" src="/assets/images/favicon.png" alt="logo" />
-                            <span className="align-middle text-2xl font-semibold ltr:ml-1.5 rtl:mr-1.5 dark:text-white-light lg:inline">{t('CSTT')}</span>
+                            <img id='logo' className="ml-[5px] w-8 flex-none" src="/assets/images/favicon.png" alt="logo" />
                         </Link>
 
                         <button
+                            id='expandButton'
                             type="button"
-                            className="collapse-icon flex h-8 w-8 items-center rounded-full transition duration-300 hover:bg-gray-500/10 rtl:rotate-180 dark:text-white-light dark:hover:bg-dark-light/10"
+                            className="collapse-icon flex items-center rounded-full transition duration-300 hover:bg-gray-500/10 rtl:rotate-180 dark:text-white-light dark:hover:bg-dark-light/10"
                             onClick={() => dispatch(toggleSidebar())}
                         >
-                            <IconCaretsDown className="m-auto rotate-90" />
+                            <IconCaretsDown className="rotate-90" />
+                            <span>Thu gọn</span>
                         </button>
                     </div>
                     <PerfectScrollbar className="relative h-[calc(100vh-80px)]">
@@ -152,20 +158,33 @@ const Sidebar = () => {
                                     </ul>
                                 </AnimateHeight>
                             </li>
-                            <Link href="/hrm/dashboard">
-                                <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
-                                    <IconMinus className="hidden h-5 w-4 flex-none" />
-                                    <span>{t('hrmanagement')}</span>
-                                </h2>
-                            </Link>
+                            <li className="menu nav-item">
+                            <button type="button" className={`${currentMenu === 'hrm' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('hrm')}>
+                                <div className="flex items-center">
+                                            <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
+                                            <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('hrmanagement')}</span>
+                                        </div>
 
+                                        <div className={currentMenu !== 'hrm' ? '-rotate-90 rtl:rotate-90' : ''}>
+                                            <IconCaretDown />
+                                        </div>
+                                </button>
+                            <AnimateHeight duration={300} height={currentMenu === 'hrm' ? 'auto' : 0}>
+                                        <ul className="text-gray-500">
                             <li className="nav-item">
                                 <ul>
-                                    <li className="nav-item">
+                                    <li className="menu menu1 nav-item">
+                                    <button type="button" className={`w-full p-0`}>
+                                        <div className="flex items-center">
+                                            <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color">{t('general_info_menu')}</span>
+                                        </div>
+                                    </button>
+                                        <ul className="text-gray-500">
+                                        <li className="nav-item">
                                         <Link href="/hrm/department" className="group">
                                             <div className="flex items-center">
                                                 <IconUsersGroup className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('department')}</span>
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('department_list')}</span>
                                             </div>
                                         </Link>
                                     </li>
@@ -173,7 +192,7 @@ const Sidebar = () => {
                                         <Link href="/hrm/organization-structure" className="group">
                                             <div className="flex items-center">
                                                 <IconMenuTables className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('organization_structure')}</span>
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('organizational_structure')}</span>
                                             </div>
                                         </Link>
                                     </li>
@@ -181,7 +200,7 @@ const Sidebar = () => {
                                         <Link href="/hrm/personnel" className="group">
                                             <div className="flex items-center">
                                                 <IconUser className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('staff')}</span>
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dar">{t('staff_list')}</span>
                                             </div>
                                         </Link>
                                     </li>
@@ -189,19 +208,22 @@ const Sidebar = () => {
                                         <Link href="/hrm/duty" className="group">
                                             <div className="flex items-center">
                                                 <IconUsers className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('position')}</span>
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('duty_list')}</span>
                                             </div>
                                         </Link>
                                     </li>
-                                    <li className="nav-item">
-                                        <Link href="/hrm/role" className="group">
-                                            <div className="flex items-center">
-                                                <IconRole className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('role')}</span>
-                                            </div>
-                                        </Link>
+                                        </ul>
                                     </li>
-                                    <li className="nav-item">
+
+                                    <li className="menu menu1 nav-item">
+                                    <button type="button">
+                                        <div className="flex items-center">
+                                            <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color">{t('staff_schedule')}</span>
+                                        </div>
+                                    </button>
+
+                                        <ul className="text-gray-500">
+                                        <li className="nav-item">
                                         <Link href="/hrm/shift" className="group">
                                             <div className="flex items-center">
                                                 <IconMenuMailbox className="shrink-0 group-hover:!text-primary" />
@@ -225,11 +247,30 @@ const Sidebar = () => {
                                             </div>
                                         </Link>
                                     </li>
+                                        </ul>
+                                    </li>
+                                    <li className="menu menu1 nav-item">
+                                    <button type="button">
+                                        <div className="flex items-center">
+                                            <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color">{t('other_task')}</span>
+                                        </div>
+                                    </button>
+
+                                        <ul className="text-gray-500">
+                                        <li className="nav-item">
+                                        <Link href="/hrm/role" className="group">
+                                            <div className="flex items-center">
+                                                <IconRole className="shrink-0 group-hover:!text-primary" />
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('role_list')}</span>
+                                            </div>
+                                        </Link>
+                                    </li>
+
                                     <li className="nav-item">
                                         <Link href="/hrm/task" className="group">
                                             <div className="flex items-center">
                                                 <IconMenuDocumentation className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('task')}</span>
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('task_list')}</span>
                                             </div>
                                         </Link>
                                     </li>
@@ -237,7 +278,7 @@ const Sidebar = () => {
                                         <Link href="/hrm/asset" className="group">
                                             <div className="flex items-center">
                                                 <IconMenuDatatables className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('assets')}</span>
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('assets_list')}</span>
                                             </div>
                                         </Link>
                                     </li>
@@ -245,7 +286,7 @@ const Sidebar = () => {
                                         <Link href="#" className="group">
                                             <div className="flex items-center">
                                                 <IconMenuComponents className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('document')}</span>
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('document_list')}</span>
                                             </div>
                                         </Link>
                                     </li>
@@ -253,7 +294,7 @@ const Sidebar = () => {
                                         <Link href="#" className="group">
                                             <div className="flex items-center">
                                                 <IconMenuCharts className="shrink-0 group-hover:!text-primary" />
-                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('statistic')}</span>
+                                                <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('statistic_list')}</span>
                                             </div>
                                         </Link>
                                     </li>
@@ -265,15 +306,29 @@ const Sidebar = () => {
                                             </div>
                                         </Link>
                                     </li>
+                                        </ul>
+                                    </li>
+
                                 </ul>
                             </li>
+                            </ul>
+                            </AnimateHeight>
+                            </li>
+                            <li className="menu nav-item">
                             {/* === QUẢN LÝ ĐƠN */}
-                            <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
-                                <IconMinus className="hidden h-5 w-4 flex-none" />
-                                <span>{t('form_management')}</span>
-                            </h2>
-                            <li className="nav-item">
-                                <ul>
+                            <button type="button" className={`${currentMenu === 'form' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('form')}>
+                            <div className="flex items-center">
+                                        <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
+                                        <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('form_management')}</span>
+                                    </div>
+
+                                    <div className={currentMenu !== 'form' ? '-rotate-90 rtl:rotate-90' : ''}>
+                                        <IconCaretDown />
+                                    </div>
+
+                                </button>
+                            <AnimateHeight duration={300} height={currentMenu === 'form' ? 'auto' : 0}>
+                                        <ul className="text-gray-500">
                                     <li className="nav-item">
                                         <Link href="/hrm/late-early-form" className="group">
                                             <div className="flex items-center">
@@ -297,6 +352,8 @@ const Sidebar = () => {
                                                 <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('forget_timekeeping_form')}</span>
                                             </div>
                                         </Link>
+                                    </li>
+                                    <li className="nav-item">
                                         <Link href="/hrm/exempt-form" className="group">
                                             <div className="flex items-center">
                                                 <IconFolder className="shrink-0 group-hover:!text-primary" />
@@ -304,16 +361,26 @@ const Sidebar = () => {
                                             </div>
                                         </Link>
                                     </li>
-                                </ul>
+
+                            </ul>
+                            </AnimateHeight>
                             </li>
                             {/* === KẾT THÚC MENU QUẢN LÝ ĐƠN */}
-                            <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
-                                <IconMinus className="hidden h-5 w-4 flex-none" />
-                                <span>{t('timekeeping_manage')}</span>
-                            </h2>
-                            <li className="nav-item">
-                                <ul>
-                                    <li className="nav-item">
+                            <li className="menu nav-item">
+                            <button type="button" className={`${currentMenu === 'timekeeping' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('timekeeping')}>
+                            <div className="flex items-center">
+                                        <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
+                                        <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('timekeeping_management')}</span>
+                                    </div>
+
+                                    <div className={currentMenu !== 'timekeeping' ? '-rotate-90 rtl:rotate-90' : ''}>
+                                        <IconCaretDown />
+                                    </div>
+
+                                </button>
+                            <AnimateHeight duration={300} height={currentMenu === 'timekeeping' ? 'auto' : 0}>
+                                        <ul className="text-gray-500">
+                                <li className="nav-item">
                                         <Link href="/hrm/timekeeping-table" className="group">
                                             <div className="flex items-center">
                                                 <IconMenuTables className="shrink-0 group-hover:!text-primary" />
@@ -338,8 +405,8 @@ const Sidebar = () => {
                                         </Link>
                                     </li>
                                 </ul>
-                            </li>
-
+                            </AnimateHeight>
+</li>
                             <h2 className="-mx-4 mb-1 flex items-center bg-white-light/30 px-7 py-3 font-extrabold uppercase dark:bg-dark dark:bg-opacity-[0.08]">
                                 <span>{t('warehouse')}</span>
                             </h2>
