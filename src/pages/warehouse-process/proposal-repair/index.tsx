@@ -1,4 +1,4 @@
-import { useEffect, Fragment, useState } from 'react';
+import { useEffect, Fragment, useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { setPageTitle } from '@/store/themeConfigSlice';
@@ -8,10 +8,9 @@ import Swal from 'sweetalert2';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
-import moment from 'moment';
 // API
-import { Stocktakes } from '@/services/swr/stocktake.twr';
-import { DeleteStocktake, StocktakeApprove, StocktakeCancel, StocktakeReject } from '@/services/apis/stocktake.api';
+import { Proposals } from '@/services/swr/proposal.twr';
+import { DeleteProposal, ProposalApprove, ProposalReject, ProposalReturn } from '@/services/apis/proposal.api';
 // constants
 import { PAGE_SIZES } from '@/utils/constants';
 // helper
@@ -21,35 +20,35 @@ import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
 import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
-import IconXCircle from '@/components/Icon/IconXCircle';
 import IconCircleCheck from '@/components/Icon/IconCircleCheck';
+import IconXCircle from '@/components/Icon/IconXCircle';
 import IconRestore from '@/components/Icon/IconRestore';
 
 interface Props {
     [key: string]: any;
 }
 
-const StocktakePage = ({ ...props }: Props) => {
+const ProposalPage = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const router = useRouter();
 
     const [showLoader, setShowLoader] = useState(true);
-    const [tally, setTally] = useState(false);
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
 
     // get data
-    const { data: stocktakes, pagination, mutate } = Stocktakes({ ...router.query });
+    const { data: proposal, pagination, mutate } = Proposals({ sortBy: 'id.ASC', ...router.query });
+
     useEffect(() => {
-        dispatch(setPageTitle(`${t('Stocktake')}`));
+        dispatch(setPageTitle(`${t('proposal')}`));
     });
 
     useEffect(() => {
         setShowLoader(false);
-    }, [stocktakes])
+    }, [proposal])
 
     const handleDelete = ({ id, name }: any) => {
         const swalDeletes = Swal.mixin({
@@ -63,7 +62,7 @@ const StocktakePage = ({ ...props }: Props) => {
         swalDeletes
             .fire({
                 icon: 'question',
-                title: `${t('delete_stocktake')}`,
+                title: `${t('delete_proposal')}`,
                 text: `${t('delete')} ${name}`,
                 padding: '2em',
                 showCancelButton: true,
@@ -71,7 +70,7 @@ const StocktakePage = ({ ...props }: Props) => {
             })
             .then((result) => {
                 if (result.value) {
-                    DeleteStocktake({ id }).then(() => {
+                    DeleteProposal({ id }).then(() => {
                         mutate();
                         showMessage(`${t('delete_success')}`, 'success');
                     }).catch((err) => {
@@ -110,29 +109,29 @@ const StocktakePage = ({ ...props }: Props) => {
     };
 
     const handleDetail = (value: any) => {
-        router.push(`/warehouse-management/stocktake/${value.id}?status=${value.status}`)
-    }
-
-    const handleReject = ({ id }: any) => {
-        StocktakeReject({ id }).then(() => {
-            mutate();
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
-
-    const handleCancel = ({ id }: any) => {
-        StocktakeCancel({ id }).then(() => {
-            mutate();
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
+        router.push(`/warehouse-process/proposal-repair/${value.id}?type=${value.type}&&status=${value.status}`)
     }
 
     const handleApprove = ({ id }: any) => {
-        StocktakeApprove({ id }).then(() => {
+        ProposalApprove({ id }).then(() => {
+            mutate();
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
+    const handleReject = ({ id }: any) => {
+        ProposalReject({ id }).then(() => {
+            mutate();
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
+    const handleReturn = ({ id }: any) => {
+        ProposalReturn({ id }).then(() => {
             mutate();
             showMessage(`${t('update_success')}`, 'success');
         }).catch((err) => {
@@ -146,34 +145,9 @@ const StocktakePage = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
-        { accessor: 'name', title: 'Tên phiếu kiểm kê', sortable: false },
-        {
-            accessor: 'warehouse',
-            title: 'Tên kho',
-            render: ({ warehouse }: any) => <span>{warehouse?.name}</span>,
-        },
-        {
-            accessor: 'participants',
-            title: 'Người tham gia',
-            render: ({ participants }: any) => {
-                return participants?.map((item: any, index: any) => {
-                    return (
-                        <span key={item}>{index + 1 < participants.length ? item?.fullName + ", " : item?.fullName}</span>
-                    )
-                })
-            }
-        },
-        {
-            accessor: 'startDate',
-            title: 'Ngày bắt đầu',
-            render: ({ startDate }: any) => <span>{moment(startDate).format("DD/MM/YYYY")}</span>,
-        },
-        {
-            accessor: 'EndDate',
-            title: 'Ngày kết thúc',
-            render: ({ EndDate }: any) => <span>{moment(EndDate).format("DD/MM/YYYY")}</span>,
-        },
-        { accessor: 'description', title: 'Ghi chú', sortable: false },
+        { accessor: 'name', title: 'Tên yêu cầu', sortable: false },
+        { accessor: 'type', title: 'Loại yêu cầu', sortable: false },
+        { accessor: 'content', title: 'Nội dung', sortable: false },
         { accessor: 'status', title: 'Trạng thái', sortable: false },
         {
             accessor: 'action',
@@ -191,19 +165,19 @@ const StocktakePage = ({ ...props }: Props) => {
                             <IconTrashLines />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('reject')}`}>
-                        <button type="button" onClick={() => handleReject(records)}>
-                            <IconRestore />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('cancel')}`}>
-                        <button type="button" onClick={() => handleCancel(records)}>
-                            <IconXCircle />
-                        </button>
-                    </Tippy>
                     <Tippy content={`${t('approve')}`}>
                         <button type="button" onClick={() => handleApprove(records)}>
                             <IconCircleCheck size={20} />
+                        </button>
+                    </Tippy>
+                    <Tippy content={`${t('reject')}`}>
+                        <button type="button" onClick={() => handleReject(records)}>
+                            <IconXCircle />
+                        </button>
+                    </Tippy>
+                    <Tippy content={`${t('return')}`}>
+                        <button type="button" onClick={() => handleReturn(records)}>
+                            <IconRestore />
                         </button>
                     </Tippy>
                 </div>
@@ -222,7 +196,7 @@ const StocktakePage = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" onClick={(e) => router.push(`/warehouse-management/stocktake/create`)} className="btn btn-primary btn-sm m-1 custom-button" >
+                        <button type="button" onClick={(e) => router.push(`/warehouse-process/proposal-repair/create`)} className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                             {t('add')}
                         </button>
@@ -234,7 +208,7 @@ const StocktakePage = ({ ...props }: Props) => {
                     <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover"
-                        records={stocktakes?.data}
+                        records={proposal?.data}
                         columns={columns}
                         totalRecords={pagination?.totalRecords}
                         recordsPerPage={pagination?.perPage}
@@ -253,4 +227,4 @@ const StocktakePage = ({ ...props }: Props) => {
     );
 };
 
-export default StocktakePage;
+export default ProposalPage;
