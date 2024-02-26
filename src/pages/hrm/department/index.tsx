@@ -25,8 +25,10 @@ import { useRouter } from 'next/router';
 // json
 import DepartmentList from './department_list.json';
 import DepartmentModal from './modal/DepartmentModal';
-import IconFolderMinus from '@/components/Icon/IconFolderMinus'; 
+import IconFolderMinus from '@/components/Icon/IconFolderMinus';
 import IconDownload from '@/components/Icon/IconDownload';
+import Link from 'next/link';
+
 
 interface Props {
     [key: string]: any;
@@ -136,7 +138,7 @@ const Department = ({ ...props }: Props) => {
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
                     <Tippy content={`${t('edit')}`}>
-                        <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
+                        <button type="button" className='button-edit' onClick={() => handleEdit(records)}>
                             <IconPencil /> Sửa
                         </button>
                     </Tippy>
@@ -149,7 +151,7 @@ const Department = ({ ...props }: Props) => {
             ),
         },
     ]
-    
+
     return (
         <div>
             {showLoader && (
@@ -161,10 +163,12 @@ const Department = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
-                            <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                            {t('add')}
-                        </button>
+                        <Link href="/hrm/department/AddNewDepartment">
+                            <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                                <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                {t('add')}
+                            </button>
+                        </Link>
                         <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
                             Nhập file

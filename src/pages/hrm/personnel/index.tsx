@@ -208,15 +208,17 @@ const Department = ({ ...props }: Props) => {
 			<div className="panel mt-6">
 				<div className="mb-4.5 flex flex-col justify-between gap-5 md:flex-row md:items-center">
 					<div className="flex flex-wrap items-center">
-						<button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 ">
-							<IconPlus className="h-5 w-5 ltr:mr-2 rtl:ml-2" />
-							{t('add')}
-						</button>
-						<button type="button" className="btn btn-primary btn-sm m-1">
+						<Link href="/hrm/personnel/AddNewPersonel">
+							<button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+								<IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+								{t('add')}
+							</button>
+						</Link>
+						<button type="button" className="btn btn-primary btn-sm m-1  custom-button">
 							<IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
 							Nhập file
 						</button>
-						<button type="button" className="btn btn-primary btn-sm m-1">
+						<button type="button" className="btn btn-primary btn-sm m-1  custom-button">
 							<IconDownload className="ltr:mr-2 rtl:ml-2" />
 							Xuất file excel
 						</button>
@@ -348,7 +350,7 @@ const Department = ({ ...props }: Props) => {
 				<div className="datatables">
 					<DataTable
 						highlightOnHover
-						className="table-hover whitespace-nowrap"
+						className="table-hover whitespace-nowrap custom_table"
 						records={recordsData}
 						columns={columns}
 						totalRecords={total}
