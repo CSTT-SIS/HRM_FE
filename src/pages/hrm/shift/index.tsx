@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { setPageTitle } from '../../../store/themeConfigSlice';
 import { lazy } from 'react';
 import Link from 'next/link';
-
 // Third party libs
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
 import Swal from 'sweetalert2';
@@ -11,6 +10,7 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
+import { deleteDepartment, detailDepartment, listAllDepartment } from '../../../services/apis/department.api';
 // constants
 import { PAGE_SIZES, PAGE_SIZES_DEFAULT, PAGE_NUMBER_DEFAULT } from '@/utils/constants';
 // helper
@@ -20,24 +20,21 @@ import IconPencil from '../../../components/Icon/IconPencil';
 import IconTrashLines from '../../../components/Icon/IconTrashLines';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
-import IconEye from '@/components/Icon/IconEye';
 
 import { useRouter } from 'next/router';
-
-// json
-import shiftList from './shift.json';
 import ShiftModal from './modal/ShiftModal';
-import DetailModal from './modal/DetailModal';
+import shiftList from './shift.json';
+// json
 import IconFolderMinus from '@/components/Icon/IconFolderMinus';
 import IconDownload from '@/components/Icon/IconDownload';
-import IconChecks from '@/components/Icon/IconChecks';
-
+import IconEye from '@/components/Icon/IconEye';
 
 interface Props {
     [key: string]: any;
 }
 
-const Shift = ({ ...props }: Props) => {
+const Duty = ({ ...props }: Props) => {
+
     const dispatch = useDispatch();
     const { t } = useTranslation();
     useEffect(() => {
@@ -57,7 +54,6 @@ const Shift = ({ ...props }: Props) => {
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
     const [openModal, setOpenModal] = useState(false);
-    const [openDetail, setOpenDetail] = useState(false);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -67,7 +63,6 @@ const Shift = ({ ...props }: Props) => {
             } else {
                 localStorage.setItem('shiftList', JSON.stringify(shiftList));
             }
-
         }
     }, [])
 
@@ -85,10 +80,7 @@ const Shift = ({ ...props }: Props) => {
         setOpenModal(true);
         setData(data);
     };
-    const handleDetail = (data: any) => {
-        setOpenDetail(true);
-        setData(data);
-    };
+
     const handleDelete = (data: any) => {
         const swalDeletes = Swal.mixin({
             customClass: {
@@ -101,8 +93,8 @@ const Shift = ({ ...props }: Props) => {
         swalDeletes
             .fire({
                 icon: 'question',
-                title: `${t('delete_form')}`,
-                text: `${t('delete_form')} ${data.name}`,
+                title: `${t('delete_shift')}`,
+                text: `${t('delete')} ${data.name}`,
                 padding: '2em',
                 showCancelButton: true,
                 reverseButtons: true,
@@ -110,35 +102,9 @@ const Shift = ({ ...props }: Props) => {
             .then((result) => {
                 if (result.value) {
                     const value = getStorge.filter((item: any) => { return (item.id !== data.id) });
-                    localStorage.setItem('lateEarlyFormList', JSON.stringify(value));
+                    localStorage.setItem('shiftList', JSON.stringify(value));
                     setGetStorge(value);
-                    showMessage(`${t('delete_form_success')}`, 'success')
-                }
-            });
-    };
-
-    const handleCheck = (data: any) => {
-        const swalDeletes = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-secondary',
-                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-                popup: 'sweet-alerts',
-            },
-            buttonsStyling: false,
-        });
-        swalDeletes
-            .fire({
-                icon: 'question',
-                title: `${t('check_form')}`,
-                text: `${t('check')} ${data.name}`,
-                padding: '2em',
-                showCancelButton: true,
-                reverseButtons: true,
-            })
-            .then((result) => {
-                if (result.value) {
-                    const value = getStorge.filter((item: any) => { return (item.id !== data.id) });
-                    showMessage(`${t('check_form_success')}`, 'success')
+                    showMessage(`${t('delete_shift_success')}`, 'success')
                 }
             });
     };
@@ -154,6 +120,9 @@ const Shift = ({ ...props }: Props) => {
             )
         }
     }
+    const handleDetail = (data: any) => {
+        setData(data);
+    };
     const columns = [
         {
             accessor: 'id',
@@ -203,26 +172,24 @@ const Shift = ({ ...props }: Props) => {
         {
             accessor: 'action',
             title: 'Thao tác',
+            titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                     <Tippy content={`${t('detail_shift_employee')}`}>
+                    <Tippy content={`${t('detail_shift_employee')}`}>
                         <Link href={`/hrm/shift/detail-shift-employee/${records?.id}`}>
-                            <IconEye />
+                            <button type='button' className='button-detail'>
+                            <IconEye /> Chi tiết
+                            </button>
                             </Link>
                     </Tippy>
                     <Tippy content={`${t('edit')}`}>
-                        <button type="button" onClick={() => handleEdit(records)}>
-                            <IconPencil />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('check')}`}>
-                        <button type="button" onClick={() => handleCheck(records)}>
-                            <IconChecks />
+                        <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
+                            <IconPencil /> Sửa
                         </button>
                     </Tippy>
                     <Tippy content={`${t('delete')}`}>
-                        <button type="button" onClick={() => handleDelete(records)}>
-                            <IconTrashLines />
+                        <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                            <IconTrashLines /> Xóa
                         </button>
                     </Tippy>
                 </div>
@@ -237,19 +204,22 @@ const Shift = ({ ...props }: Props) => {
                     <IconLoading />
                 </div>
             )}
-            <title>{t('department')}</title>
+            <title>{t('shift')}</title>
             <div className="panel mt-6">
-                <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-3">
+                <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >
-                            <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                            {t('add')}
-                        </button>
-                        <button type="button" className="btn btn-primary btn-sm m-1" >
+                        <Link href="/hrm/shift/AddNewShift">
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                                    <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                                    {t('add')}
+                                    </button>
+                        </Link>
+
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
                             Nhập file
                         </button>
-                        <button type="button" className="btn btn-primary btn-sm m-1" >
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconDownload className="ltr:mr-2 rtl:ml-2" />
                             Xuất file excel
                         </button>
@@ -269,7 +239,7 @@ const Shift = ({ ...props }: Props) => {
                 <div className="datatables">
                     <DataTable
                         highlightOnHover
-                        className="whitespace-nowrap table-hover"
+                        className="whitespace-nowrap table-hover custom_table"
                         records={recordsData}
                         columns={columns}
                         totalRecords={total}
@@ -293,16 +263,8 @@ const Shift = ({ ...props }: Props) => {
                 setData={setData}
                 setGetStorge={setGetStorge}
             />
-             <DetailModal
-                openModal={openDetail}
-                setOpenModal={setOpenDetail}
-                data={data}
-                totalData={getStorge}
-                setData={setData}
-                setGetStorge={setGetStorge}
-            />
         </div>
     );
 };
 
-export default Shift;
+export default Duty;
