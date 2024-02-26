@@ -114,7 +114,7 @@ const Sidebar = () => {
                 <div className="h-full bg-white dark:bg-black">
                     <div className="flex items-center justify-between px-4 py-3">
                         <Link href="/" className="main-logo flex shrink-0 items-center">
-                            <img id='logo' className="ml-[5px] w-8 flex-none" src="/assets/images/favicon.png" alt="logo" />
+                            <img id="logo" className="ml-[5px] w-8 flex-none" src="/assets/images/favicon.png" alt="logo"/>
                         </Link>
 
                         <button
@@ -123,8 +123,8 @@ const Sidebar = () => {
                             className="collapse-icon flex items-center rounded-full transition duration-300 hover:bg-gray-500/10 rtl:rotate-180 dark:text-white-light dark:hover:bg-dark-light/10"
                             onClick={() => dispatch(toggleSidebar())}
                         >
-                            <IconCaretsDown className="rotate-90" />
-                            <span>Thu gọn</span>
+                            <IconCaretsDown className="rotate-90"/>
+                            <span className='uppercase'>{t('collapse')}</span>
                         </button>
                     </div>
                     <PerfectScrollbar className="relative h-[calc(100vh-80px)]">
@@ -133,30 +133,13 @@ const Sidebar = () => {
                                 <button type="button" className={`${currentMenu === 'dashboard' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('dashboard')}>
                                     <div className="flex items-center">
                                         <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
-                                        <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('dashboard')}</span>
+                                        <span className="menu1-text ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('dashboard')}</span>
                                     </div>
 
-                                    <div className={currentMenu !== 'dashboard' ? '-rotate-90 rtl:rotate-90' : ''}>
-                                        <IconCaretDown />
+                                    <div>
+                                        <IconCaretDown/>
                                     </div>
                                 </button>
-
-                                <AnimateHeight duration={300} height={currentMenu === 'dashboard' ? 'auto' : 0}>
-                                    <ul className="sub-menu text-gray-500">
-                                        <li>
-                                            <Link href="/">{t('sales')}</Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/analytics">{t('analytics')}</Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/finance">{t('finance')}</Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/crypto">{t('crypto')}</Link>
-                                        </li>
-                                    </ul>
-                                </AnimateHeight>
                             </li>
                             <li className="menu nav-item">
                             <button type="button" className={`${currentMenu === 'hrm' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('hrm')}>

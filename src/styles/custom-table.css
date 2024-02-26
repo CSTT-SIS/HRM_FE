@@ -39,7 +39,7 @@
     color: #ffffff !important;
 
 }
-.button-edit, .button-delete {
+.button-edit, .button-delete, .button-detail, .button-check {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -55,4 +55,14 @@
 .button-delete {
     background-color: #ED1B24 !important;
     color: white !important;
+}
+
+.button-detail {
+    color: #000!important;
+    background-color: #F5D00C!important;
+}
+
+.button-check {
+    color: #000!important;
+    background-color: #97E965!important;
 }

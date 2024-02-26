@@ -118,6 +118,84 @@ li.menu ul > li:hover {
 
 #expandButton span {
     color: #fff;
+    font-size: 12px;
+    margin: auto;
+}
+
+.menu1-text {
+    color: #046738!important;
+    font-weight: 700;
+}
+
+.header-page-bottom {
+    border-bottom: 1px solid #046738;
+}
+
+.page-title {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    letter-spacing: 0em;
+    text-align: left;
+    text-transform: uppercase;
+    color: #046738;
+    align-self: center;
+}
+
+.back-button {
+    width: 117px;
+    height: 32px;
+    padding: 0px 16px 0px 16px;
+    border-radius: 8px;
+    gap: 12px;
+    background-color: #DADADA!important;
+    color: #046738;
+    border-color: #DADADA!important;
+}
+
+.back-button span {
+    color: #082819;
+    text-transform: uppercase!important;
+}
+
+.label {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 15px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #046738;
+}
+
+.cancel-button {
+    width: 74px;
+    height: 40px;
+    padding: 0px 24px 0px 24px;
+    border-radius: 8px;
+    border: 1px;
+    gap: 12px;
+    border: 1px solid #082819;
+    text-transform: uppercase!important;
+    font-size: 12px!important;
+}
+
+.add-button {
+    width: 112px;
+    height: 40px;
+    padding: 0px 24px 0px 24px;
+    border-radius: 8px;
+    border: 1px;
+    gap: 12px;
+    border: 1px solid #082819;
+    text-transform: uppercase!important;
+    background: #046738!important;
+    color: #fff!important;
+    border-color: #046738!important;
+    font-size: 12px!important;
+}
+
+.gap-8 {
+    gap: 8px!important;
 }
 
 
