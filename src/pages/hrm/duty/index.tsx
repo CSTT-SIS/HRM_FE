@@ -2,6 +2,7 @@ import { useEffect, Fragment, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { setPageTitle } from '../../../store/themeConfigSlice';
 import { lazy } from 'react';
+import Link from 'next/link';
 // Third party libs
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
 import Swal from 'sweetalert2';
@@ -9,28 +10,30 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
+import { deleteDepartment, detailDepartment, listAllDepartment } from '../../../services/apis/department.api';
 // constants
 import { PAGE_SIZES, PAGE_SIZES_DEFAULT, PAGE_NUMBER_DEFAULT } from '@/utils/constants';
 // helper
 import { capitalize, formatDate, showMessage } from '@/@core/utils';
 // icons
-import IconPencil from '@/components/Icon/IconPencil';
-import IconTrashLines from '@/components/Icon/IconTrashLines';
+import IconPencil from '../../../components/Icon/IconPencil';
+import IconTrashLines from '../../../components/Icon/IconTrashLines';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
 
 import { useRouter } from 'next/router';
 
 // json
-// import DutyList from './duty_list.json';
 import DutyModal from './modal/DutyModal';
-
-
+import IconFolderMinus from '@/components/Icon/IconFolderMinus';
+import IconDownload from '@/components/Icon/IconDownload';
+import duty_list from './duty_list.json'
 interface Props {
     [key: string]: any;
 }
 
-const DutyPage = ({ ...props }: Props) => {
+const Duty = ({ ...props }: Props) => {
+
     const dispatch = useDispatch();
     const { t } = useTranslation();
     useEffect(() => {
@@ -53,11 +56,11 @@ const DutyPage = ({ ...props }: Props) => {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const data = localStorage.getItem('dutyList');
+            const data = localStorage.getItem('duty_list');
             if (data) {
                 setGetStorge(JSON.parse(data));
             } else {
-                // localStorage.setItem('dutyList', JSON.stringify(DutyList));
+                localStorage.setItem('duty_list', JSON.stringify(duty_list));
             }
 
         }
@@ -99,7 +102,7 @@ const DutyPage = ({ ...props }: Props) => {
             .then((result) => {
                 if (result.value) {
                     const value = getStorge.filter((item: any) => { return (item.id !== data.id) });
-                    localStorage.setItem('dutyList', JSON.stringify(value));
+                    localStorage.setItem('duty_list', JSON.stringify(value));
                     setGetStorge(value);
                     showMessage(`${t('delete_duty_success')}`, 'success')
                 }
@@ -133,7 +136,6 @@ const DutyPage = ({ ...props }: Props) => {
             sortable: false,
             render: ({ status }: any) => <span className={`badge badge-outline-${status === "active" ? "success" : "danger"} `}>{status}</span>,
         },
-
         {
             accessor: 'action',
             title: 'Thao tác',
@@ -141,13 +143,13 @@ const DutyPage = ({ ...props }: Props) => {
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
                     <Tippy content={`${t('edit')}`}>
-                        <button type="button" onClick={() => handleEdit(records)}>
-                            <IconPencil />
+                        <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
+                            <IconPencil /> Sửa
                         </button>
                     </Tippy>
                     <Tippy content={`${t('delete')}`}>
-                        <button type="button" onClick={() => handleDelete(records)}>
-                            <IconTrashLines />
+                        <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                            <IconTrashLines /> Xóa
                         </button>
                     </Tippy>
                 </div>
@@ -162,22 +164,32 @@ const DutyPage = ({ ...props }: Props) => {
                     <IconLoading />
                 </div>
             )}
-            <title>Duty</title>
+            <title>{t('department')}</title>
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >
-                            <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                            {t('add')}
+                        <Link href="/hrm/duty/AddNewDuty">
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                                    <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                                    {t('add')}
+                                    </button>
+                        </Link>
+
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                            <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
+                            Nhập file
+                        </button>
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                            <IconDownload className="ltr:mr-2 rtl:ml-2" />
+                            Xuất file excel
                         </button>
                     </div>
-
                     <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
                 </div>
                 <div className="datatables">
                     <DataTable
                         highlightOnHover
-                        className="whitespace-nowrap table-hover"
+                        className="whitespace-nowrap table-hover custom_table"
                         records={recordsData}
                         columns={columns}
                         totalRecords={total}
@@ -205,4 +217,4 @@ const DutyPage = ({ ...props }: Props) => {
     );
 };
 
-export default DutyPage;
+export default Duty;

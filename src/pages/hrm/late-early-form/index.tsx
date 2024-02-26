@@ -2,6 +2,7 @@ import { useEffect, Fragment, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { setPageTitle } from '../../../store/themeConfigSlice';
 import { lazy } from 'react';
+import Link from 'next/link';
 // Third party libs
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
 import Swal from 'sweetalert2';
@@ -35,11 +36,10 @@ interface Props {
 }
 
 const LateEarlyForm = ({ ...props }: Props) => {
-
     const dispatch = useDispatch();
     const { t } = useTranslation();
     useEffect(() => {
-        dispatch(setPageTitle(`${t('department')}`));
+        dispatch(setPageTitle(`${t('late_early_form')}`));
     });
 
     const router = useRouter();
@@ -152,6 +152,7 @@ const LateEarlyForm = ({ ...props }: Props) => {
             )
         }
     }
+
     const columns = [
         {
             accessor: 'id',
@@ -193,18 +194,18 @@ const LateEarlyForm = ({ ...props }: Props) => {
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
                     <Tippy content={`${t('edit')}`}>
-                        <button type="button" onClick={() => handleEdit(records)}>
-                            <IconPencil />
+                        <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
+                            <IconPencil /> Sửa
                         </button>
                     </Tippy>
                     <Tippy content={`${t('check')}`}>
-                        <button type="button" onClick={() => handleCheck(records)}>
-                            <IconChecks />
+                        <button type="button" className="button-check" onClick={() => handleCheck(records)}>
+                            <IconChecks /> Duyệt
                         </button>
                     </Tippy>
                     <Tippy content={`${t('delete')}`}>
-                        <button type="button" onClick={() => handleDelete(records)}>
-                            <IconTrashLines />
+                        <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                            <IconTrashLines /> Xóa
                         </button>
                     </Tippy>
                 </div>
@@ -219,19 +220,22 @@ const LateEarlyForm = ({ ...props }: Props) => {
                     <IconLoading />
                 </div>
             )}
-            <title>{t('department')}</title>
+            <title>{t('late_early_form')}</title>
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >
-                            <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                            {t('add')}
-                        </button>
-                        <button type="button" className="btn btn-primary btn-sm m-1" >
+                        <Link href="/hrm/late-early-form/AddNewForm">
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                                    <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                                    {t('add')}
+                                    </button>
+                        </Link>
+
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
                             Nhập file
                         </button>
-                        <button type="button" className="btn btn-primary btn-sm m-1" >
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconDownload className="ltr:mr-2 rtl:ml-2" />
                             Xuất file excel
                         </button>
@@ -241,7 +245,7 @@ const LateEarlyForm = ({ ...props }: Props) => {
                 <div className="datatables">
                     <DataTable
                         highlightOnHover
-                        className="whitespace-nowrap table-hover"
+                        className="whitespace-nowrap table-hover custom_table"
                         records={recordsData}
                         columns={columns}
                         totalRecords={total}
@@ -260,14 +264,6 @@ const LateEarlyForm = ({ ...props }: Props) => {
             <LateEarlyFormModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}
-                data={data}
-                totalData={getStorge}
-                setData={setData}
-                setGetStorge={setGetStorge}
-            />
-             <DetailModal
-                openModal={openDetail}
-                setOpenModal={setOpenDetail}
                 data={data}
                 totalData={getStorge}
                 setData={setData}
