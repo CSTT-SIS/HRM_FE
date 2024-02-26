@@ -174,7 +174,7 @@ const Sidebar = () => {
                             <li className="nav-item">
                                 <ul>
                                     <li className="menu menu1 nav-item">
-                                    <button type="button" className={`w-full p-0`}>
+                                    <button type="button" className={`w-full p-0 header-menu`}>
                                         <div className="flex items-center">
                                             <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color">{t('general_info_menu')}</span>
                                         </div>
