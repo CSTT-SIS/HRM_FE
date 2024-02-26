@@ -32,8 +32,7 @@ const ProposalForm = ({ ...props }: Props) => {
 
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().required(`${t('please_fill_name_proposal')}`),
-        content: Yup.string().required(`${t('please_fill_content_proposal')}`),
-        repairRequestId: new Yup.ObjectSchema().required(`${t('please_choose_repair')}`)
+        content: Yup.string().required(`${t('please_fill_content_proposal')}`)
     });
 
     const { data: dropdownRepair, pagination: repairPagination, isLoading: repairLoading } = DropdownRepair({ page: pageRepair })
@@ -41,9 +40,8 @@ const ProposalForm = ({ ...props }: Props) => {
     const handleProposal = (param: any) => {
         const query: any = {
             name: param.name,
-            type: "REPAIR",
-            content: param.content,
-            repairRequestId: param?.repairRequestId?.value
+            type: "SUPPLY",
+            content: param.content
         };
 
         if (data) {
@@ -56,8 +54,9 @@ const ProposalForm = ({ ...props }: Props) => {
         } else {
             CreateProposal(query).then((res) => {
                 router.push({
-                    pathname: `/warehouse-process/proposal-repair/${res.data.id}`,
+                    pathname: `/warehouse-process/proposal-supply/${res.data.id}`,
                     query: {
+                        type: res.data.type,
                         status: res.data.status
                     }
                 })
@@ -72,8 +71,9 @@ const ProposalForm = ({ ...props }: Props) => {
         GetProposal({ id: router.query.id }).then((res) => {
             setData(res.data);
             router.push({
-                pathname: `/warehouse-process/proposal-repair/${res.data.id}`,
+                pathname: `/warehouse-process/proposal-supply/${res.data.id}`,
                 query: {
+                    type: res.data.type,
                     status: res.data.status
                 }
             })
@@ -83,18 +83,13 @@ const ProposalForm = ({ ...props }: Props) => {
     }
 
     const handleCancel = () => {
-        router.push('/warehouse-process/proposal-repair')
+        router.push('/warehouse-process/proposal-supply')
     };
 
     useEffect(() => {
         setInitialValue({
             name: data ? `${data?.name}` : "",
-            content: data ? `${data?.content}` : "",
-            repairRequestId: data ? {
-                value: `${data?.repairRequest?.id}`,
-                label: `${data?.repairRequest?.name}`,
-            } : "",
-
+            content: data ? `${data?.content}` : ""
         })
     }, [data, router]);
 
@@ -117,7 +112,7 @@ const ProposalForm = ({ ...props }: Props) => {
         <div className="p-5">
             <div className='flex justify-between header-page-bottom pb-4 mb-4'>
                 <h1 className='page-title'>{t('add_shift')}</h1>
-                <Link href="/warehouse-process/proposal-repair">
+                <Link href="/warehouse-process/proposal-supply">
                     <div className="btn btn-primary btn-sm m-1 back-button h-9" >
                         <IconBackward />
                         <span>
@@ -137,41 +132,18 @@ const ProposalForm = ({ ...props }: Props) => {
 
                 {({ errors, values, setFieldValue }) => (
                     <Form className="space-y-5" >
-                        <div className='flex justify-between gap-5'>
-                            <div className=" w-1/2">
-                                <label htmlFor="name" className='label'> {t('name')} < span style={{ color: 'red' }}>* </span></label >
-                                <Field
-                                    name="name"
-                                    type="text"
-                                    id="name"
-                                    placeholder={`${t('enter_name')}`}
-                                    className="form-input"
-                                />
-                                {errors.name ? (
-                                    <div className="text-danger mt-1"> {`${errors.name}`} </div>
-                                ) : null}
-                            </div>
-                            <div className="flex justify-between gap-4 w-1/2">
-                                <div className="flex-1">
-                                    <label htmlFor="repairRequestId" className='label'> {t('repair_request')} < span style={{ color: 'red' }}>* </span></label >
-                                    <Select
-                                        id='repairRequestId'
-                                        name='repairRequestId'
-                                        options={dataRepairDropdown}
-                                        onMenuOpen={() => setPageRepair(1)}
-                                        onMenuScrollToBottom={handleMenuScrollToBottomRepair}
-                                        isLoading={repairLoading}
-                                        maxMenuHeight={160}
-                                        value={values?.repairRequestId}
-                                        onChange={e => {
-                                            setFieldValue('repairRequestId', e)
-                                        }}
-                                    />
-                                    {errors.repairRequestId ? (
-                                        <div className="text-danger mt-1"> {`${errors.repairRequestId}`} </div>
-                                    ) : null}
-                                </div>
-                            </div>
+                        <div className="mb-5">
+                            <label htmlFor="name" className='label'> {t('name')} < span style={{ color: 'red' }}>* </span></label >
+                            <Field
+                                name="name"
+                                type="text"
+                                id="name"
+                                placeholder={`${t('enter_name')}`}
+                                className="form-input"
+                            />
+                            {errors.name ? (
+                                <div className="text-danger mt-1"> {`${errors.name}`} </div>
+                            ) : null}
                         </div>
                         <div className="mb-5">
                             <label htmlFor="type" className='label'> {t('content')} < span style={{ color: 'red' }}>* </span></label >

@@ -109,7 +109,7 @@ const ProposalPage = ({ ...props }: Props) => {
     };
 
     const handleDetail = (value: any) => {
-        router.push(`/warehouse-process/proposal-repair/${value.id}?type=${value.type}&&status=${value.status}`)
+        router.push(`/warehouse-process/proposal-supply/${value.id}?type=${value.type}&&status=${value.status}`)
     }
 
     const handleApprove = ({ id }: any) => {
@@ -196,7 +196,7 @@ const ProposalPage = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" onClick={(e) => router.push(`/warehouse-process/proposal-repair/create`)} className="btn btn-primary btn-sm m-1 custom-button" >
+                        <button type="button" onClick={(e) => router.push(`/warehouse-process/proposal-supply/create`)} className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                             {t('add')}
                         </button>
