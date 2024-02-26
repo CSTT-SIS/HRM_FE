@@ -57,12 +57,12 @@ const PersonnelModal = ({ ...props }: Props) => {
 			showMessage(`${t('add_staff_success')}`, 'success');
 		}
 	};
-    const [active, setActive] = useState<string>('1');
-    const togglePara = (value: string) => {
-        setActive((oldValue) => {
-            return oldValue === value ? '' : value;
-        });
-    };
+	const [active, setActive] = useState<string>('1');
+	const togglePara = (value: string) => {
+		setActive((oldValue) => {
+			return oldValue === value ? '' : value;
+		});
+	};
 	const handleCancel = () => {
 		props.setOpenModal(false);
 		props.setData(undefined);
@@ -120,159 +120,159 @@ const PersonnelModal = ({ ...props }: Props) => {
 										{({ errors, touched }) => (
 											<Form className="space-y-5">
 												<div className="mb-5">
-                            <div className="space-y-2 font-semibold">
-                                <div className="rounded border border-[#d3d3d3] dark:border-[#1b2e4b]">
-                                    <button
-                                        type="button"
-                                        className={`flex w-full items-center p-4 text-white-dark dark:bg-[#1b2e4b] ${active === '1' ? '!text-primary' : ''}`}
-                                        onClick={() => togglePara('1')}
-                                    >
-{t('general_infomation')}                                        <div className={`ltr:ml-auto rtl:mr-auto ${active === '1' ? 'rotate-180' : ''}`}>
-                                            <IconCaretDown />
-                                        </div>
-                                    </button>
-                                    <div>
-                                        <AnimateHeight duration={300} height={active === '1' ? 'auto' : 0}>
-                                            <div className="space-y-2 border-[#d3d3d3] p-4 text-[13px] text-white-dark dark:border-[#1b2e4b]">
-                                            <div className='flex justify-between gap-5'>
-																		<div className="mb-5 w-1/2">
-																			<label htmlFor="code">
-																				{' '}
-																				{t('code_staff')} <span style={{ color: 'red' }}>* </span>
-																			</label>
-																			<Field name="code" type="text" id="code" placeholder={`${t('enter_code_staff')}`} className="form-input" />
-																			{errors.code ? <div className="mt-1 text-danger"> {errors.code} </div> : null}
+													<div className="space-y-2 font-semibold">
+														<div className="rounded border border-[#d3d3d3] dark:border-[#1b2e4b]">
+															<button
+																type="button"
+																className={`flex w-full items-center p-4 text-white-dark dark:bg-[#1b2e4b] ${active === '1' ? '!text-primary' : ''}`}
+																onClick={() => togglePara('1')}
+															>
+																{t('general_infomation')}                                        <div className={`ltr:ml-auto rtl:mr-auto ${active === '1' ? 'rotate-180' : ''}`}>
+																	<IconCaretDown />
+																</div>
+															</button>
+															<div>
+																<AnimateHeight duration={300} height={active === '1' ? 'auto' : 0}>
+																	<div className="space-y-2 border-[#d3d3d3] p-4 text-[13px] text-white-dark dark:border-[#1b2e4b]">
+																		<div className='flex justify-between gap-5'>
+																			<div className="mb-5 w-1/2">
+																				<label htmlFor="code">
+																					{' '}
+																					{t('code_staff')} <span style={{ color: 'red' }}>* </span>
+																				</label>
+																				<Field name="code" type="text" id="code" placeholder={`${t('enter_code_staff')}`} className="form-input" />
+																				{errors.code ? <div className="mt-1 text-danger"> {errors.code} </div> : null}
+																			</div>
+																			<div className="mb-5 w-1/2">
+																				<label htmlFor="name">
+																					{' '}
+																					{t('name_staff')} <span style={{ color: 'red' }}>* </span>
+																				</label>
+																				<Field name="name" type="text" id="name" placeholder={`${t('enter_name_staff')}`} className="form-input" />
+																				{errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null}
+																			</div>
 																		</div>
-																		<div className="mb-5 w-1/2">
-																			<label htmlFor="name">
-																				{' '}
-																				{t('name_staff')} <span style={{ color: 'red' }}>* </span>
-																			</label>
-																			<Field name="name" type="text" id="name" placeholder={`${t('enter_name_staff')}`} className="form-input" />
-																			{errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null}
+																		<div className='flex justify-between gap-5'>
+																			<div className="mb-5 w-1/2">
+																				<label htmlFor="surname">
+																					{' '}
+																					{t('surname_middle')} <span style={{ color: 'red' }}>* </span>
+																				</label>
+																				<Field name="surname" type="text" id="surname" placeholder={t('enter_surname_middle')} className="form-input" />
+																				{errors.surname ? <div className="mt-1 text-danger"> {errors.surname} </div> : null}
+																			</div>
+																			<div className="mb-5 w-1/2">
+																				<label htmlFor="email">
+																					{' '}
+																					Email <span style={{ color: 'red' }}>* </span>
+																				</label>
+																				<Field name="email" type="text" id="email" placeholder={t('enter_email')} className="form-input" />
+																				{errors.email ? <div className="mt-1 text-danger"> {errors.email} </div> : null}
+																			</div>
 																		</div>
-                                                                        </div>
-                                                                        <div className='flex justify-between gap-5'>
-																		<div className="mb-5 w-1/2">
-																			<label htmlFor="surname">
-																				{' '}
-																				{t('surname_middle')} <span style={{ color: 'red' }}>* </span>
-																			</label>
-																			<Field name="surname" type="text" id="surname" placeholder={t('enter_surname_middle')} className="form-input" />
-																			{errors.surname ? <div className="mt-1 text-danger"> {errors.surname} </div> : null}
+																		<div className='flex justify-between gap-5'>
+																			<div className="mb-5 w-1/2">
+																				<label htmlFor="phone">
+																					{' '}
+																					{t('phone_number')} <span style={{ color: 'red' }}>* </span>
+																				</label>
+																				<Field name="phone" type="text" id="phone" placeholder={t('enter_phone_number')} className="form-input" />
+																				{errors.phone ? <div className="mt-1 text-danger"> {errors.phone} </div> : null}
+																			</div>
+																			<div className="mb-5 w-1/2">
+																				<label htmlFor="userName">
+																					{' '}
+																					{t('username')}<span style={{ color: 'red' }}>* </span>
+																				</label>
+																				<Field name="userName" type="text" id="userName" placeholder={t('enter_user_name')} className="form-input" />
+																				{errors.userName ? <div className="mt-1 text-danger"> {errors.userName} </div> : null}
+																			</div>
 																		</div>
-																		<div className="mb-5 w-1/2">
-																			<label htmlFor="email">
-																				{' '}
-																				Email <span style={{ color: 'red' }}>* </span>
-																			</label>
-																			<Field name="email" type="text" id="email" placeholder={t('enter_email')} className="form-input" />
-																			{errors.email ? <div className="mt-1 text-danger"> {errors.email} </div> : null}
-																		</div>
-                                                                        </div>
-                                                                        <div className='flex justify-between gap-5'>
-																		<div className="mb-5 w-1/2">
-																			<label htmlFor="phone">
-																				{' '}
-																				{t('phone_number')} <span style={{ color: 'red' }}>* </span>
-																			</label>
-																			<Field name="phone" type="text" id="phone" placeholder={t('enter_phone_number')} className="form-input" />
-																			{errors.phone ? <div className="mt-1 text-danger"> {errors.phone} </div> : null}
-																		</div>
-																		<div className="mb-5 w-1/2">
-																			<label htmlFor="userName">
-																				{' '}
-																				{t('username')}<span style={{ color: 'red' }}>* </span>
-																			</label>
-																			<Field name="userName" type="text" id="userName" placeholder={t('enter_user_name')} className="form-input" />
-																			{errors.userName ? <div className="mt-1 text-danger"> {errors.userName} </div> : null}
-																		</div>
-                                                                        </div>
 																	</div>
 																	{/* <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
 																		{t('reset_password')}
 																	</button> */}
-                                        </AnimateHeight>
-                                    </div>
-                                </div>
-                                <div className="rounded border border-[#d3d3d3] dark:border-[#1b2e4b]">
-                                    <button
-                                        type="button"
-                                        className={`flex w-full items-center p-4 text-white-dark dark:bg-[#1b2e4b] ${active === '2' ? '!text-primary' : ''}`}
-                                        onClick={() => togglePara('2')}
-                                    >
-                                        {t('personal_information')}
-                                        <div className={`ltr:ml-auto rtl:mr-auto ${active === '2' ? 'rotate-180' : ''}`}>
-                                            <IconCaretDown />
-                                        </div>
-                                    </button>
-                                    <div>
-                                        <AnimateHeight duration={300} height={active === '2' ? 'auto' : 0}>
-                                        <div className="space-y-2 border-t border-[#d3d3d3] p-4 text-[13px] text-white-dark dark:border-[#1b2e4b]">
-                                        <div className='flex justify-between gap-5'>
-																		<div className="mb-5 w-1/2">
-																			<label htmlFor="othername">
-																				{' '}
-																				{t('other_name')}<span style={{ color: 'red' }}>* </span>
-																			</label>
-																			<Field name="othername" type="text" id="othername" placeholder={t('enter_other_name')} className="form-input" />
-																			{errors.othername ? <div className="mt-1 text-danger"> {errors.othername} </div> : null}
+																</AnimateHeight>
+															</div>
+														</div>
+														<div className="rounded border border-[#d3d3d3] dark:border-[#1b2e4b]">
+															<button
+																type="button"
+																className={`flex w-full items-center p-4 text-white-dark dark:bg-[#1b2e4b] ${active === '2' ? '!text-primary' : ''}`}
+																onClick={() => togglePara('2')}
+															>
+																{t('personal_information')}
+																<div className={`ltr:ml-auto rtl:mr-auto ${active === '2' ? 'rotate-180' : ''}`}>
+																	<IconCaretDown />
+																</div>
+															</button>
+															<div>
+																<AnimateHeight duration={300} height={active === '2' ? 'auto' : 0}>
+																	<div className="space-y-2 border-t border-[#d3d3d3] p-4 text-[13px] text-white-dark dark:border-[#1b2e4b]">
+																		<div className='flex justify-between gap-5'>
+																			<div className="mb-5 w-1/2">
+																				<label htmlFor="othername">
+																					{' '}
+																					{t('other_name')}<span style={{ color: 'red' }}>* </span>
+																				</label>
+																				<Field name="othername" type="text" id="othername" placeholder={t('enter_other_name')} className="form-input" />
+																				{errors.othername ? <div className="mt-1 text-danger"> {errors.othername} </div> : null}
+																			</div>
+																			<div className="mb-5 w-1/2">
+																				<label htmlFor="dateofbirth">
+																					{' '}
+																					{t('date_of_birth')} <span style={{ color: 'red' }}>* </span>
+																				</label>
+																				<Field name="dateofbirth" type="text" id="dateofbirth" placeholder={t('enter_date_of_birth')} className="form-input" />
+																				{errors.dateofbirth ? <div className="mt-1 text-danger"> {errors.dateofbirth} </div> : null}
+																			</div>
 																		</div>
-																		<div className="mb-5 w-1/2">
-																			<label htmlFor="dateofbirth">
-																				{' '}
-																				{t('date_of_birth')} <span style={{ color: 'red' }}>* </span>
-																			</label>
-																			<Field name="dateofbirth" type="text" id="dateofbirth" placeholder={t('enter_date_of_birth')} className="form-input" />
-																			{errors.dateofbirth ? <div className="mt-1 text-danger"> {errors.dateofbirth} </div> : null}
+																		<div className='flex justify-between gap-5'>
+																			<div className="mb-5 w-1/2">
+																				<label htmlFor="sex">
+																					{' '}
+																					{t('gender')} <span style={{ color: 'red' }}>* </span>
+																				</label>
+																				<select className="form-select w-100">
+																					<option>{t('male')}</option>
+																					<option>{t('female')}</option>
+																				</select>
+																				{errors.sex ? <div className="mt-1 text-danger"> {errors.sex} </div> : null}
+																			</div>
+																			<div className="mb-5 w-1/2">
+																				<label htmlFor="IDnumber">
+																					{' '}
+																					{t('id_number')} <span style={{ color: 'red' }}>* </span>
+																				</label>
+																				<Field name="IDnumber" type="text" id="IDnumber" placeholder={t('enter_id_number')} className="form-input" />
+																				{errors.IDnumber ? <div className="mt-1 text-danger"> {errors.IDnumber} </div> : null}
+																			</div>
 																		</div>
-                                                                        </div>
-                                                                        <div className='flex justify-between gap-5'>
-																		<div className="mb-5 w-1/2">
-																			<label htmlFor="sex">
-																				{' '}
-																				{t('gender')} <span style={{ color: 'red' }}>* </span>
-																			</label>
-																			<select className="form-select w-100">
-                                <option>{t('male')}</option>
-                                <option>{t('female')}</option>
-                            </select>
-																			{errors.sex ? <div className="mt-1 text-danger"> {errors.sex} </div> : null}
+																		<div className='flex justify-between gap-5'>
+																			<div className="mb-5 w-1/2">
+																				<label htmlFor="dateissue">
+																					{' '}
+																					{t('date_of_issue')}<span style={{ color: 'red' }}>* </span>
+																				</label>
+																				<Field name="dateissue" type="text" id="dateissue" placeholder={t('enter_date_of_issue')} className="form-input" />
+																				{errors.dateissue ? <div className="mt-1 text-danger"> {errors.dateissue} </div> : null}
+																			</div>
+																			<div className="mb-5 w-1/2">
+																				<label htmlFor="IDnumber">
+																					{' '}
+																					{t('address_issue')}<span style={{ color: 'red' }}>* </span>
+																				</label>
+																				<Field name="IDnumber" type="text" id="IDnumber" placeholder={t('enter_address_issue')} className="form-input" />
+																				{errors.IDnumber ? <div className="mt-1 text-danger"> {errors.IDnumber} </div> : null}
+																			</div>
 																		</div>
-																		<div className="mb-5 w-1/2">
-																			<label htmlFor="IDnumber">
-																				{' '}
-																				{t('id_number')} <span style={{ color: 'red' }}>* </span>
-																			</label>
-																			<Field name="IDnumber" type="text" id="IDnumber" placeholder={t('enter_id_number')} className="form-input" />
-																			{errors.IDnumber ? <div className="mt-1 text-danger"> {errors.IDnumber} </div> : null}
-																		</div>
-                                                                        </div>
-                                                                        <div className='flex justify-between gap-5'>
-																		<div className="mb-5 w-1/2">
-																			<label htmlFor="dateissue">
-																				{' '}
-																				{t('date_of_issue')}<span style={{ color: 'red' }}>* </span>
-																			</label>
-																			<Field name="dateissue" type="text" id="dateissue" placeholder={t('enter_date_of_issue')} className="form-input" />
-																			{errors.dateissue ? <div className="mt-1 text-danger"> {errors.dateissue} </div> : null}
-																		</div>
-																		<div className="mb-5 w-1/2">
-																			<label htmlFor="IDnumber">
-																				{' '}
-																				{t('address_issue')}<span style={{ color: 'red' }}>* </span>
-																			</label>
-																			<Field name="IDnumber" type="text" id="IDnumber" placeholder={t('enter_address_issue')} className="form-input" />
-																			{errors.IDnumber ? <div className="mt-1 text-danger"> {errors.IDnumber} </div> : null}
-																		</div>
-                                                                        </div>
 																	</div>
-                                        </AnimateHeight>
-                                    </div>
-                                </div>
+																</AnimateHeight>
+															</div>
+														</div>
 
-                            </div>
-                        </div>
+													</div>
+												</div>
 
 												<div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
 													<button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
