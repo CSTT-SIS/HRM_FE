@@ -610,5 +610,6 @@
   "warehousing_detail": "Chi tiết xuất/nhập kho",
   "order": "Đơn đặt mua",
   "create_befor_update_detail": "Vui lòng tạo mới thông tin trước khi thêm chi tiết",
-  "update_quantity": "Cập nhật số lượng"
+  "update_quantity": "Cập nhật số lượng",
+  "supply": "Xuất mìn"
 }
