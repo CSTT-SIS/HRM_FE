@@ -1,13 +1,13 @@
 .custom_table {
     .mantine-Table-root>thead {
-        border-bottom: 1px #046738 double;
+        border-bottom: 1px #BABABA double;
 
         tr {
-            background-color: #EEECB1 !important;
+            background-color: #EBEAEA !important;
 
 
             th>div {
-                color: #046738;
+                color: #082819;
                 font-size: 12px;
                 font-weight: 700;
             }
@@ -16,26 +16,27 @@
 
     .mantine-Table-root>tbody {
         tr {
-            border-bottom: 1px #A3CCB8 double !important;
+            border-bottom: 1px #BABABA double !important;
 
         }
         tr:hover {
-            background-color: #EBF6F1 !important;
+            background-color: #F5F5F5 !important;
         }
     }
 }
 
 .custom-button {
-    background-color: #046738 !important;
+    background-color: #7E8F12 !important;
     height: 32px;
+    border: 0;
     border-radius: 20px !important;
     padding: 0 16px !important;
 }
 .mantine-Pagination-item {
-    color: #046738 !important;
+    color: #7E8F12 !important;
 }
 .mantine-Pagination-item[data-active] {
-    background-color:  #046738 !important;
+    background-color:  #7E8F12 !important;
     color: #ffffff !important;
 
 }
@@ -65,4 +66,17 @@
 .button-check {
     color: #000!important;
     background-color: #97E965!important;
+}
+.display-style {
+    color: #082819;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    .custom-button-display {
+        height: 32px;
+        width: 32px;
+        padding: 5px;
+        border: 0;
+    }
 }

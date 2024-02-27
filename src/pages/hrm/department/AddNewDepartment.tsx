@@ -125,7 +125,7 @@ const AddNewDepartment = ({ ...props }: Props) => {
                     handleDepartment(values);
                 }}
             >
-                {({ errors, values, setFieldValue }) => (
+                {({ errors, values, setFieldValue, submitCount }) => (
                     <Form className="space-y-5">
                         <div className='flex justify-between gap-5'>
                             <div className="mb-5 w-1/2">
@@ -134,7 +134,7 @@ const AddNewDepartment = ({ ...props }: Props) => {
                                     {t('name_department')} <span style={{ color: 'red' }}>* </span>
                                 </label>
                                 <Field name="name" type="text" id="name" placeholder={`${t('enter_name_department')}`} className="form-input" />
-                                {errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null}
+                                {submitCount ? errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null  : ''}
                             </div>
                             <div className="mb-5 w-1/2">
                                 <label htmlFor="code" className='label'>
@@ -142,7 +142,7 @@ const AddNewDepartment = ({ ...props }: Props) => {
                                     {t('code_department')} <span style={{ color: 'red' }}>* </span>
                                 </label>
                                 <Field name="code" type="text" id="code" placeholder={`${t('enter_code_department')}`} className="form-input" />
-                                {errors.code ? <div className="mt-1 text-danger"> {errors.code} </div> : null}
+                                {submitCount ? errors.code ? <div className="mt-1 text-danger"> {errors.code} </div> : null  : ''}
                             </div>
                         </div>
                         <div className='flex justify-between gap-5'>
@@ -152,7 +152,7 @@ const AddNewDepartment = ({ ...props }: Props) => {
                                     {t('Abbreviated_name')} <span style={{ color: 'red' }}>* </span>
                                 </label>
                                 <Field name="abbreviated" type="text" id="abbreviated" placeholder={`${t('enter_abbreviated_name')}`} className="form-input" />
-                                {errors.abbreviated ? <div className="mt-1 text-danger"> {errors.abbreviated} </div> : null}
+                                {submitCount ? errors.abbreviated ? <div className="mt-1 text-danger"> {errors.abbreviated} </div> : null  : ''}
                             </div>
                             <div className="mb-5 w-1/2">
                                 <label htmlFor="departmentparentId" className='label'> {t('Department_Parent')} < span style={{ color: 'red' }}>* </span></label >
@@ -167,9 +167,9 @@ const AddNewDepartment = ({ ...props }: Props) => {
                                         setFieldValue('departmentparentId', e)
                                     }}
                                 />
-                                {errors.departmentparentId ? (
+                                {submitCount ? errors.departmentparentId ? (
                                     <div className="text-danger mt-1"> {errors.departmentparentId} </div>
-                                ) : null}
+                                ) : null  : ''}
                             </div>
                         </div>
 
@@ -187,9 +187,9 @@ const AddNewDepartment = ({ ...props }: Props) => {
                                     setFieldValue('manageId', e)
                                 }}
                             />
-                            {errors.manageId ? (
+                            {submitCount ? errors.manageId ? (
                                 <div className="text-danger mt-1"> {errors.manageId} </div>
-                            ) : null}
+                            ) : null  : ''}
                         </div>
                         <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">
                             <button type="button" className="btn btn-outline-dark cancel-button" onClick={() => handleCancel()}>
