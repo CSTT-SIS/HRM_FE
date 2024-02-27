@@ -131,50 +131,50 @@ const DetailModal = ({ ...props }: Props) => {
                 </div>
             )}
             <DetailPage mutate={mutate} />
-            {
-                router.query.id !== "create" &&
-                <div className="panel mt-6">
-                    <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
-                        <div className="flex items-center flex-wrap">
-                            {/* <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >
+            <div className="panel mt-6">
+                <div className='flex justify-between header-page-bottom pb-4 mb-4'>
+                    <h1 className='page-title'> {t('warehousing_detail')}</h1>
+                </div>
+                <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
+                    <div className="flex items-center flex-wrap">
+                        {/* <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >
                         <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                         {t('add')}
                     </button> */}
-                        </div>
+                    </div>
 
-                        <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
-                    </div>
-                    <div className="datatables">
-                        <DataTable
-                            highlightOnHover
-                            className="whitespace-nowrap table-hover"
-                            records={warehousingBillDetail?.data}
-                            columns={columns}
-                            totalRecords={pagination?.totalRecords}
-                            recordsPerPage={pagination?.perPage}
-                            page={pagination?.page}
-                            onPageChange={(p) => handleChangePage(p, pagination?.perPage)}
-                            // recordsPerPageOptions={PAGE_SIZES}
-                            // onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
-                            sortStatus={sortStatus}
-                            onSortStatusChange={setSortStatus}
-                            minHeight={200}
-                            paginationText={({ from, to, totalRecords }) => ``}
-                        />
-                    </div>
-                    {
-                        router.query.status !== "COMPLETED" &&
-                        <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
-                            <button type="button" className="btn btn-outline-warning" onClick={() => handleCancel()}>
-                                {t('pending')}
-                            </button>
-                            <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={() => handleChangeComplete()}>
-                                {t('complete')}
-                            </button>
-                        </div>
-                    }
+                    <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
                 </div>
-            }
+                <div className="datatables">
+                    <DataTable
+                        highlightOnHover
+                        className="whitespace-nowrap table-hover"
+                        records={warehousingBillDetail?.data}
+                        columns={columns}
+                        totalRecords={pagination?.totalRecords}
+                        recordsPerPage={pagination?.perPage}
+                        page={pagination?.page}
+                        onPageChange={(p) => handleChangePage(p, pagination?.perPage)}
+                        // recordsPerPageOptions={PAGE_SIZES}
+                        // onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
+                        sortStatus={sortStatus}
+                        onSortStatusChange={setSortStatus}
+                        minHeight={200}
+                        paginationText={({ from, to, totalRecords }) => ``}
+                    />
+                </div>
+                {
+                    router.query.status === "COMPLETED" &&
+                    <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
+                        <button type="button" className="btn btn-outline-warning" onClick={() => handleCancel()}>
+                            {t('pending')}
+                        </button>
+                        <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4" onClick={() => handleChangeComplete()}>
+                            {t('complete')}
+                        </button>
+                    </div>
+                }
+            </div>
             <HandleDetailModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}

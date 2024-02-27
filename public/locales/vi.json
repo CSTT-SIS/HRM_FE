@@ -321,7 +321,7 @@
   "create_shelf_success": "Tạo kệ Thành công",
   "edit_shelf_success": "Chỉnh sửa kệ Thành công",
   "import_product": "Nhập sản phẩm",
-  "order_product": "Đặt mua sản phẩm",
+  "order_product": "Đặt mua",
   "order_detail": "Chi tiết đặt mua",
   "proposal": "Yêu cầu",
   "proposal_detail": "Chi tiết yêu cầu",
@@ -457,7 +457,7 @@
   "enter_name": "Nhập tên",
   "enter_note": "Nhập ghi chú",
   "please_fill_warehouse": "Vui lòng nhập vào kho",
-  "repair": "Sửa",
+  "repair": "Sửa chữa",
   "repair_by_id": "Sửa chữa bởi ai",
   "vehicle_registration_number": "Số đăng ký xe",
   "damage_level": "Mức độ thiệt hại",
@@ -604,5 +604,12 @@
   "reason": "Lý do",
   "add_overtime_form": "Thêm đơn xin làm thêm giờ",
   "choose_shift": "Chọn ca",
-  "fill_overtime_time": "Nhập thời gian làm thêm"
+  "fill_overtime_time": "Nhập thời gian làm thêm",
+  "please_choose_repair": "Vui lòng chọn sửa chữa",
+  "repair_detail": "Chi tiết sửa chữa",
+  "warehousing_detail": "Chi tiết xuất/nhập kho",
+  "order": "Đơn đặt mua",
+  "create_befor_update_detail": "Vui lòng tạo mới thông tin trước khi thêm chi tiết",
+  "update_quantity": "Cập nhật số lượng",
+  "supply": "Xuất mìn"
 }

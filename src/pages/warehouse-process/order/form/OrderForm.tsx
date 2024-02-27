@@ -10,6 +10,10 @@ import Select, { components } from 'react-select';
 import { DropdownOrderType, DropdownProposals, DropdownProviders } from '@/services/swr/dropdown.twr';
 import { CreateOrder, EditOrder, GetOrder } from '@/services/apis/order.api';
 import moment from 'moment';
+import Flatpickr from 'react-flatpickr';
+import 'flatpickr/dist/flatpickr.css';
+import Link from 'next/link';
+import IconBackward from '@/components/Icon/IconBackward';
 
 interface Props {
     [key: string]: any;
@@ -150,24 +154,32 @@ const OrderModal = ({ ...props }: Props) => {
     }
 
     return (
-        <div className='panel'>
-            <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                {t('order')}
+        <div className="p-5">
+            <div className='flex justify-between header-page-bottom pb-4 mb-4'>
+                <h1 className='page-title'>{t('order_product')}</h1>
+                <Link href="/warehouse-process/order">
+                    <div className="btn btn-primary btn-sm m-1 back-button h-9" >
+                        <IconBackward />
+                        <span>
+                            {t('back')}
+                        </span>
+                    </div>
+                </Link>
             </div>
-            <div className="p-5">
-                <Formik
-                    initialValues={initialValue}
-                    validationSchema={SubmittedForm}
-                    onSubmit={values => {
-                        handleOrder(values);
-                    }}
-                    enableReinitialize
-                >
+            <Formik
+                initialValues={initialValue}
+                validationSchema={SubmittedForm}
+                onSubmit={values => {
+                    handleOrder(values);
+                }}
+                enableReinitialize
+            >
 
-                    {({ errors, values, setFieldValue }) => (
-                        <Form className="space-y-5" >
-                            <div className="mb-5">
-                                <label htmlFor="name" > {t('name')} < span style={{ color: 'red' }}>* </span></label >
+                {({ errors, values, setFieldValue }) => (
+                    <Form className="space-y-5" >
+                        <div className='flex justify-between gap-5'>
+                            <div className="w-1/2">
+                                <label htmlFor="name" className='label'> {t('name')} < span style={{ color: 'red' }}>* </span></label >
                                 <Field
                                     name="name"
                                     type="text"
@@ -179,68 +191,66 @@ const OrderModal = ({ ...props }: Props) => {
                                     <div className="text-danger mt-1"> {`${errors.name}`} </div>
                                 ) : null}
                             </div>
-                            <div className="mb-5 flex justify-between gap-4">
-                                <div className="flex-1">
-                                    <label htmlFor="proposalId" > {t('proposal')} < span style={{ color: 'red' }}>* </span></label >
-                                    <Select
-                                        id='proposalId'
-                                        name='proposalId'
-                                        options={dataProposalDropdown}
-                                        onMenuOpen={() => setPageProposal(1)}
-                                        onMenuScrollToBottom={handleMenuScrollToBottomProposal}
-                                        isLoading={proposalLoading}
-                                        maxMenuHeight={160}
-                                        value={values?.proposalId}
-                                        onChange={e => {
-                                            setFieldValue('proposalId', e)
-                                        }}
-                                    />
-                                    {errors.proposalId ? (
-                                        <div className="text-danger mt-1"> {`${errors.proposalId}`} </div>
-                                    ) : null}
-                                </div>
+                            <div className="w-1/2">
+                                <label htmlFor="proposalId" className='label'> {t('proposal')} < span style={{ color: 'red' }}>* </span></label >
+                                <Select
+                                    id='proposalId'
+                                    name='proposalId'
+                                    options={dataProposalDropdown}
+                                    onMenuOpen={() => setPageProposal(1)}
+                                    onMenuScrollToBottom={handleMenuScrollToBottomProposal}
+                                    isLoading={proposalLoading}
+                                    maxMenuHeight={160}
+                                    value={values?.proposalId}
+                                    onChange={e => {
+                                        setFieldValue('proposalId', e)
+                                    }}
+                                />
+                                {errors.proposalId ? (
+                                    <div className="text-danger mt-1"> {`${errors.proposalId}`} </div>
+                                ) : null}
                             </div>
-                            <div className="mb-5 flex justify-between gap-4">
-                                <div className="flex-1">
-                                    <label htmlFor="type" > {t('type')} < span style={{ color: 'red' }}>* </span></label >
-                                    <Select
-                                        id='type'
-                                        name='type'
-                                        options={orderTypes?.data}
-                                        maxMenuHeight={160}
-                                        value={values?.type}
-                                        onChange={e => {
-                                            setFieldValue('type', e)
-                                        }}
-                                    />
-                                    {errors.type ? (
-                                        <div className="text-danger mt-1"> {`${errors.type}`} </div>
-                                    ) : null}
-                                </div>
+                        </div>
+                        <div className='flex justify-between gap-5'>
+                            <div className="w-1/2">
+                                <label htmlFor="type" className='label'> {t('type')} < span style={{ color: 'red' }}>* </span></label >
+                                <Select
+                                    id='type'
+                                    name='type'
+                                    options={orderTypes?.data}
+                                    maxMenuHeight={160}
+                                    value={values?.type}
+                                    onChange={e => {
+                                        setFieldValue('type', e)
+                                    }}
+                                />
+                                {errors.type ? (
+                                    <div className="text-danger mt-1"> {`${errors.type}`} </div>
+                                ) : null}
                             </div>
-                            <div className="mb-5 flex justify-between gap-4">
-                                <div className="flex-1">
-                                    <label htmlFor="providerId" > {t('provider')}< span style={{ color: 'red' }}>* </span></label >
-                                    <Select
-                                        id='providerId'
-                                        name='providerId'
-                                        options={dataProviderDropdown}
-                                        onMenuOpen={() => setPageProvider(1)}
-                                        onMenuScrollToBottom={handleMenuScrollToBottomProvider}
-                                        isLoading={providerLoading}
-                                        maxMenuHeight={160}
-                                        value={values?.providerId}
-                                        onChange={e => {
-                                            setFieldValue('providerId', e)
-                                        }}
-                                    />
-                                    {errors.providerId ? (
-                                        <div className="text-danger mt-1"> {`${errors.providerId}`} </div>
-                                    ) : null}
-                                </div>
+                            <div className="w-1/2">
+                                <label htmlFor="providerId" className='label'> {t('provider')}< span style={{ color: 'red' }}>* </span></label >
+                                <Select
+                                    id='providerId'
+                                    name='providerId'
+                                    options={dataProviderDropdown}
+                                    onMenuOpen={() => setPageProvider(1)}
+                                    onMenuScrollToBottom={handleMenuScrollToBottomProvider}
+                                    isLoading={providerLoading}
+                                    maxMenuHeight={160}
+                                    value={values?.providerId}
+                                    onChange={e => {
+                                        setFieldValue('providerId', e)
+                                    }}
+                                />
+                                {errors.providerId ? (
+                                    <div className="text-danger mt-1"> {`${errors.providerId}`} </div>
+                                ) : null}
                             </div>
-                            <div className="mb-5">
-                                <label htmlFor="code" > {t('code')} < span style={{ color: 'red' }}>* </span></label >
+                        </div>
+                        <div className='flex justify-between gap-5'>
+                            <div className="w-1/2">
+                                <label htmlFor="code" className='label'> {t('code')} < span style={{ color: 'red' }}>* </span></label >
                                 <Field
                                     name="code"
                                     type="text"
@@ -252,32 +262,42 @@ const OrderModal = ({ ...props }: Props) => {
                                     <div className="text-danger mt-1"> {`${errors.code}`} </div>
                                 ) : null}
                             </div>
-                            <div className="mb-5">
-                                <label htmlFor="estimatedDeliveryDate" > {t('estimated_delivery_date')} < span style={{ color: 'red' }}>* </span></label >
+                            <div className="w-1/2">
+                                <label htmlFor="estimatedDeliveryDate" className='label'> {t('estimated_delivery_date')} < span style={{ color: 'red' }}>* </span></label >
                                 <Field
                                     name="estimatedDeliveryDate"
-                                    type="date"
-                                    id="estimatedDeliveryDate"
+                                    render={({ field }: any) => (
+                                        <Flatpickr
+                                            data-enable-time
+                                            // placeholder={`${t('choose_break_end_time')}`}
+                                            options={{
+                                                enableTime: true,
+                                                dateFormat: 'Y-m-d H:i'
+                                            }}
+                                            value={field?.value}
+                                            onChange={e => setFieldValue("estimatedDeliveryDate", moment(e[0]).format("YYYY-MM-DD hh:mm"))}
+                                            className="form-input"
+                                        />
+                                    )}
                                     className="form-input"
                                 />
                                 {errors.estimatedDeliveryDate ? (
                                     <div className="text-danger mt-1"> {`${errors.estimatedDeliveryDate}`} </div>
                                 ) : null}
                             </div>
-                            <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
-                                <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
-                                    {t('cancel')}
-                                </button>
-                                <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4">
-                                    {data !== undefined ? t('update') : t('add')}
-                                </button>
-                            </div>
+                        </div>
+                        <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
+                            <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
+                                {t('cancel')}
+                            </button>
+                            <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+                                {data !== undefined ? t('update') : t('add')}
+                            </button>
+                        </div>
 
-                        </Form>
-                    )}
-                </Formik>
-
-            </div>
+                    </Form>
+                )}
+            </Formik>
         </div>
     );
 };

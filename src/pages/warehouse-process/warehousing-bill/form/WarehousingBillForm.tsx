@@ -11,6 +11,8 @@ import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
 import { DropdownOrder, DropdownProposals, DropdownWarehouses, DropdownWarehousingType } from '@/services/swr/dropdown.twr';
 import { CreateWarehousingBill, EditWarehousingBill, GetWarehousingBill } from '@/services/apis/warehousing-bill.api';
+import Link from 'next/link';
+import IconBackward from '@/components/Icon/IconBackward';
 
 interface Props {
     [key: string]: any;
@@ -188,24 +190,32 @@ const DetailPage = ({ ...props }: Props) => {
     }
 
     return (
-        <div className='panel'>
-            <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                {t('warehousing_bill')}
+        <div className="p-5">
+            <div className='flex justify-between header-page-bottom pb-4 mb-4'>
+                <h1 className='page-title'>{t('warehousing_bill')}</h1>
+                <Link href="/warehouse-process/warehousing-bill">
+                    <div className="btn btn-primary btn-sm m-1 back-button h-9" >
+                        <IconBackward />
+                        <span>
+                            {t('back')}
+                        </span>
+                    </div>
+                </Link>
             </div>
-            <div className="p-5">
-                <Formik
-                    initialValues={initialValue}
-                    validationSchema={SubmittedForm}
-                    onSubmit={values => {
-                        handleWarehousing(values);
-                    }}
-                    enableReinitialize
-                >
+            <Formik
+                initialValues={initialValue}
+                validationSchema={SubmittedForm}
+                onSubmit={values => {
+                    handleWarehousing(values);
+                }}
+                enableReinitialize
+            >
 
-                    {({ errors, values, setFieldValue }) => (
-                        <Form className="space-y-5" >
-                            <div className="mb-5">
-                                <label htmlFor="name" > {t('name')}< span style={{ color: 'red' }}>* </span></label >
+                {({ errors, values, setFieldValue }) => (
+                    <Form className="space-y-5" >
+                        <div className='flex justify-between gap-5'>
+                            <div className="w-1/2">
+                                <label htmlFor="name" className='label'> {t('name')}< span style={{ color: 'red' }}>* </span></label >
                                 <Field
                                     name="name"
                                     type="text"
@@ -217,105 +227,101 @@ const DetailPage = ({ ...props }: Props) => {
                                     <div className="text-danger mt-1"> {`${errors.name}`} </div>
                                 ) : null}
                             </div>
-                            <div className="mb-5 flex justify-between gap-4">
-                                <div className="flex-1">
-                                    <label htmlFor="type" > {t('type')}</label >
-                                    <Select
-                                        id='type'
-                                        name='type'
-                                        options={warehousingBill?.data}
-                                        isLoading={warehousingLoading}
-                                        maxMenuHeight={160}
-                                        value={values?.type}
-                                        onChange={e => {
-                                            if (e.value === "IMPORT") {
-                                                setProposalQuery({ ...proposalQuery, type: "PURCHASE" })
-                                            } else {
-                                                setProposalQuery({ ...proposalQuery, type: "REPAIR" })
-                                            }
-                                            setproposalStatus(false)
-                                            setFieldValue('type', e)
-                                        }}
-                                    />
-                                    {errors.type ? (
-                                        <div className="text-danger mt-1"> {`${errors.type}`} </div>
-                                    ) : null}
-                                </div>
+                            <div className="w-1/2">
+                                <label htmlFor="type" className='label'> < span style={{ color: 'red' }}>* </span>{t('type')}</label >
+                                <Select
+                                    id='type'
+                                    name='type'
+                                    options={warehousingBill?.data}
+                                    isLoading={warehousingLoading}
+                                    maxMenuHeight={160}
+                                    value={values?.type}
+                                    onChange={e => {
+                                        if (e.value === "IMPORT") {
+                                            setProposalQuery({ ...proposalQuery, type: "PURCHASE" })
+                                        } else {
+                                            setProposalQuery({ ...proposalQuery, type: "REPAIR" })
+                                        }
+                                        setproposalStatus(false)
+                                        setFieldValue('type', e)
+                                    }}
+                                />
+                                {errors.type ? (
+                                    <div className="text-danger mt-1"> {`${errors.type}`} </div>
+                                ) : null}
                             </div>
-                            <div className="mb-5 flex justify-between gap-4">
-                                <div className="flex-1">
-                                    <label htmlFor="proposalId" > {t('proposal')} < span style={{ color: 'red' }}>* </span></label >
-                                    <Select
-                                        id='proposalId'
-                                        name='proposalId'
-                                        options={dataProposalDropdown}
-                                        onMenuOpen={() => setPageProposal(1)}
-                                        onMenuScrollToBottom={handleMenuScrollToBottomProposal}
-                                        isLoading={proposalLoading}
-                                        maxMenuHeight={160}
-                                        value={values?.proposalId}
-                                        isDisabled={proposalStatus}
-                                        onChange={e => {
-                                            setOrderQuery({ ...orderQuery, proposalId: e.value })
-                                            setFieldValue('proposalId', e)
-                                            setFieldValue('orderId', "")
-                                        }}
-                                    />
-                                    {errors.proposalId ? (
-                                        <div className="text-danger mt-1"> {`${errors.proposalId}`} </div>
-                                    ) : null}
-                                </div>
+                        </div>
+                        <div className='flex justify-between gap-5'>
+                            <div className="w-1/2">
+                                <label htmlFor="proposalId" className='label'> {t('proposal')} < span style={{ color: 'red' }}>* </span></label >
+                                <Select
+                                    id='proposalId'
+                                    name='proposalId'
+                                    options={dataProposalDropdown}
+                                    onMenuOpen={() => setPageProposal(1)}
+                                    onMenuScrollToBottom={handleMenuScrollToBottomProposal}
+                                    isLoading={proposalLoading}
+                                    maxMenuHeight={160}
+                                    value={values?.proposalId}
+                                    isDisabled={proposalStatus}
+                                    onChange={e => {
+                                        setOrderQuery({ ...orderQuery, proposalId: e.value })
+                                        setFieldValue('proposalId', e)
+                                        setFieldValue('orderId', "")
+                                    }}
+                                />
+                                {errors.proposalId ? (
+                                    <div className="text-danger mt-1"> {`${errors.proposalId}`} </div>
+                                ) : null}
                             </div>
+                            <div className="w-1/2">
+                                <label htmlFor="warehouseId" className='label'>< span style={{ color: 'red' }}>* </span> {t('warehouse')}</label >
+                                <Select
+                                    id='warehouseId'
+                                    name='warehouseId'
+                                    options={dataWarehouseDropdown}
+                                    onMenuOpen={() => setPageWarehouse(1)}
+                                    onMenuScrollToBottom={handleMenuScrollToBottomWarehouse}
+                                    isLoading={warehouseLoading}
+                                    maxMenuHeight={160}
+                                    value={values?.warehouseId}
+                                    onChange={e => {
+                                        setFieldValue('warehouseId', e)
+                                    }}
+                                />
+                                {errors.warehouseId ? (
+                                    <div className="text-danger mt-1"> {`${errors.warehouseId}`} </div>
+                                ) : null}
+                            </div>
+                        </div>
+                        <div className="mb-5 flex justify-between gap-4">
                             {
-                                orders?.data.length > 0 && proposalQuery?.type === "PURCHASE" &&
-                                <div className="mb-5 flex justify-between gap-4">
-                                    <div className="flex-1">
-                                        <label htmlFor="orderId" > {t('order')}</label >
-                                        <Select
-                                            id='orderId'
-                                            name='orderId'
-                                            options={dataOrderDropdown}
-                                            onMenuOpen={() => setPageOrder(1)}
-                                            onMenuScrollToBottom={handleMenuScrollToBottomOrder}
-                                            isLoading={orderLoading}
-                                            maxMenuHeight={160}
-                                            value={values.orderId}
-                                            onChange={e => {
-                                                setFieldValue('orderId', e)
-                                            }}
-                                        />
-                                        {errors.orderId ? (
-                                            <div className="text-danger mt-1"> {`${errors.orderId}`} </div>
-                                        ) : null}
-                                    </div>
+                                proposalQuery?.type === "PURCHASE" &&
+                                <div className="w-1/2">
+                                    <label htmlFor="orderId" className='label'> {t('order')}</label >
+                                    <Select
+                                        id='orderId'
+                                        name='orderId'
+                                        options={dataOrderDropdown}
+                                        onMenuOpen={() => setPageOrder(1)}
+                                        onMenuScrollToBottom={handleMenuScrollToBottomOrder}
+                                        isLoading={orderLoading}
+                                        maxMenuHeight={160}
+                                        value={values.orderId}
+                                        onChange={e => {
+                                            setFieldValue('orderId', e)
+                                        }}
+                                    />
+                                    {errors.orderId ? (
+                                        <div className="text-danger mt-1"> {`${errors.orderId}`} </div>
+                                    ) : null}
                                 </div>
                             }
-                            <div className="mb-5 flex justify-between gap-4">
-                                <div className="flex-1">
-                                    <label htmlFor="warehouseId" > {t('warehouse')}</label >
-                                    <Select
-                                        id='warehouseId'
-                                        name='warehouseId'
-                                        options={dataWarehouseDropdown}
-                                        onMenuOpen={() => setPageWarehouse(1)}
-                                        onMenuScrollToBottom={handleMenuScrollToBottomWarehouse}
-                                        isLoading={warehouseLoading}
-                                        maxMenuHeight={160}
-                                        value={values?.warehouseId}
-                                        onChange={e => {
-                                            setFieldValue('warehouseId', e)
-                                        }}
-                                    />
-                                    {errors.warehouseId ? (
-                                        <div className="text-danger mt-1"> {`${errors.warehouseId}`} </div>
-                                    ) : null}
-                                </div>
-                            </div>
-                            <div className="mb-5">
-                                <label htmlFor="note" > {t('notes')}</label >
+                            <div className="w-1/2">
+                                <label htmlFor="note" className='label'> {t('notes')}</label >
                                 <Field
                                     name="note"
-                                    type="text"
+                                    as="textarea"
                                     id="note"
                                     placeholder={`${t('enter_note')}`}
                                     className="form-input"
@@ -324,20 +330,21 @@ const DetailPage = ({ ...props }: Props) => {
                                     <div className="text-danger mt-1"> {`${errors.note}`} </div>
                                 ) : null}
                             </div>
-                            <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
-                                <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
-                                    {t('cancel')}
-                                </button>
-                                <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4">
-                                    {data !== undefined ? t('update') : t('add')}
-                                </button>
-                            </div>
+                        </div>
 
-                        </Form>
-                    )}
-                </Formik>
 
-            </div>
+                        <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
+                            <button type="button" className="btn btn-outline-danger cancel-buttom" onClick={() => handleCancel()}>
+                                {t('cancel')}
+                            </button>
+                            <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+                                {data !== undefined ? t('update') : t('add')}
+                            </button>
+                        </div>
+
+                    </Form>
+                )}
+            </Formik>
         </div>
     );
 };
