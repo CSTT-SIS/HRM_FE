@@ -464,7 +464,7 @@ const Sidebar = () => {
                                                     </button>
                                                     <ul className="text-gray-500">
                                                         <li className="nav-item">
-                                                            <Link href="/warehouse-process/proposal-supply" className="group">
+                                                            <Link href="/warehouse-process/proposal-repair" className="group">
                                                                 <div className="flex items-center">
                                                                     <IconMenuTables className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('proposal')}</span>
