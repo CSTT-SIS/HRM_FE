@@ -186,7 +186,7 @@ const Asset = ({ ...props }: Props) => {
 						sortStatus={sortStatus}
 						onSortStatusChange={setSortStatus}
 						minHeight={200}
-						paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
+						paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })} ${t('record')}` }
 					/>
 				</div>
 			</div>

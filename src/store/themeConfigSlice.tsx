@@ -88,7 +88,7 @@ const themeConfigSlice = createSlice({
         },
 
         setPageTitle(state, { payload }) {
-            document.title = `${payload} | CSTT - Multipurpose Tailwind Dashboard Template`;
+            document.title = `${payload} | Văng Tắt`;
         },
     },
 });

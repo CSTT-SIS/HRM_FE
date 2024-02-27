@@ -201,7 +201,6 @@ const Department = ({ ...props }: Props) => {
                 </div>
             )}
             <div className="panel mt-6">
-            <h1>{t('timekeeping_table')}</h1>
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
                         {/* <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >

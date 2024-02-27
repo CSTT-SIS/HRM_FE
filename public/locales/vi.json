@@ -36,7 +36,8 @@
   "add_department_err": "Thêm lỗi phòng ban",
   "edit_department_err": "Chỉnh sửa lỗi phòng ban",
   "delete_department_success_department_err": "Xóa lỗi phòng ban",
-  "Showing_from_to_of_totalRecords_entries": "Hiển thị {{from}} đến {{to}} trong số {{totalRecords}} mục nhập",
+  "Showing_from_to_of_totalRecords_entries": "Hiển thị mục {{from}} đến {{to}}. Tổng {{totalRecords}} mục. Mỗi trang có",
+  "record": "mục",
   "print": "In",
   "sales": "Việc bán hàng",
   "analytics": "Phân tích",
@@ -611,5 +612,8 @@
   "order": "Đơn đặt mua",
   "create_befor_update_detail": "Vui lòng tạo mới thông tin trước khi thêm chi tiết",
   "update_quantity": "Cập nhật số lượng",
-  "supply": "Xuất mìn"
+  "supply": "Xuất mìn",
+  "overtime_time": "Thời gian làm thêm",
+  "isCheckTrue": "Đã phê duyệt",
+  "isCheckFalse": "Chưa phê duyệt"
 }
