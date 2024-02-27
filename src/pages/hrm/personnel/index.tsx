@@ -19,11 +19,7 @@ import IconPencil from '../../../components/Icon/IconPencil';
 import IconTrashLines from '../../../components/Icon/IconTrashLines';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
-import IconCode from '@/components/Icon/IconCode';
 import IconCaretDown from '@/components/Icon/IconCaretDown';
-import IconFolder from '@/components/Icon/IconFolder';
-import IconTxtFile from '@/components/Icon/IconTxtFile';
-import IconFolderPlus from '@/components/Icon/IconFolderPlus';
 
 import { useRouter } from 'next/router';
 
@@ -51,7 +47,7 @@ const Department = ({ ...props }: Props) => {
 	});
 
 	const router = useRouter();
-
+	const [display, setDisplay] = useState('tree')
 	const [showLoader, setShowLoader] = useState(true);
 	const [page, setPage] = useState<any>(PAGE_NUMBER_DEFAULT);
 	const [pageSize, setPageSize] = useState(PAGE_SIZES_DEFAULT);
@@ -223,39 +219,29 @@ const Department = ({ ...props }: Props) => {
 							Xuất file excel
 						</button>
 					</div>
-					<input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+					<div className='display-style'>
+						Cách hiển thị
+						<button type="button" className="btn btn-primary btn-sm m-1  custom-button-display" style={{backgroundColor: display === 'flat' ? '#E9EBD5' : '#FAFBFC'}} onClick={() => setDisplay('flat')}>
+							<img src="/assets/images/display-flat.svg" alt="img" />
+						</button>
+						<button type="button" className="btn btn-primary btn-sm m-1  custom-button-display" style={{backgroundColor: display === 'tree' ? '#E9EBD5' : '#FAFBFC'}} onClick={() => setDisplay('tree')}>
+							<img src="/assets/images/display-tree.png" alt="img" />
+						</button>
+						<input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+
+					</div>
 				</div>
-				<div className="mb-5">
-					<ul className="font-semibold">
-						<li className="py-[5px]">
-							<button type="button" className={`${treeview1.includes('css') ? 'active' : ''}`} onClick={() => toggleTreeview1('css')} style={{ display: 'flex', justifyItems: 'space-between', width: '100%' }}>
-								<div>
-									<IconCaretDown className={`w-5 h-5 text-primary inline relative -top-1 ltr:mr-2 rtl:ml-2 ${treeview1.includes('css') && 'rotate-180'}`} />
-									Nguyễn Văn A
-								</div>
-								<div className="mx-auto flex w-max items-center gap-2" style={{ marginRight: '0' }}>
-									<Tippy content={`${t('edit')}`}>
-										<button type="button">
-											<IconPencil />
-										</button>
-									</Tippy>
-									<Tippy content={`${t('delete')}`}>
-										<button type="button">
-											<IconTrashLines />
-										</button>
-									</Tippy>
-									<Tippy content={`${t('work_schedule')}`}>
-										<Link href="/hrm/calendar" className="group">
-											<IconCalendar />
-										</Link>
-									</Tippy>
-								</div>
-							</button>
-							<AnimateHeight duration={300} height={treeview1.includes('css') ? 'auto' : 0}>
-								<ul className="sub-menu ltr:pl-14 rtl:pr-14">
-									<li className="py-[5px]">
-										Nguyễn Văn B
-										<div className="mx-auto flex w-max items-center gap-2" style={{ float: 'right' }}>
+				{
+					display === 'tree' ?
+						<div className="mb-5">
+							<ul className="font-semibold">
+								<li className="py-[5px]">
+									<button type="button" className={`${treeview1.includes('css') ? 'active' : ''}`} onClick={() => toggleTreeview1('css')} style={{ display: 'flex', justifyItems: 'space-between', width: '100%' }}>
+										<div>
+											<IconCaretDown className={`w-5 h-5 text-primary inline relative -top-1 ltr:mr-2 rtl:ml-2 ${treeview1.includes('css') && 'rotate-180'}`} />
+											Nguyễn Văn A
+										</div>
+										<div className="mx-auto flex w-max items-center gap-2" style={{ marginRight: '0' }}>
 											<Tippy content={`${t('edit')}`}>
 												<button type="button">
 													<IconPencil />
@@ -272,39 +258,39 @@ const Department = ({ ...props }: Props) => {
 												</Link>
 											</Tippy>
 										</div>
-									</li>
-								</ul>
-							</AnimateHeight>
-						</li>
-						<li className="py-[5px]">
-							<button type="button" className={`${treeview1.includes('css') ? 'active' : ''}`} onClick={() => toggleTreeview1('css')} style={{ display: 'flex', justifyItems: 'space-between', width: '100%' }}>
-								<div>
-									<IconCaretDown className={`w-5 h-5 text-primary inline relative -top-1 ltr:mr-2 rtl:ml-2 ${treeview1.includes('css') && 'rotate-180'}`} />
-									Nguyễn Văn A
-								</div>
-								<div className="mx-auto flex w-max items-center gap-2" style={{ marginRight: '0' }}>
-									<Tippy content={`${t('edit')}`}>
-										<button type="button">
-											<IconPencil />
-										</button>
-									</Tippy>
-									<Tippy content={`${t('delete')}`}>
-										<button type="button">
-											<IconTrashLines />
-										</button>
-									</Tippy>
-									<Tippy content={`${t('work_schedule')}`}>
-										<Link href="/hrm/calendar" className="group">
-											<IconCalendar />
-										</Link>
-									</Tippy>
-								</div>
-							</button>
-							<AnimateHeight duration={300} height={treeview1.includes('images') ? 'auto' : 0}>
-								<ul className="ltr:pl-14 rtl:pr-14">
-									<li className="py-[5px]">
-										Hoàng Thị D
-										<div className="mx-auto flex w-max items-center gap-2" style={{ float: 'right' }}>
+									</button>
+									<AnimateHeight duration={300} height={treeview1.includes('css') ? 'auto' : 0}>
+										<ul className="sub-menu ltr:pl-14 rtl:pr-14">
+											<li className="py-[5px]">
+												Nguyễn Văn B
+												<div className="mx-auto flex w-max items-center gap-2" style={{ float: 'right' }}>
+													<Tippy content={`${t('edit')}`}>
+														<button type="button">
+															<IconPencil />
+														</button>
+													</Tippy>
+													<Tippy content={`${t('delete')}`}>
+														<button type="button">
+															<IconTrashLines />
+														</button>
+													</Tippy>
+													<Tippy content={`${t('work_schedule')}`}>
+														<Link href="/hrm/calendar" className="group">
+															<IconCalendar />
+														</Link>
+													</Tippy>
+												</div>
+											</li>
+										</ul>
+									</AnimateHeight>
+								</li>
+								<li className="py-[5px]">
+									<button type="button" className={`${treeview1.includes('css') ? 'active' : ''}`} onClick={() => toggleTreeview1('css')} style={{ display: 'flex', justifyItems: 'space-between', width: '100%' }}>
+										<div>
+											<IconCaretDown className={`w-5 h-5 text-primary inline relative -top-1 ltr:mr-2 rtl:ml-2 ${treeview1.includes('css') && 'rotate-180'}`} />
+											Nguyễn Văn A
+										</div>
+										<div className="mx-auto flex w-max items-center gap-2" style={{ marginRight: '0' }}>
 											<Tippy content={`${t('edit')}`}>
 												<button type="button">
 													<IconPencil />
@@ -321,50 +307,72 @@ const Department = ({ ...props }: Props) => {
 												</Link>
 											</Tippy>
 										</div>
-									</li>
-									<li className="py-[5px]">
-										Nguyễn Văn F
-										<div className="mx-auto flex w-max items-center gap-2" style={{ float: 'right' }}>
-											<Tippy content={`${t('edit')}`}>
-												<button type="button">
-													<IconPencil />
-												</button>
-											</Tippy>
-											<Tippy content={`${t('delete')}`}>
-												<button type="button">
-													<IconTrashLines />
-												</button>
-											</Tippy>
-											<Tippy content={`${t('work_schedule')}`}>
-												<Link href="/hrm/calendar" className="group">
-													<IconCalendar />
-												</Link>
-											</Tippy>
-										</div>
-									</li>
-								</ul>
-							</AnimateHeight>
-						</li>
-					</ul>
-				</div>
-				<div className="datatables">
-					<DataTable
-						highlightOnHover
-						className="table-hover whitespace-nowrap custom_table"
-						records={recordsData}
-						columns={columns}
-						totalRecords={total}
-						recordsPerPage={pageSize}
-						page={page}
-						onPageChange={(p) => setPage(p)}
-						recordsPerPageOptions={PAGE_SIZES}
-						onRecordsPerPageChange={setPageSize}
-						sortStatus={sortStatus}
-						onSortStatusChange={setSortStatus}
-						minHeight={200}
-						paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
-					/>
-				</div>
+									</button>
+									<AnimateHeight duration={300} height={treeview1.includes('images') ? 'auto' : 0}>
+										<ul className="ltr:pl-14 rtl:pr-14">
+											<li className="py-[5px]">
+												Hoàng Thị D
+												<div className="mx-auto flex w-max items-center gap-2" style={{ float: 'right' }}>
+													<Tippy content={`${t('edit')}`}>
+														<button type="button">
+															<IconPencil />
+														</button>
+													</Tippy>
+													<Tippy content={`${t('delete')}`}>
+														<button type="button">
+															<IconTrashLines />
+														</button>
+													</Tippy>
+													<Tippy content={`${t('work_schedule')}`}>
+														<Link href="/hrm/calendar" className="group">
+															<IconCalendar />
+														</Link>
+													</Tippy>
+												</div>
+											</li>
+											<li className="py-[5px]">
+												Nguyễn Văn F
+												<div className="mx-auto flex w-max items-center gap-2" style={{ float: 'right' }}>
+													<Tippy content={`${t('edit')}`}>
+														<button type="button">
+															<IconPencil />
+														</button>
+													</Tippy>
+													<Tippy content={`${t('delete')}`}>
+														<button type="button">
+															<IconTrashLines />
+														</button>
+													</Tippy>
+													<Tippy content={`${t('work_schedule')}`}>
+														<Link href="/hrm/calendar" className="group">
+															<IconCalendar />
+														</Link>
+													</Tippy>
+												</div>
+											</li>
+										</ul>
+									</AnimateHeight>
+								</li>
+							</ul>
+						</div> : <div className="datatables">
+							<DataTable
+								highlightOnHover
+								className="table-hover whitespace-nowrap custom_table"
+								records={recordsData}
+								columns={columns}
+								totalRecords={total}
+								recordsPerPage={pageSize}
+								page={page}
+								onPageChange={(p) => setPage(p)}
+								recordsPerPageOptions={PAGE_SIZES}
+								onRecordsPerPageChange={setPageSize}
+								sortStatus={sortStatus}
+								onSortStatusChange={setSortStatus}
+								minHeight={200}
+								paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
+							/>
+						</div>
+				}
 			</div>
 			<PersonnelModal openModal={openModal} setOpenModal={setOpenModal} data={data} totalData={getStorge} setData={setData} setGetStorge={setGetStorge} />
 		</div>

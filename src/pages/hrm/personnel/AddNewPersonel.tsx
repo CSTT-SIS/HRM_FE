@@ -130,11 +130,10 @@ const AddNewPersonel = ({ ...props }: Props) => {
 
                 }}
                 validationSchema={SubmittedForm}
-                onSubmit={(values) => {
-                    handleWarehouse(values);
-                }}
+                onSubmit={() => { }}
+
             >
-                {({ errors, touched }) => (
+                {({ errors, touched, values }) => (
                     <Form className="space-y-5">
                         <div className="mb-5">
                             <div className="space-y-2 font-semibold">
@@ -295,7 +294,11 @@ const AddNewPersonel = ({ ...props }: Props) => {
                             <button type="button" className="btn btn-outline-dark cancel-button" onClick={() => handleCancel()}>
                                 {t('cancel')}
                             </button>
-                            <button type="submit" className="btn :ml-4 rtl:mr-4 add-button" disabled={disabled}>
+                            <button type="submit" className="btn :ml-4 rtl:mr-4 add-button" disabled={disabled} onClick={() => {
+                                if (Object.keys(touched).length !== 0 && Object.keys(errors).length === 0) {
+                                    handleWarehouse(values);
+                                }
+                            }}>
                                 {props.data !== undefined ? t('update') : t('add')}
                             </button>
                         </div>
