@@ -203,7 +203,7 @@ const Header = () => {
 					</div>
 
 					<div className="hidden ltr:mr-2 rtl:ml-2 sm:block">
-						<ul className="flex items-center space-x-2 rtl:space-x-reverse dark:text-[#d0d2d6]">
+						{/* <ul className="flex items-center space-x-2 rtl:space-x-reverse dark:text-[#d0d2d6]">
 							<li>
 								<Link href="/apps/calendar" className="block rounded-full bg-white-light/40 p-2 hover:bg-white-light/90 hover:text-primary dark:bg-dark/40 dark:hover:bg-dark/60">
 									<IconCalendar />
@@ -219,7 +219,7 @@ const Header = () => {
 									<IconChatNotification />
 								</Link>
 							</li>
-						</ul>
+						</ul> */}
 					</div>
 					<div className="flex items-center space-x-1.5 ltr:ml-auto rtl:mr-auto rtl:space-x-reverse dark:text-[#d0d2d6] sm:flex-1 ltr:sm:ml-0 sm:rtl:mr-0 lg:space-x-2">
 						<div className="sm:ltr:mr-auto sm:rtl:ml-auto">
@@ -231,7 +231,7 @@ const Header = () => {
 									<input
 										type="text"
 										className="peer form-input bg-gray-100 placeholder:tracking-widest ltr:pl-9 ltr:pr-9 rtl:pl-9 rtl:pr-9 sm:bg-transparent ltr:sm:pr-4 rtl:sm:pl-4"
-										placeholder="Search..."
+										placeholder={`${t('search')}`}
 									/>
 									<button type="button" className="absolute inset-0 h-9 w-9 appearance-none peer-focus:text-primary ltr:right-auto rtl:left-auto">
 										<IconSearch className="mx-auto" />
@@ -249,7 +249,7 @@ const Header = () => {
 								<IconSearch className="mx-auto h-4.5 w-4.5 dark:text-[#d0d2d6]" />
 							</button>
 						</div>
-						<div>
+						{/* <div>
 							{themeConfig.theme === 'light' ? (
 								<button
 									className={`${themeConfig.theme === 'light' &&
@@ -282,7 +282,7 @@ const Header = () => {
 									<IconLaptop />
 								</button>
 							)}
-						</div>
+						</div> */}
 						<div className="dropdown shrink-0">
 							<Dropdown
 								offset={[0, 8]}
@@ -312,7 +312,7 @@ const Header = () => {
 								</ul>
 							</Dropdown>
 						</div>
-						<div className="dropdown shrink-0">
+						{/* <div className="dropdown shrink-0">
 							<Dropdown
 								offset={[0, 8]}
 								placement={`${isRtl ? 'bottom-start' : 'bottom-end'}`}
@@ -366,7 +366,7 @@ const Header = () => {
 									)}
 								</ul>
 							</Dropdown>
-						</div>
+						</div> */}
 						<div className="dropdown shrink-0">
 							<Dropdown
 								offset={[0, 8]}

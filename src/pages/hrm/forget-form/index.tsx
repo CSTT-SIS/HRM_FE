@@ -28,6 +28,7 @@ import DetailModal from './modal/DetailModal';
 import IconFolderMinus from '@/components/Icon/IconFolderMinus';
 import IconDownload from '@/components/Icon/IconDownload';
 import IconChecks from '@/components/Icon/IconChecks';
+import Link from 'next/link';
 
 
 interface Props {
@@ -39,7 +40,7 @@ const ForgetForm = ({ ...props }: Props) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     useEffect(() => {
-        dispatch(setPageTitle(`${t('department')}`));
+        dispatch(setPageTitle(`${t('forget_timekeeping_form')}`));
     });
 
     const router = useRouter();
@@ -178,7 +179,7 @@ const ForgetForm = ({ ...props }: Props) => {
         { accessor: 'shift', title: `${t('late_early_shift')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.shift}</span> },
         { accessor: 'checker', title: `${t('checker')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.checker}</span> },
         { accessor: 'isCheck',
-         title: `${t('isCheck')}`,
+         title: `${t('status')}`,
           sortable: false,
           render: (records: any, index: any) => <span className={`badge badge-outline-${records?.isCheck ? "success" : "danger"} `} onClick={() => handleDetail(records)}>{records?.isCheck ? `${t('isCheckTrue')}` : `${t('isCheckFalse')}`}</span>
     },
@@ -219,15 +220,17 @@ const ForgetForm = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >
-                            <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                            {t('add')}
-                        </button>
-                        <button type="button" className="btn btn-primary btn-sm m-1" >
+                        <Link href="/hrm/forget-form/AddNewForm">
+                            <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                                <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                {t('add')}
+                            </button>
+                        </Link>
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
                             Nhập file
                         </button>
-                        <button type="button" className="btn btn-primary btn-sm m-1" >
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconDownload className="ltr:mr-2 rtl:ml-2" />
                             Xuất file excel
                         </button>
@@ -237,7 +240,7 @@ const ForgetForm = ({ ...props }: Props) => {
                 <div className="datatables">
                     <DataTable
                         highlightOnHover
-                        className="whitespace-nowrap table-hover"
+                        className="whitespace-nowrap table-hover custom_table"
                         records={recordsData}
                         columns={columns}
                         totalRecords={total}

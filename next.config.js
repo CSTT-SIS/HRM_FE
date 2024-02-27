@@ -8,7 +8,7 @@ const nextConfig = {
             {
                 source: '/',
                 // destination: '/sign-in',
-                destination: '/analytics',
+                destination: '/hrm/dashboard',
                 permanent: true,
             },
 
