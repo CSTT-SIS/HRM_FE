@@ -131,11 +131,11 @@ const Sidebar = () => {
                         <ul className="relative space-y-0.5 p-4 py-0 font-semibold">
                             <li className="menu nav-item">
                                 <button type="button" className={`${currentMenu === 'dashboard' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('dashboard')}>
-                                <Link href="/hrm/dashboard" className="group">
-                                    <div className="flex items-center">
-                                        <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
-                                        <span className="menu1-text ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('dashboard')}</span>
-                                    </div>
+                                    <Link href="/hrm/dashboard" className="group">
+                                        <div className="flex items-center">
+                                            <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
+                                            <span className="menu1-text ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('dashboard')}</span>
+                                        </div>
                                     </Link>
                                 </button>
                             </li>
@@ -155,9 +155,9 @@ const Sidebar = () => {
                                         <li className="nav-item">
                                             <ul>
                                                 <li className="menu menu1 nav-item">
-                                                        <div className="flex items-start group-menu-name">
-                                                            <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color">{t('general_info_menu')}</span>
-                                                        </div>
+                                                    <div className="flex items-start group-menu-name">
+                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color">{t('general_info_menu')}</span>
+                                                    </div>
                                                     <ul className="text-gray-500">
                                                         <li className="nav-item">
                                                             <Link href="/hrm/department" className="group final-level-menu">
@@ -196,9 +196,9 @@ const Sidebar = () => {
                                                 <div className='divide'></div>
 
                                                 <li className="menu menu1 nav-item">
-                                                        <div className="flex items-center group-menu-name">
-                                                            <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color">{t('staff_schedule')}</span>
-                                                        </div>
+                                                    <div className="flex items-center group-menu-name">
+                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color">{t('staff_schedule')}</span>
+                                                    </div>
                                                     <ul className="text-gray-500">
                                                         <li className="nav-item">
                                                             <Link href="/hrm/shift" className="group final-level-menu">
@@ -228,9 +228,9 @@ const Sidebar = () => {
                                                 </li>
                                                 <div className='divide'></div>
                                                 <li className="menu menu1 nav-item">
-                                                        <div className="flex items-center group-menu-name">
-                                                            <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color">{t('other_task')}</span>
-                                                        </div>
+                                                    <div className="flex items-center group-menu-name">
+                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color">{t('other_task')}</span>
+                                                    </div>
                                                     <ul className="text-gray-500">
                                                         <li className="nav-item">
                                                             <Link href="/hrm/role" className="group final-level-menu">
@@ -399,11 +399,9 @@ const Sidebar = () => {
                                         <li className="nav-item">
                                             <ul>
                                                 <li className="menu menu1 nav-item">
-                                                    <button type="button" className={`w-full p-0 header-menu`}>
-                                                        <div className="flex items-center">
-                                                            <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color">{t('warehouse_management')}</span>
-                                                        </div>
-                                                    </button>
+                                                    <div className="flex items-start group-menu-name">
+                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color h-7">{t('warehouse_management')}</span>
+                                                    </div>
                                                     <ul className="text-gray-500">
                                                         <li className="nav-item">
                                                             <Link href="/warehouse" className="group final-level-menu">
@@ -423,12 +421,11 @@ const Sidebar = () => {
                                                         </li>
                                                     </ul>
                                                 </li>
+                                                <div className='divide'></div>
                                                 <li className="menu menu1 nav-item">
-                                                    <button type="button" className={`w-full p-0 header-menu`}>
-                                                        <div className="flex items-center">
-                                                            <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color">{t('order_product')}</span>
-                                                        </div>
-                                                    </button>
+                                                    <div className="flex items-start group-menu-name">
+                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color h-7">{t('order_product')}</span>
+                                                    </div>
                                                     <ul className="text-gray-500">
                                                         <li className="nav-item">
                                                             <Link href="/warehouse-process/proposal-order" className="group final-level-menu">
@@ -448,12 +445,11 @@ const Sidebar = () => {
                                                         </li>
                                                     </ul>
                                                 </li>
+                                                <div className='divide'></div>
                                                 <li className="menu menu1 nav-item">
-                                                    <button type="button" className={`w-full p-0 header-menu`}>
-                                                        <div className="flex items-center">
-                                                            <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color">{t('repair')}</span>
-                                                        </div>
-                                                    </button>
+                                                    <div className="flex items-start group-menu-name">
+                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color h-7">{t('repair')}</span>
+                                                    </div>
                                                     <ul className="text-gray-500">
                                                         <li className="nav-item">
                                                             <Link href="/warehouse-process/proposal-supply" className="group final-level-menu">
@@ -473,12 +469,11 @@ const Sidebar = () => {
                                                         </li>
                                                     </ul>
                                                 </li>
+                                                <div className='divide'></div>
                                                 <li className="menu menu1 nav-item">
-                                                    <button type="button" className={`w-full p-0 header-menu`}>
-                                                        <div className="flex items-center">
-                                                            <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color">{t('supply')}</span>
-                                                        </div>
-                                                    </button>
+                                                    <div className="flex items-start group-menu-name">
+                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color h-7">{t('supply')}</span>
+                                                    </div>
                                                     <ul className="text-gray-500">
                                                         <li className="nav-item">
                                                             <Link href="/warehouse-process/proposal-supply" className="group final-level-menu">
@@ -490,12 +485,11 @@ const Sidebar = () => {
                                                         </li>
                                                     </ul>
                                                 </li>
+                                                <div className='divide'></div>
                                                 <li className="menu menu1 nav-item">
-                                                    <button type="button" className={`w-full p-0 header-menu`}>
-                                                        <div className="flex items-center">
-                                                            <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color">{t('other_task')}</span>
-                                                        </div>
-                                                    </button>
+                                                    <div className="flex items-start group-menu-name">
+                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color h-7">{t('other_task')}</span>
+                                                    </div>
                                                     <ul className="text-gray-500">
                                                         <li className="nav-item">
                                                             <Link href="/warehouse-management/stocktake" className="group final-level-menu">
@@ -543,7 +537,7 @@ const Sidebar = () => {
                                             </Link>
                                         </li>
                                         <li className="nav-item">
-                                            <Link href="/warehouse/product/category"  className='final-level-menu'>
+                                            <Link href="/warehouse/product/category" className='final-level-menu'>
                                                 <div className="flex items-center">
                                                     <IconWarehouse className="shrink-0 group-hover:!text-primary" />
                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('product_category')}</span>
