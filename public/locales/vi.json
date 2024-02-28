@@ -627,5 +627,20 @@
   "total_hours_worked": "Tổng công",
   "timekeeping-table": "Bảng công tổng hợp",
   "timekeeping-employee": "Bảng công nhân viên",
-  "choose_month": "Chọn tháng"
+  "choose_month": "Chọn tháng",
+  "other_information": "THÔNG TIN KHÁC",
+  "Department_Parent": "Cơ quan trực thuộc",
+  "Manager": "Quản lý trực tiếp",
+  "Manager_2": "Quản lý gián tiếp",
+  "date_join": "Ngày vào công ty",
+  "tax_code": "Mã số thuế",
+  "bank_number": "Số tài khoản ngân hàng",
+  "bank": "Ngân hàng",
+  "branch": "Chi nhánh",
+  "Abbreviated_name": "Tên viết tắt",
+  "approver": "Người phê duyệt",
+	"enter_tax_code": "Nhập mã số thuế",
+	"enter_branch": "Nhập chi nhánh",
+	"enter_bank_number": "Nhập số tài khoản ngân hàng",
+	"enter_bank": "Nhập ngân hàng"
 }

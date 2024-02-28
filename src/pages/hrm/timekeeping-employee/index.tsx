@@ -94,8 +94,7 @@ const Department = ({ ...props }: Props) => {
         setTotal(getStorge?.length);
         setPageSize(PAGE_SIZES_DEFAULT);
         setRecordsData(getStorge?.filter((item: any, index: any) => { return index <= 9 && page === 1 ? item : index >= 10 && index <= (page * 9) ? item : null }));
-        const listDay_: string[] = getDaysOfMonth(currentYear, currentMonth);
-        setListDay(listDay_)
+        // setListDay(listDay_)
 
     }, [getStorge, getStorge?.length, page])
 

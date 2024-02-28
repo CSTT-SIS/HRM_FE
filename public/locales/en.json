@@ -599,5 +599,19 @@
     "reason": "Reason",
     "add_overtime_form": "Add Overtime Request Form",
     "choose_shift": "Choose Shift",
-    "fill_overtime_time": "Enter Overtime Hours"
+    "fill_overtime_time": "Enter Overtime Hours",
+	"other_information": "OTHER INFORMATION",
+	"Department_Parent": "Department parent",
+	"Manager": "Manager",
+	"Manager_2": "Indirect management",
+    "date_join": "Date join",
+	"tax_code": "Tax code",
+	"bank_number": "Bank number",
+	"bank": "Bank",
+	"Abbreviated_name": "Abbreviated name",
+	"approver": "Approver",
+	"enter_tax_code": "Enter tax code",
+	"enter_branch": "Enter branch",
+	"enter_bank_number": "Enter bank number",
+	"enter_bank": "Enter bank"
 }
