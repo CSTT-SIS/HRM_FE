@@ -220,7 +220,6 @@ const OvertimeForm = ({ ...props }: Props) => {
                     <IconLoading />
                 </div>
             )}
-            <title>{t('department')}</title>
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
