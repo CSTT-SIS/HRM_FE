@@ -27,6 +27,7 @@ import DepartmentList from './asset_list.json';
 import IconFolderMinus from '@/components/Icon/IconFolderMinus';
 import IconDownload from '@/components/Icon/IconDownload';
 import AssetModal from './modal/AssetModal';
+import Link from 'next/link';
 
 interface Props {
 	[key: string]: any;
@@ -137,15 +138,15 @@ const Asset = ({ ...props }: Props) => {
 			title: 'Thao tác',
 			titleClassName: '!text-center',
 			render: (records: any) => (
-				<div className="mx-auto flex w-max items-center gap-2">
+				<div className="flex items-center w-max mx-auto gap-2">
 					<Tippy content={`${t('edit')}`}>
-						<button type="button" onClick={() => handleEdit(records)}>
-							<IconPencil />
+						<button type="button" className='button-edit' onClick={() => handleEdit(records)}>
+							<IconPencil /> Sửa
 						</button>
 					</Tippy>
 					<Tippy content={`${t('delete')}`}>
-						<button type="button" onClick={() => handleDelete(records)}>
-							<IconTrashLines />
+						<button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+							<IconTrashLines /> Xóa
 						</button>
 					</Tippy>
 				</div>
@@ -164,17 +165,19 @@ const Asset = ({ ...props }: Props) => {
 			<div className="panel mt-6">
 				<div className="mb-4.5 flex flex-col justify-between gap-5 md:flex-row md:items-center">
 					<div className="flex flex-wrap items-center">
-						<button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 ">
-							<IconPlus className="h-5 w-5 ltr:mr-2 rtl:ml-2" />
-							{t('add')}
-						</button>
+						<Link href="/hrm/asset/AddNewAsset">
+							<button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+								<IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+								{t('add')}
+							</button>
+						</Link>
 					</div>
 					<input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
 				</div>
 				<div className="datatables">
 					<DataTable
 						highlightOnHover
-						className="table-hover whitespace-nowrap"
+						className="table-hover whitespace-nowrap custom_table"
 						records={recordsData}
 						columns={columns}
 						totalRecords={total}
@@ -186,7 +189,7 @@ const Asset = ({ ...props }: Props) => {
 						sortStatus={sortStatus}
 						onSortStatusChange={setSortStatus}
 						minHeight={200}
-						paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })} ${t('record')}` }
+						paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })} ${t('record')}`}
 					/>
 				</div>
 			</div>

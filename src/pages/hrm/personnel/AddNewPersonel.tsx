@@ -127,13 +127,21 @@ const AddNewPersonel = ({ ...props }: Props) => {
                     sex: props?.data ? `${props?.data?.sex}` : '',
                     IDnumber: props?.data ? `${props?.data?.IDnumber}` : '',
                     dateissue: props?.data ? `${props?.data?.dateissue}` : '',
+                    manageId: props?.data ? {
+                        value: `${props?.data?.manage.id}`,
+                        label: `${props?.data?.manage.name}`
+                    } : "",
+                    departmentparentId: props?.data ? {
+                        value: `${props?.data?.departmentparent.id}`,
+                        label: `${props?.data?.departmentparent.name}`
+                    } : "",
 
                 }}
                 validationSchema={SubmittedForm}
                 onSubmit={() => { }}
 
             >
-                {({ errors, touched, values, submitCount }) => (
+                {({ errors, touched, values, setFieldValue, submitCount }) => (
                     <Form className="space-y-5">
                         <div className="mb-5">
                             <div className="space-y-2 font-semibold">
@@ -286,7 +294,144 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                         </AnimateHeight>
                                     </div>
                                 </div>
-
+                                <div className="rounded">
+                                    <button
+                                        type="button"
+                                        className={`flex w-full items-center p-4 text-white-dark dark:bg-[#1b2e4b] custom-accordion`}
+                                        onClick={() => togglePara('3')}
+                                    >
+                                        {t('other_information')}
+                                        <div className={`ltr:ml-auto rtl:mr-auto ${active === '3' ? 'rotate-180' : ''}`}>
+                                            <IconCaretDown />
+                                        </div>
+                                    </button>
+                                    <div className={`${active === '3' ? 'custom-content-accordion' : ''}`}>
+                                        <AnimateHeight duration={300} height={active === '3' ? 'auto' : 0}>
+                                            <div className="space-y-2 border-t border-[#d3d3d3] p-4 text-[13px] text-white-dark dark:border-[#1b2e4b]">
+                                                <div className='flex justify-between gap-5'>
+                                                    <div className="mb-5 w-1/2">
+                                                        <label htmlFor="departmentparentId" className='label'> {t('Department_Parent')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <Select
+                                                            id='unidepartmentparentIdtId'
+                                                            name='departmentparentId'
+                                                            onInputChange={e => handleSearch(e)}
+                                                            options={departmentparent}
+                                                            maxMenuHeight={160}
+                                                            value={values.departmentparentId}
+                                                            onChange={e => {
+                                                                setFieldValue('departmentparentId', e)
+                                                            }}
+                                                        />
+                                                        {submitCount ? errors.departmentparentId ? (
+                                                            <div className="text-danger mt-1"> {errors.departmentparentId} </div>
+                                                        ) : null : ''}
+                                                    </div>
+                                                    <div className="mb-5 w-1/2">
+                                                        <label htmlFor="manageId" className='label'> {t('duty')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <Select
+                                                            id='manageId'
+                                                            name='manageId'
+                                                            onInputChange={e => handleSearch(e)}
+                                                            options={[]}
+                                                            maxMenuHeight={160}
+                                                            value={values.manageId}
+                                                            onChange={e => {
+                                                                setFieldValue('manageId', e)
+                                                            }}
+                                                        />
+                                                        {submitCount ? errors.manageId ? (
+                                                            <div className="text-danger mt-1"> {errors.manageId} </div>
+                                                        ) : null : ''}
+                                                    </div>
+                                                </div>
+                                                <div className='flex justify-between gap-5'>
+                                                    <div className="mb-5 w-1/2">
+                                                        <label htmlFor="manageId" className='label'> {t('Manager')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <Select
+                                                            id='manageId'
+                                                            name='manageId'
+                                                            onInputChange={e => handleSearch(e)}
+                                                            options={manage}
+                                                            maxMenuHeight={160}
+                                                            value={values.manageId}
+                                                            onChange={e => {
+                                                                setFieldValue('manageId', e)
+                                                            }}
+                                                        />
+                                                        {submitCount ? errors.manageId ? (
+                                                            <div className="text-danger mt-1"> {errors.manageId} </div>
+                                                        ) : null : ''}
+                                                    </div>
+                                                    <div className="mb-5 w-1/2">
+                                                        <label htmlFor="manageId" className='label'> {t('Manager_2')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <Select
+                                                            id='manageId'
+                                                            name='manageId'
+                                                            onInputChange={e => handleSearch(e)}
+                                                            options={manage}
+                                                            maxMenuHeight={160}
+                                                            value={values.manageId}
+                                                            onChange={e => {
+                                                                setFieldValue('manageId', e)
+                                                            }}
+                                                        />
+                                                        {submitCount ? errors.manageId ? (
+                                                            <div className="text-danger mt-1"> {errors.manageId} </div>
+                                                        ) : null : ''}
+                                                    </div>
+                                                </div>
+                                                <div className='flex justify-between gap-5'>
+                                                    <div className="mb-5 w-1/2">
+                                                        <label htmlFor="approver" className='label'>
+                                                            {' '}
+                                                            {t('approver')}
+                                                        </label>
+                                                        <Field name="approver" type="text" id="approver" placeholder={t('enter_approver')} className="form-input" />
+                                                    </div>
+                                                    <div className="mb-5 w-1/2">
+                                                        <label htmlFor="date_join" className='label'>
+                                                            {' '}
+                                                            {t('date_join')}
+                                                        </label>
+                                                        <Field name="date_join" type="datetime-local" id="date_join" placeholder={t('enter_date_join')} className="form-input" />
+                                                    </div>
+                                                </div>
+                                                <div className='flex justify-between gap-5'>
+                                                    <div className="mb-5 w-1/2">
+                                                        <label htmlFor="tax_code" className='label'>
+                                                            {' '}
+                                                            {t('tax_code')}
+                                                        </label>
+                                                        <Field name="tax_code" type="text" id="tax_code" placeholder={t('enter_tax_code')} className="form-input" />
+                                                    </div>
+                                                    <div className="mb-5 w-1/2">
+                                                        <label htmlFor="bank_number" className='label'>
+                                                            {' '}
+                                                            {t('bank_number')}
+                                                        </label>
+                                                        <Field name="bank_number" type="text" id="bank_number" placeholder={t('enter_bank_number')} className="form-input" />
+                                                    </div>
+                                                </div>
+                                                <div className='flex justify-between gap-5'>
+                                                    <div className="mb-5 w-1/2">
+                                                        <label htmlFor="bank" className='label'>
+                                                            {' '}
+                                                            {t('bank')}
+                                                        </label>
+                                                        <Field name="bank" type="text" id="bank" placeholder={t('enter_bank')} className="form-input" />
+                                                    </div>
+                                                    <div className="mb-5 w-1/2">
+                                                        <label htmlFor="branch" className='label'>
+                                                            {' '}
+                                                            {t('branch')}
+                                                        </label>
+                                                        <Field name="branch" type="text" id="branch" placeholder={t('enter_branch')} className="form-input" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </AnimateHeight>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
