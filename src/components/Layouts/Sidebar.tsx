@@ -81,30 +81,30 @@ const Sidebar = () => {
         }
     }, []);
 
-    useEffect(() => {
-        setActiveRoute();
-        if (window.innerWidth < 1024 && themeConfig.sidebar) {
-            dispatch(toggleSidebar());
-        }
-    }, [router.pathname]);
+	useEffect(() => {
+		setActiveRoute();
+		if (window.innerWidth < 1024 && themeConfig.sidebar) {
+			dispatch(toggleSidebar());
+		}
+	}, [router.pathname]);
 
-    const setActiveRoute = () => {
-        let allLinks = document.querySelectorAll('.sidebar ul a.active');
-        for (let i = 0; i < allLinks.length; i++) {
-            const element = allLinks[i];
-            element?.classList.remove('active');
-        }
-        let selector = document.querySelector('.sidebar ul a[href="' + window.location.pathname + '"]');
+	const setActiveRoute = () => {
+		let allLinks = document.querySelectorAll('.sidebar ul a.active');
+		for (let i = 0; i < allLinks.length; i++) {
+			const element = allLinks[i];
+			element?.classList.remove('active');
+		}
+		let selector = document.querySelector('.sidebar ul a[href="' + window.location.pathname + '"]');
 
-        if (router.pathname === "/hrm/role/[id]") {
-            selector = document.querySelector('.sidebar ul a[href="' + "/hrm/role" + '"]');
-        }
+		if (router.pathname === '/hrm/role/[id]') {
+			selector = document.querySelector('.sidebar ul a[href="' + '/hrm/role' + '"]');
+		}
 
-        selector?.classList.add('active');
-    };
+		selector?.classList.add('active');
+	};
 
-    const dispatch = useDispatch();
-    const { t } = useTranslation();
+	const dispatch = useDispatch();
+	const { t } = useTranslation();
 
     return (
         <div className={semidark ? 'dark' : ''}>
