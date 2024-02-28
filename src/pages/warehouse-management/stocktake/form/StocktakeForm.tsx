@@ -1,8 +1,5 @@
 import { useEffect, Fragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-import { Dialog, Transition } from '@headlessui/react';
-
 import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
 import { showMessage } from '@/@core/utils';
@@ -12,6 +9,10 @@ import Select, { components } from 'react-select';
 import { DropdownUsers, DropdownWarehouses } from '@/services/swr/dropdown.twr';
 import moment from 'moment';
 import { CreateStocktake, EditStocktake, GetStocktake } from '@/services/apis/stocktake.api';
+import Link from 'next/link';
+import IconBackward from '@/components/Icon/IconBackward';
+import Flatpickr from 'react-flatpickr';
+import 'flatpickr/dist/flatpickr.css';
 
 interface Props {
     [key: string]: any;
@@ -70,7 +71,7 @@ const StocktakeForm = ({ ...props }: Props) => {
             });
         }
     }
-    
+
     const getData = () => {
         GetStocktake({ id: router.query.id }).then((res) => {
             setData(res.data);
@@ -113,8 +114,8 @@ const StocktakeForm = ({ ...props }: Props) => {
                 label: `${data?.warehouse.name}`
             } : "",
             description: data ? `${data?.description}` : "",
-            startDate: data ? moment(`${data?.startDate}`).format("YYYY-MM-DD") : "",
-            endDate: data ? moment(`${data?.endDate}`).format("YYYY-MM-DD") : ""
+            startDate: data ? moment(`${data?.startDate}`).format("YYYY-MM-DD hh:mm") : "",
+            endDate: data ? moment(`${data?.endDate}`).format("YYYY-MM-DD hh:mm") : ""
         })
     }, [data]);
 
@@ -151,9 +152,17 @@ const StocktakeForm = ({ ...props }: Props) => {
     }
 
     return (
-        <div className='panel'>
-            <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                {t('stocktake')}
+        <div className="p-5">
+            <div className='flex justify-between header-page-bottom pb-4 mb-4'>
+                <h1 className='page-title'>{t('stocktake')}</h1>
+                <Link href="/warehouse-management/stocktake">
+                    <div className="btn btn-primary btn-sm m-1 back-button h-9" >
+                        <IconBackward />
+                        <span>
+                            {t('back')}
+                        </span>
+                    </div>
+                </Link>
             </div>
             <div className="p-5">
                 <Formik
@@ -166,22 +175,22 @@ const StocktakeForm = ({ ...props }: Props) => {
                 >
                     {({ errors, values, setFieldValue }) => (
                         <Form className="space-y-5" >
-                            <div className="mb-5">
-                                <label htmlFor="name" > {t('name')} < span style={{ color: 'red' }}>* </span></label >
-                                <Field
-                                    name="name"
-                                    type="text"
-                                    id="name"
-                                    placeholder={`${t('enter_name')}`}
-                                    className="form-input"
-                                />
-                                {errors.name ? (
-                                    <div className="text-danger mt-1"> {`${errors.name}`} </div>
-                                ) : null}
-                            </div>
-                            <div className="mb-5 flex justify-between gap-4">
-                                <div className="flex-1">
-                                    <label htmlFor="warehouseId" > {t('warehouse')} < span style={{ color: 'red' }}>* </span></label >
+                            <div className='flex justify-between gap-5'>
+                                <div className="w-1/2">
+                                    <label htmlFor="name" className='label'> {t('name')} < span style={{ color: 'red' }}>* </span></label >
+                                    <Field
+                                        name="name"
+                                        type="text"
+                                        id="name"
+                                        placeholder={`${t('enter_name')}`}
+                                        className="form-input"
+                                    />
+                                    {errors.name ? (
+                                        <div className="text-danger mt-1"> {`${errors.name}`} </div>
+                                    ) : null}
+                                </div>
+                                <div className="w-1/2">
+                                    <label htmlFor="warehouseId" className='label'> {t('warehouse')} < span style={{ color: 'red' }}>* </span></label >
                                     <Select
                                         id='warehouseId'
                                         name='warehouseId'
@@ -200,46 +209,57 @@ const StocktakeForm = ({ ...props }: Props) => {
                                     ) : null}
                                 </div>
                             </div>
-                            <div className="mb-5">
-                                <label htmlFor="startDate" > {t('start_date')} < span style={{ color: 'red' }}>* </span></label >
-                                <Field
-                                    name="startDate"
-                                    type="date"
-                                    id="startDate"
-                                    className="form-input"
-                                />
-                                {errors.startDate ? (
-                                    <div className="text-danger mt-1"> {`${errors.startDate}`} </div>
-                                ) : null}
+                            <div className='flex justify-between gap-5'>
+                                <div className="w-1/2">
+                                    <label htmlFor="startDate" className='label'> {t('start_date')} < span style={{ color: 'red' }}>* </span></label >
+                                    <Field
+                                        name="startDate"
+                                        render={({ field }: any) =>
+                                        (<Flatpickr
+                                            data-enable-time
+                                            // placeholder={`${t('choose_break_end_time')}`}
+                                            options={{
+                                                enableTime: true,
+                                                dateFormat: 'Y-m-d H:i'
+                                            }}
+                                            value={field?.value}
+                                            onChange={e => setFieldValue("startDate", moment(e[0]).format("YYYY-MM-DD hh:mm"))}
+                                            className="form-input"
+                                        />)
+                                        }
+                                        className="form-input"
+                                    />
+                                    {errors.startDate ? (
+                                        <div className="text-danger mt-1"> {`${errors.startDate}`} </div>
+                                    ) : null}
+                                </div>
+                                <div className="w-1/2">
+                                    <label htmlFor="endDate" className='label'> {t('end_date')} < span style={{ color: 'red' }}>* </span></label >
+                                    <Field
+                                        name="endDate"
+                                        render={({ field }: any) => (
+                                            <Flatpickr
+                                                data-enable-time
+                                                // placeholder={`${t('choose_break_end_time')}`}
+                                                options={{
+                                                    enableTime: true,
+                                                    dateFormat: 'Y-m-d H:i'
+                                                }}
+                                                value={field?.value}
+                                                onChange={e => setFieldValue("endDate", moment(e[0]).format("YYYY-MM-DD hh:mm"))}
+                                                className="form-input"
+                                            />
+                                        )}
+                                        className="form-input"
+                                    />
+                                    {errors.endDate ? (
+                                        <div className="text-danger mt-1"> {`${errors.endDate}`} </div>
+                                    ) : null}
+                                </div>
                             </div>
-                            <div className="mb-5">
-                                <label htmlFor="endDate" > {t('end_date')} < span style={{ color: 'red' }}>* </span></label >
-                                <Field
-                                    name="endDate"
-                                    type="date"
-                                    id="endDate"
-                                    className="form-input"
-                                />
-                                {errors.endDate ? (
-                                    <div className="text-danger mt-1"> {`${errors.endDate}`} </div>
-                                ) : null}
-                            </div>
-                            <div className="mb-5">
-                                <label htmlFor="description" > {t('description')} < span style={{ color: 'red' }}>* </span></label >
-                                <Field
-                                    name="description"
-                                    type="text"
-                                    id="description"
-                                    placeholder={`${t('enter_description')}`}
-                                    className="form-input"
-                                />
-                                {errors.description ? (
-                                    <div className="text-danger mt-1"> {`${errors.description}`} </div>
-                                ) : null}
-                            </div>
-                            <div className="mb-5 flex justify-between gap-4">
-                                <div className="flex-1">
-                                    <label htmlFor="participants" > {t('participant')} < span style={{ color: 'red' }}>* </span></label >
+                            <div className='flex justify-between gap-5'>
+                                <div className="w-1/2">
+                                    <label htmlFor="participants" className='label'> {t('participant')} < span style={{ color: 'red' }}>* </span></label >
                                     <Select
                                         id='participants'
                                         name='participants'
@@ -256,6 +276,19 @@ const StocktakeForm = ({ ...props }: Props) => {
                                     />
                                     {errors.participants ? (
                                         <div className="text-danger mt-1"> {`${errors.participants}`} </div>
+                                    ) : null}
+                                </div>
+                                <div className="w-1/2">
+                                    <label htmlFor="description" className='label'> {t('description')}</label >
+                                    <Field
+                                        name="description"
+                                        as="textarea"
+                                        id="description"
+                                        placeholder={`${t('enter_description')}`}
+                                        className="form-input"
+                                    />
+                                    {errors.description ? (
+                                        <div className="text-danger mt-1"> {`${errors.description}`} </div>
                                     ) : null}
                                 </div>
                             </div>

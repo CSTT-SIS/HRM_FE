@@ -24,7 +24,7 @@ import IconPlus from '@/components/Icon/IconPlus';
 import { useRouter } from 'next/router';
 
 // json
-import DepartmentList from './department_list.json';
+import TimekeepingList from './timekeeping_fake.json';
 import DepartmentModal from './modal/DepartmentModal';
 import IconFolderMinus from '@/components/Icon/IconFolderMinus';
 import IconDownload from '@/components/Icon/IconDownload';
@@ -41,7 +41,7 @@ const Department = ({ ...props }: Props) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     useEffect(() => {
-        dispatch(setPageTitle(`${t('department')}`));
+        dispatch(setPageTitle(`${t('timekeeping-table')}`));
     });
 
     const router = useRouter();
@@ -60,11 +60,11 @@ const Department = ({ ...props }: Props) => {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const data = localStorage.getItem('departmentList');
+            const data = localStorage.getItem('TimekeepingList');
             if (data) {
                 setGetStorge(JSON.parse(data));
             } else {
-                localStorage.setItem('departmentList', JSON.stringify(DepartmentList));
+                localStorage.setItem('TimekeepingList', JSON.stringify(TimekeepingList));
             }
 
         }
@@ -106,7 +106,7 @@ const Department = ({ ...props }: Props) => {
             .then((result) => {
                 if (result.value) {
                     const value = getStorge.filter((item: any) => { return (item.id !== data.id) });
-                    localStorage.setItem('departmentList', JSON.stringify(value));
+                    localStorage.setItem('TimekeepingList', JSON.stringify(value));
                     setGetStorge(value);
                     showMessage(`${t('delete_department_success')}`, 'success')
                 }
@@ -133,7 +133,7 @@ const Department = ({ ...props }: Props) => {
             .then((result) => {
                 if (result.value) {
                     const value = getStorge.filter((item: any) => { return (item.id !== data.id) });
-                    localStorage.setItem('departmentList', JSON.stringify(value));
+                    localStorage.setItem('TimekeepingList', JSON.stringify(value));
                     setGetStorge(value);
                     showMessage(`${t('check_timekeeping_success')}`, 'success')
                 }
@@ -156,17 +156,17 @@ const Department = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
         },
-        { accessor: 'code', title: 'Mã phòng ban', sortable: false },
-        { accessor: 'name', title: 'Tên phòng ban', sortable: false },
-        { accessor: 'standard', title: 'Số công chuẩn', sortable: false },
-        { accessor: 'daily', title: 'Công ngày thường', sortable: false },
-        { accessor: 'dayoff', title: 'Công ngày nghỉ', sortable: false },
-        { accessor: 'holiday', title: 'Công ngày lễ', sortable: false },
-        { accessor: 'holiday', title: 'Làm thêm giờ hưởng lương', sortable: false },
-        { accessor: 'holiday', title: 'Nghỉ phép', sortable: false },
-        { accessor: 'holiday', title: 'Nghỉ lễ', sortable: false },
-        { accessor: 'holiday', title: 'Công tác', sortable: false },
-        { accessor: 'holiday', title: 'Tổng công thực tế', sortable: false },
+        { accessor: 'code', title: 'Mã nhân viên', sortable: false },
+        { accessor: 'name', title: 'Tên nhân viên', sortable: false },
+        { accessor: 'standard_working_hours', title: 'Số công chuẩn', sortable: false },
+        { accessor: 'regular_workday_hours', title: 'Công ngày thường', sortable: false },
+        { accessor: 'non_working_day_hours', title: 'Công ngày nghỉ', sortable: false },
+        { accessor: 'holiday_hours', title: 'Công ngày lễ', sortable: false },
+        { accessor: 'overtime_with_pay', title: 'Làm thêm giờ hưởng lương', sortable: false },
+        { accessor: 'leave_of_absence', title: 'Nghỉ phép', sortable: false },
+        { accessor: 'holiday_leave', title: 'Nghỉ lễ', sortable: false },
+        { accessor: 'business_trip', title: 'Công tác', sortable: false },
+        { accessor: 'total_hours_worked', title: 'Tổng công thực tế', sortable: false },
         {
             accessor: 'action',
             title: 'Thao tác',
@@ -200,33 +200,31 @@ const Department = ({ ...props }: Props) => {
                     <IconLoading />
                 </div>
             )}
-            <div className="panel mt-6">
-            <h1>{t('timekeeping_table')}</h1>
+             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        {/* <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >
-                            <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                            {t('add')}
-                        </button> */}
-                        <button type="button" className="btn btn-primary btn-sm m-1" >
+                        {/* <Link href="/hrm/overtime-form/AddNewForm">
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                                    <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                                    {t('add')}
+                                    </button>
+                        </Link> */}
+
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
                             Nhập file
                         </button>
-                        <button type="button" className="btn btn-primary btn-sm m-1" >
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconDownload className="ltr:mr-2 rtl:ml-2" />
                             Xuất file excel
                         </button>
                     </div>
-                    <div className='flex'>
-
                     <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
-                    </div>
-
                 </div>
                 <div className="datatables">
                     <DataTable
                         highlightOnHover
-                        className="whitespace-nowrap table-hover"
+                        className="whitespace-nowrap table-hover custom_table"
                         records={recordsData}
                         columns={columns}
                         totalRecords={total}

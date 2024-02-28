@@ -24,3 +24,198 @@
 .reactOrgChart tr {
     border-style: none;
 }
+
+/* css menu from there */
+
+.final-level-menu {
+    background-color:#F5F5F5!important;
+    width: 176px;
+    height: 36px;
+    top: 20px;
+    left: 20px;
+    padding: 8px 12px 8px 12px;
+    border-radius: 4px;
+    gap: 8px;
+}
+
+.final-level-menu span{
+    font-weight: 400;
+}
+
+.final-level-menu:hover {
+    background-color:#EBEAEA!important;
+}
+
+.final-level-menu:hover span {
+    font-weight: 700!important;
+}
+
+.final-level-menu.active {
+    background-color:#E9EBD5!important;
+}
+
+.final-level-menu.active span {
+    font-weight: 700!important;
+    color: #046738!important;
+}
+
+.header-menu-color {
+    color: #7E8F12!important;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 15px;
+    letter-spacing: 0em;
+    text-align: left;
+}
+
+li.nav-item {
+    border-radius: 5px;
+    background-color: #fff!important;
+
+}
+
+/* a.active {
+    background: #7E8F12!important;
+} */
+/*
+a.active span {
+    background: #7E8F12!important;
+    color: #fff!important;
+} */
+
+div.divide {
+    width: 100%;
+    height: 1px;
+    background:#7E8F12;
+}
+
+li.menu > button {
+    border-radius: 8px;
+    gap: 12px;
+    background: #F4F6EB!important;
+    text-transform: uppercase;
+    height: 48px;
+    padding: 0px 12px 0px 12px;
+    margin-top: 0.75rem;
+}
+
+li.menu > button span {
+    text-transform: uppercase;
+    color: #046738;
+    font-weight: 700;
+}
+li.menu > button:hover {
+    background: #E9EBD5!important;
+}
+
+li.menu > button.active {
+    background: #E6E4AC!important;
+}
+
+.group-menu-name {
+    width: 216px;
+    height: 31px;
+    padding: 8px 0px 8px 0px;
+    gap: 10px;
+    margin: 0.25rem 0rem;
+}
+
+#logo {
+    width: 97.33px;
+    height: 64px;
+}
+
+#expandButton {
+    width: 110px;
+    height: 32px;
+    padding: 8px 12px 8px 12px;
+    border-radius: 16px 4px 4px 16px;
+    gap: 8px;
+    background: #7E8F12;
+}
+
+#expandButton span {
+    color: #fff;
+    font-size: 12px;
+    margin: auto;
+}
+
+.menu1-text {
+    color: #046738!important;
+    font-weight: 700;
+}
+
+.header-page-bottom {
+    border-bottom: 1px solid #046738;
+}
+
+.page-title {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    letter-spacing: 0em;
+    text-align: left;
+    text-transform: uppercase;
+    color: #046738;
+    align-self: center;
+}
+
+.back-button {
+    width: 117px;
+    height: 32px;
+    padding: 0px 16px 0px 16px;
+    border-radius: 8px;
+    gap: 12px;
+    background-color: #DADADA!important;
+    color: #046738;
+    border-color: #DADADA!important;
+}
+
+.back-button span {
+    color: #082819;
+    text-transform: uppercase!important;
+}
+
+.label {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 15px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #046738;
+}
+
+.cancel-button {
+    width: 74px;
+    height: 40px;
+    padding: 0px 24px 0px 24px;
+    border-radius: 8px;
+    border: 1px;
+    gap: 12px;
+    border: 1px solid #082819;
+    text-transform: uppercase!important;
+    font-size: 12px!important;
+}
+
+.add-button {
+    width: 112px;
+    height: 40px;
+    padding: 0px 24px 0px 24px;
+    border-radius: 8px;
+    border: 1px;
+    gap: 12px;
+    border: 1px solid #082819;
+    text-transform: uppercase!important;
+    background: #046738!important;
+    color: #fff!important;
+    border-color: #046738!important;
+    font-size: 12px!important;
+}
+
+.gap-8 {
+    gap: 8px!important;
+}
+
+
+
+

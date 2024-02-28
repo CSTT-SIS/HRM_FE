@@ -1,5 +1,7 @@
 import { useEffect, Fragment, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
+
 import { setPageTitle } from '../../../store/themeConfigSlice';
 import { lazy } from 'react';
 // Third party libs
@@ -20,13 +22,17 @@ import IconTrashLines from '../../../components/Icon/IconTrashLines';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
 
-import { useRouter } from 'next/router';
 
 // json
 import DepartmentList from './department_list.json';
 import DepartmentModal from './modal/DepartmentModal';
-import IconFolderMinus from '@/components/Icon/IconFolderMinus'; 
+import IconFolderMinus from '@/components/Icon/IconFolderMinus';
 import IconDownload from '@/components/Icon/IconDownload';
+import IconCaretDown from '@/components/Icon/IconCaretDown';
+
+import Link from 'next/link';
+import AnimateHeight from 'react-animate-height';
+
 
 interface Props {
     [key: string]: any;
@@ -42,6 +48,7 @@ const Department = ({ ...props }: Props) => {
 
     const router = useRouter();
 
+    const [display, setDisplay] = useState('tree')
     const [showLoader, setShowLoader] = useState(true);
     const [page, setPage] = useState<any>(PAGE_NUMBER_DEFAULT);
     const [pageSize, setPageSize] = useState(PAGE_SIZES_DEFAULT);
@@ -49,10 +56,19 @@ const Department = ({ ...props }: Props) => {
     const [total, setTotal] = useState(0);
     const [getStorge, setGetStorge] = useState<any>();
     const [data, setData] = useState<any>();
+    const [treeview1, setTreeview1] = useState<string[]>(['images']);
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
     const [openModal, setOpenModal] = useState(false);
+
+    const toggleTreeview1 = (name: any) => {
+        if (treeview1.includes(name)) {
+            setTreeview1((value) => value.filter((d) => d !== name));
+        } else {
+            setTreeview1([...treeview1, name]);
+        }
+    };
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -136,7 +152,7 @@ const Department = ({ ...props }: Props) => {
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
                     <Tippy content={`${t('edit')}`}>
-                        <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
+                        <button type="button" className='button-edit' onClick={() => handleEdit(records)}>
                             <IconPencil /> Sửa
                         </button>
                     </Tippy>
@@ -149,7 +165,7 @@ const Department = ({ ...props }: Props) => {
             ),
         },
     ]
-    
+
     return (
         <div>
             {showLoader && (
@@ -161,10 +177,12 @@ const Department = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
-                            <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                            {t('add')}
-                        </button>
+                        <Link href="/hrm/department/AddNewDepartment">
+                            <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                                <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                {t('add')}
+                            </button>
+                        </Link>
                         <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
                             Nhập file
@@ -174,26 +192,136 @@ const Department = ({ ...props }: Props) => {
                             Xuất file excel
                         </button>
                     </div>
-                    <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                    <div className='display-style'>
+                        Cách hiển thị
+                        <button type="button" className="btn btn-primary btn-sm m-1  custom-button-display" style={{ backgroundColor: display === 'flat' ? '#E9EBD5' : '#FAFBFC' }} onClick={() => setDisplay('flat')}>
+                            <img src="/assets/images/display-flat.svg" alt="img" />
+                        </button>
+                        <button type="button" className="btn btn-primary btn-sm m-1  custom-button-display" style={{ backgroundColor: display === 'tree' ? '#E9EBD5' : '#FAFBFC' }} onClick={() => setDisplay('tree')}>
+                            <img src="/assets/images/display-tree.png" alt="img" />
+                        </button>
+                        <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+
+                    </div>
                 </div>
-                <div className="datatables">
-                    <DataTable
-                        highlightOnHover
-                        className="whitespace-nowrap table-hover custom_table"
-                        records={recordsData}
-                        columns={columns}
-                        totalRecords={total}
-                        recordsPerPage={pageSize}
-                        page={page}
-                        onPageChange={(p) => setPage(p)}
-                        recordsPerPageOptions={PAGE_SIZES}
-                        onRecordsPerPageChange={setPageSize}
-                        sortStatus={sortStatus}
-                        onSortStatusChange={setSortStatus}
-                        minHeight={200}
-                        paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
-                    />
-                </div>
+                {
+                    display === 'tree' ?
+                        <div className="mb-5">
+                            <ul className="font-semibold">
+                                <li className="py-[5px]">
+                                    <button type="button" className={`${treeview1.includes('css') ? 'active' : ''}`} onClick={() => toggleTreeview1('css')} style={{ display: 'flex', justifyItems: 'space-between', width: '100%' }}>
+                                        <div>
+                                            <IconCaretDown className={`w-5 h-5 text-primary inline relative -top-1 ltr:mr-2 rtl:ml-2 ${treeview1.includes('css') && 'rotate-180'}`} />
+                                            Ban Giám đốc
+                                        </div>
+                                        <div className="mx-auto flex w-max items-center gap-2" style={{ marginRight: '0' }}>
+                                            <Tippy content={`${t('edit')}`}>
+                                                <button type="button" className='button-edit'>
+                                                    <IconPencil /> Sửa
+                                                </button>
+                                            </Tippy>
+                                            <Tippy content={`${t('delete')}`}>
+                                                <button type="button" className='button-delete'>
+                                                    <IconTrashLines /> Xóa
+                                                </button>
+                                            </Tippy>
+                                        </div>
+                                    </button>
+                                    <AnimateHeight duration={300} height={treeview1.includes('css') ? 'auto' : 0}>
+                                        <ul className="sub-menu ltr:pl-14 rtl:pr-14">
+                                            <li className="py-[5px]">
+                                                Phòng kế hoạch
+                                                <div className="mx-auto flex w-max items-center gap-2" style={{ float: 'right' }}>
+                                                    <Tippy content={`${t('edit')}`}>
+                                                        <button type="button" className='button-edit'>
+                                                            <IconPencil /> Sửa
+                                                        </button>
+                                                    </Tippy>
+                                                    <Tippy content={`${t('delete')}`}>
+                                                        <button type="button" className='button-delete'>
+                                                            <IconTrashLines /> Xóa
+                                                        </button>
+                                                    </Tippy>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </AnimateHeight>
+                                </li>
+                                <li className="py-[5px]">
+                                    <button type="button" className={`${treeview1.includes('css') ? 'active' : ''}`} onClick={() => toggleTreeview1('css')} style={{ display: 'flex', justifyItems: 'space-between', width: '100%' }}>
+                                        <div>
+                                            <IconCaretDown className={`w-5 h-5 text-primary inline relative -top-1 ltr:mr-2 rtl:ml-2 ${treeview1.includes('css') && 'rotate-180'}`} />
+                                            Phòng tài chính
+                                        </div>
+                                        <div className="mx-auto flex w-max items-center gap-2" style={{ marginRight: '0' }}>
+                                            <Tippy content={`${t('edit')}`}>
+                                                <button type="button" className='button-edit'>
+                                                    <IconPencil /> Sửa
+                                                </button>
+                                            </Tippy>
+                                            <Tippy content={`${t('delete')}`}>
+                                                <button type="button" className='button-delete'>
+                                                    <IconTrashLines /> Xóa
+                                                </button>
+                                            </Tippy>
+                                        </div>
+                                    </button>
+                                    <AnimateHeight duration={300} height={treeview1.includes('images') ? 'auto' : 0}>
+                                        <ul className="ltr:pl-14 rtl:pr-14">
+                                            <li className="py-[5px]">
+                                                Ban kế toán
+                                                <div className="mx-auto flex w-max items-center gap-2" style={{ float: 'right' }}>
+                                                    <Tippy content={`${t('edit')}`}>
+                                                        <button type="button" className='button-edit'>
+                                                            <IconPencil /> Sửa
+                                                        </button>
+                                                    </Tippy>
+                                                    <Tippy content={`${t('delete')}`}>
+                                                        <button type="button" className='button-delete'>
+                                                            <IconTrashLines /> Xóa
+                                                        </button>
+                                                    </Tippy>
+                                                </div>
+                                            </li>
+                                            <li className="py-[5px]">
+                                                Ban hậu cần
+                                                <div className="mx-auto flex w-max items-center gap-2" style={{ float: 'right' }}>
+                                                    <Tippy content={`${t('edit')}`}>
+                                                        <button type="button" className='button-edit'>
+                                                            <IconPencil /> Sửa
+                                                        </button>
+                                                    </Tippy>
+                                                    <Tippy content={`${t('delete')}`}>
+                                                        <button type="button" className='button-delete'>
+                                                            <IconTrashLines /> Xóa
+                                                        </button>
+                                                    </Tippy>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </AnimateHeight>
+                                </li>
+                            </ul>
+                        </div> : <div className="datatables">
+                            <DataTable
+                                highlightOnHover
+                                className="whitespace-nowrap table-hover custom_table"
+                                records={recordsData}
+                                columns={columns}
+                                totalRecords={total}
+                                recordsPerPage={pageSize}
+                                page={page}
+                                onPageChange={(p) => setPage(p)}
+                                recordsPerPageOptions={PAGE_SIZES}
+                                onRecordsPerPageChange={setPageSize}
+                                sortStatus={sortStatus}
+                                onSortStatusChange={setSortStatus}
+                                minHeight={200}
+                                paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
+                            />
+                        </div>
+                }
+
             </div>
             <DepartmentModal
                 openModal={openModal}

@@ -2,25 +2,25 @@
     {
         "id": 1,
         "name": "Phòng 1",
-        "code": "123",
+        "code": "PB01",
         "status": "active"
     },
     {
         "id": 2,
         "name": "Phòng 2",
-        "code": "123",
+        "code": "PB02",
         "status": "active"
     },
     {
         "id": 3,
         "name": "Phòng 3",
-        "code": "123",
+        "code": "PB03",
         "status": "active"
     },
     {
         "id": 4,
         "name": "Phòng 4",
-        "code": "123",
+        "code": "PB04",
         "status": "active"
     }
 ]

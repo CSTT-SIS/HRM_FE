@@ -10,6 +10,8 @@ import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
 import { DropdownUsers } from '@/services/swr/dropdown.twr';
 import { CreateRepair, EditRepair, GetRepair } from '@/services/apis/repair.api';
+import Link from 'next/link';
+import IconBackward from '@/components/Icon/IconBackward';
 
 interface Props {
     [key: string]: any;
@@ -115,45 +117,51 @@ const RepairForm = ({ ...props }: Props) => {
     }
 
     return (
-        <div className='panel'>
-            <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                {t('repair')}
+        <div className="p-5">
+            <div className='flex justify-between header-page-bottom pb-4 mb-4'>
+                <h1 className='page-title'>{t('repair')}</h1>
+                <Link href="/warehouse-process/repair">
+                    <div className="btn btn-primary btn-sm m-1 back-button h-9" >
+                        <IconBackward />
+                        <span>
+                            {t('back')}
+                        </span>
+                    </div>
+                </Link>
             </div>
-            <div className="p-5">
-                <Formik
-                    initialValues={initialValue}
-                    validationSchema={SubmittedForm}
-                    onSubmit={values => {
-                        handleRepair(values);
-                    }}
-                    enableReinitialize
-                >
+            <Formik
+                initialValues={initialValue}
+                validationSchema={SubmittedForm}
+                onSubmit={values => {
+                    handleRepair(values);
+                }}
+                enableReinitialize
+            >
 
-                    {({ errors, values, setFieldValue }) => (
-                        <Form className="space-y-5" >
-                            <div className="mb-5 flex justify-between gap-4">
-                                <div className="flex-1">
-                                    <label htmlFor="repairById" > {t('repair_by_id')} < span style={{ color: 'red' }}>* </span></label >
-                                    <Select
-                                        id='repairById'
-                                        name='repairById'
-                                        options={dataUserDropdown}
-                                        maxMenuHeight={160}
-                                        value={values?.repairById}
-                                        onMenuOpen={() => setPage(1)}
-                                        onMenuScrollToBottom={handleMenuScrollToBottom}
-                                        isLoading={userLoading}
-                                        onChange={e => {
-                                            setFieldValue('repairById', e)
-                                        }}
-                                    />
-                                    {errors.repairById ? (
-                                        <div className="text-danger mt-1"> {`${errors.repairById}`} </div>
-                                    ) : null}
-                                </div>
+                {({ errors, values, setFieldValue }) => (
+                    <Form className="space-y-5" >
+                        <div className='flex justify-between gap-5'>
+                            <div className="w-1/2">
+                                <label htmlFor="repairById" className='label' > {t('repair_by_id')} < span style={{ color: 'red' }}>* </span></label >
+                                <Select
+                                    id='repairById'
+                                    name='repairById'
+                                    options={dataUserDropdown}
+                                    maxMenuHeight={160}
+                                    value={values?.repairById}
+                                    onMenuOpen={() => setPage(1)}
+                                    onMenuScrollToBottom={handleMenuScrollToBottom}
+                                    isLoading={userLoading}
+                                    onChange={e => {
+                                        setFieldValue('repairById', e)
+                                    }}
+                                />
+                                {errors.repairById ? (
+                                    <div className="text-danger mt-1"> {`${errors.repairById}`} </div>
+                                ) : null}
                             </div>
-                            <div className="mb-5">
-                                <label htmlFor="type" > {t('vehicle_registration_number')} < span style={{ color: 'red' }}>* </span></label >
+                            <div className="w-1/2">
+                                <label htmlFor="type" className='label'> {t('vehicle_registration_number')} < span style={{ color: 'red' }}>* </span></label >
                                 <Field
                                     name="vehicleRegistrationNumber"
                                     type="text"
@@ -165,11 +173,13 @@ const RepairForm = ({ ...props }: Props) => {
                                     <div className="text-danger mt-1"> {`${errors.vehicleRegistrationNumber}`} </div>
                                 ) : null}
                             </div>
-                            <div className="mb-5">
-                                <label htmlFor="description" > {t('description')}</label >
+                        </div>
+                        <div className='flex justify-between gap-5'>
+                            <div className="w-1/2">
+                                <label htmlFor="description" className='label'> {t('description')}</label >
                                 <Field
                                     name="description"
-                                    type="text"
+                                    as="textarea"
                                     id="description"
                                     placeholder={`${t('enter_description')}`}
                                     className="form-input"
@@ -178,11 +188,11 @@ const RepairForm = ({ ...props }: Props) => {
                                     <div className="text-danger mt-1"> {`${errors.description}`} </div>
                                 ) : null}
                             </div>
-                            <div className="mb-5">
-                                <label htmlFor="damageLevel" > {t('damage_level')} </label >
+                            <div className="w-1/2">
+                                <label htmlFor="damageLevel" className='label'> {t('damage_level')} </label >
                                 <Field
                                     name="damageLevel"
-                                    type="text"
+                                    as="textarea"
                                     id="damageLevel"
                                     className="form-input"
                                     placeholder={`${t('enter_damage_level')}`}
@@ -191,20 +201,19 @@ const RepairForm = ({ ...props }: Props) => {
                                     <div className="text-danger mt-1"> {`${errors.damageLevel}`} </div>
                                 ) : null}
                             </div>
-                            <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
-                                <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
-                                    {t('cancel')}
-                                </button>
-                                <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4">
-                                    {data !== undefined ? t('update') : t('add')}
-                                </button>
-                            </div>
+                        </div>
+                        <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
+                            <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
+                                {t('cancel')}
+                            </button>
+                            <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+                                {data !== undefined ? t('update') : t('add')}
+                            </button>
+                        </div>
 
-                        </Form>
-                    )}
-                </Formik>
-
-            </div>
+                    </Form>
+                )}
+            </Formik>
         </div>
     );
 };

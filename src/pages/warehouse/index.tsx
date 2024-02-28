@@ -148,11 +148,11 @@ const WarehousePage = ({ ...props }: Props) => {
                             <IconPencil />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('delete')}`}>
+                    {/* <Tippy content={`${t('delete')}`}>
                         <button type="button" onClick={() => handleDelete(records)}>
                             <IconTrashLines />
                         </button>
-                    </Tippy>
+                    </Tippy> */}
                 </div>
             ),
         },
@@ -169,13 +169,13 @@ const WarehousePage = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >
+                        {/* <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                             {t('add')}
-                        </button>
+                        </button> */}
                     </div>
 
-                    <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
+                    {/* <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
                 </div>
                 <div className="datatables">
                     <DataTable
@@ -183,16 +183,16 @@ const WarehousePage = ({ ...props }: Props) => {
                         className="whitespace-nowrap table-hover"
                         records={warehouse?.data}
                         columns={columns}
-                        totalRecords={pagination?.totalRecords}
-                        recordsPerPage={pagination?.perPage}
-                        page={pagination?.page}
-                        onPageChange={(p) => handleChangePage(p, pagination?.perPage)}
-                        recordsPerPageOptions={PAGE_SIZES}
-                        onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
+                        // totalRecords={pagination?.totalRecords}
+                        // recordsPerPage={pagination?.perPage}
+                        // page={pagination?.page}
+                        // onPageChange={(p) => handleChangePage(p, pagination?.perPage)}
+                        // recordsPerPageOptions={PAGE_SIZES}
+                        // onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
                         sortStatus={sortStatus}
                         onSortStatusChange={setSortStatus}
                         minHeight={200}
-                        paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
+                        // paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
                     />
                 </div>
             </div>

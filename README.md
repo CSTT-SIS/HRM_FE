@@ -25,7 +25,7 @@
 ## Installation & Setup
 
 #### Clone code
-
+npm 
 ```bash
 $ git clone https://github.com/vangtatlaos/QLNS_FE
 ```

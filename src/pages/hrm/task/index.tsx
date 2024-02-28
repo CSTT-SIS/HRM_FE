@@ -7,6 +7,7 @@ import { setPageTitle } from '@/store/themeConfigSlice';
 import { showMessage } from '@/@core/utils';
 import { PAGE_NUMBER_DEFAULT, PAGE_SIZES, PAGE_SIZES_DEFAULT } from '@/utils/constants';
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
+import Link from 'next/link';
 
 import TaskList from './task_list.json';
 import Swal from 'sweetalert2';
@@ -163,18 +164,18 @@ const Task = ({ ...props }: Props) => {
 			render: (records: any) => (
 				<div className="mx-auto flex w-max items-center gap-2">
 					<Tippy content={`${t('edit')}`}>
-						<button type="button" onClick={() => handleEdit(records)}>
-							<IconPencil />
+						<button type="button" className='button-edit' onClick={() => handleEdit(records)}>
+							<IconPencil /> Sửa
 						</button>
 					</Tippy>
 					<Tippy content={`${t('delete')}`}>
-						<button type="button" onClick={() => handleDelete(records)}>
-							<IconTrashLines />
+						<button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+							<IconTrashLines /> Xóa
 						</button>
 					</Tippy>
 					<Tippy content={`${t('download')}`}>
-						<button type="button">
-							<IconDownload />
+						<button type="button" className='button-detail'>
+							<IconDownload /> {t('download')}
 						</button>
 					</Tippy>
 				</div>
@@ -192,17 +193,19 @@ const Task = ({ ...props }: Props) => {
 			<div className="panel mt-6">
 				<div className="mb-4.5 flex flex-col justify-between gap-5 md:flex-row md:items-center">
 					<div className="flex flex-wrap items-center">
-						<button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 ">
-							<IconPlus className="h-5 w-5 ltr:mr-2 rtl:ml-2" />
-							{t('add')}
-						</button>
+						<Link href="/hrm/task/AddNewTask">
+							<button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+								<IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+								{t('add')}
+							</button>
+						</Link>
 					</div>
 					<input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
 				</div>
 				<div className="datatables">
 					<DataTable
 						highlightOnHover
-						className="table-hover whitespace-nowrap"
+						className="table-hover whitespace-nowrap custom_table"
 						records={recordsData}
 						columns={columns}
 						totalRecords={total}
