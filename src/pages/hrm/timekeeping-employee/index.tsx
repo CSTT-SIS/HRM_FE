@@ -8,7 +8,13 @@ import Swal from 'sweetalert2';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
-// API
+import Flatpickr from 'react-flatpickr';
+import 'flatpickr/dist/flatpickr.css';
+import { Vietnamese } from "flatpickr/dist/l10n/vn.js"
+// ** Styles
+//
+import "flatpickr/dist/plugins/monthSelect/style.css"
+import monthSelectPlugin, { Config } from "flatpickr/dist/plugins/monthSelect"
 import { deleteDepartment, detailDepartment, listAllDepartment } from '../../../services/apis/department.api';
 // constants
 import { PAGE_SIZES, PAGE_SIZES_DEFAULT, PAGE_NUMBER_DEFAULT } from '@/utils/constants';
@@ -30,6 +36,7 @@ import IconFolderMinus from '@/components/Icon/IconFolderMinus';
 import IconDownload from '@/components/Icon/IconDownload';
 import IconEye from '@/components/Icon/IconEye';
 import IconChecks from '@/components/Icon/IconChecks';
+import { getDaysOfMonth } from '@/utils/commons';
 
 
 interface Props {
@@ -41,16 +48,22 @@ interface Day {
     dayWeek: string
 }
 
+const monthSelectConfig: Partial<Config> = {
+    shorthand: true, //defaults to false
+    dateFormat: "F Y", //defaults to "F Y"
+    theme: "light" // defaults to "light"
+};
+
 const Department = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
     useEffect(() => {
-        dispatch(setPageTitle(`${t('department')}`));
+        dispatch(setPageTitle(`${t('timekeeping')}`));
     });
+    const [listDay, setListDay] = useState();
 
     const router = useRouter();
-
     const [showLoader, setShowLoader] = useState(true);
     const [page, setPage] = useState<any>(PAGE_NUMBER_DEFAULT);
     const [pageSize, setPageSize] = useState(PAGE_SIZES_DEFAULT);
@@ -62,6 +75,9 @@ const Department = ({ ...props }: Props) => {
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
     const [openModal, setOpenModal] = useState(false);
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentYear = currentDate.getFullYear();
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -78,6 +94,9 @@ const Department = ({ ...props }: Props) => {
         setTotal(getStorge?.length);
         setPageSize(PAGE_SIZES_DEFAULT);
         setRecordsData(getStorge?.filter((item: any, index: any) => { return index <= 9 && page === 1 ? item : index >= 10 && index <= (page * 9) ? item : null }));
+        const listDay_: string[] = getDaysOfMonth(currentYear, currentMonth);
+        setListDay(listDay_)
+
     }, [getStorge, getStorge?.length, page])
 
     useEffect(() => {
@@ -173,7 +192,7 @@ const Department = ({ ...props }: Props) => {
                 title: `${item.dayWeek}, ${item.dayMonth}`,
                 render: (records: any, index: any) => {
                     if (columIndex <= 3) {
-                        return <span onClick={() => handleEdit(records)} style={{cursor: "pointer"}}>{`CONG_${records.code}`}</span>
+                        return <span onClick={() => handleEdit(records)} style={{cursor: "pointer"}}>1</span>
                     } else {
                         return <div onClick={() => setOpenModal(true)} style={{cursor: "pointer", height: "20px"}}></div>
                     }
@@ -190,42 +209,51 @@ const Department = ({ ...props }: Props) => {
                 </div>
             )}
             <div className="panel mt-6">
-            <h1>Bảng chấm công nhân viên tháng 01/2024</h1>
-                <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5 grid grid-cols-2">
+                <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        {/* <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >
-                            <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                            {t('add')}
-                        </button> */}
-                        <button type="button" className="btn btn-primary btn-sm m-1" >
+                        {/* <Link href="/hrm/overtime-form/AddNewForm">
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                                    <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                                    {t('add')}
+                                    </button>
+                        </Link> */}
+
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
                             Nhập file
                         </button>
-                        <button type="button" className="btn btn-primary btn-sm m-1" >
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconDownload className="ltr:mr-2 rtl:ml-2" />
                             Xuất file excel
                         </button>
                     </div>
-                    <div className='grid grid-cols-3 gap-1'>
-                    <select id="ctnSelect1" className="form-select w-auto text-white-dark" required>
-                                    <option>Chọn phòng ban</option>
-                                    <option>Phòng ban 1</option>
-                                    <option>Phòng ban 2</option>
-                                    <option>Phòng ban 3</option>
-                                </select>
-                                <select id="ctnSelect1" className="form-select w-auto text-white-dark" required>
-                                    <option>Chọn tháng</option>
-                                    <option>Tháng 1</option>
-                                    <option>Tháng 2</option>
-                                    <option>Tháng 3</option>
-                                </select>
-                                <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
-                    </div>
+                    <div className='flex gap-2'>
+                        <div className='flex gap-1'>
+                        <div className="flex items-center w-auto">{t('choose_month')}</div>
+                        <Flatpickr
+                            className='form-input'
+                            options = {{
+                            // dateFormat: 'd/m/y',
+                            defaultDate: new Date(),
+                            locale: {
+                                ...Vietnamese
+                            },
+                                plugins: [
+                                    monthSelectPlugin(monthSelectConfig) // Sử dụng plugin với cấu hình
+                                ]
+                            }}
+                            onChange={(selectedDates, dateStr, instance) => {
+                                // Xử lý sự kiện thay đổi ngày tháng ở đây
+                            }}
+                         />
+                        </div>
+                    <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                        </div>
                 </div>
                 <div className="datatables">
                     <DataTable
                         highlightOnHover
-                        className="whitespace-nowrap table-hover"
+                        className="whitespace-nowrap table-hover custom_table"
                         records={recordsData}
                         columns={columns}
                         totalRecords={total}

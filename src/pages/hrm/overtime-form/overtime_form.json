@@ -1,8 +1,8 @@
 [
     {
         "id": 1,
-        "name": "Nhân viên 1",
-        "code": "123",
+        "name": "Nguyễn Văn A",
+        "code": "NV01",
         "status": "active",
         "position": "Kế toán",
         "department": "Công ty",
@@ -17,8 +17,8 @@
     },
     {
         "id": 2,
-        "name": "Nhân viên 2",
-        "code": "123",
+        "name": "Trần Văn B",
+        "code": "NV02",
         "status": "active",
         "position": "Kế toán",
         "department": "Công ty",
@@ -33,8 +33,8 @@
     },
     {
         "id": 3,
-        "name": "Nhân viên 3",
-        "code": "123",
+        "name": "Nguyễn Thị C",
+        "code": "NV03",
         "status": "active",
         "position": "Kế toán",
         "department": "Công ty",
@@ -49,8 +49,8 @@
     },
     {
         "id": 4,
-        "name": "Nhân viên 4",
-        "code": "123",
+        "name": "Vũ Văn D",
+        "code": "NV04",
         "status": "active",
         "position": "Kế toán",
         "department": "Công ty",

@@ -36,11 +36,11 @@
         "type_shift": "Ca theo tổng số giờ",
         "time_total": "5",
         "department_apply": "Công ty",
-        "from_time": "",
-        "end_time": "",
+        "from_time": "08:00",
+        "end_time": "14:00",
         "description": "",
         "work_coefficient": 2,
-        "break_from_time": "",
-        "break_end_time": ""
+        "break_from_time": "11:00",
+        "break_end_time": "12:00"
     }
 ]
