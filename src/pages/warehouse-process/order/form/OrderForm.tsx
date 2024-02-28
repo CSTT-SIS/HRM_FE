@@ -35,7 +35,7 @@ const OrderModal = ({ ...props }: Props) => {
         type: new Yup.ObjectSchema().required(`${t('please_fill_type')}`),
         code: Yup.string().required(`${t('please_fill_code')}`),
         proposalId: new Yup.ObjectSchema().required(`${t('please_fill_proposal')}`),
-        providerId: new Yup.ObjectSchema().required(`${t('please_fill_provider')}`),
+        provider: Yup.string().required(`${t('please_fill_provider')}`),
         estimatedDeliveryDate: Yup.string().required(`${t('please_fill_date')}`),
 
     });
@@ -51,7 +51,7 @@ const OrderModal = ({ ...props }: Props) => {
             type: param.type.value,
             code: param.code,
             estimatedDeliveryDate: param.estimatedDeliveryDate,
-            providerId: Number(param.providerId.value)
+            provider: (param.provider)
         };
         if (data) {
             EditOrder({ id: router?.query?.id, ...query }).then(() => {
@@ -115,10 +115,7 @@ const OrderModal = ({ ...props }: Props) => {
             } : "",
             code: data ? `${data?.code}` : "",
             estimatedDeliveryDate: data ? moment(`${data?.estimatedDeliveryDate}`).format("YYYY-MM-DD") : "",
-            providerId: data ? {
-                value: `${data?.provider?.id}`,
-                label: `${data?.provider?.name}`
-            } : "",
+            provider: data ? `${data?.provider}` : "",
         })
     }, [data]);
 
@@ -229,40 +226,6 @@ const OrderModal = ({ ...props }: Props) => {
                                 ) : null}
                             </div>
                             <div className="w-1/2">
-                                <label htmlFor="providerId" className='label'> {t('provider')}< span style={{ color: 'red' }}>* </span></label >
-                                <Select
-                                    id='providerId'
-                                    name='providerId'
-                                    options={dataProviderDropdown}
-                                    onMenuOpen={() => setPageProvider(1)}
-                                    onMenuScrollToBottom={handleMenuScrollToBottomProvider}
-                                    isLoading={providerLoading}
-                                    maxMenuHeight={160}
-                                    value={values?.providerId}
-                                    onChange={e => {
-                                        setFieldValue('providerId', e)
-                                    }}
-                                />
-                                {errors.providerId ? (
-                                    <div className="text-danger mt-1"> {`${errors.providerId}`} </div>
-                                ) : null}
-                            </div>
-                        </div>
-                        <div className='flex justify-between gap-5'>
-                            <div className="w-1/2">
-                                <label htmlFor="code" className='label'> {t('code')} < span style={{ color: 'red' }}>* </span></label >
-                                <Field
-                                    name="code"
-                                    type="text"
-                                    id="code"
-                                    placeholder={`${t('enter_code')}`}
-                                    className="form-input"
-                                />
-                                {errors.code ? (
-                                    <div className="text-danger mt-1"> {`${errors.code}`} </div>
-                                ) : null}
-                            </div>
-                            <div className="w-1/2">
                                 <label htmlFor="estimatedDeliveryDate" className='label'> {t('estimated_delivery_date')} < span style={{ color: 'red' }}>* </span></label >
                                 <Field
                                     name="estimatedDeliveryDate"
@@ -283,6 +246,41 @@ const OrderModal = ({ ...props }: Props) => {
                                 />
                                 {errors.estimatedDeliveryDate ? (
                                     <div className="text-danger mt-1"> {`${errors.estimatedDeliveryDate}`} </div>
+                                ) : null}
+                            </div>
+                        </div>
+                        <div className='flex justify-between gap-5'>
+                            <div className="w-1/2">
+                                <label htmlFor="code" className='label'> {t('code')} < span style={{ color: 'red' }}>* </span></label >
+                                <Field
+                                    name="code"
+                                    type="text"
+                                    id="code"
+                                    placeholder={`${t('enter_code')}`}
+                                    className="form-input"
+                                />
+                                {errors.code ? (
+                                    <div className="text-danger mt-1"> {`${errors.code}`} </div>
+                                ) : null}
+                            </div>
+                            <div className="w-1/2">
+                                <label htmlFor="provider" className='label'> {t('provider')}< span style={{ color: 'red' }}>* </span></label >
+                                {/* <Select
+                                    id='providerId'
+                                    name='providerId'
+                                    options={dataProviderDropdown}
+                                    onMenuOpen={() => setPageProvider(1)}
+                                    onMenuScrollToBottom={handleMenuScrollToBottomProvider}
+                                    isLoading={providerLoading}
+                                    maxMenuHeight={160}
+                                    value={values?.providerId}
+                                    onChange={e => {
+                                        setFieldValue('providerId', e)
+                                    }}
+                                /> */}
+                                <Field id="provider" as="textarea" rows="2" name="provider" className="form-input" />
+                                {errors.provider ? (
+                                    <div className="text-danger mt-1"> {`${errors.provider}`} </div>
                                 ) : null}
                             </div>
                         </div>
