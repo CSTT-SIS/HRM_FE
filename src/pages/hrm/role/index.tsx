@@ -123,13 +123,13 @@ const RolePage = ({ ...props }: Props) => {
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
                     <Tippy content={`${t('edit')}`}>
-                        <button type="button" onClick={() => handleEdit(records)}>
-                            <IconPencil />
+                        <button type="button" className='button-edit' onClick={() => handleEdit(records)}>
+                            <IconPencil /> Sửa
                         </button>
                     </Tippy>
                     <Tippy content={`${t('delete')}`}>
-                        <button type="button" onClick={() => handleDelete(records)}>
-                            <IconTrashLines />
+                        <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                            <IconTrashLines /> Xóa
                         </button>
                     </Tippy>
                 </div>
@@ -148,8 +148,8 @@ const RolePage = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" onClick={(e) => router.push('role/create')} className="btn btn-primary btn-sm m-1 " >
-                            <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                        <button type="button" onClick={(e) => router.push('role/create')} className="btn btn-primary btn-sm m-1 custom-button" >
+                            <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2 " />
                             {t('add')}
                         </button>
                     </div>
@@ -158,7 +158,7 @@ const RolePage = ({ ...props }: Props) => {
                 <div className="datatables">
                     <DataTable
                         highlightOnHover
-                        className="whitespace-nowrap table-hover"
+                        className="whitespace-nowrap table-hover custom_table"
                         records={role?.data}
                         columns={columns}
                         totalRecords={pagination?.totalRecords}
