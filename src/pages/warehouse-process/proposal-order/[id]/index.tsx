@@ -193,16 +193,16 @@ const DetailPage = ({ ...props }: Props) => {
                         className="whitespace-nowrap table-hover"
                         records={ProposalDetail?.data}
                         columns={columns}
-                        totalRecords={pagination?.totalRecords}
-                        recordsPerPage={pagination?.perPage}
-                        page={pagination?.page}
-                        onPageChange={(p) => handleChangePage(p, pagination?.perPage)}
+                        // totalRecords={pagination?.totalRecords}
+                        // recordsPerPage={pagination?.perPage}
+                        // page={pagination?.page}
+                        // onPageChange={(p) => handleChangePage(p, pagination?.perPage)}
                         // recordsPerPageOptions={PAGE_SIZES}
                         // onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
                         sortStatus={sortStatus}
                         onSortStatusChange={setSortStatus}
                         minHeight={200}
-                        paginationText={({ from, to, totalRecords }) => ``}
+                        // paginationText={({ from, to, totalRecords }) => ``}
                     />
                 </div>
                 {

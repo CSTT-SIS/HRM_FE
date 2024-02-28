@@ -383,6 +383,55 @@ const Sidebar = () => {
                                 </AnimateHeight>
                             </li>
                             <li className="menu nav-item">
+                                <button type="button" className={`${currentMenu === 'product' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('product')}>
+                                    <div className="flex items-center">
+                                        <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
+                                        <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('product')}</span>
+                                    </div>
+
+                                    <div className={currentMenu !== 'product' ? '-rotate-90 rtl:rotate-90' : ''}>
+                                        <IconCaretDown />
+                                    </div>
+
+                                </button>
+                                <AnimateHeight duration={300} height={currentMenu === 'product' ? 'auto' : 0}>
+                                    <ul className="text-gray-500">
+                                        <li className="nav-item">
+                                            <Link href="/warehouse/product/list" className='final-level-menu'>
+                                                <div className="flex items-center">
+                                                    <IconWarehouse className="shrink-0 group-hover:!text-primary" />
+                                                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('product_list')}</span>
+                                                </div>
+                                            </Link>
+                                        </li>
+                                        <li className="nav-item">
+                                            <Link href="/warehouse/product/category" className='final-level-menu'>
+                                                <div className="flex items-center">
+                                                    <IconWarehouse className="shrink-0 group-hover:!text-primary" />
+                                                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('product_category')}</span>
+                                                </div>
+                                            </Link>
+                                        </li>
+                                        <li className="nav-item">
+                                            <Link href="/warehouse/product/unit" className='final-level-menu'>
+                                                <div className="flex items-center">
+                                                    <IconWarehouse className="shrink-0 group-hover:!text-primary" />
+                                                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('product_unit')}</span>
+                                                </div>
+                                            </Link>
+                                        </li>
+                                        {/* <li className="nav-item">
+                                            <Link href="/warehouse/product/provider" className='final-level-menu'>
+                                                <div className="flex items-center">
+                                                    <IconWarehouse className="shrink-0 group-hover:!text-primary" />
+                                                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('product_provider')}</span>
+                                                </div>
+                                            </Link>
+                                        </li> */}
+                                    </ul>
+                                </AnimateHeight>
+                            </li>
+                            <li className="menu nav-item">
                                 <button type="button" className={`${currentMenu === 'warehouse' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('warehouse')}>
                                     <div className="flex items-center">
                                         <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
@@ -510,55 +559,6 @@ const Sidebar = () => {
                                                     </ul>
                                                 </li>
                                             </ul>
-                                        </li>
-                                    </ul>
-                                </AnimateHeight>
-                            </li>
-                            <li className="menu nav-item">
-                                <button type="button" className={`${currentMenu === 'product' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('product')}>
-                                    <div className="flex items-center">
-                                        <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
-                                        <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('product')}</span>
-                                    </div>
-
-                                    <div className={currentMenu !== 'product' ? '-rotate-90 rtl:rotate-90' : ''}>
-                                        <IconCaretDown />
-                                    </div>
-
-                                </button>
-                                <AnimateHeight duration={300} height={currentMenu === 'product' ? 'auto' : 0}>
-                                    <ul className="text-gray-500">
-                                        <li className="nav-item">
-                                            <Link href="/warehouse/product/list" className='final-level-menu'>
-                                                <div className="flex items-center">
-                                                    <IconWarehouse className="shrink-0 group-hover:!text-primary" />
-                                                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('product_list')}</span>
-                                                </div>
-                                            </Link>
-                                        </li>
-                                        <li className="nav-item">
-                                            <Link href="/warehouse/product/category" className='final-level-menu'>
-                                                <div className="flex items-center">
-                                                    <IconWarehouse className="shrink-0 group-hover:!text-primary" />
-                                                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('product_category')}</span>
-                                                </div>
-                                            </Link>
-                                        </li>
-                                        <li className="nav-item">
-                                            <Link href="/warehouse/product/unit" className='final-level-menu'>
-                                                <div className="flex items-center">
-                                                    <IconWarehouse className="shrink-0 group-hover:!text-primary" />
-                                                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('product_unit')}</span>
-                                                </div>
-                                            </Link>
-                                        </li>
-                                        <li className="nav-item">
-                                            <Link href="/warehouse/product/provider" className='final-level-menu'>
-                                                <div className="flex items-center">
-                                                    <IconWarehouse className="shrink-0 group-hover:!text-primary" />
-                                                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('product_provider')}</span>
-                                                </div>
-                                            </Link>
                                         </li>
                                     </ul>
                                 </AnimateHeight>
