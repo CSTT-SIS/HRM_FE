@@ -58,7 +58,7 @@ const ProductCategoryPage = ({ ...props }: Props) => {
     }, [product])
 
     const handleEdit = (data: any) => {
-        setOpenModal(true);
+        router.push(`/warehouse/product/list/${data?.id}`);
         setData(data);
     };
 

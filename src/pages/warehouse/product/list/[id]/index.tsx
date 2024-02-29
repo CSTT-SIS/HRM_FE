@@ -10,9 +10,10 @@ import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import Select, { components } from 'react-select';
 import { DropdownProductCategorys, DropdownProviders, DropdownUnits, DropdownWarehouses } from '@/services/swr/dropdown.twr';
-import { CreateProduct, EditProduct } from '@/services/apis/product.api';
+import { CreateProduct, EditProduct, GetProduct } from '@/services/apis/product.api';
 import Link from 'next/link';
 import IconBackward from '@/components/Icon/IconBackward';
+import { useRouter } from 'next/router';
 
 interface Props {
     [key: string]: any;
@@ -20,15 +21,17 @@ interface Props {
 
 const ProductModal = ({ ...props }: Props) => {
 
+    const router = useRouter();
     const { t } = useTranslation();
     const [disabled, setDisabled] = useState(false);
     const [pageCategory, setSizeCategory] = useState<any>(1);
     const [pageUnit, setSizeUnit] = useState<any>(1);
+    const [data, setData] = useState<any>();
+    console.log("🚀 ~ ProductModal ~ data:", data)
     const [dataCategoryDropdown, setDataCategoryDropdown] = useState<any>([]);
     const [dataUnitDropdown, setDataUnitDropdown] = useState<any>([]);
     const [dataWarehouseDropdown, setDataWarehouseDropdown] = useState<any>([]);
     const [pageWarehouse, setPageWarehouse] = useState(1);
-    const [page, setPage] = useState(1);
 
     //get data
     const { data: categorys, pagination: paginationCategory, isLoading: CategoryLoading } = DropdownProductCategorys({ page: pageCategory });
@@ -51,9 +54,8 @@ const ProductModal = ({ ...props }: Props) => {
             "categoryId": param.categoryId.value,
             "warehouseId": param.warehouseId.value
         }
-        if (props?.data) {
-            EditProduct({ id: props.data.id, ...query }).then(() => {
-                props.productMutate();
+        if (data) {
+            EditProduct({ id: data.id, ...query }).then(() => {
                 handleCancel();
                 showMessage(`${t('edit_product_success')}`, 'success');
             }).catch((err) => {
@@ -61,7 +63,6 @@ const ProductModal = ({ ...props }: Props) => {
             });
         } else {
             CreateProduct(query).then(() => {
-                props.productMutate();
                 handleCancel();
                 showMessage(`${t('create_product_success')}`, 'success');
             }).catch((err) => {
@@ -71,9 +72,9 @@ const ProductModal = ({ ...props }: Props) => {
     }
 
     const handleCancel = () => {
-        props.setOpenModal(false);
-        props.setData(undefined);
+        router.push('/warehouse/product/list')
     };
+
     useEffect(() => {
         if (paginationCategory?.page === undefined) return;
         if (paginationCategory?.page === 1) {
@@ -118,14 +119,24 @@ const ProductModal = ({ ...props }: Props) => {
 
     const handleMenuScrollToBottomWarehouse = () => {
         setTimeout(() => {
-            setPage(warehousePagination?.page + 1);
+            setPageWarehouse(warehousePagination?.page + 1);
         }, 1000);
     }
+
+    useEffect(() => {
+        if (Number(router.query.id)) {
+            GetProduct({ id: Number(router.query.id) }).then((res) => {
+                setData(res.data)
+            }).catch((err) => {
+                showMessage(`${err?.response?.data?.message}`, 'error');
+            })
+        }
+    }, [router])
 
     return (
         <div>
             <div className='flex justify-between header-page-bottom pb-4 mb-4'>
-                <h1 className='page-title'>{props.data !== undefined ? t('edit_product') : t('add_product')}</h1>
+                <h1 className='page-title'>{data !== undefined ? t('edit_product') : t('add_product')}</h1>
                 <Link href="/warehouse/product/list">
                     <div className="btn btn-primary btn-sm m-1 back-button h-9" >
                         <IconBackward />
@@ -139,24 +150,24 @@ const ProductModal = ({ ...props }: Props) => {
                 <Formik
                     initialValues={
                         {
-                            name: props?.data ? `${props?.data?.name}` : "",
-                            code: props?.data ? `${props?.data?.code}` : "",
-                            unitId: props?.data ? {
-                                value: `${props?.data?.unit.id}`,
-                                label: `${props?.data?.unit.name}`
+                            name: data ? `${data?.name}` : "",
+                            code: data ? `${data?.code}` : "",
+                            unitId: data?.unit ? {
+                                value: `${data?.unit?.id}`,
+                                label: `${data?.unit?.name}`
                             } : "",
-                            description: props?.data ? `${props?.data?.description}` : "",
-                            categoryId: props?.data ? {
-                                value: `${props?.data?.category.id}`,
-                                label: `${props?.data?.category.name}`
+                            description: data ? `${data?.description}` : "",
+                            categoryId: data?.category ? {
+                                value: `${data?.category?.id}`,
+                                label: `${data?.category?.name}`
                             } : "",
-                            providerId: props?.data ? {
-                                value: `${props?.data?.provider?.id}`,
-                                label: `${props?.data?.provider?.name}`
+                            providerId: data?.provider ? {
+                                value: `${data?.provider?.id}`,
+                                label: `${data?.provider?.name}`
                             } : "",
-                            warehouseId: props?.data ? {
-                                value: `${props?.data?.product.id}`,
-                                label: `${props?.data?.product.name}`
+                            warehouseId: data?.product ? {
+                                value: `${data?.product?.id}`,
+                                label: `${data?.product?.name}`
                             } : "",
                         }
                     }
@@ -164,6 +175,7 @@ const ProductModal = ({ ...props }: Props) => {
                     onSubmit={values => {
                         handleProduct(values);
                     }}
+                    enableReinitialize
                 >
 
                     {({ errors, values, setFieldValue, submitCount }) => (
@@ -257,7 +269,7 @@ const ProductModal = ({ ...props }: Props) => {
                                     {t('cancel')}
                                 </button>
                                 <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" disabled={disabled}>
-                                    {props.data !== undefined ? t('update') : t('add')}
+                                    {data !== undefined ? t('update') : t('add')}
                                 </button>
                             </div>
 
