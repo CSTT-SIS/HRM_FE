@@ -43,7 +43,6 @@ const DetailPage = ({ ...props }: Props) => {
     const [active, setActive] = useState<any>(1);
     const [initialValue, setInitialValue] = useState<any>();
     const [data, setData] = useState<any>();
-    console.log("🚀 ~ DetailPage ~ data:", data)
     const [dataDepartment, setDataDepartment] = useState<any>([]);
     const [page, setPage] = useState(1);
 
@@ -284,8 +283,6 @@ const DetailPage = ({ ...props }: Props) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [paginationDepartment])
-    console.log("🚀 ~ useEffect ~ dataDepartment:", dataDepartment)
-
     const handleMenuScrollToBottom = () => {
         setTimeout(() => {
             setPage(paginationDepartment?.page + 1);

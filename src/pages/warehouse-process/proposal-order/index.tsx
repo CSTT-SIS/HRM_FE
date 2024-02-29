@@ -22,7 +22,6 @@ import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
 import IconCircleCheck from '@/components/Icon/IconCircleCheck';
 import IconXCircle from '@/components/Icon/IconXCircle';
-import IconRestore from '@/components/Icon/IconRestore';
 
 interface Props {
     [key: string]: any;
@@ -130,15 +129,6 @@ const ProposalPage = ({ ...props }: Props) => {
         });
     }
 
-    const handleReturn = ({ id }: any) => {
-        ProposalReturn({ id }).then(() => {
-            mutate();
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
-
     const columns = [
         {
             accessor: 'id',
@@ -178,11 +168,6 @@ const ProposalPage = ({ ...props }: Props) => {
                     <Tippy content={`${t('reject')}`}>
                         <button type="button" onClick={() => handleReject(records)}>
                             <IconXCircle />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('return')}`}>
-                        <button type="button" onClick={() => handleReturn(records)}>
-                            <IconRestore />
                         </button>
                     </Tippy>
                 </div>

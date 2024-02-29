@@ -124,7 +124,6 @@ const ShelfPage = ({ ...props }: Props) => {
     const [openTab, setOpenTab] = useState(1);
 
     const RenderData = (data: any) => {
-        console.log("🚀 ~ RenderData ~ data:", data)
         delete data?.id;
         delete data?.createdAt;
         delete data?.parentId;
