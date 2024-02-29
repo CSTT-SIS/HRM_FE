@@ -7,6 +7,11 @@ export const GetRepair = (body: any) => {
 	return callApi(endpoint, 'GET', body);
 };
 
+export const GetRepairDetail = (body: any) => {
+	const endpoint = `/repair-request/${body.id}/detail`;
+	return callApi(endpoint, 'GET', null);
+};
+
 export const CreateRepair = (body: any) => {
 	const endpoint = '/repair-request';
 	return callApi(endpoint, 'POST', body);
@@ -47,12 +52,12 @@ export const RepairInprogress = (body: any) => {
 	return callApi(endpoint, 'PATCH', body);
 };
 
-export const RepairComplete = (body: any) => {
-	const endpoint = `/repair-request/${body.id}/complete`;
+export const RepairApprove = (body: any) => {
+	const endpoint = `/repair-request/${body.id}/head-approve`;
 	return callApi(endpoint, 'PATCH', body);
 };
 
 export const RepairReject = (body: any) => {
-	const endpoint = `/repair-request/${body.id}/reject`;
+	const endpoint = `/repair-request/${body.id}/head-reject`;
 	return callApi(endpoint, 'PATCH', body);
 };

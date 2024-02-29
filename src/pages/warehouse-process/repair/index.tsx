@@ -10,7 +10,7 @@ import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
 import { Repairs } from '@/services/swr/repair.twr';
-import { DeleteRepair, RepairComplete } from '@/services/apis/repair.api';
+import { DeleteRepair, RepairApprove } from '@/services/apis/repair.api';
 // constants
 import { PAGE_SIZES } from '@/utils/constants';
 // helper
@@ -116,7 +116,7 @@ const RepairPage = ({ ...props }: Props) => {
     }
 
     const handleComplete = ({ id }: any) => {
-        RepairComplete({ id }).then(() => {
+        RepairApprove({ id }).then(() => {
             mutate();
             showMessage(`${t('update_success')}`, 'success');
         }).catch((err) => {

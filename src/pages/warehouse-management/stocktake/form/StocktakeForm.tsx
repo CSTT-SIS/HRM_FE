@@ -33,7 +33,7 @@ const StocktakeForm = ({ ...props }: Props) => {
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().required(`${t('please_fill_name')}`),
         participants: new Yup.ArraySchema().required(`${t('please_fill_proposal')}`),
-        warehouseId: new Yup.ObjectSchema().required(`${t('please_fill_provider')}`),
+        warehouseId: new Yup.ObjectSchema().required(`${t('please_fill_warehouse')}`),
         startDate: Yup.string().required(`${t('please_fill_date')}`),
         endDate: Yup.string().required(`${t('please_fill_date')}`)
 

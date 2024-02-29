@@ -21,13 +21,9 @@ const WarehouseModal = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
     const [openModal, setOpenModal] = useState(false);
-    const [dataWarehouseTypeDropdown, setDataWarehouseTypeDropdown] = useState<any>([]);
     const [page, setPage] = useState(1);
 
-    // get data 
-    const { data: dropdownWarehouseType, pagination: paginationWarehousetype, isLoading, mutate } = DropdownWarehouseTypes({ page: page });
-
-
+    // get data
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_warehouse')}`),
         code: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_warehouseCode')}`),
@@ -64,22 +60,6 @@ const WarehouseModal = ({ ...props }: Props) => {
         props.setOpenModal(false);
         props.setData();
     };
-
-    useEffect(() => {
-        if (paginationWarehousetype?.page === undefined) return;
-        if (paginationWarehousetype?.page === 1) {
-            setDataWarehouseTypeDropdown(dropdownWarehouseType?.data)
-        } else {
-            setDataWarehouseTypeDropdown([...dataWarehouseTypeDropdown, ...dropdownWarehouseType?.data])
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [paginationWarehousetype])
-
-    const handleMenuScrollToBottom = () => {
-        setTimeout(() => {
-            setPage(paginationWarehousetype?.page + 1);
-        }, 1000);
-    }
 
     const SelectMenuButton = (props: any) => {
         return (
@@ -171,28 +151,6 @@ const WarehouseModal = ({ ...props }: Props) => {
                                                         <div className="text-danger mt-1"> {errors.code} </div>
                                                     ) : null}
                                                 </div>
-                                                {/* <div className="mb-5 flex justify-between gap-4">
-                                                    <div className="flex-1">
-                                                        <label htmlFor="typeId" > {t('type')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Select
-                                                            id='typeId'
-                                                            name='typeId'
-                                                            options={dataWarehouseTypeDropdown}
-                                                            components={{ MenuList: SelectMenuButton }}
-                                                            onMenuOpen={() => setPage(1)}
-                                                            onMenuScrollToBottom={handleMenuScrollToBottom}
-                                                            maxMenuHeight={160}
-                                                            value={values.typeId}
-                                                            isLoading={isLoading}
-                                                            onChange={e => {
-                                                                setFieldValue('typeId', e)
-                                                            }}
-                                                        />
-                                                        {errors.typeId ? (
-                                                            <div className="text-danger mt-1"> {errors.typeId} </div>
-                                                        ) : null}
-                                                    </div>
-                                                </div> */}
                                                 <div className="mb-5">
                                                     <label htmlFor="description" > {t('description')} </label >
                                                     <Field name="description" type="text" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
@@ -221,7 +179,6 @@ const WarehouseModal = ({ ...props }: Props) => {
                 <WarehouseTypeModal
                     openModal={openModal}
                     setOpenModal={setOpenModal}
-                    warehouseMutateType={mutate}
                 />
             </Dialog>
         </Transition>

@@ -143,7 +143,7 @@ const ProductCategoryPage = ({ ...props }: Props) => {
         },
         {
             accessor: 'category',
-            title: 'Loại',
+            title: 'Danh mục',
             render: ({ category }: any) => <span >{category?.name}</span>,
             sortable: false
         },
