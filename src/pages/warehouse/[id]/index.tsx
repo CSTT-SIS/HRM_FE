@@ -140,8 +140,8 @@ const ShelfPage = ({ ...props }: Props) => {
                 code: param.code,
                 description: param.description
             }
-            if (props?.data) {
-                EditWarehouse({ id: props.data.id, ...query }).then(() => {
+            if (data) {
+                EditWarehouse({ id: data.id, ...query }).then(() => {
                     // handleCancel();
                     showMessage(`${t('edit_warehouse_success')}`, 'success');
                 }).catch((err) => {

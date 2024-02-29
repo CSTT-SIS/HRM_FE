@@ -113,7 +113,7 @@ const ProposalPage = ({ ...props }: Props) => {
     };
 
     const handleDetail = (value: any) => {
-        router.push(`/warehouse-process/proposal-supply/${value.id}?type=${value.type}&&status=${value.status}`)
+        router.push(`/warehouse-process/proposal-supply/${value.id}`)
     }
 
     const handleApprove = ({ id }: any) => {

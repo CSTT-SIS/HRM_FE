@@ -26,13 +26,12 @@ const HandleDetailModal = ({ ...props }: Props) => {
     const handleWarehousingBill = (param: any) => {
         const query = {
             id: router.query.id,
-            detailId: param.detailId,
-            quantity: param.quantity
+            detailId: props.dataDetail.id,
+            quantity: Number(param.quantity)
         }
         CheckWarehousingBillDetail({ ...query }).then(() => {
-            props.warehousingDetailMutate();
             handleCancel();
-            showMessage(`${t('edit_success')}`, 'success');
+            showMessage(`${t('tally_success')}`, 'success');
         }).catch((err) => {
             showMessage(`${err?.response?.data?.message}`, 'error');
         });
@@ -40,7 +39,6 @@ const HandleDetailModal = ({ ...props }: Props) => {
 
     const handleCancel = () => {
         props.setOpenModal(false);
-        props.setData();
         setInitialValue({});
     };
 
@@ -118,7 +116,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                         {t('cancel')}
                                                     </button>
                                                     <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
-                                                        {props.data !== undefined ? t('update') : t('add')}
+                                                        {t('update')}
                                                     </button>
                                                 </div>
                                             </Form>

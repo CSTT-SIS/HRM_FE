@@ -23,7 +23,7 @@ export const DeleteWarehousingBill = (body: any) => {
 };
 
 export const CheckWarehousingBillDetail = (body: any) => {
-    const endpoint = `/warehousing-bill/${body.id}/tally/${body.detailId}`;
+    const endpoint = `/warehousing-bill/${body.id}/tally/${body.detailId}?quantity=${body.quantity}`;
     return callApi(endpoint, 'PATCH', body);
 };
 

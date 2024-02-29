@@ -24,6 +24,7 @@ import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import Select, { components } from 'react-select';
 import IconBack from '@/components/Icon/IconBack';
+import { DropdownDepartment } from '@/services/swr/dropdown.twr';
 
 interface Props {
     [key: string]: any;
@@ -38,11 +39,12 @@ const DetailPage = ({ ...props }: Props) => {
     const [dataDetail, setDataDetail] = useState<any>();
     const [listDataDetail, setListDataDetail] = useState<any>();
     const [openModal, setOpenModal] = useState(false);
-    const [query, setQuery] = useState<any>();
+    const [query, setQuery] = useState<any>({});
     const [active, setActive] = useState<any>([1]);
     const [initialValue, setInitialValue] = useState<any>();
     const [data, setData] = useState<any>();
     const [page, setPage] = useState(1);
+    const [dataDepartment, setDataDepartment] = useState<any>([]);
 
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
@@ -50,6 +52,7 @@ const DetailPage = ({ ...props }: Props) => {
 
     // get data
     const { data: ProposalDetail, pagination, mutate, isLoading } = ProposalDetails({ ...query });
+    const { data: dropdownDepartment, pagination: paginationDepartment, mutate: mutateDepartment, isLoading: isLoadingDepartment } = DropdownDepartment({ page: page });
 
     useEffect(() => {
         dispatch(setPageTitle(`${t('proposal')}`));
@@ -76,9 +79,9 @@ const DetailPage = ({ ...props }: Props) => {
         setInitialValue({
             name: data ? `${data?.name}` : "",
             content: data ? `${data?.content}` : "",
-            departmentId: data?.departmentId ? {
-                value: `${data?.departmentId?.id}`,
-                label: `${data?.departmentId?.name}`
+            departmentId: data?.department ? {
+                value: `${data?.department?.id}`,
+                label: `${data?.department?.name}`
             } : ""
         })
     }, [data, router]);
@@ -190,7 +193,7 @@ const DetailPage = ({ ...props }: Props) => {
     const handleChangeComplete = (id: any) => {
         ProposalPending({ id: id }).then(() => {
             showMessage(`${t('update_success')}`, 'success');
-            router.push("/warehouse-process/proposal-order")
+            router.push("/warehouse-process/proposal-supply")
         }).catch((err) => {
             showMessage(`${err?.response?.data?.message}`, 'error');
         });
@@ -209,6 +212,7 @@ const DetailPage = ({ ...props }: Props) => {
             name: param.name,
             type: "SUPPLY",
             content: param.content,
+            departmentId: Number(param?.departmentId?.value)
         };
 
         if (data) {
@@ -274,21 +278,20 @@ const DetailPage = ({ ...props }: Props) => {
         return <></>;
     }
 
-    // useEffect(() => {
-    //     if (paginationUser?.page === undefined) return;
-    //     if (paginationUser?.page === 1) {
-    //         setDataUserDropdown(users?.data)
-    //     } else {
-    //         setDataUserDropdown([...dataUserDropdown, ...users?.data])
-    //     }
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [paginationUser])
-
-    // const handleMenuScrollToBottom = () => {
-    //     setTimeout(() => {
-    //         setPage(paginationUser?.page + 1);
-    //     }, 1000);
-    // }
+    useEffect(() => {
+        if (paginationDepartment?.page === undefined) return;
+        if (paginationDepartment?.page === 1) {
+            setDataDepartment(dropdownDepartment?.data)
+        } else {
+            setDataDepartment([...dataDepartment, ...dropdownDepartment?.data])
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [paginationDepartment])
+    const handleMenuScrollToBottom = () => {
+        setTimeout(() => {
+            setPage(paginationDepartment?.page + 1);
+        }, 1000);
+    }
 
     return (
         <div>
@@ -299,7 +302,7 @@ const DetailPage = ({ ...props }: Props) => {
             )}
             <div className='flex justify-between header-page-bottom pb-4 mb-4'>
                 <h1 className='page-title'>{t('proposal')}</h1>
-                <Link href="/warehouse-process/proposal-order">
+                <Link href="/warehouse-process/proposal-supply">
                     <div className="btn btn-primary btn-sm m-1 back-button h-9" >
                         <IconBack />
                         <span>
@@ -369,12 +372,12 @@ const DetailPage = ({ ...props }: Props) => {
                                                         <Select
                                                             id='departmentId'
                                                             name='departmentId'
-                                                            options={[]}
+                                                            options={dataDepartment}
                                                             maxMenuHeight={160}
                                                             value={values?.departmentId}
                                                             onMenuOpen={() => setPage(1)}
-                                                            // onMenuScrollToBottom={handleMenuScrollToBottom}
-                                                            // isLoading={userLoading}
+                                                            onMenuScrollToBottom={handleMenuScrollToBottom}
+                                                            isLoading={isLoadingDepartment}
                                                             onChange={e => {
                                                                 setFieldValue('departmentId', e)
                                                             }}
