@@ -9,10 +9,10 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
-import { Products } from '@/services/swr/product.twr';
+import { Proposals } from '@/services/swr/proposal.twr';
+import { DeleteProposal, ProposalApprove, ProposalReject, ProposalReturn } from '@/services/apis/proposal.api';
 // constants
 import { PAGE_SIZES } from '@/utils/constants';
-import { DeleteProduct } from '@/services/apis/product.api';
 // helper
 import { showMessage } from '@/@core/utils';
 // icons
@@ -20,47 +20,35 @@ import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
 import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
-import { IconRepair } from '@/components/Icon/IconRepair';
-
-// modal
-import ProductModal from './ProductModal';
-import ProductLimitModal from './ProductLimitModal';
-
-
+import IconCircleCheck from '@/components/Icon/IconCircleCheck';
+import IconXCircle from '@/components/Icon/IconXCircle';
+import IconRestore from '@/components/Icon/IconRestore';
 
 interface Props {
     [key: string]: any;
 }
 
-const ProductCategoryPage = ({ ...props }: Props) => {
+const ProposalPage = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const router = useRouter();
 
     const [showLoader, setShowLoader] = useState(true);
-    const [data, setData] = useState<any>();
-    const [dataLimit, setDataLimit] = useState<any>();
-    const [openModal, setOpenModal] = useState(false);
-    const [openModalLimit, setOpenModalLimit] = useState(false);
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
+
     // get data
-    const { data: product, pagination, mutate } = Products({ sortBy: 'id.ASC', ...router.query });
+    const { data: proposal, pagination, mutate } = Proposals({ sortBy: 'id.ASC', ...router.query });
 
     useEffect(() => {
-        dispatch(setPageTitle(`${t('product')}`));
+        dispatch(setPageTitle(`${t('proposal')}`));
     });
 
     useEffect(() => {
         setShowLoader(false);
-    }, [product])
-
-    const handleEdit = (data: any) => {
-        setOpenModal(true);
-        setData(data);
-    };
+    }, [proposal])
 
     const handleDelete = ({ id, name }: any) => {
         const swalDeletes = Swal.mixin({
@@ -74,7 +62,7 @@ const ProductCategoryPage = ({ ...props }: Props) => {
         swalDeletes
             .fire({
                 icon: 'question',
-                title: `${t('delete_product')}`,
+                title: `${t('delete_proposal')}`,
                 text: `${t('delete')} ${name}`,
                 padding: '2em',
                 showCancelButton: true,
@@ -82,9 +70,9 @@ const ProductCategoryPage = ({ ...props }: Props) => {
             })
             .then((result) => {
                 if (result.value) {
-                    DeleteProduct({ id }).then(() => {
+                    DeleteProposal({ id }).then(() => {
                         mutate();
-                        showMessage(`${t('delete_product_success')}`, 'success');
+                        showMessage(`${t('delete_success')}`, 'success');
                     }).catch((err) => {
                         showMessage(`${err?.response?.data?.message}`, 'error');
                     });
@@ -120,9 +108,35 @@ const ProductCategoryPage = ({ ...props }: Props) => {
         return pageSize;
     };
 
-    const handleLimit = (records: any) => {
-        setOpenModalLimit(true);
-        setDataLimit(records);
+    const handleDetail = (value: any) => {
+        router.push(`/warehouse-process/proposal-order/${value.id}?type=${value.type}&&status=${value.status}`)
+    }
+
+    const handleApprove = ({ id }: any) => {
+        ProposalApprove({ id }).then(() => {
+            mutate();
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
+    const handleReject = ({ id }: any) => {
+        ProposalReject({ id }).then(() => {
+            mutate();
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
+    const handleReturn = ({ id }: any) => {
+        ProposalReturn({ id }).then(() => {
+            mutate();
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
     }
 
     const columns = [
@@ -131,44 +145,47 @@ const ProductCategoryPage = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
-        { accessor: 'name', title: 'Tên sản phẩm', sortable: false },
-        { accessor: 'code', title: 'Mã sản phẩm', sortable: false },
-        { accessor: 'price', title: 'Giá', sortable: false },
-        { accessor: 'tax', title: 'Thuế', sortable: false },
+        { accessor: 'name', title: 'Tên yêu cầu', sortable: false },
         {
-            accessor: 'unit',
-            title: 'Đvt',
-            render: ({ unit }: any) => <span >{unit?.name}</span>,
+            accessor: 'department',
+            title: 'Phòng ban',
+            render: ({ department }: any) => <span>{department?.name}</span>,
             sortable: false
         },
-        {
-            accessor: 'category',
-            title: 'Loại',
-            render: ({ category }: any) => <span >{category?.name}</span>,
-            sortable: false
-        },
-        { accessor: 'description', title: 'Ghi chú', sortable: false },
+        { accessor: 'content', title: 'Nội dung', sortable: false },
+        { accessor: 'type', title: 'Loại yêu cầu', sortable: false },
+        { accessor: 'status', title: 'Trạng thái', sortable: false },
         {
             accessor: 'action',
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('edit')}`}>
-                        <button type="button" onClick={() => handleEdit(records)}>
+                    <Tippy content={`${t('add_warehousing')}`}>
+                        <button type="button" onClick={() => handleDetail(records)}>
                             <IconPencil />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('limit')}`}>
-                        <button type="button" onClick={() => handleLimit(records)}>
-                            <IconRepair />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('delete')}`}>
+                    {/* <Tippy content={`${t('delete')}`}>
                         <button type="button" onClick={() => handleDelete(records)}>
                             <IconTrashLines />
                         </button>
                     </Tippy>
+                    <Tippy content={`${t('approve')}`}>
+                        <button type="button" onClick={() => handleApprove(records)}>
+                            <IconCircleCheck size={20} />
+                        </button>
+                    </Tippy>
+                    <Tippy content={`${t('reject')}`}>
+                        <button type="button" onClick={() => handleReject(records)}>
+                            <IconXCircle />
+                        </button>
+                    </Tippy>
+                    <Tippy content={`${t('return')}`}>
+                        <button type="button" onClick={() => handleReturn(records)}>
+                            <IconRestore />
+                        </button>
+                    </Tippy> */}
                 </div>
             ),
         },
@@ -185,7 +202,7 @@ const ProductCategoryPage = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" onClick={(e) => router.push("/warehouse/product/list/create")} className="btn btn-primary btn-sm m-1 custom-button"  >
+                        <button type="button" onClick={(e) => router.push(`/warehouse-process/proposal-order/create`)} className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                             {t('add')}
                         </button>
@@ -197,7 +214,7 @@ const ProductCategoryPage = ({ ...props }: Props) => {
                     <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover"
-                        records={product?.data}
+                        records={proposal?.data}
                         columns={columns}
                         totalRecords={pagination?.totalRecords}
                         recordsPerPage={pagination?.perPage}
@@ -212,22 +229,8 @@ const ProductCategoryPage = ({ ...props }: Props) => {
                     />
                 </div>
             </div>
-            {/* <ProductModal
-                openModal={openModal}
-                setOpenModal={setOpenModal}
-                data={data}
-                setData={setData}
-                productMutate={mutate}
-            /> */}
-            <ProductLimitModal
-                openModal={openModalLimit}
-                setOpenModal={setOpenModalLimit}
-                data={dataLimit}
-                setData={setDataLimit}
-                productMutate={mutate}
-            />
         </div>
     );
 };
 
-export default ProductCategoryPage;
+export default ProposalPage;

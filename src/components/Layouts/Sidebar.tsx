@@ -109,30 +109,30 @@ const Sidebar = () => {
         }
     }, []);
 
-	useEffect(() => {
-		setActiveRoute();
-		if (window.innerWidth < 1024 && themeConfig.sidebar) {
-			dispatch(toggleSidebar());
-		}
-	}, [router.pathname]);
+    useEffect(() => {
+        setActiveRoute();
+        if (window.innerWidth < 1024 && themeConfig.sidebar) {
+            dispatch(toggleSidebar());
+        }
+    }, [router.pathname]);
 
-	const setActiveRoute = () => {
-		let allLinks = document.querySelectorAll('.sidebar ul a.active');
-		for (let i = 0; i < allLinks.length; i++) {
-			const element = allLinks[i];
-			element?.classList.remove('active');
-		}
-		let selector = document.querySelector('.sidebar ul a[href="' + window.location.pathname + '"]');
+    const setActiveRoute = () => {
+        let allLinks = document.querySelectorAll('.sidebar ul a.active');
+        for (let i = 0; i < allLinks.length; i++) {
+            const element = allLinks[i];
+            element?.classList.remove('active');
+        }
+        let selector = document.querySelector('.sidebar ul a[href="' + window.location.pathname + '"]');
 
-		if (router.pathname === '/hrm/role/[id]') {
-			selector = document.querySelector('.sidebar ul a[href="' + '/hrm/role' + '"]');
-		}
+        if (router.pathname === '/hrm/role/[id]') {
+            selector = document.querySelector('.sidebar ul a[href="' + '/hrm/role' + '"]');
+        }
 
-		selector?.classList.add('active');
-	};
+        selector?.classList.add('active');
+    };
 
-	const dispatch = useDispatch();
-	const { t } = useTranslation();
+    const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     return (
         <div className={semidark ? 'dark' : ''}>
@@ -161,7 +161,7 @@ const Sidebar = () => {
                                 <button type="button" className={`${currentMenu === 'dashboard' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('dashboard')}>
                                     <Link href="/hrm/dashboard" className="group">
                                         <div className="flex items-center">
-                                        <IconMenuHome className="shrink-0 group-hover:!text-primary icon-menu icon-menu-1"/>
+                                            <IconMenuHome className="shrink-0 group-hover:!text-primary icon-menu icon-menu-1" />
                                             <span className="menu1-text ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('dashboard')}</span>
                                         </div>
                                     </Link>
@@ -170,7 +170,7 @@ const Sidebar = () => {
                             <li className="menu nav-item">
                                 <button type="button" className={`${currentMenu === 'hrm' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('hrm')}>
                                     <div className="flex items-center">
-                                    <IconMenuUser className="shrink-0 group-hover:!text-primary icon-menu icon-menu-1" />
+                                        <IconMenuUser className="shrink-0 group-hover:!text-primary icon-menu icon-menu-1" />
                                         <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('hrmanagement')}</span>
                                     </div>
 
@@ -190,7 +190,7 @@ const Sidebar = () => {
                                                         <li className="nav-item">
                                                             <Link href="/hrm/department" className="group final-level-menu">
                                                                 <div className="flex items-center">
-                                                                <IconMenuDepartment className="shrink-0 group-hover:!text-primary" />
+                                                                    <IconMenuDepartment className="shrink-0 group-hover:!text-primary" />
 
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('department_list')}</span>
                                                                 </div>
@@ -199,7 +199,7 @@ const Sidebar = () => {
                                                         <li className="nav-item">
                                                             <Link href="/hrm/organization-structure" className="group final-level-menu">
                                                                 <div className="flex items-center">
-                                                                <IconMenuOrg className="shrink-0 group-hover:!text-primary" />
+                                                                    <IconMenuOrg className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('organizational_structure')}</span>
                                                                 </div>
                                                             </Link>
@@ -494,6 +494,14 @@ const Sidebar = () => {
                                                                 <div className="flex items-center">
                                                                     <IconMenuDocumentation className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('warehousing_bill')}</span>
+                                                                </div>
+                                                            </Link>
+                                                        </li>
+                                                        <li className="nav-item">
+                                                            <Link href="/warehouse-process/list-proposal" className="group final-level-menu">
+                                                                <div className="flex items-center">
+                                                                    <IconMenuDocumentation className="shrink-0 group-hover:!text-primary" />
+                                                                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('proposal_list')}</span>
                                                                 </div>
                                                             </Link>
                                                         </li>
