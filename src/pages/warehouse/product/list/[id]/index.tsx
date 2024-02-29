@@ -172,14 +172,14 @@ const ProductModal = ({ ...props }: Props) => {
                                 <div className="w-1/2">
                                     <label htmlFor="name" > {t('name')} < span style={{ color: 'red' }}>* </span></label >
                                     <Field name="name" type="text" id="name" placeholder={`${t('enter_name')}`} className="form-input" />
-                                    {errors.name ? (
+                                    {submitCount && errors.name ? (
                                         <div className="text-danger mt-1"> {errors.name} </div>
                                     ) : null}
                                 </div>
                                 <div className="w-1/2">
                                     <label htmlFor="code" > {t('code')} < span style={{ color: 'red' }}>* </span></label >
                                     <Field name="code" type="text" id="code" placeholder={`${t('enter_code')}`} className="form-input" />
-                                    {errors.code ? (
+                                    {submitCount && errors.code ? (
                                         <div className="text-danger mt-1"> {errors.code} </div>
                                     ) : null}
                                 </div>
@@ -200,7 +200,7 @@ const ProductModal = ({ ...props }: Props) => {
                                             setFieldValue('unitId', e)
                                         }}
                                     />
-                                    {errors.unitId ? (
+                                    {submitCount && errors.unitId ? (
                                         <div className="text-danger mt-1"> {errors.code} </div>
                                     ) : null}
                                 </div>
@@ -219,7 +219,7 @@ const ProductModal = ({ ...props }: Props) => {
                                             setFieldValue('categoryId', e)
                                         }}
                                     />
-                                    {errors.categoryId ? (
+                                    {submitCount && errors.categoryId ? (
                                         <div className="text-danger mt-1"> {errors.categoryId} </div>
                                     ) : null}
                                 </div>
@@ -247,7 +247,7 @@ const ProductModal = ({ ...props }: Props) => {
                                 <div className="w-1/2">
                                     <label htmlFor="description" > {t('description')} </label >
                                     <Field name="description" type="text" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
-                                    {errors.description ? (
+                                    {submitCount && errors.description ? (
                                         <div className="text-danger mt-1"> {errors.description} </div>
                                     ) : null}
                                 </div>
