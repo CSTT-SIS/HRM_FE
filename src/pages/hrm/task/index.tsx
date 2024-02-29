@@ -18,6 +18,7 @@ import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
 import TaskModal from './modal/TaskModal';
 import { ActionIcon, Button, Checkbox, MultiSelect, Stack, TextInput } from '@mantine/core';
+import { useRouter } from 'next/router';
 interface Props {
 	[key: string]: any;
 }
@@ -28,7 +29,7 @@ const Task = ({ ...props }: Props) => {
 	useEffect(() => {
 		dispatch(setPageTitle(`${t('task')}`));
 	});
-
+    const router = useRouter();
 	const [showLoader, setShowLoader] = useState(true);
 	const [page, setPage] = useState<any>(PAGE_NUMBER_DEFAULT);
 	const [pageSize, setPageSize] = useState(PAGE_SIZES_DEFAULT);
@@ -69,8 +70,9 @@ const Task = ({ ...props }: Props) => {
 	}, [recordsData]);
 
 	const handleEdit = (data: any) => {
-		setOpenModal(true);
-		setData(data);
+		// setOpenModal(true);
+		// setData(data);
+        router.push(`/hrm/task/${data.id}`)
 	};
 
 	const handleDelete = (data: any) => {

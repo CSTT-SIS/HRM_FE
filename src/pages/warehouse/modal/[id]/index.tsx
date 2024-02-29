@@ -13,6 +13,7 @@ import { ImportProduct } from '@/services/apis/warehouse.api';
 import { DropdownProducts, DropdownWarehouses } from '@/services/swr/dropdown.twr';
 import Link from 'next/link';
 import IconBackward from '@/components/Icon/IconBackward';
+import IconBack from '@/components/Icon/IconBack';
 
 interface Props {
     [key: string]: any;
@@ -110,7 +111,7 @@ const ImportModal = ({ ...props }: Props) => {
                 <h1 className='page-title'>{t('product')}</h1>
                 <Link href={`/warehouse/${router.query.warehouseId}`}>
                     <div className="btn btn-primary btn-sm m-1 back-button h-9" >
-                        <IconBackward />
+                        <IconBack />
                         <span>
                             {t('back')}
                         </span>

@@ -46,6 +46,34 @@ import IconFolder from '../Icon/IconFolder';
 import IconShoppingCart from '../Icon/IconShoppingCart';
 import { IconRepair } from '../Icon/IconRepair';
 import IconListCheck from '../Icon/IconListCheck';
+import IconHome from '../Icon/IconHome';
+import IconMenuHome from '../Icon/Menu/IconMenuHome';
+import IconMenuDepartment from '../Icon/Menu/IconMenuDepartment';
+import IconMenuOrg from '../Icon/Menu/IconMenuOrg';
+import IconMenuUser from '../Icon/Menu/IconMenuUser';
+import IconMenuTimekeeping from '../Icon/Menu/IconMenuTimeKeeping';
+import IconMenuWareHouse from '../Icon/Menu/IconMenuWareHouse';
+import IconMenuProduct from '../Icon/Menu/IconMenuProduct';
+import IconMenuForm from '../Icon/Menu/IconMenuForm';
+import IconMenuPersonel from '../Icon/Menu/IconMenuPersonel';
+import IconMenuShift from '../Icon/Menu/IconMenuShift';
+import IconMenuDuty from '../Icon/Menu/IconMenuDuty';
+import IconMenuSchedule from '../Icon/Menu/IconMenuSchedule';
+import IconMenuDayOff from '../Icon/Menu/IconMenuDayOff';
+import IconMenuPermission from '../Icon/Menu/IconMenuPermission';
+import IconMenuTask from '../Icon/Menu/IconMenuTask';
+import IconMenuAssets from '../Icon/Menu/IconMenuAssets';
+import IconMenuDocuments from '../Icon/Menu/IconMenuDocuments';
+import IconMenuStatistic from '../Icon/Menu/IconMenuStatistic';
+import IconMenuNotification from '../Icon/Menu/IconMenuNotification';
+import IconMenuFormLateEarly from '../Icon/Menu/IconMenuFormLateEarly';
+import IconMenuFormOT from '../Icon/Menu/IconMenuFormOT';
+import IconMenuFormExempt from '../Icon/Menu/IconMenuFormExempt';
+import IconMenuFormForget from '../Icon/Menu/IconMenuFormForget';
+import IconMenuTimeKeeping from '../Icon/Menu/IconMenuTimeKeeping';
+import IconMenuTimeKeepingAll from '../Icon/Menu/IconMenuTimeKeepingAll';
+import IconMenuTimeKeepingStaff from '../Icon/Menu/IconMenuTimeKeepingStaff';
+import IconMenuListExempt from '../Icon/Menu/IconMenuListExempt';
 
 const Sidebar = () => {
     const router = useRouter();
@@ -133,7 +161,7 @@ const Sidebar = () => {
                                 <button type="button" className={`${currentMenu === 'dashboard' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('dashboard')}>
                                     <Link href="/hrm/dashboard" className="group">
                                         <div className="flex items-center">
-                                        <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
+                                        <IconMenuHome className="shrink-0 group-hover:!text-primary icon-menu icon-menu-1"/>
                                             <span className="menu1-text ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('dashboard')}</span>
                                         </div>
                                     </Link>
@@ -142,7 +170,7 @@ const Sidebar = () => {
                             <li className="menu nav-item">
                                 <button type="button" className={`${currentMenu === 'hrm' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('hrm')}>
                                     <div className="flex items-center">
-                                    <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
+                                    <IconMenuUser className="shrink-0 group-hover:!text-primary icon-menu icon-menu-1" />
                                         <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('hrmanagement')}</span>
                                     </div>
 
@@ -162,7 +190,7 @@ const Sidebar = () => {
                                                         <li className="nav-item">
                                                             <Link href="/hrm/department" className="group final-level-menu">
                                                                 <div className="flex items-center">
-                                                                <IconUsersGroup className="shrink-0 group-hover:!text-primary" />
+                                                                <IconMenuDepartment className="shrink-0 group-hover:!text-primary" />
 
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('department_list')}</span>
                                                                 </div>
@@ -171,7 +199,7 @@ const Sidebar = () => {
                                                         <li className="nav-item">
                                                             <Link href="/hrm/organization-structure" className="group final-level-menu">
                                                                 <div className="flex items-center">
-                                                                <IconMenuTables className="shrink-0 group-hover:!text-primary" />
+                                                                <IconMenuOrg className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('organizational_structure')}</span>
                                                                 </div>
                                                             </Link>
@@ -179,7 +207,7 @@ const Sidebar = () => {
                                                         <li className="nav-item">
                                                             <Link href="/hrm/personnel" className="group final-level-menu">
                                                                 <div className="flex items-center">
-                                                                    <IconUser className="shrink-0 group-hover:!text-primary" />
+                                                                    <IconMenuPersonel className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dar">{t('staff_list')}</span>
                                                                 </div>
                                                             </Link>
@@ -187,7 +215,7 @@ const Sidebar = () => {
                                                         <li className="nav-item">
                                                             <Link href="/hrm/duty" className="group final-level-menu">
                                                                 <div className="flex items-center">
-                                                                    <IconUsers className="shrink-0 group-hover:!text-primary" />
+                                                                    <IconMenuDuty className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('duty_list')}</span>
                                                                 </div>
                                                             </Link>
@@ -204,7 +232,7 @@ const Sidebar = () => {
                                                         <li className="nav-item">
                                                             <Link href="/hrm/shift" className="group final-level-menu">
                                                                 <div className="flex items-center">
-                                                                    <IconMenuMailbox className="shrink-0 group-hover:!text-primary" />
+                                                                    <IconMenuShift className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('shift')}</span>
                                                                 </div>
                                                             </Link>
@@ -212,7 +240,7 @@ const Sidebar = () => {
                                                         <li className="nav-item">
                                                             <Link href="/hrm/calendar" className="group final-level-menu">
                                                                 <div className="flex items-center">
-                                                                    <IconCalendar className="shrink-0 group-hover:!text-primary" />
+                                                                    <IconMenuSchedule className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('work_schedule')}</span>
                                                                 </div>
                                                             </Link>
@@ -220,7 +248,7 @@ const Sidebar = () => {
                                                         <li className="nav-item">
                                                             <Link href="/hrm/holiday" className="group final-level-menu">
                                                                 <div className="flex items-center">
-                                                                    <IconMenuNotes className="shrink-0 group-hover:!text-primary" />
+                                                                    <IconMenuDayOff className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('dayoff')}</span>
                                                                 </div>
                                                             </Link>
@@ -236,7 +264,7 @@ const Sidebar = () => {
                                                         <li className="nav-item">
                                                             <Link href="/hrm/role" className="group final-level-menu">
                                                                 <div className="flex items-center">
-                                                                    <IconRole className="shrink-0 group-hover:!text-primary" />
+                                                                    <IconMenuPermission className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('role_list')}</span>
                                                                 </div>
                                                             </Link>
@@ -245,7 +273,7 @@ const Sidebar = () => {
                                                         <li className="nav-item">
                                                             <Link href="/hrm/task" className="group final-level-menu">
                                                                 <div className="flex items-center">
-                                                                    <IconMenuDocumentation className="shrink-0 group-hover:!text-primary" />
+                                                                    <IconMenuTask className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('task_list')}</span>
                                                                 </div>
                                                             </Link>
@@ -253,7 +281,7 @@ const Sidebar = () => {
                                                         <li className="nav-item">
                                                             <Link href="/hrm/asset" className="group final-level-menu">
                                                                 <div className="flex items-center">
-                                                                    <IconMenuDatatables className="shrink-0 group-hover:!text-primary" />
+                                                                    <IconMenuAssets className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('assets_list')}</span>
                                                                 </div>
                                                             </Link>
@@ -261,7 +289,7 @@ const Sidebar = () => {
                                                         <li className="nav-item">
                                                             <Link href="#" className="group final-level-menu">
                                                                 <div className="flex items-center">
-                                                                    <IconMenuComponents className="shrink-0 group-hover:!text-primary" />
+                                                                    <IconMenuDocuments className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('document_list')}</span>
                                                                 </div>
                                                             </Link>
@@ -269,7 +297,7 @@ const Sidebar = () => {
                                                         <li className="nav-item">
                                                             <Link href="#" className="group final-level-menu">
                                                                 <div className="flex items-center">
-                                                                    <IconMenuCharts className="shrink-0 group-hover:!text-primary" />
+                                                                    <IconMenuStatistic className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('statistic_list')}</span>
                                                                 </div>
                                                             </Link>
@@ -277,7 +305,7 @@ const Sidebar = () => {
                                                         <li className="nav-item">
                                                             <Link href="#" className="group final-level-menu">
                                                                 <div className="flex items-center">
-                                                                    <IconCaretsDown className="shrink-0 group-hover:!text-primary" />
+                                                                    <IconMenuNotification className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('notification')}</span>
                                                                 </div>
                                                             </Link>
@@ -294,7 +322,7 @@ const Sidebar = () => {
                                 {/* === QUẢN LÝ ĐƠN */}
                                 <button type="button" className={`${currentMenu === 'form' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('form')}>
                                     <div className="flex items-center">
-                                        <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
+                                        <IconMenuForm className="shrink-0 group-hover:!text-primary icon-menu icon-menu-1" />
                                         <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('form_management')}</span>
                                     </div>
 
@@ -308,7 +336,7 @@ const Sidebar = () => {
                                         <li className="nav-item">
                                             <Link href="/hrm/late-early-form" className="group final-level-menu">
                                                 <div className="flex items-center">
-                                                    <IconMenuTables className="shrink-0 group-hover:!text-primary" />
+                                                    <IconMenuFormLateEarly className="shrink-0 group-hover:!text-primary" />
                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('late_early_form')}</span>
                                                 </div>
                                             </Link>
@@ -316,7 +344,7 @@ const Sidebar = () => {
                                         <li className="nav-item">
                                             <Link href="/hrm/overtime-form" className="group final-level-menu">
                                                 <div className="flex items-center">
-                                                    <IconMenuDatatables className="shrink-0 group-hover:!text-primary" />
+                                                    <IconMenuFormOT className="shrink-0 group-hover:!text-primary" />
                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('ot_form')}</span>
                                                 </div>
                                             </Link>
@@ -324,7 +352,7 @@ const Sidebar = () => {
                                         <li className="nav-item">
                                             <Link href="/hrm/forget-form" className="group final-level-menu">
                                                 <div className="flex items-center">
-                                                    <IconMenuElements className="shrink-0 group-hover:!text-primary" />
+                                                    <IconMenuFormExempt className="shrink-0 group-hover:!text-primary" />
                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('forget_timekeeping_form')}</span>
                                                 </div>
                                             </Link>
@@ -332,7 +360,7 @@ const Sidebar = () => {
                                         <li className="nav-item">
                                             <Link href="/hrm/exempt-form" className="group final-level-menu">
                                                 <div className="flex items-center">
-                                                    <IconFolder className="shrink-0 group-hover:!text-primary" />
+                                                    <IconMenuFormForget className="shrink-0 group-hover:!text-primary" />
                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('exempt_form')}</span>
                                                 </div>
                                             </Link>
@@ -345,7 +373,7 @@ const Sidebar = () => {
                             <li className="menu nav-item">
                                 <button type="button" className={`${currentMenu === 'timekeeping' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('timekeeping')}>
                                     <div className="flex items-center">
-                                        <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
+                                        <IconMenuTimeKeeping className="shrink-0 group-hover:!text-primary icon-menu icon-menu-1" />
                                         <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('timekeeping_management')}</span>
                                     </div>
 
@@ -359,7 +387,7 @@ const Sidebar = () => {
                                         <li className="nav-item">
                                             <Link href="/hrm/timekeeping-table" className="group final-level-menu">
                                                 <div className="flex items-center">
-                                                    <IconMenuTables className="shrink-0 group-hover:!text-primary" />
+                                                    <IconMenuTimeKeepingAll className="shrink-0 group-hover:!text-primary " />
                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('timekeeping_table')}</span>
                                                 </div>
                                             </Link>
@@ -367,7 +395,7 @@ const Sidebar = () => {
                                         <li className="nav-item">
                                             <Link href="/hrm/timekeeping-employee" className="group final-level-menu">
                                                 <div className="flex items-center">
-                                                    <IconMenuDatatables className="shrink-0 group-hover:!text-primary" />
+                                                    <IconMenuTimeKeepingStaff className="shrink-0 group-hover:!text-primary" />
                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('timekeeping_employee')}</span>
                                                 </div>
                                             </Link>
@@ -375,7 +403,7 @@ const Sidebar = () => {
                                         <li className="nav-item">
                                             <Link href="/hrm/exempt-timekeeping" className="group final-level-menu">
                                                 <div className="flex items-center">
-                                                    <IconMenuElements className="shrink-0 group-hover:!text-primary" />
+                                                    <IconMenuListExempt className="shrink-0 group-hover:!text-primary" />
                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('attendance_exemption')}</span>
                                                 </div>
                                             </Link>
@@ -386,7 +414,7 @@ const Sidebar = () => {
                             <li className="menu nav-item">
                                 <button type="button" className={`${currentMenu === 'product' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('product')}>
                                     <div className="flex items-center">
-                                        <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
+                                        <IconMenuProduct className="shrink-0 group-hover:!text-primary icon-menu icon-menu-1" />
                                         <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('product')}</span>
                                     </div>
 
@@ -400,7 +428,7 @@ const Sidebar = () => {
                                         <li className="nav-item">
                                             <Link href="/warehouse/product/list" className='final-level-menu'>
                                                 <div className="flex items-center">
-                                                    <IconWarehouse className="shrink-0 group-hover:!text-primary" />
+                                                    <IconMenuProduct className="shrink-0 group-hover:!text-primary" />
                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('product_list')}</span>
                                                 </div>
                                             </Link>
@@ -435,7 +463,7 @@ const Sidebar = () => {
                             <li className="menu nav-item">
                                 <button type="button" className={`${currentMenu === 'warehouse' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('warehouse')}>
                                     <div className="flex items-center">
-                                        <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
+                                        <IconMenuWareHouse className="shrink-0 group-hover:!text-primary icon-menu icon-menu-1" />
                                         <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('warehouse')}</span>
                                     </div>
 

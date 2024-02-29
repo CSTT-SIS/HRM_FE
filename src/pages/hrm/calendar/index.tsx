@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 
 import IconXCircle from '@/components/Icon/IconXCircle';
 import AddWorkScheduleModal from './modal/AddWorkScheduleModal';
+import Link from 'next/link';
 
 const Canlendar = () => {
 	const dispatch = useDispatch();
@@ -304,7 +305,6 @@ const Canlendar = () => {
 			<div className="panel mb-5">
 				<div className="mb-4 flex flex-col items-center justify-center sm:flex-row sm:justify-between">
 					<div className="mb-4 sm:mb-0">
-						<div className="text-center text-lg font-semibold ltr:sm:text-left rtl:sm:text-right">{t('work_schedule')}</div>
 						<div className="mt-2 flex flex-wrap items-center justify-center sm:justify-start">
 							<div className="flex items-center ltr:mr-4 rtl:ml-4">
 								<div className="h-2.5 w-2.5 rounded-sm bg-primary ltr:mr-2 rtl:ml-2"></div>
@@ -324,10 +324,12 @@ const Canlendar = () => {
 							</div>
 						</div>
 					</div>
-					<button type="button" className="btn btn-primary" onClick={() => editWorkSchedule()}>
-						<IconPlus className="ltr:mr-2 rtl:ml-2" />
-						{t('add')}
-					</button>
+					<Link href="/hrm/calendar/create">
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                                    <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                                    {t('add')}
+                                    </button>
+                        </Link>
 				</div>
 				<div className="calendar-wrapper">
 					<FullCalendar

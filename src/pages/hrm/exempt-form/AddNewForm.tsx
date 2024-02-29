@@ -13,6 +13,7 @@ import 'flatpickr/dist/flatpickr.css';
 import Select from 'react-select';
 import Link from 'next/link';
 import IconArrowBackward from '@/components/Icon/IconArrowBackward';
+import IconBack from '@/components/Icon/IconBack';
 // import dutyList from '../../duty/duty_list.json';
 
 interface Props {
@@ -77,7 +78,7 @@ const ExemptFormModal = ({ ...props }: Props) => {
                 <h1 className='page-title'>{t('add_department')}</h1>
                 <Link href="/hrm/exempt-form">
                     <button type="button" className="btn btn-primary btn-sm m-1 back-button" >
-                        <IconArrowBackward className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                        <IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                         <span>
                             {t('back')}
                         </span>
@@ -101,7 +102,7 @@ const ExemptFormModal = ({ ...props }: Props) => {
 											handleDepartment(values);
 										}}
 									>
-										{({ errors, touched }) => (
+										{({ errors, touched, submitCount }) => (
 											<Form className="space-y-5">
                                                 <div className='flex justify-between gap-5'>
                                                 <div className="mb-5 w-1/2">
@@ -110,7 +111,7 @@ const ExemptFormModal = ({ ...props }: Props) => {
 														{t('name')} <span style={{ color: 'red' }}>* </span>
 													</label>
 													<Field name="name" type="text" id="name" placeholder={`${t('choose_name')}`} className="form-input" />
-													{errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null}
+													{submitCount ? errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null : ''}
 												</div>
 												<div className="mb-5 w-1/2">
 													<label className="label" htmlFor="position">
@@ -131,7 +132,7 @@ const ExemptFormModal = ({ ...props }: Props) => {
                                                                 </>
                                                             )}
                                                         />
-                                                        {errors.position ? <div className="mt-1 text-danger"> {errors.department} </div> : null}
+                                                        {submitCount ? errors.position ? <div className="mt-1 text-danger"> {errors.position} </div> : null : ''}
 												</div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -155,7 +156,7 @@ const ExemptFormModal = ({ ...props }: Props) => {
                                                                 </>
                                                             )}
                                                         />
-                                                        {errors.department ? <div className="mt-1 text-danger"> {errors.department} </div> : null}
+                                                         {submitCount ? errors.department ? <div className="mt-1 text-danger"> {errors.department} </div> : null : ''}
 												</div>
                                                 <div className="mb-5 w-1/2">
 													<label className="label" htmlFor="submitday">
@@ -176,7 +177,7 @@ const ExemptFormModal = ({ ...props }: Props) => {
                                                                 />
                                                             )}
                                                         />
-                                                        {errors.submitday ? <div className="mt-1 text-danger"> {errors.submitday} </div> : null}
+                                                         {submitCount ? errors.submitday ? <div className="mt-1 text-danger"> {errors.submitday} </div> : null : ''}
 												</div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -199,7 +200,7 @@ const ExemptFormModal = ({ ...props }: Props) => {
                                                                 />
                                                             )}
                                                         />
-                                                        {errors.fromdate ? <div className="mt-1 text-danger"> {errors.fromdate} </div> : null}
+                                                         {submitCount ? errors.fromdate ? <div className="mt-1 text-danger"> {errors.fromdate} </div> : null : ''}
 												</div>
                                                 <div className="mb-5 w-1/2">
 													<label className="label" htmlFor="enddate">
@@ -220,7 +221,8 @@ const ExemptFormModal = ({ ...props }: Props) => {
                                                                 />
                                                             )}
                                                         />
-                                                        {errors.enddate ? <div className="mt-1 text-danger"> {errors.enddate} </div> : null}
+                                                         {submitCount ? errors.enddate ? <div className="mt-1 text-danger"> {errors.enddate} </div> : null : ''}
+
 												</div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -243,7 +245,8 @@ const ExemptFormModal = ({ ...props }: Props) => {
                                                                 </>
                                                             )}
                                                         />
-                                                        {errors.shift ? <div className="mt-1 text-danger"> {errors.shift} </div> : null}
+                                                                                                                 {submitCount ? errors.shift ? <div className="mt-1 text-danger"> {errors.shift} </div> : null : ''}
+
 												</div>
                                                 <div className="mb-5 w-1/2">
 													<label className="label" htmlFor="reason">
@@ -251,7 +254,7 @@ const ExemptFormModal = ({ ...props }: Props) => {
 														{t('reason')} <span style={{ color: 'red' }}>* </span>
 													</label>
 													<Field name="reason" type="text" id="reason" placeholder={`${t('fill_reason')}`} className="form-input" />
-													{errors.reason ? <div className="mt-1 text-danger"> {errors.reason} </div> : null}
+                                                    {submitCount ? errors.reason ? <div className="mt-1 text-danger"> {errors.reason} </div> : null : ''}
 												</div>
                                                 </div>
 												<div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">

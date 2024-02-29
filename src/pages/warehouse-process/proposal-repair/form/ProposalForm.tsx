@@ -10,6 +10,7 @@ import { CreateProposal, EditProposal, GetProposal } from '@/services/apis/propo
 import { DropdownRepair } from '@/services/swr/dropdown.twr';
 import IconBackward from '@/components/Icon/IconBackward';
 import Link from 'next/link';
+import IconBack from '@/components/Icon/IconBack';
 
 interface Props {
     [key: string]: any;
@@ -119,7 +120,7 @@ const ProposalForm = ({ ...props }: Props) => {
                 <h1 className='page-title'>{t('add_shift')}</h1>
                 <Link href="/warehouse-process/proposal-repair">
                     <div className="btn btn-primary btn-sm m-1 back-button h-9" >
-                        <IconBackward />
+                        <IconBack />
                         <span>
                             {t('back')}
                         </span>
