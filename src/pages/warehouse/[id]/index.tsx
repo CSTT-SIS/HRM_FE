@@ -227,7 +227,7 @@ const ShelfPage = ({ ...props }: Props) => {
                     <div className="w-full">
                         <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded panel">
                             <div className='flex justify-between'>
-                                <Link href="/warehouse-process/order">
+                                <Link href="/warehouse">
                                     <div className="btn btn-primary btn-sm m-1 gap-3 bg-[#E9EBD5] text-[#476704] border-[#E9EBD5] w-28 h-9" >
                                         <IconBackward />
                                         <span>
