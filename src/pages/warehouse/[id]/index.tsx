@@ -203,7 +203,7 @@ const ShelfPage = ({ ...props }: Props) => {
                                     {t('cancel')}
                                 </button> */}
                                 <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
-                                    {props.data !== undefined ? t('update') : t('add')}
+                                    {router.query.id !== "create" ? t('update') : t('add')}
                                 </button>
                             </div>
 
