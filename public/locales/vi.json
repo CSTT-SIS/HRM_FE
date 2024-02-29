@@ -649,5 +649,10 @@
 	"enter_bank": "Nhập ngân hàng",
 	"please_add_product": "Vui lòng thêm sản phẩm",
 	"complete_proposal": "Hoàn tất tạo mới yêu cầu",
-	"move_to_order": "Di chuyển đến đặt mua"
+	"move_to_order": "Di chuyển đến đặt mua",
+  "select_departmentparent": "Chọn phòng ban",
+  "select_duty": "Chọn chức vụ",
+  "select_manager": "Chọn quản lý trực tiếp",
+  "select_manager_2": "Chọn quản lý gián tiếp",
+  "enter_approver": "Nhập người phê duyệt"
 }
