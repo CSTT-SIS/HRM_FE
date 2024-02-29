@@ -526,22 +526,22 @@ const Sidebar = () => {
                                                 <div className='divide'></div>
                                                 <li className="menu menu1 nav-item">
                                                     <div className="flex items-start group-menu-name">
-                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color h-7">{t('repair')}</span>
+                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color h-7">{t('repair_management')}</span>
                                                     </div>
                                                     <ul className="text-gray-500">
-                                                        <li className="nav-item">
+                                                        {/* <li className="nav-item">
                                                             <Link href="/warehouse-process/proposal-supply" className="group final-level-menu">
                                                                 <div className="flex items-center">
                                                                     <IconMenuTables className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('proposal')}</span>
                                                                 </div>
                                                             </Link>
-                                                        </li>
+                                                        </li> */}
                                                         <li className="nav-item">
                                                             <Link href="/warehouse-process/repair" className="group final-level-menu">
                                                                 <div className="flex items-center">
                                                                     <IconRepair className="shrink-0 group-hover:!text-primary" />
-                                                                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('repair')}</span>
+                                                                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('repair_management')}</span>
                                                                 </div>
                                                             </Link>
                                                         </li>
@@ -557,7 +557,7 @@ const Sidebar = () => {
                                                             <Link href="/warehouse-process/proposal-supply" className="group final-level-menu">
                                                                 <div className="flex items-center">
                                                                     <IconMenuTables className="shrink-0 group-hover:!text-primary" />
-                                                                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('proposal')}</span>
+                                                                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('supply')}</span>
                                                                 </div>
                                                             </Link>
                                                         </li>

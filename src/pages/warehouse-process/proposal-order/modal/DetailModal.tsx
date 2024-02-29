@@ -31,32 +31,58 @@ const HandleDetailModal = ({ ...props }: Props) => {
     const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ page: page });
 
     const handleProposal = (param: any) => {
-        const query = {
-            productId: Number(param.productId.value),
-            quantity: Number(param.quantity),
-            note: param.note,
-            price: param?.price ? param?.price : 0
-        };
-        if (props?.data) {
-            EditProposalDetail({ id: router.query.id, detailId: props?.data?.id, ...query }).then(() => {
-                handleCancel();
-                showMessage(`${t('edit_success')}`, 'success');
-            }).catch((err) => {
-                showMessage(`${err?.response?.data?.message}`, 'error');
-            });
+        if (Number(router.query.id)) {
+            const query = {
+                productId: Number(param.productId.value),
+                quantity: Number(param.quantity),
+                note: param.note,
+                price: param?.price ? param?.price : 0
+            };
+            if (props?.data) {
+                EditProposalDetail({ id: router.query.id, detailId: props?.data?.id, ...query }).then(() => {
+                    handleCancel();
+                    showMessage(`${t('edit_success')}`, 'success');
+                }).catch((err) => {
+                    showMessage(`${err?.response?.data?.message}`, 'error');
+                });
+            } else {
+                AddProposalDetail({ id: router.query.id, ...query }).then(() => {
+                    handleCancel();
+                    showMessage(`${t('create_success')}`, 'success');
+                }).catch((err) => {
+                    showMessage(`${err?.response?.data?.message}`, 'error');
+                });
+            }
         } else {
-            AddProposalDetail({ id: router.query.id, ...query }).then(() => {
-                handleCancel();
-                showMessage(`${t('create_success')}`, 'success');
-            }).catch((err) => {
-                showMessage(`${err?.response?.data?.message}`, 'error');
-            });
+            const query = {
+                id: props.listData ? props.listData.length + 1 : 0,
+                product: {
+                    name: param.productId.label,
+                    id: param.productId.value
+                },
+                productId: Number(param.productId.value),
+                quantity: Number(param.quantity),
+                note: param.note,
+                price: param?.price ? param?.price : 0
+            };
+            if (props?.data?.id) {
+                const filteredItems = props.listData.filter((item: any) => item.id !== props.data.id)
+                props.setListData([...filteredItems, query])
+                props.setData(query);
+            } else {
+                if (props.listData && props.listData.length > 0) {
+                    props.setListData([...props.listData, query])
+                } else {
+                    props.setListData([query])
+                }
+            }
+            handleCancel();
         }
     }
 
     const handleCancel = () => {
         props.setOpenModal(false);
-        props.setData();
+        // props.setData();
         props.proposalDetailMutate();
         setInitialValue({});
     };
@@ -138,7 +164,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                             }}
                                             enableReinitialize
                                         >
-                                            {({ errors, values, setFieldValue }) => (
+                                            {({ errors, values, setFieldValue, submitCount }) => (
                                                 <Form className="space-y-5" >
                                                     <div className="mb-5 flex justify-between gap-4" >
                                                         <div className="flex-1" >
@@ -156,7 +182,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                                     setFieldValue('productId', e)
                                                                 }}
                                                             />
-                                                            {errors.productId ? (
+                                                            {submitCount && errors.productId ? (
                                                                 <div className="text-danger mt-1"> {`${errors.productId}`} </div>
                                                             ) : null}
                                                         </div>
@@ -170,20 +196,17 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                             placeholder={`${t('enter_quantity')}`}
                                                             className="form-input"
                                                         />
-                                                        {errors.quantity ? (
+                                                        {submitCount && errors.quantity ? (
                                                             <div className="text-danger mt-1"> {`${errors.quantity}`} </div>
                                                         ) : null}
                                                     </div>
-                                                    {
-                                                        router.query.type === "PURCHASE" &&
-                                                        <div className="mb-5">
-                                                            <label htmlFor="price" > {t('price')} < span style={{ color: 'red' }}>* </span></label >
-                                                            <Field name="price" type="number" id="price" placeholder={`${t('enter_price')}`} className="form-input" />
-                                                            {errors.price ? (
-                                                                <div className="text-danger mt-1"> {`${errors.price}`} </div>
-                                                            ) : null}
-                                                        </div>
-                                                    }
+                                                    <div className="mb-5">
+                                                        <label htmlFor="price" > {t('price')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <Field name="price" type="number" id="price" placeholder={`${t('enter_price')}`} className="form-input" />
+                                                        {submitCount && errors.price ? (
+                                                            <div className="text-danger mt-1"> {`${errors.price}`} </div>
+                                                        ) : null}
+                                                    </div>
                                                     <div className="mb-5">
                                                         <label htmlFor="note" > {t('description')} </label >
                                                         <Field
@@ -193,7 +216,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                             placeholder={`${t('enter_description')}`}
                                                             className="form-input"
                                                         />
-                                                        {errors.note ? (
+                                                        {submitCount && errors.note ? (
                                                             <div className="text-danger mt-1"> {`${errors.note}`} </div>
                                                         ) : null}
                                                     </div>
