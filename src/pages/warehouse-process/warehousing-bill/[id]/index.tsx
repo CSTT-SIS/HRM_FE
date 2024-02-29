@@ -604,9 +604,12 @@ const DetailModal = ({ ...props }: Props) => {
                                         <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
                                             {router.query.id !== "create" ? t('update') : t('add')}
                                         </button>
-                                        <button type="button" onClick={e => handleChangeComplete()} className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
-                                            {router.query.id !== "create" && t('complete')}
-                                        </button>
+                                        {
+                                            router.query.id !== "create" &&
+                                            <button type="button" onClick={e => handleChangeComplete()} className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+                                                {t('complete')}
+                                            </button>
+                                        }
                                     </div>
                                 </div>
                             </Form>
