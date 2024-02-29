@@ -168,89 +168,95 @@ const ProductModal = ({ ...props }: Props) => {
 
                     {({ errors, values, setFieldValue, submitCount }) => (
                         <Form className="space-y-5" >
-                            <div className="mb-5">
-                                <label htmlFor="name" > {t('name')} < span style={{ color: 'red' }}>* </span></label >
-                                <Field name="name" type="text" id="name" placeholder={`${t('enter_name')}`} className="form-input" />
-                                {errors.name ? (
-                                    <div className="text-danger mt-1"> {errors.name} </div>
-                                ) : null}
+                            <div className='flex justify-between gap-5'>
+                                <div className="w-1/2">
+                                    <label htmlFor="name" > {t('name')} < span style={{ color: 'red' }}>* </span></label >
+                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name')}`} className="form-input" />
+                                    {errors.name ? (
+                                        <div className="text-danger mt-1"> {errors.name} </div>
+                                    ) : null}
+                                </div>
+                                <div className="w-1/2">
+                                    <label htmlFor="code" > {t('code')} < span style={{ color: 'red' }}>* </span></label >
+                                    <Field name="code" type="text" id="code" placeholder={`${t('enter_code')}`} className="form-input" />
+                                    {errors.code ? (
+                                        <div className="text-danger mt-1"> {errors.code} </div>
+                                    ) : null}
+                                </div>
                             </div>
-                            <div className="mb-5">
-                                <label htmlFor="code" > {t('code')} < span style={{ color: 'red' }}>* </span></label >
-                                <Field name="code" type="text" id="code" placeholder={`${t('enter_code')}`} className="form-input" />
-                                {errors.code ? (
-                                    <div className="text-danger mt-1"> {errors.code} </div>
-                                ) : null}
+                            <div className='flex justify-between gap-5'>
+                                <div className="w-1/2">
+                                    <label htmlFor="unitId" > {t('unit')} < span style={{ color: 'red' }}>* </span></label >
+                                    <Select
+                                        id='unitId'
+                                        name='unitId'
+                                        options={dataUnitDropdown}
+                                        onMenuOpen={() => setSizeUnit(1)}
+                                        onMenuScrollToBottom={handleMenuScrollToBottomUnit}
+                                        maxMenuHeight={160}
+                                        value={values.unitId}
+                                        isLoading={UnitLoading}
+                                        onChange={e => {
+                                            setFieldValue('unitId', e)
+                                        }}
+                                    />
+                                    {errors.unitId ? (
+                                        <div className="text-danger mt-1"> {errors.code} </div>
+                                    ) : null}
+                                </div>
+                                <div className="w-1/2">
+                                    <label htmlFor="categoryId" > {t('category')} < span style={{ color: 'red' }}>* </span></label >
+                                    <Select
+                                        id='categoryId'
+                                        name='categoryId'
+                                        options={dataCategoryDropdown}
+                                        onMenuOpen={() => setSizeCategory(1)}
+                                        onMenuScrollToBottom={handleMenuScrollToBottomCategory}
+                                        isLoading={CategoryLoading}
+                                        maxMenuHeight={160}
+                                        value={values.categoryId}
+                                        onChange={e => {
+                                            setFieldValue('categoryId', e)
+                                        }}
+                                    />
+                                    {errors.categoryId ? (
+                                        <div className="text-danger mt-1"> {errors.categoryId} </div>
+                                    ) : null}
+                                </div>
                             </div>
-                            <div className="mb-5">
-                                <label htmlFor="unitId" > {t('unit')} < span style={{ color: 'red' }}>* </span></label >
-                                <Select
-                                    id='unitId'
-                                    name='unitId'
-                                    options={dataUnitDropdown}
-                                    onMenuOpen={() => setSizeUnit(1)}
-                                    onMenuScrollToBottom={handleMenuScrollToBottomUnit}
-                                    maxMenuHeight={160}
-                                    value={values.unitId}
-                                    isLoading={UnitLoading}
-                                    onChange={e => {
-                                        setFieldValue('unitId', e)
-                                    }}
-                                />
-                                {errors.unitId ? (
-                                    <div className="text-danger mt-1"> {errors.code} </div>
-                                ) : null}
-                            </div>
-                            <div className="mb-5">
-                                <label htmlFor="categoryId" > {t('category')} < span style={{ color: 'red' }}>* </span></label >
-                                <Select
-                                    id='categoryId'
-                                    name='categoryId'
-                                    options={dataCategoryDropdown}
-                                    onMenuOpen={() => setSizeCategory(1)}
-                                    onMenuScrollToBottom={handleMenuScrollToBottomCategory}
-                                    isLoading={CategoryLoading}
-                                    maxMenuHeight={160}
-                                    value={values.categoryId}
-                                    onChange={e => {
-                                        setFieldValue('categoryId', e)
-                                    }}
-                                />
-                                {errors.categoryId ? (
-                                    <div className="text-danger mt-1"> {errors.categoryId} </div>
-                                ) : null}
-                            </div>
-                            <div className="w-1/2">
-                                <label htmlFor="warehouseId" > {t('warehouse')} < span style={{ color: 'red' }}>* </span></label >
-                                <Select
-                                    id='warehouseId'
-                                    name='warehouseId'
-                                    options={dataWarehouseDropdown}
-                                    onMenuOpen={() => setPageWarehouse(1)}
-                                    onMenuScrollToBottom={handleMenuScrollToBottomWarehouse}
-                                    isLoading={warehouseLoading}
-                                    maxMenuHeight={160}
-                                    value={values?.warehouseId}
-                                    onChange={e => {
-                                        setFieldValue('warehouseId', e)
-                                    }}
-                                />
-                                {submitCount && errors.warehouseId ? (
-                                    <div className="text-danger mt-1"> {`${errors.warehouseId}`} </div>
-                                ) : null}
-                            </div>
-                            <div className="mb-5">
-                                <label htmlFor="description" > {t('description')} </label >
-                                <Field name="description" type="text" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
-                                {errors.description ? (
-                                    <div className="text-danger mt-1"> {errors.description} </div>
-                                ) : null}
+                            <div className='flex justify-between gap-5'>
+                                <div className="w-1/2">
+                                    <label htmlFor="warehouseId" > {t('warehouse')} < span style={{ color: 'red' }}>* </span></label >
+                                    <Select
+                                        id='warehouseId'
+                                        name='warehouseId'
+                                        options={dataWarehouseDropdown}
+                                        onMenuOpen={() => setPageWarehouse(1)}
+                                        onMenuScrollToBottom={handleMenuScrollToBottomWarehouse}
+                                        isLoading={warehouseLoading}
+                                        maxMenuHeight={160}
+                                        value={values?.warehouseId}
+                                        onChange={e => {
+                                            setFieldValue('warehouseId', e)
+                                        }}
+                                    />
+                                    {submitCount && errors.warehouseId ? (
+                                        <div className="text-danger mt-1"> {`${errors.warehouseId}`} </div>
+                                    ) : null}
+                                </div>
+                                <div className="w-1/2">
+                                    <label htmlFor="description" > {t('description')} </label >
+                                    <Field name="description" type="text" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
+                                    {errors.description ? (
+                                        <div className="text-danger mt-1"> {errors.description} </div>
+                                    ) : null}
+                                </div>
                             </div>
                             <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
-                                <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
+                                <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
                                     {t('cancel')}
                                 </button>
-                                <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4" disabled={disabled}>
+                                <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" disabled={disabled}>
                                     {props.data !== undefined ? t('update') : t('add')}
                                 </button>
                             </div>

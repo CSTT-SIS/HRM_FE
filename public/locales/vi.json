@@ -660,5 +660,7 @@
 	"repair_management": "Quản lý sửa chữa",
 	"complete_repair": "Hoàn tất sửa chữa",
 	"move_to_warehouse": "Di chuyển sang kho",
-    "complete_supply": "Hoàn tất xuất mìn"
+    "complete_supply": "Hoàn tất xuất mìn",
+    "add_warehousing": "Tạo phiếu kho",
+    "proposal_list": "Danh sách yêu cầu"
 }
