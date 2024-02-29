@@ -28,12 +28,10 @@ import DepartmentList from './department_list.json';
 import DepartmentModal from './modal/DepartmentModal';
 import IconFolderMinus from '@/components/Icon/IconFolderMinus';
 import IconDownload from '@/components/Icon/IconDownload';
-import IconCaretDown from '@/components/Icon/IconCaretDown';
 
 import Link from 'next/link';
-import AnimateHeight from 'react-animate-height';
-
-
+import { Box } from '@atlaskit/primitives';
+import TableTree from '@atlaskit/table-tree';
 interface Props {
     [key: string]: any;
 }
@@ -61,14 +59,6 @@ const Department = ({ ...props }: Props) => {
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
     const [openModal, setOpenModal] = useState(false);
-
-    const toggleTreeview1 = (name: any) => {
-        if (treeview1.includes(name)) {
-            setTreeview1((value) => value.filter((d) => d !== name));
-        } else {
-            setTreeview1([...treeview1, name]);
-        }
-    };
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -125,6 +115,7 @@ const Department = ({ ...props }: Props) => {
             });
     };
 
+
     const handleSearch = (e: any) => {
         if (e.target.value === "") {
             setRecordsData(getStorge);
@@ -136,6 +127,61 @@ const Department = ({ ...props }: Props) => {
             )
         }
     }
+    type Content = { title: string; description: string };
+
+    type Item = {
+        id: string;
+        content: Content;
+        hasChildren: boolean;
+        children?: Item[];
+    };
+    const Title = (props: Content) => <Box as="span">{props.title}</Box>;
+    const Description = (props: Content) => (
+        <Box as="span">{props.description}</Box>
+    );
+    const Action = (props: Content) => (
+        <div className="flex items-center w-max mx-auto gap-2">
+            <Tippy content={`${t('edit')}`}>
+                <button type="button" className='button-edit' >
+                    <IconPencil /> Sửa
+                </button>
+            </Tippy>
+            <Tippy content={`${t('delete')}`}>
+                <button type="button" className='button-delete' >
+                    <IconTrashLines /> Xóa
+                </button>
+            </Tippy>
+        </div>
+    );
+    const items: Item[] = [
+        {
+            id: 'item1',
+            content: {
+                title: 'Phòng tài chính',
+                description: 'PTC',
+            },
+            hasChildren: false,
+            children: [],
+        },
+        {
+            id: 'item2',
+            content: {
+                title: 'Phòng 1',
+                description: 'P1',
+            },
+            hasChildren: true,
+            children: [
+                {
+                    id: 'child2.1',
+                    content: {
+                        title: 'Ban 1',
+                        description: 'B1',
+                    },
+                    hasChildren: false,
+                },
+            ],
+        },
+    ];
     const columns = [
         {
             accessor: 'id',
@@ -207,101 +253,12 @@ const Department = ({ ...props }: Props) => {
                 {
                     display === 'tree' ?
                         <div className="mb-5">
-                            <ul className="font-semibold">
-                                <li className="py-[5px]">
-                                    <button type="button" className={`${treeview1.includes('css') ? 'active' : ''}`} onClick={() => toggleTreeview1('css')} style={{ display: 'flex', justifyItems: 'space-between', width: '100%' }}>
-                                        <div>
-                                            <IconCaretDown className={`w-5 h-5 text-primary inline relative -top-1 ltr:mr-2 rtl:ml-2 ${treeview1.includes('css') && 'rotate-180'}`} />
-                                            Ban Giám đốc
-                                        </div>
-                                        <div className="mx-auto flex w-max items-center gap-2" style={{ marginRight: '0' }}>
-                                            <Tippy content={`${t('edit')}`}>
-                                                <button type="button" className='button-edit'>
-                                                    <IconPencil /> Sửa
-                                                </button>
-                                            </Tippy>
-                                            <Tippy content={`${t('delete')}`}>
-                                                <button type="button" className='button-delete'>
-                                                    <IconTrashLines /> Xóa
-                                                </button>
-                                            </Tippy>
-                                        </div>
-                                    </button>
-                                    <AnimateHeight duration={300} height={treeview1.includes('css') ? 'auto' : 0}>
-                                        <ul className="sub-menu ltr:pl-14 rtl:pr-14">
-                                            <li className="py-[5px]">
-                                                Phòng kế hoạch
-                                                <div className="mx-auto flex w-max items-center gap-2" style={{ float: 'right' }}>
-                                                    <Tippy content={`${t('edit')}`}>
-                                                        <button type="button" className='button-edit'>
-                                                            <IconPencil /> Sửa
-                                                        </button>
-                                                    </Tippy>
-                                                    <Tippy content={`${t('delete')}`}>
-                                                        <button type="button" className='button-delete'>
-                                                            <IconTrashLines /> Xóa
-                                                        </button>
-                                                    </Tippy>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </AnimateHeight>
-                                </li>
-                                <li className="py-[5px]">
-                                    <button type="button" className={`${treeview1.includes('css') ? 'active' : ''}`} onClick={() => toggleTreeview1('css')} style={{ display: 'flex', justifyItems: 'space-between', width: '100%' }}>
-                                        <div>
-                                            <IconCaretDown className={`w-5 h-5 text-primary inline relative -top-1 ltr:mr-2 rtl:ml-2 ${treeview1.includes('css') && 'rotate-180'}`} />
-                                            Phòng tài chính
-                                        </div>
-                                        <div className="mx-auto flex w-max items-center gap-2" style={{ marginRight: '0' }}>
-                                            <Tippy content={`${t('edit')}`}>
-                                                <button type="button" className='button-edit'>
-                                                    <IconPencil /> Sửa
-                                                </button>
-                                            </Tippy>
-                                            <Tippy content={`${t('delete')}`}>
-                                                <button type="button" className='button-delete'>
-                                                    <IconTrashLines /> Xóa
-                                                </button>
-                                            </Tippy>
-                                        </div>
-                                    </button>
-                                    <AnimateHeight duration={300} height={treeview1.includes('images') ? 'auto' : 0}>
-                                        <ul className="ltr:pl-14 rtl:pr-14">
-                                            <li className="py-[5px]">
-                                                Ban kế toán
-                                                <div className="mx-auto flex w-max items-center gap-2" style={{ float: 'right' }}>
-                                                    <Tippy content={`${t('edit')}`}>
-                                                        <button type="button" className='button-edit'>
-                                                            <IconPencil /> Sửa
-                                                        </button>
-                                                    </Tippy>
-                                                    <Tippy content={`${t('delete')}`}>
-                                                        <button type="button" className='button-delete'>
-                                                            <IconTrashLines /> Xóa
-                                                        </button>
-                                                    </Tippy>
-                                                </div>
-                                            </li>
-                                            <li className="py-[5px]">
-                                                Ban hậu cần
-                                                <div className="mx-auto flex w-max items-center gap-2" style={{ float: 'right' }}>
-                                                    <Tippy content={`${t('edit')}`}>
-                                                        <button type="button" className='button-edit'>
-                                                            <IconPencil /> Sửa
-                                                        </button>
-                                                    </Tippy>
-                                                    <Tippy content={`${t('delete')}`}>
-                                                        <button type="button" className='button-delete'>
-                                                            <IconTrashLines /> Xóa
-                                                        </button>
-                                                    </Tippy>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </AnimateHeight>
-                                </li>
-                            </ul>
+                            <TableTree
+                                columns={[Title, Description, Action]}
+                                headers={['Tên phòng ban', 'Mã phòng ban', 'Thao tác']}
+                                columnWidths={['600px', '300px', '100px']}
+                                items={items}
+                            />
                         </div> : <div className="datatables">
                             <DataTable
                                 highlightOnHover
