@@ -31,8 +31,8 @@ import IconDownload from '@/components/Icon/IconDownload';
 import IconCalendar from '@/components/Icon/IconCalendar';
 import Link from 'next/link';
 
-import AnimateHeight from 'react-animate-height';
-import IconArchive from '@/components/Icon/IconArchive';
+import { Box } from '@atlaskit/primitives';
+import TableTree from '@atlaskit/table-tree';
 
 
 interface Props {
@@ -158,6 +158,61 @@ const Department = ({ ...props }: Props) => {
 			);
 		}
 	};
+	type Content = { title: string; description: string };
+
+	type Item = {
+		id: string;
+		content: Content;
+		hasChildren: boolean;
+		children?: Item[];
+	};
+	const Title = (props: Content) => <Box as="span">{props.title}</Box>;
+	const Description = (props: Content) => (
+		<Box as="span">{props.description}</Box>
+	);
+	const Action = (props: Content) => (
+		<div className="flex items-center w-max mx-auto gap-2">
+			<Tippy content={`${t('edit')}`}>
+				<button type="button" className='button-edit' >
+					<IconPencil /> Sửa
+				</button>
+			</Tippy>
+			<Tippy content={`${t('delete')}`}>
+				<button type="button" className='button-delete' >
+					<IconTrashLines /> Xóa
+				</button>
+			</Tippy>
+		</div>
+	);
+	const items: Item[] = [
+		{
+			id: 'item1',
+			content: {
+				title: 'Nhân viên 1',
+				description: 'NV1',
+			},
+			hasChildren: false,
+			children: [],
+		},
+		{
+			id: 'item2',
+			content: {
+				title: 'Nhân viên 2',
+				description: 'NV2',
+			},
+			hasChildren: true,
+			children: [
+				{
+					id: 'item3',
+					content: {
+						title: 'Nhân viên 3',
+						description: 'NV3',
+					},
+					hasChildren: false,
+				},
+			],
+		},
+	];
 	const columns = [
 		{
 			accessor: 'id',
@@ -221,10 +276,10 @@ const Department = ({ ...props }: Props) => {
 					</div>
 					<div className='display-style'>
 						Cách hiển thị
-						<button type="button" className="btn btn-primary btn-sm m-1  custom-button-display" style={{backgroundColor: display === 'flat' ? '#E9EBD5' : '#FAFBFC'}} onClick={() => setDisplay('flat')}>
+						<button type="button" className="btn btn-primary btn-sm m-1  custom-button-display" style={{ backgroundColor: display === 'flat' ? '#E9EBD5' : '#FAFBFC' }} onClick={() => setDisplay('flat')}>
 							<img src="/assets/images/display-flat.svg" alt="img" />
 						</button>
-						<button type="button" className="btn btn-primary btn-sm m-1  custom-button-display" style={{backgroundColor: display === 'tree' ? '#E9EBD5' : '#FAFBFC'}} onClick={() => setDisplay('tree')}>
+						<button type="button" className="btn btn-primary btn-sm m-1  custom-button-display" style={{ backgroundColor: display === 'tree' ? '#E9EBD5' : '#FAFBFC' }} onClick={() => setDisplay('tree')}>
 							<img src="/assets/images/display-tree.png" alt="img" />
 						</button>
 						<input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
@@ -234,126 +289,12 @@ const Department = ({ ...props }: Props) => {
 				{
 					display === 'tree' ?
 						<div className="mb-5">
-							<ul className="font-semibold">
-								<li className="py-[5px]">
-									<button type="button" className={`${treeview1.includes('css') ? 'active' : ''}`} onClick={() => toggleTreeview1('css')} style={{ display: 'flex', justifyItems: 'space-between', width: '100%' }}>
-										<div>
-											<IconCaretDown className={`w-5 h-5 text-primary inline relative -top-1 ltr:mr-2 rtl:ml-2 ${treeview1.includes('css') && 'rotate-180'}`} />
-											Nguyễn Văn A
-										</div>
-										<div className="mx-auto flex w-max items-center gap-2" style={{ marginRight: '0' }}>
-											<Tippy content={`${t('edit')}`}>
-												<button type="button">
-													<IconPencil />
-												</button>
-											</Tippy>
-											<Tippy content={`${t('delete')}`}>
-												<button type="button">
-													<IconTrashLines />
-												</button>
-											</Tippy>
-											<Tippy content={`${t('work_schedule')}`}>
-												<Link href="/hrm/calendar" className="group">
-													<IconCalendar />
-												</Link>
-											</Tippy>
-										</div>
-									</button>
-									<AnimateHeight duration={300} height={treeview1.includes('css') ? 'auto' : 0}>
-										<ul className="sub-menu ltr:pl-14 rtl:pr-14">
-											<li className="py-[5px]">
-												Nguyễn Văn B
-												<div className="mx-auto flex w-max items-center gap-2" style={{ float: 'right' }}>
-													<Tippy content={`${t('edit')}`}>
-														<button type="button">
-															<IconPencil />
-														</button>
-													</Tippy>
-													<Tippy content={`${t('delete')}`}>
-														<button type="button">
-															<IconTrashLines />
-														</button>
-													</Tippy>
-													<Tippy content={`${t('work_schedule')}`}>
-														<Link href="/hrm/calendar" className="group">
-															<IconCalendar />
-														</Link>
-													</Tippy>
-												</div>
-											</li>
-										</ul>
-									</AnimateHeight>
-								</li>
-								<li className="py-[5px]">
-									<button type="button" className={`${treeview1.includes('css') ? 'active' : ''}`} onClick={() => toggleTreeview1('css')} style={{ display: 'flex', justifyItems: 'space-between', width: '100%' }}>
-										<div>
-											<IconCaretDown className={`w-5 h-5 text-primary inline relative -top-1 ltr:mr-2 rtl:ml-2 ${treeview1.includes('css') && 'rotate-180'}`} />
-											Nguyễn Văn A
-										</div>
-										<div className="mx-auto flex w-max items-center gap-2" style={{ marginRight: '0' }}>
-											<Tippy content={`${t('edit')}`}>
-												<button type="button">
-													<IconPencil />
-												</button>
-											</Tippy>
-											<Tippy content={`${t('delete')}`}>
-												<button type="button">
-													<IconTrashLines />
-												</button>
-											</Tippy>
-											<Tippy content={`${t('work_schedule')}`}>
-												<Link href="/hrm/calendar" className="group">
-													<IconCalendar />
-												</Link>
-											</Tippy>
-										</div>
-									</button>
-									<AnimateHeight duration={300} height={treeview1.includes('images') ? 'auto' : 0}>
-										<ul className="ltr:pl-14 rtl:pr-14">
-											<li className="py-[5px]">
-												Hoàng Thị D
-												<div className="mx-auto flex w-max items-center gap-2" style={{ float: 'right' }}>
-													<Tippy content={`${t('edit')}`}>
-														<button type="button">
-															<IconPencil />
-														</button>
-													</Tippy>
-													<Tippy content={`${t('delete')}`}>
-														<button type="button">
-															<IconTrashLines />
-														</button>
-													</Tippy>
-													<Tippy content={`${t('work_schedule')}`}>
-														<Link href="/hrm/calendar" className="group">
-															<IconCalendar />
-														</Link>
-													</Tippy>
-												</div>
-											</li>
-											<li className="py-[5px]">
-												Nguyễn Văn F
-												<div className="mx-auto flex w-max items-center gap-2" style={{ float: 'right' }}>
-													<Tippy content={`${t('edit')}`}>
-														<button type="button">
-															<IconPencil />
-														</button>
-													</Tippy>
-													<Tippy content={`${t('delete')}`}>
-														<button type="button">
-															<IconTrashLines />
-														</button>
-													</Tippy>
-													<Tippy content={`${t('work_schedule')}`}>
-														<Link href="/hrm/calendar" className="group">
-															<IconCalendar />
-														</Link>
-													</Tippy>
-												</div>
-											</li>
-										</ul>
-									</AnimateHeight>
-								</li>
-							</ul>
+							<TableTree
+								columns={[Title, Description, Action]}
+								headers={['Tên nhân viên', 'Mã nhân viên', 'Thao tác']}
+								columnWidths={['600px', '300px', '100px']}
+								items={items}
+							/>
 						</div> : <div className="datatables">
 							<DataTable
 								highlightOnHover
