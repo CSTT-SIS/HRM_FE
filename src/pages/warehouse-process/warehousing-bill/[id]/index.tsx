@@ -428,7 +428,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                                 placeholder={`${t('enter_name')}`}
                                                                 className="form-input"
                                                             />
-                                                            {errors.name ? (
+                                                            {submitCount && errors.name ? (
                                                                 <div className="text-danger mt-1"> {`${errors.name}`} </div>
                                                             ) : null}
                                                         </div>
@@ -447,7 +447,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                                     setFieldValue('warehouseId', e)
                                                                 }}
                                                             />
-                                                            {errors.warehouseId ? (
+                                                            {submitCount && errors.warehouseId ? (
                                                                 <div className="text-danger mt-1"> {`${errors.warehouseId}`} </div>
                                                             ) : null}
                                                         </div>
@@ -472,7 +472,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                                     setFieldValue('type', e)
                                                                 }}
                                                             />
-                                                            {errors.type ? (
+                                                            {submitCount && errors.type ? (
                                                                 <div className="text-danger mt-1"> {`${errors.type}`} </div>
                                                             ) : null}
                                                         </div>
@@ -494,7 +494,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                                             getValueDetail({ value: e?.value, type: "repairRequest" });
                                                                         }}
                                                                     />
-                                                                    {errors.repairRequestId ? (
+                                                                    {submitCount && errors.repairRequestId ? (
                                                                         <div className="text-danger mt-1"> {`${errors.repairRequestId}`} </div>
                                                                     ) : null}
                                                                 </div> :
@@ -515,7 +515,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                                                 getValueDetail({ value: e?.value, type: "proposal" });
                                                                             }}
                                                                         />
-                                                                        {errors.proposalId ? (
+                                                                        {submitCount && errors.proposalId ? (
                                                                             <div className="text-danger mt-1"> {`${errors.proposalId}`} </div>
                                                                         ) : null}
                                                                     </div> :
@@ -535,7 +535,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                                                 getValueDetail({ value: e?.value, type: "order" });
                                                                             }}
                                                                         />
-                                                                        {errors.orderId ? (
+                                                                        {submitCount && errors.orderId ? (
                                                                             <div className="text-danger mt-1"> {`${errors.orderId}`} </div>
                                                                         ) : null}
                                                                     </div>
@@ -551,7 +551,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                                 placeholder={`${t('enter_note')}`}
                                                                 className="form-input"
                                                             />
-                                                            {errors.note ? (
+                                                            {submitCount && errors.note ? (
                                                                 <div className="text-danger mt-1"> {`${errors.note}`} </div>
                                                             ) : null}
                                                         </div>
