@@ -151,7 +151,7 @@ const DetailPage = ({ ...props }: Props) => {
         {
             accessor: 'id',
             title: '#',
-            render: (records: any, index: any) => <span>{index}</span>,
+            render: (records: any, index: any) => <span>{index + 1}</span>,
         },
         {
             accessor: 'name',

@@ -33,21 +33,26 @@ const ProposalPage = ({ ...props }: Props) => {
     const { t } = useTranslation();
     const router = useRouter();
 
-    const [showLoader, setShowLoader] = useState(true);
-
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
-
     // get data
-    const { data: proposal, pagination, mutate } = Proposals({ sortBy: 'id.ASC', ...router.query, type: "SUPPLY" });
+    const { data: proposal, pagination, mutate, isLoading } = Proposals({ sortBy: 'id.ASC', ...router.query, type: "SUPPLY" });
+
+    useEffect(() => {
+        if (proposal?.data.length <= 0 && pagination.page > 1) {
+            router.push({
+                query: {
+                    page: pagination.page - 1,
+                    perPage: pagination.perPage
+                }
+            })
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [proposal])
 
     useEffect(() => {
         dispatch(setPageTitle(`${t('proposal')}`));
     });
-
-    useEffect(() => {
-        setShowLoader(false);
-    }, [proposal])
 
     const handleDelete = ({ id, name }: any) => {
         const swalDeletes = Swal.mixin({
@@ -172,7 +177,7 @@ const ProposalPage = ({ ...props }: Props) => {
 
     return (
         <div>
-            {showLoader && (
+            {isLoading && (
                 <div className="screen_loader fixed inset-0 bg-[#fafafa] dark:bg-[#060818] z-[60] grid place-content-center animate__animated">
                     <IconLoading />
                 </div>
