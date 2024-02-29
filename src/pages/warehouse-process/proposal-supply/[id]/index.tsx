@@ -39,7 +39,7 @@ const DetailPage = ({ ...props }: Props) => {
     const [listDataDetail, setListDataDetail] = useState<any>();
     const [openModal, setOpenModal] = useState(false);
     const [query, setQuery] = useState<any>();
-    const [active, setActive] = useState<any>(1);
+    const [active, setActive] = useState<any>([1]);
     const [initialValue, setInitialValue] = useState<any>();
     const [data, setData] = useState<any>();
     const [page, setPage] = useState(1);
@@ -197,7 +197,11 @@ const DetailPage = ({ ...props }: Props) => {
     }
 
     const handleActive = (value: any) => {
-        setActive(active === value ? 0 : value);
+        if (active.includes(value)) {
+            setActive(active.filter((item: any) => item !== value));
+        } else {
+            setActive([value, ...active]);
+        }
     }
 
     const handleProposal = (param: any) => {
@@ -209,8 +213,7 @@ const DetailPage = ({ ...props }: Props) => {
 
         if (data) {
             EditProposal({ id: data?.id, ...query }).then((res) => {
-                showMessage(`${t('edit_success')}`, 'success');
-                handleCancel();
+                handleConfirm({ id: data.id, message: "edit_success" });
             }).catch((err) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
@@ -230,14 +233,14 @@ const DetailPage = ({ ...props }: Props) => {
     const handleDetail = (id: any) => {
         AddProposalDetails({
             id: id, details: listDataDetail
-        }).then(async () => {
-            await handleConfirm({ id: id });
+        }).then(() => {
+            handleConfirm({ id: id, message: "create_success" });
         }).catch((err) => {
             showMessage(`${err?.response?.data?.message}`, 'error');
         });
     }
 
-    const handleConfirm = ({ id, name }: any) => {
+    const handleConfirm = ({ id, message }: any) => {
         const swalDeletes = Swal.mixin({
             customClass: {
                 confirmButton: 'btn btn-secondary',
@@ -250,7 +253,7 @@ const DetailPage = ({ ...props }: Props) => {
             .fire({
                 icon: 'question',
                 title: `${t('complete_supply')}`,
-                text: `${t('move_to_warehouse')}`,
+                text: `${t('')}`,
                 padding: '2em',
                 showCancelButton: true,
                 reverseButtons: true,
@@ -259,14 +262,14 @@ const DetailPage = ({ ...props }: Props) => {
                 if (result.value) {
                     handleChangeComplete(id);
                 }
-                showMessage(`${t('create_success')}`, 'success');
+                showMessage(`${t(`${message}`)}`, 'success');
                 handleCancel();
             });
     };
 
     const RenturnError = (param: any) => {
         if (Object.keys(param?.errors || {}).length > 0 && param?.submitCount > 0) {
-            handleActive(1);
+            showMessage(`${t('please_add_infomation')}`, 'error');
         }
         return <></>;
     }
@@ -325,12 +328,12 @@ const DetailPage = ({ ...props }: Props) => {
                                         onClick={() => handleActive(1)}
                                     >
                                         {t('proposal_infomation')}
-                                        <div className={`ltr:ml-auto rtl:mr-auto ${active === 1 ? 'rotate-180' : ''}`}>
+                                        <div className={`ltr:ml-auto rtl:mr-auto ${active.includes(1) ? 'rotate-180' : ''}`}>
                                             <IconCaretDown />
                                         </div>
                                     </button>
-                                    <div className={`mb-2 ${active === 1 ? 'custom-content-accordion' : ''}`}>
-                                        <AnimateHeight duration={300} height={active === 1 ? 'auto' : 0}>
+                                    <div className={`mb-2 ${active.includes(1) ? 'custom-content-accordion' : ''}`}>
+                                        <AnimateHeight duration={300} height={active.includes(1) ? 'auto' : 0}>
                                             <div className='p-4'>
                                                 <div className='flex justify-between gap-5'>
                                                     <div className=" w-1/2">
@@ -393,12 +396,12 @@ const DetailPage = ({ ...props }: Props) => {
                                         onClick={() => handleActive(2)}
                                     >
                                         {t('proposal_detail')}
-                                        <div className={`ltr:ml-auto rtl:mr-auto ${active === 1 ? 'rotate-180' : ''}`}>
+                                        <div className={`ltr:ml-auto rtl:mr-auto ${active.includes(2) ? 'rotate-180' : ''}`}>
                                             <IconCaretDown />
                                         </div>
                                     </button>
-                                    <div className={`${active === 2 ? 'custom-content-accordion' : ''}`}>
-                                        <AnimateHeight duration={300} height={active === 2 ? 'auto' : 0}>
+                                    <div className={`${active.includes(2) ? 'custom-content-accordion' : ''}`}>
+                                        <AnimateHeight duration={300} height={active.includes(2) ? 'auto' : 0}>
                                             <div className='p-4'>
                                                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4 gap-5">
                                                     <div className="flex items-center flex-wrap">
@@ -435,7 +438,6 @@ const DetailPage = ({ ...props }: Props) => {
                                 </div>
                             </div>
                             {
-                                active !== 1 &&
                                 <RenturnError errors={errors} submitCount={submitCount} />
                             }
                         </Form>

@@ -13,7 +13,7 @@ import { DataTableSortStatus, DataTable } from 'mantine-datatable';
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import HandleDetailModal from '../modal/DetailModal';
-import { AddOrderDetails, CreateOrder, DeleteOrderDetail, EditOrder, OrderPlace } from '@/services/apis/order.api';
+import { AddOrderDetails, CreateOrder, DeleteOrderDetail, EditOrder, GetOrder, OrderPlace } from '@/services/apis/order.api';
 import { OrderDetails } from '@/services/swr/order.twr';
 import Link from 'next/link';
 import IconBackward from '@/components/Icon/IconBackward';
@@ -44,10 +44,9 @@ const DetailPage = ({ ...props }: Props) => {
     const [query, setQuery] = useState<any>();
     const [initialValue, setInitialValue] = useState<any>();
     const [dataProposalDropdown, setDataProposalDropdown] = useState<any>([]);
-    const [active, setActive] = useState<any>(1);
+    const [active, setActive] = useState<any>([1]);
     const [pageProposal, setPageProposal] = useState(1);
     const [listDataDetail, setListDataDetail] = useState<any>();
-
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().required(`${t('please_fill_name')}`),
         code: Yup.string().required(`${t('please_fill_code')}`),
@@ -57,7 +56,6 @@ const DetailPage = ({ ...props }: Props) => {
     });
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
-
 
     // get data
     const { data: orderDetails, pagination, mutate, isLoading } = OrderDetails({ ...query });
@@ -71,12 +69,23 @@ const DetailPage = ({ ...props }: Props) => {
         if (Number(router.query.id)) {
             setListDataDetail(orderDetails?.data);
         }
-    }, [orderDetails?.data, router])
+    }, [orderDetails?.data, router]);
+
+    useEffect(() => {
+        if (Number(router.query.id)) {
+            GetOrder({ id: router.query.id }).then((res) => {
+                setData(res.data);
+            }).catch((err) => {
+                showMessage(`${err?.response?.data?.message}`, 'error');
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [router.query.id]);
 
     useEffect(() => {
         setInitialValue({
             name: data?.name ? `${data?.name}` : "",
-            proposalIds: data ? data?.proposal?.map((item: any) => {
+            proposalIds: data ? data?.proposals?.map((item: any) => {
                 return (
                     {
                         label: item.name,
@@ -218,8 +227,8 @@ const DetailPage = ({ ...props }: Props) => {
             provider: param.provider
         };
         if (data) {
-            EditOrder({ id: router?.query?.id, ...query }).then(() => {
-                showMessage(`${t('edit_success')}`, 'success');
+            EditOrder({ id: data.id, ...query }).then(() => {
+                handleConfirm({ id: data.id, message: "create_success" });
             }).catch((err) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
@@ -240,14 +249,14 @@ const DetailPage = ({ ...props }: Props) => {
     const handleDetail = (id: any) => {
         AddOrderDetails({
             id: id, details: listDataDetail
-        }).then(async () => {
-            await handleConfirm({ id: id });
+        }).then(() => {
+            handleConfirm({ id: id, message: "create_success" });
         }).catch((err) => {
             showMessage(`${err?.response?.data?.message}`, 'error');
         });
     }
 
-    const handleConfirm = ({ id, name }: any) => {
+    const handleConfirm = ({ id, message }: any) => {
         const swalDeletes = Swal.mixin({
             customClass: {
                 confirmButton: 'btn btn-secondary',
@@ -260,7 +269,7 @@ const DetailPage = ({ ...props }: Props) => {
             .fire({
                 icon: 'question',
                 title: `${t('complete_order')}`,
-                text: `${t('buy_now')}`,
+                text: `${t('')}`,
                 padding: '2em',
                 showCancelButton: true,
                 reverseButtons: true,
@@ -269,13 +278,17 @@ const DetailPage = ({ ...props }: Props) => {
                 if (result.value) {
                     handleChangeComplete(id);
                 }
-                showMessage(`${t('create_success')}`, 'success');
+                showMessage(`${t(`${message}`)}`, 'success');
                 handleCancel();
             });
     };
 
     const handleActive = (value: any) => {
-        setActive(active === value ? 0 : value);
+        if (active.includes(value)) {
+            setActive(active.filter((item: any) => item !== value));
+        } else {
+            setActive([value, ...active]);
+        }
     }
 
     useEffect(() => {
@@ -296,10 +309,11 @@ const DetailPage = ({ ...props }: Props) => {
 
     const RenturnError = (param: any) => {
         if (Object.keys(param?.errors || {}).length > 0 && param?.submitCount > 0) {
-            handleActive(1);
+            showMessage(`${t('please_add_infomation')}`, 'error');
         }
         return <></>;
     }
+
     const getValueDetail = (value: any) => {
         if (value?.length <= 0) {
             setListDataDetail([]);
@@ -307,9 +321,9 @@ const DetailPage = ({ ...props }: Props) => {
             value.map((item: any) => {
                 GetProposalDetail({ id: item }).then((res) => {
                     if (value?.length > 1) {
-                        setListDataDetail([...listDataDetail, ...res.data.map((item: any) => delete item.id)]);
+                        setListDataDetail([...listDataDetail, ...res.data.filter((item: any) => { delete item.id; return item })]);
                     } else {
-                        setListDataDetail(res.data.map((item: any) => delete item.id));
+                        setListDataDetail(res.data.map((item: any) => { delete item.id; return item }));
                     }
                 }).catch((err) => {
                     showMessage(`${err?.response?.data?.message}`, 'error');
@@ -357,12 +371,12 @@ const DetailPage = ({ ...props }: Props) => {
                                             onClick={() => handleActive(1)}
                                         >
                                             {t('order_infomation')}
-                                            <div className={`ltr:ml-auto rtl:mr-auto ${active === 1 ? 'rotate-180' : ''}`}>
+                                            <div className={`ltr:ml-auto rtl:mr-auto ${active.includes(1) ? 'rotate-180' : ''}`}>
                                                 <IconCaretDown />
                                             </div>
                                         </button>
-                                        <div className={`mb-2 ${active === 1 ? 'custom-content-accordion' : ''}`}>
-                                            <AnimateHeight duration={300} height={active === 1 ? 'auto' : 0}>
+                                        <div className={`mb-2 ${active.includes(1) ? 'custom-content-accordion' : ''}`}>
+                                            <AnimateHeight duration={300} height={active.includes(1) ? 'auto' : 0}>
                                                 <div className='p-4'>
                                                     <div className='flex justify-between gap-5'>
                                                         <div className="w-1/2">
@@ -458,12 +472,12 @@ const DetailPage = ({ ...props }: Props) => {
                                             onClick={() => handleActive(2)}
                                         >
                                             {t('order_detail')}
-                                            <div className={`ltr:ml-auto rtl:mr-auto ${active === 1 ? 'rotate-180' : ''}`}>
+                                            <div className={`ltr:ml-auto rtl:mr-auto ${active.includes(2) ? 'rotate-180' : ''}`}>
                                                 <IconCaretDown />
                                             </div>
                                         </button>
-                                        <div className={`${active === 2 ? 'custom-content-accordion' : ''}`}>
-                                            <AnimateHeight duration={300} height={active === 2 ? 'auto' : 0}>
+                                        <div className={`${active.includes(2) ? 'custom-content-accordion' : ''}`}>
+                                            <AnimateHeight duration={300} height={active.includes(2) ? 'auto' : 0}>
                                                 <div className='p-4'>
                                                     <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                                                         <div className="flex items-center flex-wrap">
@@ -509,7 +523,6 @@ const DetailPage = ({ ...props }: Props) => {
                                     </div>
                                 </div>
                                 {
-                                    active !== 1 &&
                                     <RenturnError errors={errors} submitCount={submitCount} />
                                 }
                             </Form>
