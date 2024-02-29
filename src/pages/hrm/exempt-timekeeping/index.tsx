@@ -36,8 +36,9 @@ import IconFolderMinus from '@/components/Icon/IconFolderMinus';
 import IconDownload from '@/components/Icon/IconDownload';
 import IconEye from '@/components/Icon/IconEye';
 import IconChecks from '@/components/Icon/IconChecks';
-import { getDaysOfMonth } from '@/utils/commons';
+import { getDaysOfMonth, toDateString } from '@/utils/commons';
 import Link from 'next/link';
+import IconTrash from '@/components/Icon/IconTrash';
 
 
 interface Props {
@@ -62,8 +63,7 @@ const Department = ({ ...props }: Props) => {
     useEffect(() => {
         dispatch(setPageTitle(`${t('timekeeping')}`));
     });
-    const [listDay, setListDay] = useState();
-
+    const [listDay, setListDay] = useState<undefined | string[]>(undefined);
     const router = useRouter();
     const [showLoader, setShowLoader] = useState(true);
     const [page, setPage] = useState<any>(PAGE_NUMBER_DEFAULT);
@@ -79,6 +79,8 @@ const Department = ({ ...props }: Props) => {
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth() + 1;
     const currentYear = currentDate.getFullYear();
+    const [isSelected, setIsSelected]= useState<undefined | string[]>(undefined);
+    const [isDelete, setDelete]= useState<undefined | string[]>(undefined);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -95,8 +97,8 @@ const Department = ({ ...props }: Props) => {
         setTotal(getStorge?.length);
         setPageSize(PAGE_SIZES_DEFAULT);
         setRecordsData(getStorge?.filter((item: any, index: any) => { return index <= 9 && page === 1 ? item : index >= 10 && index <= (page * 9) ? item : null }));
-        // setListDay(listDay_)
-
+        const listDay_ = getDaysOfMonth(currentYear, currentMonth);
+        setListDay(listDay_);
     }, [getStorge, getStorge?.length, page])
 
     useEffect(() => {
@@ -107,6 +109,15 @@ const Department = ({ ...props }: Props) => {
         setOpenModal(true);
         setData(data);
     };
+
+    const handleChangeMonth = (selectedDates: any, dateStr: any) => {
+        const date_str = selectedDates[0] ?? ""
+        console.log(date_str, selectedDates)
+        const year: number = date_str.getFullYear();
+        const month: number = date_str.getMonth() + 1;
+        const listDay = getDaysOfMonth(year, month);
+        setListDay(listDay);
+    }
 
     const handleDelete = (data: any) => {
         const swalDeletes = Swal.mixin({
@@ -120,8 +131,8 @@ const Department = ({ ...props }: Props) => {
         swalDeletes
             .fire({
                 icon: 'question',
-                title: `${t('delete_department')}`,
-                text: `${t('delete')} ${data.name}`,
+                title: `${t('delete_timekeeping')}`,
+                // text: `${t('delete')} ${data.name}`,
                 padding: '2em',
                 showCancelButton: true,
                 reverseButtons: true,
@@ -177,7 +188,8 @@ const Department = ({ ...props }: Props) => {
         {
             accessor: 'id',
             title: '#',
-            render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
+            render: (records: any, index: any) =>                                     <input type="checkbox" className="form-checkbox" onChange={(e) => setIsSelected(e.target.value)} />
+            ,
         },
         { accessor: 'code', title: 'Mã chấm công', sortable: false
     },
@@ -185,18 +197,19 @@ const Department = ({ ...props }: Props) => {
     }
     ]
 
-    DayList?.map((item: Day, columIndex: number) => {
+    listDay?.map((item: string, columIndex: number) => {
         columns.push(
             {
                 accessor: '',
-                title: `${item.dayWeek}, ${item.dayMonth}`,
-                render: (records: any, index: any) => {
-                    if (columIndex <= 3) {
-                        return <span onClick={() => handleEdit(records)} style={{cursor: "pointer"}}>1</span>
-                    } else {
-                        return <div onClick={() => setOpenModal(true)} style={{cursor: "pointer", height: "20px"}}></div>
-                    }
-                },
+                title: item,
+                render: (records: any, index: any) =>
+                    // if (columIndex <= 3) {
+                    //     return <span onClick={() => handleEdit(records)} style={{cursor: "pointer"}}>1</span>
+                    // } else {
+                    //     return <div onClick={() => setOpenModal(true)} style={{cursor: "pointer", height: "20px"}}></div>
+                    // }
+                    <span onClick={() => handleEdit(records)} style={{cursor: "pointer"}}>1</span>
+                ,
             }
         )
     })
@@ -209,9 +222,9 @@ const Department = ({ ...props }: Props) => {
                 </div>
             )}
             <div className="panel mt-6">
-                <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
+                <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-1">
                     <div className="flex items-center flex-wrap">
-                        <Link href="#">
+                        <Link href="/hrm/exempt-timekeeping/ExemptTimekeepingAdd">
                         <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                                     <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                                                     {t('add')}
@@ -226,6 +239,12 @@ const Department = ({ ...props }: Props) => {
                             <IconDownload className="ltr:mr-2 rtl:ml-2" />
                             Xuất file excel
                         </button>
+                           {
+                           isSelected && <button type="button" className="btn btn-primary btn-sm m-1 custom-button" onClick={() => handleDelete({})} >
+                                    <IconTrash className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                                    {t('delete')}
+                                    </button>
+                           }
                     </div>
                     <div className='flex gap-2'>
                         <div className='flex gap-1'>
@@ -242,8 +261,8 @@ const Department = ({ ...props }: Props) => {
                                     monthSelectPlugin(monthSelectConfig) // Sử dụng plugin với cấu hình
                                 ]
                             }}
-                            onChange={(selectedDates, dateStr, instance) => {
-                                // Xử lý sự kiện thay đổi ngày tháng ở đây
+                            onChange={(selectedDates, dateStr) => {
+                               handleChangeMonth(selectedDates, dateStr)
                             }}
                          />
                         </div>
