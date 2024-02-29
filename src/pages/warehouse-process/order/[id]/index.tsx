@@ -214,7 +214,7 @@ const DetailPage = ({ ...props }: Props) => {
             proposalIds: param.proposalIds.map((item: any) => { return (item.value) }),
             type: "PURCHASE",
             code: param.code,
-            estimatedDeliveryDate: moment(param.estimatedDeliveryDate).format('YYYY-MM-DD'),
+            estimatedDeliveryDate: moment(param.estimatedDeliveryDate).format('YYYY-MM-DD HH:mm:ss'),
             provider: param.provider
         };
         if (data) {
@@ -307,9 +307,9 @@ const DetailPage = ({ ...props }: Props) => {
             value.map((item: any) => {
                 GetProposalDetail({ id: item }).then((res) => {
                     if (value?.length > 1) {
-                        setListDataDetail([...listDataDetail, ...res.data]);
+                        setListDataDetail([...listDataDetail, ...res.data.map((item: any) => delete item.id)]);
                     } else {
-                        setListDataDetail(res.data);
+                        setListDataDetail(res.data.map((item: any) => delete item.id));
                     }
                 }).catch((err) => {
                     showMessage(`${err?.response?.data?.message}`, 'error');
