@@ -24,6 +24,7 @@ import { DropdownUsers } from '@/services/swr/dropdown.twr';
 import IconBackward from '@/components/Icon/IconBackward';
 import * as Yup from 'yup';
 import Select, { components } from 'react-select';
+import IconBack from '@/components/Icon/IconBack';
 
 interface Props {
     [key: string]: any;
@@ -314,7 +315,7 @@ const DetailPage = ({ ...props }: Props) => {
                 <h1 className='page-title'>{t('repair')}</h1>
                 <Link href="/warehouse-process/repair">
                     <div className="btn btn-primary btn-sm m-1 back-button h-9" >
-                        <IconBackward />
+                        <IconBack />
                         <span>
                             {t('back')}
                         </span>

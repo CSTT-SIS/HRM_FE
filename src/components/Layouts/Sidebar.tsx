@@ -54,7 +54,7 @@ import IconMenuUser from '../Icon/Menu/IconMenuUser';
 import IconMenuTimekeeping from '../Icon/Menu/IconMenuTimeKeeping';
 import IconMenuWareHouse from '../Icon/Menu/IconMenuWareHouse';
 import IconMenuProduct from '../Icon/Menu/IconMenuProduct';
-import IconMenuForm from '../Icon/Menu/IconmenuForm';
+import IconMenuForm from '../Icon/Menu/IconMenuForm';
 import IconMenuPersonel from '../Icon/Menu/IconMenuPersonel';
 import IconMenuShift from '../Icon/Menu/IconMenuShift';
 import IconMenuDuty from '../Icon/Menu/IconMenuDuty';
@@ -71,7 +71,7 @@ import IconMenuFormOT from '../Icon/Menu/IconMenuFormOT';
 import IconMenuFormExempt from '../Icon/Menu/IconMenuFormExempt';
 import IconMenuFormForget from '../Icon/Menu/IconMenuFormForget';
 import IconMenuTimeKeeping from '../Icon/Menu/IconMenuTimeKeeping';
-import IconMenuTimeKeepingAll from '../Icon/Menu/IconMenuTimekeepingAll';
+import IconMenuTimeKeepingAll from '../Icon/Menu/IconMenuTimeKeepingAll';
 import IconMenuTimeKeepingStaff from '../Icon/Menu/IconMenuTimeKeepingStaff';
 import IconMenuListExempt from '../Icon/Menu/IconMenuListExempt';
 

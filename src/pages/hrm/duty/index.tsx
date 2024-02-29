@@ -77,8 +77,9 @@ const Duty = ({ ...props }: Props) => {
     }, [recordsData])
 
     const handleEdit = (data: any) => {
-        setOpenModal(true);
-        setData(data);
+        router.push(`/hrm/duty/${data.id}`)
+        // setOpenModal(true);
+        // setData(data);
     };
 
     const handleDelete = (data: any) => {
@@ -168,7 +169,7 @@ const Duty = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <Link href="/hrm/duty/AddNewDuty">
+                        <Link href="/hrm/duty/create">
                         <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                                     <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                                                     {t('add')}

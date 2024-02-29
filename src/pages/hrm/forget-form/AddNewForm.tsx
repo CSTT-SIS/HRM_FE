@@ -13,6 +13,7 @@ import 'flatpickr/dist/flatpickr.css';
 import Select from 'react-select';
 import Link from 'next/link';
 import IconArrowBackward from '@/components/Icon/IconArrowBackward';
+import IconBack from '@/components/Icon/IconBack';
 // import dutyList from '../../duty/duty_list.json';
 
 interface Props {
@@ -77,7 +78,7 @@ const ForgetFormModal = ({ ...props }: Props) => {
                 <h1 className='page-title'>{t('add_department')}</h1>
                 <Link href="/hrm/forget-form">
                     <button type="button" className="btn btn-primary btn-sm m-1 back-button" >
-                        <IconArrowBackward className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                        <IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                         <span>
                             {t('back')}
                         </span>

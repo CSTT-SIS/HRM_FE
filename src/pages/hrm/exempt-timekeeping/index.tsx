@@ -79,7 +79,7 @@ const Department = ({ ...props }: Props) => {
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth() + 1;
     const currentYear = currentDate.getFullYear();
-    const [isSelected, setIsSelected]= useState<undefined | string[]>(undefined);
+    const [isSelected, setIsSelected]= useState<any>(undefined);
     const [isDelete, setDelete]= useState<undefined | string[]>(undefined);
 
     useEffect(() => {

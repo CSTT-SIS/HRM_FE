@@ -188,7 +188,7 @@ const Department = ({ ...props }: Props) => {
 		{
 			id: 'item1',
 			content: {
-				title: 'Nhân viên 1',
+				title: 'Nguyễn Văn A',
 				description: 'NV1',
 			},
 			hasChildren: false,
@@ -197,7 +197,7 @@ const Department = ({ ...props }: Props) => {
 		{
 			id: 'item2',
 			content: {
-				title: 'Nhân viên 2',
+				title: 'Trần Văn B',
 				description: 'NV2',
 			},
 			hasChildren: true,
@@ -205,7 +205,7 @@ const Department = ({ ...props }: Props) => {
 				{
 					id: 'item3',
 					content: {
-						title: 'Nhân viên 3',
+						title: 'Vũ Văn C',
 						description: 'NV3',
 					},
 					hasChildren: false,

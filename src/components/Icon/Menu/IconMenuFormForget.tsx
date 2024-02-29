@@ -6,8 +6,8 @@ interface IconMenuFormForgetProps {
 
 const IconMenuFormForget: FC<IconMenuFormForgetProps> = ({ className }) => {
     return (
-<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-<rect width="12" height="12" fill="url(#pattern_forget)"/>
+<svg width="14" height="14" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+<rect width="14" height="14" fill="url(#pattern_forget)"/>
 <defs>
 <pattern id="pattern_forget" patternContentUnits="objectBoundingBox" width="1" height="1">
 <use xlinkHref="#image0_25_481" transform="scale(0.01)"/>

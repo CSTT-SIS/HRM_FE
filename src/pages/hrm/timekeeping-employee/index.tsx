@@ -189,13 +189,8 @@ const Department = ({ ...props }: Props) => {
             {
                 accessor: '',
                 title: `${item.dayWeek}, ${item.dayMonth}`,
-                render: (records: any, index: any) => {
-                    if (columIndex <= 3) {
-                        return <span onClick={() => handleEdit(records)} style={{cursor: "pointer"}}>1</span>
-                    } else {
-                        return <div onClick={() => setOpenModal(true)} style={{cursor: "pointer", height: "20px"}}></div>
-                    }
-                },
+                render: (records: any, index: any) =>                     <span onClick={() => handleEdit(records)} style={{cursor: "pointer"}}>1</span>
+                ,
             }
         )
     })

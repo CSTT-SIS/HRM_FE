@@ -187,30 +187,30 @@ const OvertimeForm = ({ ...props }: Props) => {
           sortable: false,
           render: (records: any, index: any) => <span className={`badge badge-outline-${records?.isCheck ? "success" : "danger"} `} onClick={() => handleDetail(records)}>{records?.isCheck ? `${t('isCheckTrue')}` : `${t('isCheckFalse')}`}</span>
     },
-        {
-            accessor: 'action',
-            title: 'Thao tác',
-            titleClassName: '!text-center',
-            render: (records: any) => (
-                <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('edit')}`}>
-                        <button type="button" onClick={() => handleEdit(records)}>
-                            <IconPencil />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('check')}`}>
-                        <button type="button" onClick={() => handleCheck(records)}>
-                            <IconChecks />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('delete')}`}>
-                        <button type="button" onClick={() => handleDelete(records)}>
-                            <IconTrashLines />
-                        </button>
-                    </Tippy>
-                </div>
-            ),
-        },
+    {
+        accessor: 'action',
+        title: 'Thao tác',
+        titleClassName: '!text-center',
+        render: (records: any) => (
+            <div className="flex items-center w-max mx-auto gap-2">
+                <Tippy content={`${t('edit')}`}>
+                    <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
+                        <IconPencil /> {t('edit')}
+                    </button>
+                </Tippy>
+                <Tippy content={`${t('check')}`}>
+                    <button type="button" className="button-check" onClick={() => handleCheck(records)}>
+                        <IconChecks /> {t('approve')}
+                    </button>
+                </Tippy>
+                <Tippy content={`${t('delete')}`}>
+                    <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                        <IconTrashLines /> {t('delete')}
+                    </button>
+                </Tippy>
+            </div>
+        ),
+    },
     ]
 
     return (

@@ -7,8 +7,8 @@ interface IconMenuDutyProps {
 const IconMenuDuty: FC<IconMenuDutyProps> = ({ className }) => {
     return (
 
-<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-<rect width="12" height="12" fill="url(#pattern_duty)"/>
+<svg width="14" height="14" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+<rect width="14" height="14" fill="url(#pattern_duty)"/>
 <defs>
 <pattern id="pattern_duty" patternContentUnits="objectBoundingBox" width="1" height="1">
 <use xlinkHref="#image0_25_411" transform="scale(0.01)"/>

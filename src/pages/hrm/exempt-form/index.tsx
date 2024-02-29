@@ -183,30 +183,30 @@ const ExemptForm = ({ ...props }: Props) => {
           sortable: false,
           render: (records: any, index: any) => <span className={`badge badge-outline-${records?.isCheck ? "success" : "danger"} `} onClick={() => handleDetail(records)}>{records?.isCheck ? `${t('isCheckTrue')}` : `${t('isCheckFalse')}`}</span>
     },
-        {
-            accessor: 'action',
-            title: 'Thao tác',
-            titleClassName: '!text-center',
-            render: (records: any) => (
-                <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('edit')}`}>
-                        <button type="button" onClick={() => handleEdit(records)}>
-                            <IconPencil />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('check')}`}>
-                        <button type="button" onClick={() => handleCheck(records)}>
-                            <IconChecks />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('delete')}`}>
-                        <button type="button" onClick={() => handleDelete(records)}>
-                            <IconTrashLines />
-                        </button>
-                    </Tippy>
-                </div>
-            ),
-        },
+    {
+        accessor: 'action',
+        title: 'Thao tác',
+        titleClassName: '!text-center',
+        render: (records: any) => (
+            <div className="flex items-center w-max mx-auto gap-2">
+                <Tippy content={`${t('edit')}`}>
+                    <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
+                        <IconPencil /> {t('edit')}
+                    </button>
+                </Tippy>
+                <Tippy content={`${t('check')}`}>
+                    <button type="button" className="button-check" onClick={() => handleCheck(records)}>
+                        <IconChecks /> {t('approve')}
+                    </button>
+                </Tippy>
+                <Tippy content={`${t('delete')}`}>
+                    <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                        <IconTrashLines /> {t('delete')}
+                    </button>
+                </Tippy>
+            </div>
+        ),
+    },
     ]
 
     return (
@@ -220,7 +220,7 @@ const ExemptForm = ({ ...props }: Props) => {
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
                         <Link href="/hrm/exempt-form/AddNewForm">
-                            <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                            <button type="button" className="btn btn-primary btn-sm m-1 custom-button" onClick={(e) => router.push(`/hrm/exempt-form/create`)}>
                                 <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                                 {t('add')}
                             </button>

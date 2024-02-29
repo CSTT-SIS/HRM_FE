@@ -18,7 +18,7 @@ interface Props {
     [key: string]: any;
 }
 
-const RepairForm = ({ ...props }: Props) => {
+const CreateForm = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
     const router = useRouter();
@@ -51,7 +51,7 @@ const RepairForm = ({ ...props }: Props) => {
         } else {
             CreateRepair(query).then((res) => {
                 router.push({
-                    pathname: `/warehouse-process/repair/${res.data.id}`,
+                    pathname: `/hrm/repair/${res.data.id}`,
                     query: {
                         status: res.data.status
                     }
@@ -219,4 +219,4 @@ const RepairForm = ({ ...props }: Props) => {
     );
 };
 
-export default RepairForm;
+export default CreateForm;

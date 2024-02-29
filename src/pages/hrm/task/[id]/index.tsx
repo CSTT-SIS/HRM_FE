@@ -15,16 +15,19 @@ import Link from 'next/link';
 import IconArrowBackward from '@/components/Icon/IconArrowBackward';
 import { ProductCategorys, Providers } from '@/services/swr/product.twr';
 import IconBack from '@/components/Icon/IconBack';
-
+import { useRouter } from 'next/router';
+import task_list from '../task_list.json';
 interface Props {
     [key: string]: any;
 }
 
 const AddNewTask = ({ ...props }: Props) => {
     const { t } = useTranslation();
+    const router = useRouter()
     const [disabled, setDisabled] = useState(false);
     const [query, setQuery] = useState<any>();
-
+    const [detail, setDetail] = useState<any>();
+    const id = Number(router.query.id);
     const [typeShift, setTypeShift] = useState("0"); // 0: time, 1: total hours
     const { data: departmentparents } = ProductCategorys(query);
     const { data: manages } = Providers(query);
@@ -56,6 +59,13 @@ const AddNewTask = ({ ...props }: Props) => {
     const handleSearch = (param: any) => {
         setQuery({ search: param });
     }
+    useEffect(() => {
+        if (Number(router.query.id)) {
+            const detailData = task_list?.find(d => d.id === Number(router.query.id));
+            setDetail(detailData);
+        }
+    }, [router])
+
     const handleTask = (values: any) => {
         let updatedTasks = [...props.totalData];
 
@@ -78,7 +88,7 @@ const AddNewTask = ({ ...props }: Props) => {
                 color = 'info'; // Default color if status is undefined or different
         }
 
-        if (props?.data) {
+        if (detail) {
             // Editing existing task
             updatedTasks = updatedTasks.map((task) => {
                 if (task.id === props.data.id) {
@@ -115,7 +125,7 @@ const AddNewTask = ({ ...props }: Props) => {
 
         <div className="p-5">
             <div className='flex justify-between header-page-bottom pb-4 mb-4'>
-                <h1 className='page-title'>{t('add_task')}</h1>
+                <h1 className='page-title'>{t('edit_task')}</h1>
                 <Link href="/hrm/task">
                     <button type="button" className="btn btn-primary btn-sm m-1 back-button" >
                         <IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
@@ -127,21 +137,22 @@ const AddNewTask = ({ ...props }: Props) => {
             </div>
             <Formik
                 initialValues={{
-                    name: props?.data ? `${props?.data?.name}` : '',
-                    creator: props?.data ? `${props?.data?.creator}` : '',
-                    executor: props?.data ? `${props?.data?.executor}` : '',
-                    collaborator: props?.data ? `${props?.data?.collaborator}` : '',
-                    description: props?.data ? `${props?.data?.description}` : '',
-                    deadline: props?.data ? `${props?.data?.deadline}` : '',
-                    directive: props?.data ? `${props?.data?.directive}` : '',
-                    color: props?.data ? `${props?.data?.color}` : 'info',
-                    status: props?.data ? `${props?.data?.status}` : 'ĐANG THỰC HIỆN',
-                    attachment: props?.data ? `${props?.data?.attachment}` : '',
+                    name: detail ? `${detail?.name}` : '',
+                    creator: detail ? `${detail?.creator}` : '',
+                    executor: detail ? `${detail?.executor}` : '',
+                    collaborator: detail ? `${detail?.collaborator}` : '',
+                    description: detail ? `${detail?.description}` : '',
+                    deadline: detail ? `${detail?.deadline}` : '',
+                    directive: detail ? `${detail?.directive}` : '',
+                    color: detail ? `${detail?.color}` : 'info',
+                    status: detail ? `${detail?.status}` : 'ĐANG THỰC HIỆN',
+                    attachment: detail ? `${detail?.attachment}` : '',
                 }}
                 validationSchema={SubmittedForm}
                 onSubmit={(values) => {
                     handleTask(values);
                 }}
+                enableReinitialize
             >
                 {({ errors, values, setFieldValue, submitCount }) => (
                     <Form className="space-y-5">
@@ -232,7 +243,7 @@ const AddNewTask = ({ ...props }: Props) => {
                                 {t('cancel')}
                             </button>
                             <button type="submit" className="btn :ml-4 rtl:mr-4 add-button" disabled={disabled}>
-                                {props.data !== undefined ? t('update') : t('add')}
+                                {t('update')}
                             </button>
                         </div>
                     </Form>

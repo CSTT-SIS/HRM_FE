@@ -15,6 +15,8 @@ import Link from 'next/link';
 import IconArrowBackward from '@/components/Icon/IconArrowBackward';
 import { ProductCategorys, Providers } from '@/services/swr/product.twr';
 import IconBack from '@/components/Icon/IconBack';
+import { useRouter } from 'next/router';
+import asset_list from "../asset_list.json"
 
 interface Props {
     [key: string]: any;
@@ -24,10 +26,11 @@ const AddNewAsset = ({ ...props }: Props) => {
     const { t } = useTranslation();
     const [disabled, setDisabled] = useState(false);
     const [query, setQuery] = useState<any>();
-
+    const router = useRouter();
     const [typeShift, setTypeShift] = useState("0"); // 0: time, 1: total hours
     const { data: departmentparents } = ProductCategorys(query);
     const { data: manages } = Providers(query);
+    const [detail, setDetail] = useState<any>();
     const departmentparent = departmentparents?.data.filter((item: any) => {
         return (
             item.value = item.id,
@@ -35,6 +38,13 @@ const AddNewAsset = ({ ...props }: Props) => {
             delete item.createdAt
         )
     })
+
+    useEffect(() => {
+        if (Number(router.query.id)) {
+            const detailData = asset_list?.find(d => d.id === Number(router.query.id));
+            setDetail(detailData);
+        }
+    }, [router])
 
     const manage = manages?.data.filter((item: any) => {
         return (
@@ -72,7 +82,7 @@ const AddNewAsset = ({ ...props }: Props) => {
                 color = 'info'; // Default color if status is undefined or different
         }
 
-        if (props?.data) {
+        if (detail) {
             // Editing existing task
             updatedTasks = updatedTasks.map((task) => {
                 if (task.id === props.data.id) {
@@ -109,7 +119,7 @@ const AddNewAsset = ({ ...props }: Props) => {
 
         <div className="p-5">
             <div className='flex justify-between header-page-bottom pb-4 mb-4'>
-                <h1 className='page-title'>{t('add_task')}</h1>
+                <h1 className='page-title'>{t('edit_asset')}</h1>
                 <Link href="/hrm/asset">
                     <button type="button" className="btn btn-primary btn-sm m-1 back-button" >
                         <IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
@@ -121,13 +131,14 @@ const AddNewAsset = ({ ...props }: Props) => {
             </div>
             <Formik
                 initialValues={{
-                    quantity: props?.data ? `${props?.data?.quantity}` : '',
-                    name: props?.data ? `${props?.data?.name}` : '',
+                    quantity: detail ? `${detail?.quantity}` : '',
+                    name: detail ? `${detail?.name}` : '',
                 }}
                 validationSchema={SubmittedForm}
                 onSubmit={(values) => {
                     handleTask(values);
                 }}
+                enableReinitialize
             >
                 {({ errors, values, setFieldValue, submitCount }) => (
                     <Form className="space-y-5">
@@ -138,7 +149,7 @@ const AddNewAsset = ({ ...props }: Props) => {
                                     {t('name_asset')} <span style={{ color: 'red' }}>* </span>
                                 </label>
                                 <Field name="name" type="text" id="name" placeholder={`${t('enter_name_asset')}`} className="form-input" />
-                                {submitCount ? errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null : ''}
+                                {submitCount ? errors.name ? <div className="mt-1 text-danger">{errors.name} </div> : null : ''}
                             </div>
                             <div className="mb-5 w-1/2">
                                 <label htmlFor="quantity">
@@ -156,7 +167,7 @@ const AddNewAsset = ({ ...props }: Props) => {
                                 {t('cancel')}
                             </button>
                             <button type="submit" className="btn :ml-4 rtl:mr-4 add-button" disabled={disabled}>
-                                {props.data !== undefined ? t('update') : t('add')}
+                                {t('update')}
                             </button>
                         </div>
                     </Form>
