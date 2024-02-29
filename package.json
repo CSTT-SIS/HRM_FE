@@ -9,6 +9,7 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@atlaskit/table-tree": "^9.6.13",
         "@emotion/react": "^11.10.6",
         "@fullcalendar/core": "^6.1.4",
         "@fullcalendar/daygrid": "^6.1.4",
