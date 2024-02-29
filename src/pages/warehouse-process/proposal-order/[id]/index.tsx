@@ -23,6 +23,7 @@ import IconBackward from '@/components/Icon/IconBackward';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import Select, { components } from 'react-select';
+import { DropdownDepartment } from '@/services/swr/dropdown.twr';
 
 interface Props {
     [key: string]: any;
@@ -41,14 +42,16 @@ const DetailPage = ({ ...props }: Props) => {
     const [active, setActive] = useState<any>(1);
     const [initialValue, setInitialValue] = useState<any>();
     const [data, setData] = useState<any>();
+    console.log("🚀 ~ DetailPage ~ data:", data)
+    const [dataDepartment, setDataDepartment] = useState<any>([]);
     const [page, setPage] = useState(1);
 
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
-
     // get data
     const { data: ProposalDetail, pagination, mutate, isLoading } = ProposalDetails({ ...query });
+    const { data: dropdownDepartment, pagination: paginationDepartment, mutate: mutateDepartment, isLoading: isLoadingDepartment } = DropdownDepartment({ page: page });
 
     useEffect(() => {
         dispatch(setPageTitle(`${t('proposal')}`));
@@ -75,9 +78,9 @@ const DetailPage = ({ ...props }: Props) => {
         setInitialValue({
             name: data ? `${data?.name}` : "",
             content: data ? `${data?.content}` : "",
-            departmentId: data?.departmentId ? {
-                value: `${data?.departmentId?.id}`,
-                label: `${data?.departmentId?.name}`
+            departmentId: data?.department ? {
+                value: `${data?.department?.id}`,
+                label: `${data?.department?.name}`
             } : ""
         })
     }, [data, router]);
@@ -204,6 +207,7 @@ const DetailPage = ({ ...props }: Props) => {
             name: param.name,
             type: "PURCHASE",
             content: param.content,
+            departmentId: param?.departmentId?.value
         };
 
         if (data) {
@@ -270,21 +274,22 @@ const DetailPage = ({ ...props }: Props) => {
         return <></>;
     }
 
-    // useEffect(() => {
-    //     if (paginationUser?.page === undefined) return;
-    //     if (paginationUser?.page === 1) {
-    //         setDataUserDropdown(users?.data)
-    //     } else {
-    //         setDataUserDropdown([...dataUserDropdown, ...users?.data])
-    //     }
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [paginationUser])
+    useEffect(() => {
+        if (paginationDepartment?.page === undefined) return;
+        if (paginationDepartment?.page === 1) {
+            setDataDepartment(dropdownDepartment?.data)
+        } else {
+            setDataDepartment([...dataDepartment, ...dropdownDepartment?.data])
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [paginationDepartment])
+    console.log("🚀 ~ useEffect ~ dataDepartment:", dataDepartment)
 
-    // const handleMenuScrollToBottom = () => {
-    //     setTimeout(() => {
-    //         setPage(paginationUser?.page + 1);
-    //     }, 1000);
-    // }
+    const handleMenuScrollToBottom = () => {
+        setTimeout(() => {
+            setPage(paginationDepartment?.page + 1);
+        }, 1000);
+    }
 
     return (
         <div>
@@ -365,12 +370,12 @@ const DetailPage = ({ ...props }: Props) => {
                                                         <Select
                                                             id='departmentId'
                                                             name='departmentId'
-                                                            options={[]}
+                                                            options={dataDepartment}
                                                             maxMenuHeight={160}
                                                             value={values?.departmentId}
                                                             onMenuOpen={() => setPage(1)}
-                                                            // onMenuScrollToBottom={handleMenuScrollToBottom}
-                                                            // isLoading={userLoading}
+                                                            onMenuScrollToBottom={handleMenuScrollToBottom}
+                                                            isLoading={isLoadingDepartment}
                                                             onChange={e => {
                                                                 setFieldValue('departmentId', e)
                                                             }}
