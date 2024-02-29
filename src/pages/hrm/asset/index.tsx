@@ -80,8 +80,9 @@ const Asset = ({ ...props }: Props) => {
 	}, [recordsData]);
 
 	const handleEdit = (data: any) => {
-		setOpenModal(true);
-		setData(data);
+		// setOpenModal(true);
+		// setData(data);
+        router.push(`/hrm/asset/${data.id}`)
 	};
 
 	const handleDelete = (data: any) => {

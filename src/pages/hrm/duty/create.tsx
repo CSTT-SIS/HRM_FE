@@ -10,6 +10,7 @@ import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import IconArrowLeft from '@/components/Icon/IconArrowLeft';
 import IconArrowBackward from '@/components/Icon/IconArrowBackward';
+import IconBack from '@/components/Icon/IconBack';
 
 interface Props {
     [key: string]: any;
@@ -66,7 +67,7 @@ const AddNewDuty = ({ ...props }: Props) => {
                 <h1 className='page-title'>{t('add_duty')}</h1>
                 <Link href="/hrm/duty">
                         <button type="button" className="btn btn-primary btn-sm m-1 back-button" >
-                                    <IconArrowBackward className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                    <IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                                                     <span>
                                                     {t('back')}
                                                         </span>
@@ -89,21 +90,21 @@ const AddNewDuty = ({ ...props }: Props) => {
                                         }}
                                     >
 
-                                        {({ errors, touched }) => (
+                                        {({ errors, touched, submitCount }) => (
                                             <Form className="space-y-5" >
                                                 <div className="mb-5">
                                                     <label htmlFor="name" className='label'> {t('name_duty')} < span style={{ color: 'red' }}>* </span></label >
                                                     <Field name="name" type="text" id="name" placeholder={`${t('enter_name_duty')}`} className="form-input" />
-                                                    {errors.name ? (
+                                                    {submitCount ? errors.name ? (
                                                         <div className="text-danger mt-1"> {errors.name} </div>
-                                                    ) : null}
+                                                    ) : null : ''}
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="code" className='label'> {t('code_duty')} < span style={{ color: 'red' }}>* </span></label >
                                                     <Field name="code" type="text" id="code" placeholder={`${t('enter_code_duty')}`} className="form-input" />
-                                                    {errors.code ? (
+                                                    {submitCount ? errors.code ? (
                                                         <div className="text-danger mt-1"> {errors.code} </div>
-                                                    ) : null}
+                                                    ) : null : ''}
                                                 </div>
                                                 <div className="mb-5 flex justify-between gap-4">
                                                     <div className="flex-1">
@@ -112,9 +113,9 @@ const AddNewDuty = ({ ...props }: Props) => {
                                                             <option value="active">Quản lý</option>
                                                             <option value="inActive">Nhân viên</option>
                                                         </Field>
-                                                        {errors.duty_group ? (
+                                                        {submitCount ? errors.duty_group ? (
                                                             <div className="text-danger mt-1"> {errors.duty_group} </div>
-                                                        ) : null}
+                                                        ) : null : ''}
                                                     </div>
                                                 </div>
                                                 <div className="mb-5 flex justify-between gap-4">
@@ -126,17 +127,17 @@ const AddNewDuty = ({ ...props }: Props) => {
                                                             <option value="active">{t('active')}</option>
                                                             <option value="inActive">{t('inactive')}</option>
                                                         </Field>
-                                                        {errors.status ? (
+                                                        {submitCount ? errors.status ? (
                                                             <div className="text-danger mt-1"> {errors.status} </div>
-                                                        ) : null}
+                                                        ) : null : ''}
                                                     </div>
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="description" className='label'> {t('description')}</label >
                                                     <Field name="duty_description" type="text" id="duty_description" placeholder={`${t('enter_description')}`} className="form-input" />
-                                                    {errors.description ? (
+                                                    {submitCount ? errors.description ? (
                                                         <div className="text-danger mt-1"> {errors.description} </div>
-                                                    ) : null}
+                                                    ) : null : ''}
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">
                                                     <button type="button" className="btn btn-outline-dark cancel-button" onClick={() => handleCancel()}>

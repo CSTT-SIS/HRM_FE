@@ -1,211 +1,170 @@
-import { useEffect, Fragment, useState, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import { lazy } from 'react';
-// Third party libs
-import { DataTable, DataTableSortStatus } from 'mantine-datatable';
-import Swal from 'sweetalert2';
-import Tippy from '@tippyjs/react';
-import 'tippy.js/dist/tippy.css';
+import { useEffect, Fragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-// API
-// constants
-import { PAGE_SIZES, PAGE_SIZES_DEFAULT, PAGE_NUMBER_DEFAULT } from '@/utils/constants';
-// helper
-// icons
-import { IconLoading } from '@/components/Icon/IconLoading';
-import IconPlus from '@/components/Icon/IconPlus';
-
+import Link from 'next/link';
+import { Dialog, Transition } from '@headlessui/react';
 import { useRouter } from 'next/router';
-import IconPencil from '@/components/Icon/IconPencil';
-import IconTrashLines from '@/components/Icon/IconTrashLines';
-import { setPageTitle } from '@/store/themeConfigSlice';
 
-// json
-// import shelfList from '../shelf_list.json';
-// import ShelfModal from '../modal/ShelfModal';
-
+import * as Yup from 'yup';
+import { Field, Form, Formik } from 'formik';
+import Swal from 'sweetalert2';
+import { showMessage } from '@/@core/utils';
+import IconX from '@/components/Icon/IconX';
+import IconArrowLeft from '@/components/Icon/IconArrowLeft';
+import IconArrowBackward from '@/components/Icon/IconArrowBackward';
+import IconBack from '@/components/Icon/IconBack';
+import duty_list from '../duty_list.json';
 interface Props {
     [key: string]: any;
 }
 
-const ShelfPage = ({ ...props }: Props) => {
-
-    const dispatch = useDispatch();
+const DetailDuty = ({ ...props }: Props) => {
+    const router = useRouter();
+    const [detail, setDetail] = useState<any>();
+    const id = Number(router.query.id);
     const { t } = useTranslation();
-    useEffect(() => {
-        dispatch(setPageTitle(`${t('Shelf')}`));
+    const [disabled, setDisabled] = useState(false);
+
+    const SubmittedForm = Yup.object().shape({
+        name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_duty')}`),
+        code: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_dutyCode')}`),
+        status: Yup.string().required(`${t('please_fill_status')}`)
     });
 
-    const router = useRouter();
-
-    const [showLoader, setShowLoader] = useState(true);
-    const [page, setPage] = useState<any>(PAGE_NUMBER_DEFAULT);
-    const [pageSize, setPageSize] = useState(PAGE_SIZES_DEFAULT);
-    const [recordsData, setRecordsData] = useState<any>();
-    const [total, setTotal] = useState(0);
-    const [getStorge, setGetStorge] = useState<any>();
-    const [data, setData] = useState<any>();
-
-    const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
-
-    const [openModal, setOpenModal] = useState(false);
-
-    // useEffect(() => {
-    //     if (typeof window !== 'undefined') {
-    //         const data = localStorage.getItem('shelfList');
-    //         if (data) {
-    //             setGetStorge(JSON.parse(data));
-    //         } else {
-    //             localStorage.setItem('shelfList', JSON.stringify(shelfList));
-    //         }
-
-    //     }
-    // }, [])
-
     useEffect(() => {
-        setTotal(getStorge?.length);
-        setPageSize(PAGE_SIZES_DEFAULT);
-        filterData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [getStorge, page])
+        if (Number(router.query.id)) {
+            const detailData = duty_list?.find(d => d.id === Number(router.query.id));
+            setDetail(detailData);
+        }
+    }, [router])
 
-    useEffect(() => {
-        setShowLoader(false);
-    }, [recordsData])
-
-    const handleEdit = (data: any) => {
-        setOpenModal(true);
-        setData(data);
-    };
-
-    const filterData = () => {
-        setRecordsData(getStorge?.filter((item: any, index: any) => { return index <= 9 && page === 1 ? item : index >= 10 && index <= (page * 9) ? item : null }));
-    }
-
-    const handleDelete = (data: any) => {
-        const swalDeletes = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-secondary',
-                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-                popup: 'sweet-alerts',
-            },
-            buttonsStyling: false,
-        });
-        swalDeletes
-            .fire({
-                icon: 'question',
-                title: `${t('delete_shelf')}`,
-                text: `${t('delete')} ${data.name}`,
-                padding: '2em',
-                showCancelButton: true,
-                reverseButtons: true,
-            })
-            .then((result) => {
-                if (result.value) {
-                    const value = getStorge.filter((item: any) => { return (item.id !== data.id) });
-                    localStorage.setItem('shelfList', JSON.stringify(value));
-                    setGetStorge(value);
-                }
+    const handleDuty = (value: any) => {
+        if (detail) {
+            const reNew = props.totalData.filter((item: any) => item.id !== props.data.id);
+            reNew.push({
+                id: props.data.id,
+                name: value.name,
+                code: value.code,
+                status: value.status
             });
-    };
-
-    const handleSearch = (e: any) => {
-        if (e.target.value === "") {
-            filterData();
+            localStorage.setItem('dutyList', JSON.stringify(reNew));
+            props.setGetStorge(reNew);
+            props.setOpenModal(false);
+            props.setData(undefined);
+            showMessage(`${t('edit_duty_success')}`, 'success');
         } else {
-            setRecordsData(
-                getStorge.filter((item: any) => {
-                    return item.name.toLowerCase().includes(e.target.value.toLowerCase())
-                })
-            )
+            const reNew = props.totalData;
+            reNew.push({
+                id: Number(props?.totalData[props?.totalData?.length - 1].id) + 1,
+                name: value.name,
+                code: value.code,
+                status: value.status
+            })
+            localStorage.setItem('dutyList', JSON.stringify(reNew));
+            props.setGetStorge(props.totalData);
+            props.setOpenModal(false);
+            props.setData(undefined);
+            showMessage(`${t('create_duty_success')}`, 'success')
         }
     }
-    const columns = [
-        {
-            accessor: 'id',
-            title: '#',
-            render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
-        },
-        { accessor: 'name', title: 'Tên Chức vụ', sortable: false },
-        { accessor: 'code', title: 'Mã Chức vụ', sortable: false },
-        { accessor: 'duty_group', title: 'Nhóm chức vụ', sortable: false },
-        { accessor: 'description', title: 'Mô tả', sortable: false },
-        {
-            accessor: 'status',
-            title: 'Trạng thái',
-            sortable: false,
-            render: ({ status }: any) => <span className={`badge badge-outline-${status === "active" ? "success" : "danger"} `}>{status}</span>,
-        },
 
-        {
-            accessor: 'action',
-            title: 'Thao tác',
-            titleClassName: '!text-center',
-            render: (records: any) => (
-                <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('edit')}`}>
-                        <button type="button" onClick={() => handleEdit(records)}>
-                            <IconPencil />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('delete')}`}>
-                        <button type="button" onClick={() => handleDelete(records)}>
-                            <IconTrashLines />
-                        </button>
-                    </Tippy>
-                </div>
-            ),
-        },
-    ]
+    const handleCancel = () => {
+        props.setOpenModal(false);
+        props.setData(undefined);
+    };
 
     return (
-        <div>
-            {showLoader && (
-                <div className="screen_loader fixed inset-0 bg-[#fafafa] dark:bg-[#060818] z-[60] grid place-content-center animate__animated">
-                    <IconLoading />
-                </div>
-            )}
-            <title>ShelfPage</title>
-            <div className="panel mt-6">
-                <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
-                    <div className="flex items-center flex-wrap">
-                        <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >
-                            <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                            {t('add')}
-                        </button>
-                    </div>
-
-                    <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
-                </div>
-                <div className="datatables">
-                    <DataTable
-                        highlightOnHover
-                        className="whitespace-nowrap table-hover"
-                        records={recordsData}
-                        columns={columns}
-                        totalRecords={total}
-                        recordsPerPage={pageSize}
-                        page={page}
-                        onPageChange={(p) => setPage(p)}
-                        recordsPerPageOptions={PAGE_SIZES}
-                        onRecordsPerPageChange={setPageSize}
-                        sortStatus={sortStatus}
-                        onSortStatusChange={setSortStatus}
-                        minHeight={200}
-                        paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
-                    />
-                </div>
+        <div className="p-5">
+            <div className='flex justify-between header-page-bottom pb-4 mb-4'>
+                <h1 className='page-title'>{t('edit_duty')}</h1>
+                <Link href="/hrm/duty">
+                        <button type="button" className="btn btn-primary btn-sm m-1 back-button" >
+                                    <IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                                    <span>
+                                                    {t('back')}
+                                                        </span>
+                                    </button>
+                        </Link>
             </div>
-            {/* <ShelfModal
-                openModal={openModal}
-                setOpenModal={setOpenModal}
-                data={data}
-                totalData={getStorge}
-                setData={setData}
-                setGetStorge={setGetStorge}
-            /> */}
-        </div>
+                                    <Formik
+                                         initialValues={
+                                            {
+                                                name: detail ? `${detail?.name}` : "",
+                                                code: detail ? `${detail?.code}` : "",
+                                                status: detail ? `${detail?.status}` : "",
+                                                duty_group: detail ? `${detail?.duty_group}` : "",
+                                                description: detail ? `${detail?.description}` : ""
+                                            }
+                                        }
+                                        validationSchema={SubmittedForm}
+                                        onSubmit={values => {
+                                            handleDuty(values);
+                                        }}
+                                        enableReinitialize
+                                    >
+                                        {({ errors, touched, submitCount }) => (
+                                            <Form className="space-y-5" >
+                                                <div className="mb-5">
+                                                    <label htmlFor="name" className='label'> {t('name_duty')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name_duty')}`} className="form-input" />
+                                                    {submitCount ? errors.name ? (
+                                                        <div className="text-danger mt-1"> {errors.name} </div>
+                                                    ) : null : ''}
+                                                </div>
+                                                <div className="mb-5">
+                                                    <label htmlFor="code" className='label'> {t('code_duty')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field name="code" type="text" id="code" placeholder={`${t('enter_code_duty')}`} className="form-input" />
+                                                    {submitCount ? errors.code ? (
+                                                        <div className="text-danger mt-1"> {errors.code} </div>
+                                                    ) : null : ''}
+                                                </div>
+                                                <div className="mb-5 flex justify-between gap-4">
+                                                    <div className="flex-1">
+                                                        <label htmlFor="duty_group" className='label'> {t('duty_group')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <Field as="select" name="duty_group" id="duty_group" className="form-input">
+                                                            <option value="active">Quản lý</option>
+                                                            <option value="inActive">Nhân viên</option>
+                                                        </Field>
+                                                        {submitCount ? errors.duty_group ? (
+                                                            <div className="text-danger mt-1"> {errors.duty_group} </div>
+                                                        ) : null : ''}
+                                                    </div>
+                                                </div>
+                                                <div className="mb-5 flex justify-between gap-4">
+                                                    <div className="flex-1">
+                                                        <label htmlFor="status" className='label'> {t('status')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <Field as="select" name="status" id="status"
+                                                        placeholder={t('enter_duty_status')}
+                                                        className="form-input">
+                                                            <option value="active">{t('active')}</option>
+                                                            <option value="inActive">{t('inactive')}</option>
+                                                        </Field>
+                                                        {submitCount ? errors.status ? (
+                                                            <div className="text-danger mt-1"> {errors.status} </div>
+                                                        ) : null : ''}
+                                                    </div>
+                                                </div>
+                                                <div className="mb-5">
+                                                    <label htmlFor="description" className='label'> {t('description')}</label >
+                                                    <Field name="duty_description" type="text" id="duty_description" placeholder={`${t('enter_description')}`} className="form-input" />
+                                                    {submitCount ? errors.description ? (
+                                                        <div className="text-danger mt-1"> {errors.description} </div>
+                                                    ) : null : ''}
+                                                </div>
+                                                <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">
+                                                    <button type="button" className="btn btn-outline-dark cancel-button" onClick={() => handleCancel()}>
+                                                        {t('cancel')}
+                                                    </button>
+                                                    <button type="submit" className="btn :ml-4 rtl:mr-4 add-button" disabled={disabled}>
+                                                        {t('update')}
+                                                    </button>
+                                                </div>
+
+                                            </Form>
+                                        )}
+                                    </Formik>
+
+                                </div>
     );
 };
 
-export default ShelfPage;
+export default DetailDuty;

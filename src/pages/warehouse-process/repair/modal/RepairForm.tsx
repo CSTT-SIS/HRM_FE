@@ -12,6 +12,7 @@ import { DropdownUsers } from '@/services/swr/dropdown.twr';
 import { CreateRepair, EditRepair, GetRepair } from '@/services/apis/repair.api';
 import Link from 'next/link';
 import IconBackward from '@/components/Icon/IconBackward';
+import IconBack from '@/components/Icon/IconBack';
 
 interface Props {
     [key: string]: any;
@@ -122,7 +123,7 @@ const RepairForm = ({ ...props }: Props) => {
                 <h1 className='page-title'>{t('repair')}</h1>
                 <Link href="/warehouse-process/repair">
                     <div className="btn btn-primary btn-sm m-1 back-button h-9" >
-                        <IconBackward />
+                        <IconBack />
                         <span>
                             {t('back')}
                         </span>

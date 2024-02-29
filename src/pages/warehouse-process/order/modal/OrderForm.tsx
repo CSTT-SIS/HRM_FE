@@ -14,6 +14,7 @@ import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import Link from 'next/link';
 import IconBackward from '@/components/Icon/IconBackward';
+import IconBack from '@/components/Icon/IconBack';
 
 interface Props {
     [key: string]: any;
@@ -132,7 +133,7 @@ const OrderModal = ({ ...props }: Props) => {
                 <h1 className='page-title'>{t('order_product')}</h1>
                 <Link href="/warehouse-process/order">
                     <div className="btn btn-primary btn-sm m-1 back-button h-9" >
-                        <IconBackward />
+                        <IconBack />
                         <span>
                             {t('back')}
                         </span>

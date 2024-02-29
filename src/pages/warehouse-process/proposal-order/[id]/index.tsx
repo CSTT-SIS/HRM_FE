@@ -24,6 +24,7 @@ import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import Select, { components } from 'react-select';
 import { DropdownDepartment } from '@/services/swr/dropdown.twr';
+import IconBack from '@/components/Icon/IconBack';
 
 interface Props {
     [key: string]: any;
@@ -302,7 +303,7 @@ const DetailPage = ({ ...props }: Props) => {
                 <h1 className='page-title'>{t('proposal')}</h1>
                 <Link href="/warehouse-process/proposal-order">
                     <div className="btn btn-primary btn-sm m-1 back-button h-9" >
-                        <IconBackward />
+                        <IconBack />
                         <span>
                             {t('back')}
                         </span>

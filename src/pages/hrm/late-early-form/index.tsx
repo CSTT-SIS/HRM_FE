@@ -195,17 +195,17 @@ const LateEarlyForm = ({ ...props }: Props) => {
                 <div className="flex items-center w-max mx-auto gap-2">
                     <Tippy content={`${t('edit')}`}>
                         <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
-                            <IconPencil /> Sửa
+                            <IconPencil /> {t('edit')}
                         </button>
                     </Tippy>
                     <Tippy content={`${t('check')}`}>
                         <button type="button" className="button-check" onClick={() => handleCheck(records)}>
-                            <IconChecks /> Duyệt
+                            <IconChecks /> {t('approve')}
                         </button>
                     </Tippy>
                     <Tippy content={`${t('delete')}`}>
                         <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
-                            <IconTrashLines /> Xóa
+                            <IconTrashLines /> {t('delete')}
                         </button>
                     </Tippy>
                 </div>

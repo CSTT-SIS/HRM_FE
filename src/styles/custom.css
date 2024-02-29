@@ -46,6 +46,18 @@
     background-color:#EBEAEA!important;
 }
 
+.final-level-menu:hover svg {
+    stroke: #fff!important;
+}
+
+.final-level-menu.active svg{
+    stroke: #fff!important;
+}
+
+.final-level-menu:hover {
+    background-color:#EBEAEA!important;
+}
+
 .final-level-menu:hover span {
     font-weight: 700!important;
 }
@@ -206,15 +218,58 @@ li.menu > button.active {
     gap: 12px;
     border: 1px solid #082819;
     text-transform: uppercase!important;
-    background: #046738!important;
+    background: #959E5E!important;
     color: #fff!important;
-    border-color: #046738!important;
+    border-color: #959E5E!important;
     font-size: 12px!important;
 }
 
 .gap-8 {
     gap: 8px!important;
 }
+
+/* css icon menu */
+li.nav-item svg.icon-menu, .final-level-menu svg {
+    top: 20px;
+    left: 20px;
+    padding: 4px;
+    border-radius: 20px;
+    gap: 10px;
+    background-color: #E9EBD5;
+}
+
+li.nav-item svg.icon-menu{
+    width: 24px!important;
+    height: 24px!important;
+}
+
+.final-level-menu svg {
+    width: 20px!important;
+    height: 20px!important;
+}
+
+.final-level-menu svg {
+    filter: grayscale(100%);
+}
+
+li.menu > button.active svg.icon-menu {
+    background-color: #fff!important;
+}
+
+li.menu > button:hover svg.icon-menu {
+    background-color: #fff!important;
+}
+
+.final-level-menu.active svg {
+    background-color: #fff!important;
+    filter: none;
+}
+
+.final-level-menu:hover svg {
+    background-color: #fff!important;
+    filter: none;
+}
+
 
 
 
