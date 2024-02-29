@@ -474,7 +474,7 @@ const Sidebar = () => {
                                 </button>
                                 <AnimateHeight duration={300} height={currentMenu === 'warehouse' ? 'auto' : 0}>
                                     <ul className="text-gray-500">
-                                        <li className="nav-item">
+                                        <li className="nav-item mb-10">
                                             <ul>
                                                 <li className="menu menu1 nav-item">
                                                     <div className="flex items-start group-menu-name">
