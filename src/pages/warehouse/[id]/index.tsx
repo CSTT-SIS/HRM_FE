@@ -15,6 +15,8 @@ import { PAGE_SIZES } from '@/utils/constants';
 // icons
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
+import ImportModal from '../modal/importModal';
+//modal
 
 interface Props {
     [key: string]: any;
@@ -43,12 +45,10 @@ const ShelfPage = ({ ...props }: Props) => {
     }, [product]);
 
     useEffect(() => {
-        if (Number(router.query.id)) {
-            GetWarehouse({ id: router.query.id }).then((res) => {
-                setDataDetail(res.data);
-            }).catch((err: any) => {
-            });
-        }
+        GetWarehouse({ id: router.query.id }).then((res) => {
+            setDataDetail(res.data);
+        }).catch((err: any) => {
+        });
     }, [router])
 
     const columns = [
@@ -73,12 +73,6 @@ const ShelfPage = ({ ...props }: Props) => {
             accessor: 'product',
             title: 'Đvt',
             render: ({ product }: any) => <span >{product?.unit?.name}</span>,
-            sortable: false
-        },
-        {
-            accessor: 'warehouse',
-            title: 'Kho',
-            render: ({ warehouse }: any) => <span >{warehouse?.name}</span>,
             sortable: false
         },
         // {
@@ -130,15 +124,15 @@ const ShelfPage = ({ ...props }: Props) => {
     const [openTab, setOpenTab] = useState(1);
 
     const RenderData = (data: any) => {
+        console.log("🚀 ~ RenderData ~ data:", data)
         delete data?.id;
         delete data?.createdAt;
         delete data?.parentId;
         delete data?.parentPath;
         delete data?.typeId;
         delete data?.managerId;
-        typeof data?.type === 'object' && (data.type = data?.type.name);
         delete data?.productCategories;
-
+        typeof data?.type === 'object' && (data.type = data?.type.name);
         return (
             <>
                 {
@@ -226,14 +220,7 @@ const ShelfPage = ({ ...props }: Props) => {
                                     <div className="panel" style={{ borderRadius: "0" }}>
                                         <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                                             <div className="flex items-center flex-wrap">
-                                                <button
-                                                    type="button"
-                                                    onClick={(e) => router.push({
-                                                        pathname: "/warehouse/modal/create",
-                                                        query: { warehouseId: router.query.id }
-                                                    })}
-                                                    className="btn btn-primary btn-sm m-1 custom-button"
-                                                >
+                                                <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
                                                     <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                                                     {t('add')}
                                                 </button>
@@ -266,6 +253,7 @@ const ShelfPage = ({ ...props }: Props) => {
                     </div>
                 </div>
             </>
+            <ImportModal openModal={openModal} setOpenModal={setOpenModal} importMutate={mutate} />
         </div>
     );
 };
