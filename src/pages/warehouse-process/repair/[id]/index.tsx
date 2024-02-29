@@ -289,8 +289,8 @@ const DetailPage = ({ ...props }: Props) => {
         swalDeletes
             .fire({
                 icon: 'question',
-                title: `${t('complete_proposal')}`,
-                text: `${t('move_to_order')}`,
+                title: `${t('complete_repair')}`,
+                text: `${t('move_to_warehouse')}`,
                 padding: '2em',
                 showCancelButton: true,
                 reverseButtons: true,
