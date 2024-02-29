@@ -89,3 +89,6 @@
 .css-1xjwrgc-CommonCell {
     color: #000 !important;
 }
+.bt-pagination-active {
+    background-color: #7E8F12 !important;
+}

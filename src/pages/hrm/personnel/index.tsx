@@ -295,6 +295,32 @@ const Department = ({ ...props }: Props) => {
 								columnWidths={['600px', '300px', '100px']}
 								items={items}
 							/>
+							<div className="flex w-full flex-col justify-start">
+								<ul className="inline-flex items-center space-x-1 rtl:space-x-reverse justify-end" style={{marginTop: '10px'}}>
+									<li>
+										<button
+											type="button"
+											className="flex justify-center rounded-full bg-white-light p-2 font-semibold text-dark transition hover:bg-primary hover:text-white dark:bg-[#191e3a] dark:text-white-light dark:hover:bg-primary"
+										>
+											<IconCaretDown className="w-5 h-5 rotate-90 rtl:-rotate-90" />
+										</button>
+									</li>
+									<li>
+										<button type="button" className="flex justify-center rounded-full px-3.5 py-2 font-semibold text-white transition dark:bg-primary dark:text-white-light bt-pagination-active">
+											1
+										</button>
+									</li>
+									<li>
+										<button
+											type="button"
+											className="flex justify-center rounded-full bg-white-light p-2 font-semibold text-dark transition hover:bg-primary hover:text-white dark:bg-[#191e3a] dark:text-white-light dark:hover:bg-primary"
+										>
+											<IconCaretDown className="w-5 h-5 -rotate-90 rtl:rotate-90" />
+										</button>
+									</li>
+								</ul>
+							</div>
+
 						</div> : <div className="datatables">
 							<DataTable
 								highlightOnHover

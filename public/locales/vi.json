@@ -651,5 +651,10 @@
     "name_asset": "Tên tài sản",
     "quantity_asset": "Giá trị tài sản",
     "enter_name_asset": "Nhâp tên tài sản",
-    "enter_quantity_asset": "Nhập giá trị tài sản"
+    "enter_quantity_asset": "Nhập giá trị tài sản",
+  "select_departmentparent": "Chọn phòng ban",
+  "select_duty": "Chọn chức vụ",
+  "select_manager": "Chọn quản lý trực tiếp",
+  "select_manager_2": "Chọn quản lý gián tiếp",
+  "enter_approver": "Nhập người phê duyệt"
 }

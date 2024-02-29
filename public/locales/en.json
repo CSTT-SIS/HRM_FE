@@ -613,5 +613,10 @@
 	"enter_tax_code": "Enter tax code",
 	"enter_branch": "Enter branch",
 	"enter_bank_number": "Enter bank number",
-	"enter_bank": "Enter bank"
+	"enter_bank": "Enter bank",
+	"select_departmentparent": "Select departmentparent",
+	"select_duty": "Select duty",
+	"select_manager": "Select manager",
+	"select_manager_2": "Select indirect manager",
+	"enter_approver": "enter approver"
 }
