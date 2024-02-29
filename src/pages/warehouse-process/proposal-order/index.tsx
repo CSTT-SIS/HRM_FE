@@ -40,7 +40,7 @@ const ProposalPage = ({ ...props }: Props) => {
 
 
     // get data
-    const { data: proposal, pagination, mutate } = Proposals({ sortBy: 'id.ASC', ...router.query });
+    const { data: proposal, pagination, mutate } = Proposals({ sortBy: 'id.ASC', ...router.query, type: "PURCHASE" });
 
     useEffect(() => {
         dispatch(setPageTitle(`${t('proposal')}`));
@@ -146,7 +146,12 @@ const ProposalPage = ({ ...props }: Props) => {
             render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
         { accessor: 'name', title: 'Tên yêu cầu', sortable: false },
-        // { accessor: 'type', title: 'Loại yêu cầu', sortable: false },
+        {
+            accessor: 'department',
+            title: 'Phòng ban',
+            render: ({ department }: any) => <span>{department?.name}</span>,
+            sortable: false
+        },
         { accessor: 'content', title: 'Nội dung', sortable: false },
         { accessor: 'status', title: 'Trạng thái', sortable: false },
         {
