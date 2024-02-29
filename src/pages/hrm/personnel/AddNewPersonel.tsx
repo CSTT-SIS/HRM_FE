@@ -314,6 +314,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                         <Select
                                                             id='unidepartmentparentIdtId'
                                                             name='departmentparentId'
+                                                            placeholder={t('select_departmentparent')}
                                                             onInputChange={e => handleSearch(e)}
                                                             options={departmentparent}
                                                             maxMenuHeight={160}
@@ -331,6 +332,8 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                         <Select
                                                             id='manageId'
                                                             name='manageId'
+                                                            placeholder={t('select_duty')}
+
                                                             onInputChange={e => handleSearch(e)}
                                                             options={[]}
                                                             maxMenuHeight={160}
@@ -352,6 +355,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             name='manageId'
                                                             onInputChange={e => handleSearch(e)}
                                                             options={manage}
+                                                            placeholder={t('select_manager')}
                                                             maxMenuHeight={160}
                                                             value={values.manageId}
                                                             onChange={e => {
@@ -371,6 +375,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             options={manage}
                                                             maxMenuHeight={160}
                                                             value={values.manageId}
+                                                            placeholder={t('select_manager_2')}
                                                             onChange={e => {
                                                                 setFieldValue('manageId', e)
                                                             }}
