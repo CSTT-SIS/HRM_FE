@@ -115,22 +115,6 @@
     bind-event-listener "^2.1.1"
     tiny-invariant "^1.2.0"
 
-"@atlaskit/primitives@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/primitives/-/primitives-3.1.0.tgz#c0866acfd4ea0053d4c54176c8f209dfd230d03e"
-  integrity sha512-De09LVe4kGArFEQD5v3P2aaS39WH8pREE7H7VS+zwjUJBqNV+eHh3s/bCrGwbxW3JIX35gyh0xkZ0SNrwsgKvg==
-  dependencies:
-    "@atlaskit/analytics-next" "^9.2.0"
-    "@atlaskit/app-provider" "^1.0.0"
-    "@atlaskit/ds-lib" "^2.2.0"
-    "@atlaskit/interaction-context" "^2.1.0"
-    "@atlaskit/tokens" "^1.38.0"
-    "@babel/runtime" "^7.0.0"
-    "@emotion/react" "^11.7.1"
-    "@emotion/serialize" "^1.1.0"
-    bind-event-listener "^2.1.1"
-    tiny-invariant "^1.2.0"
-
 "@atlaskit/spinner@^16.0.0":
   version "16.0.1"
   resolved "https://registry.yarnpkg.com/@atlaskit/spinner/-/spinner-16.0.1.tgz#8b87f51ccaaf832a4e5ec4d189180a05d420babd"
