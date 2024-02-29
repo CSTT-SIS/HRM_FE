@@ -40,7 +40,7 @@ const ProposalPage = ({ ...props }: Props) => {
 
 
     // get data
-    const { data: proposal, pagination, mutate } = Proposals({ sortBy: 'id.ASC', ...router.query });
+    const { data: proposal, pagination, mutate } = Proposals({ sortBy: 'id.ASC', ...router.query, type: "SUPPLY" });
 
     useEffect(() => {
         dispatch(setPageTitle(`${t('proposal')}`));
