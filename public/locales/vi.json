@@ -662,5 +662,9 @@
 	"move_to_warehouse": "Di chuyển sang kho",
     "complete_supply": "Hoàn tất xuất mìn",
     "add_warehousing": "Tạo phiếu kho",
-    "proposal_list": "Danh sách yêu cầu"
+    "proposal_list": "Danh sách yêu cầu",
+    "proposal_infomation": "Chi tiết yêu cầu",
+    "please_fill_department": "Vui lòng điền phòng ban",
+    "order_infomation": "Thông tin đơn đặt mua",
+    "repair_infomation": "Thông tin sửa chữa"
 }
