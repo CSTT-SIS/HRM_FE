@@ -81,30 +81,30 @@ const Sidebar = () => {
         }
     }, []);
 
-    useEffect(() => {
-        setActiveRoute();
-        if (window.innerWidth < 1024 && themeConfig.sidebar) {
-            dispatch(toggleSidebar());
-        }
-    }, [router.pathname]);
+	useEffect(() => {
+		setActiveRoute();
+		if (window.innerWidth < 1024 && themeConfig.sidebar) {
+			dispatch(toggleSidebar());
+		}
+	}, [router.pathname]);
 
-    const setActiveRoute = () => {
-        let allLinks = document.querySelectorAll('.sidebar ul a.active');
-        for (let i = 0; i < allLinks.length; i++) {
-            const element = allLinks[i];
-            element?.classList.remove('active');
-        }
-        let selector = document.querySelector('.sidebar ul a[href="' + window.location.pathname + '"]');
+	const setActiveRoute = () => {
+		let allLinks = document.querySelectorAll('.sidebar ul a.active');
+		for (let i = 0; i < allLinks.length; i++) {
+			const element = allLinks[i];
+			element?.classList.remove('active');
+		}
+		let selector = document.querySelector('.sidebar ul a[href="' + window.location.pathname + '"]');
 
-        if (router.pathname === "/hrm/role/[id]") {
-            selector = document.querySelector('.sidebar ul a[href="' + "/hrm/role" + '"]');
-        }
+		if (router.pathname === '/hrm/role/[id]') {
+			selector = document.querySelector('.sidebar ul a[href="' + '/hrm/role' + '"]');
+		}
 
-        selector?.classList.add('active');
-    };
+		selector?.classList.add('active');
+	};
 
-    const dispatch = useDispatch();
-    const { t } = useTranslation();
+	const dispatch = useDispatch();
+	const { t } = useTranslation();
 
     return (
         <div className={semidark ? 'dark' : ''}>
@@ -133,7 +133,7 @@ const Sidebar = () => {
                                 <button type="button" className={`${currentMenu === 'dashboard' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('dashboard')}>
                                     <Link href="/hrm/dashboard" className="group">
                                         <div className="flex items-center">
-                                            <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
+                                        <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
                                             <span className="menu1-text ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('dashboard')}</span>
                                         </div>
                                     </Link>
@@ -142,7 +142,7 @@ const Sidebar = () => {
                             <li className="menu nav-item">
                                 <button type="button" className={`${currentMenu === 'hrm' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('hrm')}>
                                     <div className="flex items-center">
-                                        <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
+                                    <IconMenuDashboard className="shrink-0 group-hover:!text-primary" />
                                         <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('hrmanagement')}</span>
                                     </div>
 
@@ -162,7 +162,8 @@ const Sidebar = () => {
                                                         <li className="nav-item">
                                                             <Link href="/hrm/department" className="group final-level-menu">
                                                                 <div className="flex items-center">
-                                                                    <IconUsersGroup className="shrink-0 group-hover:!text-primary" />
+                                                                <IconUsersGroup className="shrink-0 group-hover:!text-primary" />
+
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('department_list')}</span>
                                                                 </div>
                                                             </Link>
@@ -170,7 +171,7 @@ const Sidebar = () => {
                                                         <li className="nav-item">
                                                             <Link href="/hrm/organization-structure" className="group final-level-menu">
                                                                 <div className="flex items-center">
-                                                                    <IconMenuTables className="shrink-0 group-hover:!text-primary" />
+                                                                <IconMenuTables className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('organizational_structure')}</span>
                                                                 </div>
                                                             </Link>
@@ -372,7 +373,7 @@ const Sidebar = () => {
                                             </Link>
                                         </li>
                                         <li className="nav-item">
-                                            <Link href="#" className="group final-level-menu">
+                                            <Link href="/hrm/exempt-timekeeping" className="group final-level-menu">
                                                 <div className="flex items-center">
                                                     <IconMenuElements className="shrink-0 group-hover:!text-primary" />
                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('attendance_exemption')}</span>
@@ -497,22 +498,22 @@ const Sidebar = () => {
                                                 <div className='divide'></div>
                                                 <li className="menu menu1 nav-item">
                                                     <div className="flex items-start group-menu-name">
-                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color h-7">{t('repair')}</span>
+                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color h-7">{t('repair_management')}</span>
                                                     </div>
                                                     <ul className="text-gray-500">
-                                                        <li className="nav-item">
+                                                        {/* <li className="nav-item">
                                                             <Link href="/warehouse-process/proposal-supply" className="group final-level-menu">
                                                                 <div className="flex items-center">
                                                                     <IconMenuTables className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('proposal')}</span>
                                                                 </div>
                                                             </Link>
-                                                        </li>
+                                                        </li> */}
                                                         <li className="nav-item">
                                                             <Link href="/warehouse-process/repair" className="group final-level-menu">
                                                                 <div className="flex items-center">
                                                                     <IconRepair className="shrink-0 group-hover:!text-primary" />
-                                                                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('repair')}</span>
+                                                                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('repair_management')}</span>
                                                                 </div>
                                                             </Link>
                                                         </li>
@@ -528,7 +529,7 @@ const Sidebar = () => {
                                                             <Link href="/warehouse-process/proposal-supply" className="group final-level-menu">
                                                                 <div className="flex items-center">
                                                                     <IconMenuTables className="shrink-0 group-hover:!text-primary" />
-                                                                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('proposal')}</span>
+                                                                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('supply')}</span>
                                                                 </div>
                                                             </Link>
                                                         </li>

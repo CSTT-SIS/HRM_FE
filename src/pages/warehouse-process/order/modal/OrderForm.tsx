@@ -25,33 +25,27 @@ const OrderModal = ({ ...props }: Props) => {
     const router = useRouter();
     const [initialValue, setInitialValue] = useState<any>();
     const [pageProposal, setPageProposal] = useState(1);
-    const [pageProvider, setPageProvider] = useState(1);
     const [dataProposalDropdown, setDataProposalDropdown] = useState<any>([]);
-    const [dataProviderDropdown, setDataProviderDropdown] = useState<any>([]);
     const [data, setData] = useState<any>();
 
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().required(`${t('please_fill_name')}`),
-        type: new Yup.ObjectSchema().required(`${t('please_fill_type')}`),
         code: Yup.string().required(`${t('please_fill_code')}`),
-        proposalId: new Yup.ObjectSchema().required(`${t('please_fill_proposal')}`),
+        proposalIds: new Yup.ArraySchema().required(`${t('please_fill_proposal')}`),
         provider: Yup.string().required(`${t('please_fill_provider')}`),
         estimatedDeliveryDate: Yup.string().required(`${t('please_fill_date')}`),
-
     });
 
     const { data: proposals, pagination: proposalPagiantion, isLoading: proposalLoading } = DropdownProposals({ page: pageProposal, type: "PURCHASE" });
-    const { data: orderTypes } = DropdownOrderType({ perPage: 0 });
-    const { data: providers, pagination: providerPagiantion, isLoading: providerLoading } = DropdownProviders({ page: pageProvider });
 
     const handleOrder = (param: any) => {
         const query = {
             name: param.name,
-            proposalId: Number(param.proposalId.value),
-            type: param.type.value,
+            proposalIds: param.proposalIds.map((item: any) => { return (item.value) }),
+            type: "PURCHASE",
             code: param.code,
-            estimatedDeliveryDate: param.estimatedDeliveryDate,
-            provider: (param.provider)
+            estimatedDeliveryDate: moment(param.estimatedDeliveryDate).format('YYYY-MM-DD'),
+            provider: param.provider
         };
         if (data) {
             EditOrder({ id: router?.query?.id, ...query }).then(() => {
@@ -102,32 +96,19 @@ const OrderModal = ({ ...props }: Props) => {
     useEffect(() => {
         setInitialValue({
             name: data ? `${data?.name}` : "",
-            proposalId: data ? {
-                value: `${data?.proposal.id}`,
-                label: `${data?.proposal.name}`
-            } : "",
-            type: data ? data?.type === "PURCHASE" ? {
-                value: `${data?.type}`,
-                label: `Đơn hàng mua`
-            } : {
-                value: `${data?.type}`,
-                label: `Đơn hàng bán`
-            } : "",
+            proposalIds: data ? data?.proposal.map((item: any) => {
+                return (
+                    {
+                        label: item.name,
+                        value: item.id
+                    }
+                )
+            }) : "",
             code: data ? `${data?.code}` : "",
             estimatedDeliveryDate: data ? moment(`${data?.estimatedDeliveryDate}`).format("YYYY-MM-DD") : "",
             provider: data ? `${data?.provider}` : "",
         })
     }, [data]);
-
-    useEffect(() => {
-        if (providerPagiantion?.page === undefined) return;
-        if (providerPagiantion?.page === 1) {
-            setDataProviderDropdown(providers?.data)
-        } else {
-            setDataProviderDropdown([...dataProviderDropdown, ...providers?.data])
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [providerPagiantion])
 
     useEffect(() => {
         if (proposalPagiantion?.page === undefined) return;
@@ -142,11 +123,6 @@ const OrderModal = ({ ...props }: Props) => {
     const handleMenuScrollToBottomProposal = () => {
         setTimeout(() => {
             setPageProposal(proposalPagiantion?.page + 1);
-        }, 1000);
-    }
-    const handleMenuScrollToBottomProvider = () => {
-        setTimeout(() => {
-            setPageProvider(providerPagiantion?.page + 1);
         }, 1000);
     }
 
@@ -189,40 +165,38 @@ const OrderModal = ({ ...props }: Props) => {
                                 ) : null}
                             </div>
                             <div className="w-1/2">
-                                <label htmlFor="proposalId" className='label'> {t('proposal')} < span style={{ color: 'red' }}>* </span></label >
+                                <label htmlFor="proposalIds" className='label'> {t('proposal')} < span style={{ color: 'red' }}>* </span></label >
                                 <Select
-                                    id='proposalId'
-                                    name='proposalId'
+                                    id='proposalIds'
+                                    name='proposalIds'
                                     options={dataProposalDropdown}
                                     onMenuOpen={() => setPageProposal(1)}
                                     onMenuScrollToBottom={handleMenuScrollToBottomProposal}
                                     isLoading={proposalLoading}
                                     maxMenuHeight={160}
-                                    value={values?.proposalId}
+                                    value={values?.proposalIds}
+                                    isMulti
                                     onChange={e => {
-                                        setFieldValue('proposalId', e)
+                                        setFieldValue('proposalIds', e)
                                     }}
                                 />
-                                {errors.proposalId ? (
-                                    <div className="text-danger mt-1"> {`${errors.proposalId}`} </div>
+                                {errors.proposalIds ? (
+                                    <div className="text-danger mt-1"> {`${errors.proposalIds}`} </div>
                                 ) : null}
                             </div>
                         </div>
                         <div className='flex justify-between gap-5'>
                             <div className="w-1/2">
-                                <label htmlFor="type" className='label'> {t('type')} < span style={{ color: 'red' }}>* </span></label >
-                                <Select
-                                    id='type'
-                                    name='type'
-                                    options={orderTypes?.data}
-                                    maxMenuHeight={160}
-                                    value={values?.type}
-                                    onChange={e => {
-                                        setFieldValue('type', e)
-                                    }}
+                                <label htmlFor="code" className='label'> {t('code')} < span style={{ color: 'red' }}>* </span></label >
+                                <Field
+                                    name="code"
+                                    type="text"
+                                    id="code"
+                                    placeholder={`${t('enter_code')}`}
+                                    className="form-input"
                                 />
-                                {errors.type ? (
-                                    <div className="text-danger mt-1"> {`${errors.type}`} </div>
+                                {errors.code ? (
+                                    <div className="text-danger mt-1"> {`${errors.code}`} </div>
                                 ) : null}
                             </div>
                             <div className="w-1/2">
@@ -251,33 +225,7 @@ const OrderModal = ({ ...props }: Props) => {
                         </div>
                         <div className='flex justify-between gap-5'>
                             <div className="w-1/2">
-                                <label htmlFor="code" className='label'> {t('code')} < span style={{ color: 'red' }}>* </span></label >
-                                <Field
-                                    name="code"
-                                    type="text"
-                                    id="code"
-                                    placeholder={`${t('enter_code')}`}
-                                    className="form-input"
-                                />
-                                {errors.code ? (
-                                    <div className="text-danger mt-1"> {`${errors.code}`} </div>
-                                ) : null}
-                            </div>
-                            <div className="w-1/2">
                                 <label htmlFor="provider" className='label'> {t('provider')}< span style={{ color: 'red' }}>* </span></label >
-                                {/* <Select
-                                    id='providerId'
-                                    name='providerId'
-                                    options={dataProviderDropdown}
-                                    onMenuOpen={() => setPageProvider(1)}
-                                    onMenuScrollToBottom={handleMenuScrollToBottomProvider}
-                                    isLoading={providerLoading}
-                                    maxMenuHeight={160}
-                                    value={values?.providerId}
-                                    onChange={e => {
-                                        setFieldValue('providerId', e)
-                                    }}
-                                /> */}
                                 <Field id="provider" as="textarea" rows="2" name="provider" className="form-input" />
                                 {errors.provider ? (
                                     <div className="text-danger mt-1"> {`${errors.provider}`} </div>
