@@ -274,72 +274,27 @@ const Department = ({ ...props }: Props) => {
 							Xuất file excel
 						</button>
 					</div>
-					<div className='display-style'>
-						Cách hiển thị
-						<button type="button" className="btn btn-primary btn-sm m-1  custom-button-display" style={{ backgroundColor: display === 'flat' ? '#E9EBD5' : '#FAFBFC' }} onClick={() => setDisplay('flat')}>
-							<img src="/assets/images/display-flat.svg" alt="img" />
-						</button>
-						<button type="button" className="btn btn-primary btn-sm m-1  custom-button-display" style={{ backgroundColor: display === 'tree' ? '#E9EBD5' : '#FAFBFC' }} onClick={() => setDisplay('tree')}>
-							<img src="/assets/images/display-tree.png" alt="img" />
-						</button>
-						<input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+					<input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
 
-					</div>
 				</div>
-				{
-					display === 'tree' ?
-						<div className="mb-5">
-							<TableTree
-								columns={[Title, Description, Action]}
-								headers={['Tên nhân viên', 'Mã nhân viên', 'Thao tác']}
-								columnWidths={['600px', '300px', '100px']}
-								items={items}
-							/>
-							<div className="flex w-full flex-col justify-start">
-								<ul className="inline-flex items-center space-x-1 rtl:space-x-reverse justify-end" style={{marginTop: '10px'}}>
-									<li>
-										<button
-											type="button"
-											className="flex justify-center rounded-full bg-white-light p-2 font-semibold text-dark transition hover:bg-primary hover:text-white dark:bg-[#191e3a] dark:text-white-light dark:hover:bg-primary"
-										>
-											<IconCaretDown className="w-5 h-5 rotate-90 rtl:-rotate-90" />
-										</button>
-									</li>
-									<li>
-										<button type="button" className="flex justify-center rounded-full px-3.5 py-2 font-semibold text-white transition dark:bg-primary dark:text-white-light bt-pagination-active">
-											1
-										</button>
-									</li>
-									<li>
-										<button
-											type="button"
-											className="flex justify-center rounded-full bg-white-light p-2 font-semibold text-dark transition hover:bg-primary hover:text-white dark:bg-[#191e3a] dark:text-white-light dark:hover:bg-primary"
-										>
-											<IconCaretDown className="w-5 h-5 -rotate-90 rtl:rotate-90" />
-										</button>
-									</li>
-								</ul>
-							</div>
-
-						</div> : <div className="datatables">
-							<DataTable
-								highlightOnHover
-								className="table-hover whitespace-nowrap custom_table"
-								records={recordsData}
-								columns={columns}
-								totalRecords={total}
-								recordsPerPage={pageSize}
-								page={page}
-								onPageChange={(p) => setPage(p)}
-								recordsPerPageOptions={PAGE_SIZES}
-								onRecordsPerPageChange={setPageSize}
-								sortStatus={sortStatus}
-								onSortStatusChange={setSortStatus}
-								minHeight={200}
-								paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
-							/>
-						</div>
-				}
+				<div className="datatables">
+					<DataTable
+						highlightOnHover
+						className="table-hover whitespace-nowrap custom_table"
+						records={recordsData}
+						columns={columns}
+						totalRecords={total}
+						recordsPerPage={pageSize}
+						page={page}
+						onPageChange={(p) => setPage(p)}
+						recordsPerPageOptions={PAGE_SIZES}
+						onRecordsPerPageChange={setPageSize}
+						sortStatus={sortStatus}
+						onSortStatusChange={setSortStatus}
+						minHeight={200}
+						paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
+					/>
+				</div>
 			</div>
 			<PersonnelModal openModal={openModal} setOpenModal={setOpenModal} data={data} totalData={getStorge} setData={setData} setGetStorge={setGetStorge} />
 		</div>
