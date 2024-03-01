@@ -1,6 +1,6 @@
 import { useEffect, Fragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
+import { useRouter } from 'next/router';
 import { Dialog, Transition } from '@headlessui/react';
 
 import * as Yup from 'yup';
@@ -15,15 +15,16 @@ import Link from 'next/link';
 import IconArrowBackward from '@/components/Icon/IconArrowBackward';
 import IconBack from '@/components/Icon/IconBack';
 // import dutyList from '../../duty/duty_list.json';
-
+import forget_form from '../../forget-form/forget_form.json'
 interface Props {
 	[key: string]: any;
 }
 
-const OvertimeFormModal = ({ ...props }: Props) => {
+const ForgetFormModal = ({ ...props }: Props) => {
 	const { t } = useTranslation();
 	const [disabled, setDisabled] = useState(false);
-
+    const [detail, setDetail] = useState<any>();
+    const router = useRouter();
 	const SubmittedForm = Yup.object().shape({
 		name: Yup.object()
 			.typeError(`${t('please_choose_name')}`),
@@ -35,11 +36,18 @@ const OvertimeFormModal = ({ ...props }: Props) => {
         fromdate: Yup.date().typeError(`${t('please_choose_from_day')}`),
         enddate: Yup.date().typeError(`${t('please_choose_end_day')}`),
         shift: Yup.date().typeError(`${t('please_choose_shift')}`),
-        overtime_time: Yup.number().required(`${t('please_fill_overtime_time')}`),
+        reason: Yup.string().required(`${t('please_fill_reason')}`)
 	});
 
+    useEffect(() => {
+        if (Number(router.query.id)) {
+            const detailData = forget_form?.find(d => d.id === Number(router.query.id));
+            setDetail(detailData);
+        }
+    }, [router])
+
 	const handleDepartment = (value: any) => {
-		if (props?.data) {
+		if (detail) {
 			const reNew = props.totalData.filter((item: any) => item.id !== props.data.id);
 			reNew.push({
 				id: props.data.id,
@@ -74,35 +82,36 @@ const OvertimeFormModal = ({ ...props }: Props) => {
 	return (
 
 								<div className="p-5">
-                                     <div className='flex justify-between header-page-bottom pb-4 mb-4'>
-                <h1 className='page-title'>{t('add_late_early_form')}</h1>
-                <Link href="/hrm/overtime-form">
-                        <button type="button" className="btn btn-primary btn-sm m-1 back-button" >
-                                    <IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                                                    <span>
-                                                    {t('back')}
-                                                        </span>
-                                    </button>
-                        </Link>
+                                <div className='flex justify-between header-page-bottom pb-4 mb-4'>
+                <h1 className='page-title'>{t('update_forget_form')}</h1>
+                <Link href="/hrm/forget-form">
+                    <button type="button" className="btn btn-primary btn-sm m-1 back-button" >
+                        <IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                        <span>
+                            {t('back')}
+                        </span>
+                    </button>
+                </Link>
             </div>
 									<Formik
 										initialValues={{
-											name: props?.data ? `${props?.data?.name}` : '',
-											code: props?.data ? `${props?.data?.code}` : '',
-                                            position: props?.data ? `${props?.data?.position}` : '',
-                                            department: props?.data ? `${props?.data?.department}` : '',
-                                            submitday: props?.data ? `${props?.data?.submitday}` : '',
-                                            fromdate: props?.data ? `${props?.data?.fromdate}` : '',
-                                            enddate: props?.data ? `${props?.data?.enddate}` : '',
-                                            shift: props?.data ? `${props?.data?.shift}` : '',
-                                            overtime_time: props?.data ? `${props?.data?.overtime_time}` : '',
+											name: detail ? `${detail?.name}` : null,
+											code: detail ? `${detail?.code}` : null,
+                                            position: detail ? `${detail?.position}` : null,
+                                            department: detail ? `${detail?.department}` : null,
+                                            submitday: detail ? `${detail?.submitday}` : null,
+                                            fromdate: detail ? `${detail?.fromdate}` : null,
+                                            enddate: detail ? `${detail?.enddate}` : null,
+                                            shift: detail ? `${detail?.shift}` : null,
+                                            reason: detail ? `${detail?.reason}` : ''
 										}}
+                                        enableReinitialize
 										validationSchema={SubmittedForm}
 										onSubmit={(values) => {
 											handleDepartment(values);
 										}}
 									>
-										{({ errors, touched }) => (
+										{({ errors, touched, submitCount }) => (
 											<Form className="space-y-5">
                                                 <div className='flex justify-between gap-5'>
                                                 <div className="mb-5 w-1/2">
@@ -111,7 +120,7 @@ const OvertimeFormModal = ({ ...props }: Props) => {
 														{t('name')} <span style={{ color: 'red' }}>* </span>
 													</label>
 													<Field name="name" type="text" id="name" placeholder={`${t('choose_name')}`} className="form-input" />
-													{errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null}
+													{submitCount ? errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null : ''}
 												</div>
 												<div className="mb-5 w-1/2">
 													<label className="label" htmlFor="position">
@@ -132,7 +141,7 @@ const OvertimeFormModal = ({ ...props }: Props) => {
                                                                 </>
                                                             )}
                                                         />
-                                                        {errors.position ? <div className="mt-1 text-danger"> {errors.department} </div> : null}
+                                                        {submitCount ? errors.position ? <div className="mt-1 text-danger"> {errors.department} </div> : null : ''}
 												</div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -156,7 +165,7 @@ const OvertimeFormModal = ({ ...props }: Props) => {
                                                                 </>
                                                             )}
                                                         />
-                                                        {errors.department ? <div className="mt-1 text-danger"> {errors.department} </div> : null}
+                                                        {submitCount ? errors.department ? <div className="mt-1 text-danger"> {errors.department} </div> : null : ''}
 												</div>
                                                 <div className="mb-5 w-1/2">
 													<label className="label" htmlFor="submitday">
@@ -177,7 +186,7 @@ const OvertimeFormModal = ({ ...props }: Props) => {
                                                                 />
                                                             )}
                                                         />
-                                                        {errors.submitday ? <div className="mt-1 text-danger"> {errors.submitday} </div> : null}
+                                                        {submitCount ? errors.submitday ? <div className="mt-1 text-danger"> {errors.submitday} </div> : null : ''}
 												</div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -200,7 +209,7 @@ const OvertimeFormModal = ({ ...props }: Props) => {
                                                                 />
                                                             )}
                                                         />
-                                                        {errors.fromdate ? <div className="mt-1 text-danger"> {errors.fromdate} </div> : null}
+                                                        {submitCount ? errors.fromdate ? <div className="mt-1 text-danger"> {errors.fromdate} </div> : null : ''}
 												</div>
                                                 <div className="mb-5 w-1/2">
 													<label className="label" htmlFor="enddate">
@@ -221,7 +230,7 @@ const OvertimeFormModal = ({ ...props }: Props) => {
                                                                 />
                                                             )}
                                                         />
-                                                        {errors.enddate ? <div className="mt-1 text-danger"> {errors.enddate} </div> : null}
+                                                        {submitCount ? errors.enddate ? <div className="mt-1 text-danger"> {errors.enddate} </div> : null : ''}
 												</div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -244,27 +253,25 @@ const OvertimeFormModal = ({ ...props }: Props) => {
                                                                 </>
                                                             )}
                                                         />
-                                                        {errors.shift ? <div className="mt-1 text-danger"> {errors.shift} </div> : null}
+                                                        {submitCount ? errors.shift ? <div className="mt-1 text-danger"> {errors.shift} </div> : null : ''}
 												</div>
                                                 <div className="mb-5 w-1/2">
-													<label className="label" htmlFor="overtime_time">
+													<label className="label" htmlFor="reason">
 														{' '}
-														{t('overtime_time')} <span style={{ color: 'red' }}>* </span>
+														{t('reason')} <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field name="overtime_time" type="number" id="overtime_time" placeholder={`${t('fill_overtime_time')}`} className="form-input" />
-													{errors.overtime_time ? <div className="mt-1 text-danger"> {errors.overtime_time} </div> : null}
+													<Field name="reason" type="text" id="reason" placeholder={`${t('fill_reason')}`} className="form-input" />
+													{submitCount ? errors.reason ? <div className="mt-1 text-danger"> {errors.reason} </div> : null : ''}
 												</div>
                                                 </div>
-
-
-                                                    <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">
-                                                    <button type="button" className="btn btn-outline-dark cancel-button" onClick={() => handleCancel()}>
-                                                        {t('cancel')}
-                                                    </button>
-                                                    <button type="submit" className="btn :ml-4 rtl:mr-4 add-button" disabled={disabled}>
-                                                        {props.data !== undefined ? t('update') : t('add')}
-                                                    </button>
-                                                    </div>
+												<div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">
+                            <button type="button" className="btn btn-outline-dark cancel-button" onClick={() => handleCancel()}>
+                                {t('cancel')}
+                            </button>
+                            <button type="submit" className="btn :ml-4 rtl:mr-4 add-button" disabled={disabled}>
+                                {t('update')}
+                            </button>
+                        </div>
 											</Form>
 										)}
 									</Formik>
@@ -273,4 +280,4 @@ const OvertimeFormModal = ({ ...props }: Props) => {
 	);
 };
 
-export default OvertimeFormModal;
+export default ForgetFormModal;

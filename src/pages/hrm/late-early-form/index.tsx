@@ -80,9 +80,11 @@ const LateEarlyForm = ({ ...props }: Props) => {
     }, [recordsData])
 
     const handleEdit = (data: any) => {
-        setOpenModal(true);
-        setData(data);
-    };
+		// setOpenModal(true);
+		// setData(data);
+        router.push(`/hrm/late-early-form/${data.id}`)
+	};
+
     const handleDetail = (data: any) => {
         setOpenDetail(true);
         setData(data);
