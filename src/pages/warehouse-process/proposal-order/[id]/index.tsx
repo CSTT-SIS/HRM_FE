@@ -40,7 +40,7 @@ const DetailPage = ({ ...props }: Props) => {
     const [listDataDetail, setListDataDetail] = useState<any>();
     const [openModal, setOpenModal] = useState(false);
     const [query, setQuery] = useState<any>();
-    const [active, setActive] = useState<any>(1);
+    const [active, setActive] = useState<any>([1]);
     const [initialValue, setInitialValue] = useState<any>();
     const [data, setData] = useState<any>();
     const [dataDepartment, setDataDepartment] = useState<any>([]);
@@ -72,7 +72,7 @@ const DetailPage = ({ ...props }: Props) => {
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [router.query.id])
+    }, [router.query.id]);
 
     useEffect(() => {
         setInitialValue({
@@ -153,7 +153,7 @@ const DetailPage = ({ ...props }: Props) => {
         {
             accessor: 'id',
             title: '#',
-            render: (records: any, index: any) => <span>{index}</span>,
+            render: (records: any, index: any) => <span>{index + 1}</span>,
         },
         {
             accessor: 'name',
@@ -197,9 +197,12 @@ const DetailPage = ({ ...props }: Props) => {
             showMessage(`${err?.response?.data?.message}`, 'error');
         });
     }
-
     const handleActive = (value: any) => {
-        setActive(active === value ? 0 : value);
+        if (active.includes(value)) {
+            setActive(active.filter((item: any) => item !== value));
+        } else {
+            setActive([value, ...active]);
+        }
     }
 
     const handleProposal = (param: any) => {
@@ -207,13 +210,12 @@ const DetailPage = ({ ...props }: Props) => {
             name: param.name,
             type: "PURCHASE",
             content: param.content,
-            departmentId: param?.departmentId?.value
+            departmentId: Number(param?.departmentId?.value)
         };
 
         if (data) {
             EditProposal({ id: data?.id, ...query }).then((res) => {
-                showMessage(`${t('edit_success')}`, 'success');
-                handleCancel();
+                handleConfirm({ id: data?.id, message: 'edit_success' });
             }).catch((err) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
@@ -233,14 +235,14 @@ const DetailPage = ({ ...props }: Props) => {
     const handleDetail = (id: any) => {
         AddProposalDetails({
             id: id, details: listDataDetail
-        }).then(async () => {
-            await handleConfirm({ id: id });
+        }).then(() => {
+            handleConfirm({ id: id, message: 'create_success' });
         }).catch((err) => {
             showMessage(`${err?.response?.data?.message}`, 'error');
         });
     }
 
-    const handleConfirm = ({ id, name }: any) => {
+    const handleConfirm = ({ id, message }: any) => {
         const swalDeletes = Swal.mixin({
             customClass: {
                 confirmButton: 'btn btn-secondary',
@@ -253,7 +255,7 @@ const DetailPage = ({ ...props }: Props) => {
             .fire({
                 icon: 'question',
                 title: `${t('complete_proposal')}`,
-                text: `${t('move_to_order')}`,
+                text: `${t('')}`,
                 padding: '2em',
                 showCancelButton: true,
                 reverseButtons: true,
@@ -262,14 +264,14 @@ const DetailPage = ({ ...props }: Props) => {
                 if (result.value) {
                     handleChangeComplete(id);
                 }
-                showMessage(`${t('create_success')}`, 'success');
+                showMessage(`${t(`${message}`)}`, 'success');
                 handleCancel();
             });
     };
 
     const RenturnError = (param: any) => {
         if (Object.keys(param?.errors || {}).length > 0 && param?.submitCount > 0) {
-            handleActive(1);
+            showMessage(`${t('please_add_infomation')}`, 'error');
         }
         return <></>;
     }
@@ -327,12 +329,12 @@ const DetailPage = ({ ...props }: Props) => {
                                         onClick={() => handleActive(1)}
                                     >
                                         {t('proposal_infomation')}
-                                        <div className={`ltr:ml-auto rtl:mr-auto ${active === 1 ? 'rotate-180' : ''}`}>
+                                        <div className={`ltr:ml-auto rtl:mr-auto ${active.includes(1) ? 'rotate-180' : ''}`}>
                                             <IconCaretDown />
                                         </div>
                                     </button>
-                                    <div className={`mb-2 ${active === 1 ? 'custom-content-accordion' : ''}`}>
-                                        <AnimateHeight duration={300} height={active === 1 ? 'auto' : 0}>
+                                    <div className={`mb-2 ${active.includes(1) ? 'custom-content-accordion' : ''}`}>
+                                        <AnimateHeight duration={300} height={active.includes(1) ? 'auto' : 0}>
                                             <div className='p-4'>
                                                 <div className='flex justify-between gap-5'>
                                                     <div className=" w-1/2">
@@ -395,12 +397,12 @@ const DetailPage = ({ ...props }: Props) => {
                                         onClick={() => handleActive(2)}
                                     >
                                         {t('proposal_detail')}
-                                        <div className={`ltr:ml-auto rtl:mr-auto ${active === 1 ? 'rotate-180' : ''}`}>
+                                        <div className={`ltr:ml-auto rtl:mr-auto ${active.includes(2) ? 'rotate-180' : ''}`}>
                                             <IconCaretDown />
                                         </div>
                                     </button>
                                     <div className={`${active === 2 ? 'custom-content-accordion' : ''}`}>
-                                        <AnimateHeight duration={300} height={active === 2 ? 'auto' : 0}>
+                                        <AnimateHeight duration={300} height={active.includes(2) ? 'auto' : 0}>
                                             <div className='p-4'>
                                                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4 gap-5">
                                                     <div className="flex items-center flex-wrap">
@@ -437,7 +439,6 @@ const DetailPage = ({ ...props }: Props) => {
                                 </div>
                             </div>
                             {
-                                active !== 1 &&
                                 <RenturnError errors={errors} submitCount={submitCount} />
                             }
                         </Form>

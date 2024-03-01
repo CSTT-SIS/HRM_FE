@@ -143,11 +143,11 @@ const WarehousePage = ({ ...props }: Props) => {
                             <IconEye />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('edit')}`}>
+                    {/* <Tippy content={`${t('edit')}`}>
                         <button type="button" onClick={() => handleEdit(records)}>
                             <IconPencil />
                         </button>
-                    </Tippy>
+                    </Tippy> */}
                     {/* <Tippy content={`${t('delete')}`}>
                         <button type="button" onClick={() => handleDelete(records)}>
                             <IconTrashLines />

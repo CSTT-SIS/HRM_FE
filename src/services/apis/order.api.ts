@@ -7,6 +7,11 @@ export const GetOrder = (body: any) => {
 	return callApi(endpoint, 'GET', body);
 };
 
+export const GetOrderDetail = (body: any) => {
+	const endpoint = `/order/${body.id}/get-items`;
+	return callApi(endpoint, 'GET', null);
+};
+
 export const CreateOrder = (body: any) => {
 	const endpoint = '/order';
 	return callApi(endpoint, 'POST', body);

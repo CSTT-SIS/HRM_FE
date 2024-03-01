@@ -17,12 +17,8 @@ import { PAGE_SIZES } from '@/utils/constants';
 import { showMessage } from '@/@core/utils';
 // icons
 import { IconLoading } from '@/components/Icon/IconLoading';
-import IconPlus from '@/components/Icon/IconPlus';
 import IconPencil from '@/components/Icon/IconPencil';
-import IconTrashLines from '@/components/Icon/IconTrashLines';
-import IconCircleCheck from '@/components/Icon/IconCircleCheck';
-import IconXCircle from '@/components/Icon/IconXCircle';
-import IconRestore from '@/components/Icon/IconRestore';
+import { WarehousingBillListRequest } from '@/services/swr/warehousing-bill.twr';
 
 interface Props {
     [key: string]: any;
@@ -34,21 +30,14 @@ const ProposalPage = ({ ...props }: Props) => {
     const { t } = useTranslation();
     const router = useRouter();
 
-    const [showLoader, setShowLoader] = useState(true);
-
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
-
     // get data
-    const { data: proposal, pagination, mutate } = Proposals({ sortBy: 'id.ASC', ...router.query });
+    const { data: listRequest, pagination, mutate, isLoading } = WarehousingBillListRequest({ sortBy: 'id.ASC', ...router.query });
 
     useEffect(() => {
         dispatch(setPageTitle(`${t('proposal')}`));
     });
-
-    useEffect(() => {
-        setShowLoader(false);
-    }, [proposal])
 
     const handleDelete = ({ id, name }: any) => {
         const swalDeletes = Swal.mixin({
@@ -80,18 +69,6 @@ const ProposalPage = ({ ...props }: Props) => {
             });
     };
 
-    const handleSearch = (param: any) => {
-        router.replace(
-            {
-                pathname: router.pathname,
-                query: {
-                    ...router.query,
-                    search: param
-                },
-            }
-        );
-    }
-
     const handleChangePage = (page: number, pageSize: number) => {
         router.replace(
             {
@@ -109,7 +86,7 @@ const ProposalPage = ({ ...props }: Props) => {
     };
 
     const handleDetail = (value: any) => {
-        router.push(`/warehouse-process/proposal-order/${value.id}?type=${value.type}&&status=${value.status}`)
+        router.push(`/warehouse-process/warehousing-bill/create/?proposalId=${value.id}`);
     }
 
     const handleApprove = ({ id }: any) => {
@@ -143,7 +120,7 @@ const ProposalPage = ({ ...props }: Props) => {
         {
             accessor: 'id',
             title: '#',
-            render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
+            render: (records: any, index: any) => <span>{index + 1}</span>,
         },
         { accessor: 'name', title: 'Tên yêu cầu', sortable: false },
         {
@@ -153,7 +130,18 @@ const ProposalPage = ({ ...props }: Props) => {
             sortable: false
         },
         { accessor: 'content', title: 'Nội dung', sortable: false },
-        { accessor: 'type', title: 'Loại yêu cầu', sortable: false },
+        {
+            accessor: 'entity',
+            title: 'Phòng ban',
+            render: ({ entity }: any) => <span>
+                {
+                    entity === "proposal" ? "Xuất mìn" :
+                        entity === "repairRequest" ? "Sửa chữa" :
+                            "Đặt hàng"
+                }
+            </span>,
+            sortable: false
+        },
         { accessor: 'status', title: 'Trạng thái', sortable: false },
         {
             accessor: 'action',
@@ -193,7 +181,7 @@ const ProposalPage = ({ ...props }: Props) => {
 
     return (
         <div>
-            {showLoader && (
+            {isLoading && (
                 <div className="screen_loader fixed inset-0 bg-[#fafafa] dark:bg-[#060818] z-[60] grid place-content-center animate__animated">
                     <IconLoading />
                 </div>
@@ -201,20 +189,12 @@ const ProposalPage = ({ ...props }: Props) => {
             <title>product</title>
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
-                    <div className="flex items-center flex-wrap">
-                        <button type="button" onClick={(e) => router.push(`/warehouse-process/proposal-order/create`)} className="btn btn-primary btn-sm m-1 custom-button" >
-                            <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                            {t('add')}
-                        </button>
-                    </div>
-
-                    <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
                 </div>
                 <div className="datatables">
                     <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover"
-                        records={proposal?.data}
+                        records={listRequest?.data}
                         columns={columns}
                         totalRecords={pagination?.totalRecords}
                         recordsPerPage={pagination?.perPage}
@@ -234,3 +214,4 @@ const ProposalPage = ({ ...props }: Props) => {
 };
 
 export default ProposalPage;
+
