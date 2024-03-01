@@ -248,7 +248,14 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('date_of_birth')} <span style={{ color: 'red' }}>* </span>
                                                         </label>
-                                                        <Field name="dateofbirth" type="text" id="dateofbirth" placeholder={t('enter_date_of_birth')} className="form-input" />
+                                                        <Flatpickr
+                                                            options={{
+                                                                dateFormat: 'Y-m-d',
+                                                                position: 'auto left',
+                                                            }}
+                                                            className="form-input"
+                                                            placeholder={`${t('enter_date_of_birth')}`}
+                                                        />
                                                         {submitCount ? errors.dateofbirth ? <div className="mt-1 text-danger"> {errors.dateofbirth} </div> : null : ''}
                                                     </div>
                                                 </div>
@@ -279,7 +286,14 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('date_of_issue')}<span style={{ color: 'red' }}>* </span>
                                                         </label>
-                                                        <Field name="dateissue" type="text" id="dateissue" placeholder={t('enter_date_of_issue')} className="form-input" />
+                                                        <Flatpickr
+                                                            options={{
+                                                                dateFormat: 'Y-m-d',
+                                                                position: 'auto left',
+                                                            }}
+                                                            className="form-input"
+                                                            placeholder={`${t('enter_date_of_issue')}`}
+                                                        />
                                                         {submitCount ? errors.dateissue ? <div className="mt-1 text-danger"> {errors.dateissue} </div> : null : ''}
                                                     </div>
                                                     <div className="mb-5 w-1/2">
@@ -399,7 +413,14 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('date_join')}
                                                         </label>
-                                                        <Field name="date_join" type="datetime-local" id="date_join" placeholder={t('enter_date_join')} className="form-input" />
+                                                        <Flatpickr
+                                                            options={{
+                                                                dateFormat: 'Y-m-d',
+                                                                position: 'auto left',
+                                                            }}
+                                                            className="form-input"
+                                                            placeholder={`${t('enter_date_join')}`}
+                                                        />
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
