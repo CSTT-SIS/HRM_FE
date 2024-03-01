@@ -128,7 +128,7 @@ const AddNewTask = ({ ...props }: Props) => {
             <Formik
                 initialValues={{
                     name: props?.data ? `${props?.data?.name}` : '',
-                    creator: props?.data ? `${props?.data?.creator}` : '',
+                    creator: 'Nguyễn Văn A',
                     executor: props?.data ? `${props?.data?.executor}` : '',
                     collaborator: props?.data ? `${props?.data?.collaborator}` : '',
                     description: props?.data ? `${props?.data?.description}` : '',
@@ -145,26 +145,37 @@ const AddNewTask = ({ ...props }: Props) => {
             >
                 {({ errors, values, setFieldValue, submitCount }) => (
                     <Form className="space-y-5">
+                        <div className="mb-3">
+                            <label htmlFor="name">
+                                {' '}
+                                {t('name_task')} <span style={{ color: 'red' }}>* </span>
+                            </label>
+                            <Field name="name" type="text" id="name" placeholder={`${t('enter_name_task')}`} className="form-input" />
+                            {submitCount ? errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null : ''}
+                        </div>
                         <div className='flex justify-between gap-5'>
-                            <div className="mb-3 w-1/2">
-                                <label htmlFor="name">
-                                    {' '}
-                                    {t('name_task')} <span style={{ color: 'red' }}>* </span>
-                                </label>
-                                <Field name="name" type="text" id="name" placeholder={`${t('enter_name_task')}`} className="form-input" />
-                                {submitCount ? errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null  : ''}
-                            </div>
+
                             <div className="mb-3 w-1/2">
                                 <label htmlFor="creator">
                                     {' '}
                                     {t('creator_task')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field as="select" name="creator" id="creator" className="form-input">
-                                    <option value="">Chọn người tạo</option>
-                                    <option value="Người tạo 1">Người tạo 1</option>
-                                    <option value="Người tạo 2">Người tạo 2</option>
+                                <Field type="text" name="creator" id="creator" className="form-input" disabled>
                                 </Field>
-                                {submitCount ? errors.creator ? <div className="mt-1 text-danger"> {errors.creator} </div> : null  : ''}
+                                {submitCount ? errors.creator ? <div className="mt-1 text-danger"> {errors.creator} </div> : null : ''}
+                            </div>
+                            <div className="mb-3 w-1/2">
+                                <label htmlFor="date_create">
+                                    {' '}
+                                    {t('date_create')} <span style={{ color: 'red' }}>* </span>
+                                </label>
+                                <Flatpickr
+                                    options={{
+                                        dateFormat: 'Y-m-d',
+                                        position: 'auto left',
+                                    }}
+                                    className="form-input"
+                                />
                             </div>
                         </div>
                         <div className='flex justify-between gap-5'>
@@ -178,7 +189,7 @@ const AddNewTask = ({ ...props }: Props) => {
                                     <option value="Người thực hiện 1">Người thực hiện 1</option>
                                     <option value="Người thực hiện 2">Người thực hiện 2</option>
                                 </Field>
-                                {submitCount ? errors.executor ? <div className="mt-1 text-danger"> {errors.executor} </div> : null  : ''}
+                                {submitCount ? errors.executor ? <div className="mt-1 text-danger"> {errors.executor} </div> : null : ''}
                             </div>
                             <div className="mb-3 w-1/2">
                                 <label htmlFor="collaborator"> {t('collaborator_task')}</label>
@@ -193,9 +204,17 @@ const AddNewTask = ({ ...props }: Props) => {
                         <div className="mb-3">
                             <label htmlFor="deadline">
                                 {t('deadline_task')} <span style={{ color: 'red' }}>* </span>
+
                             </label>
-                            <Field id="deadline" type="datetime-local" name="deadline" className="form-input" placeholder={`${t('enter_deadline_task')}`} />
-                            {submitCount ? errors.deadline ? <div className="mt-1 text-danger"> {errors.deadline} </div> : null  : ''}
+                            <Flatpickr
+                                options={{
+                                    dateFormat: 'Y-m-d',
+                                    position: 'auto left',
+                                }}
+                                className="form-input"
+                                placeholder={`${t('enter_deadline_task')}`}
+                            />
+                            {submitCount ? errors.deadline ? <div className="mt-1 text-danger"> {errors.deadline} </div> : null : ''}
                         </div>
                         <div className="mb-3">
                             <label htmlFor="description">
