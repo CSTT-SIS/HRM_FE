@@ -48,13 +48,15 @@ interface Props {
 	[key: string]: any;
 }
 
-const LateEarlyFormModal = ({ ...props }: Props) => {
+const LateEarlyFormEditModal = ({ ...props }: Props) => {
 	const { t } = useTranslation();
 	const [disabled, setDisabled] = useState(false);
     const [listPersonnel, setListPersonnel] = useState<any>([]);
     const [listDuty, setListDuty] = useState<any>([]);
     const [listShift, setListShift] = useState<any>([]);
     const [detail, setDetail] = useState<any>();
+
+    console.log(props.setOpenModal)
 
     useEffect(() => {
         const listPer = personnel_list?.map((item: any) =>  {
@@ -96,37 +98,37 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 	});
 
 	const handleDepartment = (value: any) => {
-		if (props?.data) {
-			const reNew = props.totalData.filter((item: any) => item.id !== props.data.id);
-			reNew.push({
-				id: props.data.id,
-				name: value.name,
-				code: value.code,
-			});
-			localStorage.setItem('departmentList', JSON.stringify(reNew));
-			props.setGetStorge(reNew);
-			props.setOpenModal(false);
-			props.setData(undefined);
-			showMessage(`${t('edit_department_success')}`, 'success');
-		} else {
-			const reNew = props.totalData;
-			reNew.push({
-				id: Number(props?.totalData[props?.totalData?.length - 1].id) + 1,
-				name: value.name,
-				code: value.code,
-				status: value.status,
-			});
-			localStorage.setItem('departmentList', JSON.stringify(reNew));
-			props.setGetStorge(props.totalData);
-			props.setOpenModal(false);
-			props.setData(undefined);
-			showMessage(`${t('add_department_success')}`, 'success');
-		}
+		// if (props?.data) {
+		// 	const reNew = props.totalData.filter((item: any) => item.id !== props.data.id);
+		// 	reNew.push({
+		// 		id: props.data.id,
+		// 		name: value.name,
+		// 		code: value.code,
+		// 	});
+		// 	localStorage.setItem('departmentList', JSON.stringify(reNew));
+		// 	props.setGetStorge(reNew);
+		// 	props.setOpenModal(false);
+		// 	props.setData(undefined);
+		// 	showMessage(`${t('edit_department_success')}`, 'success');
+		// } else {
+		// 	const reNew = props.totalData;
+		// 	reNew.push({
+		// 		id: Number(props?.totalData[props?.totalData?.length - 1].id) + 1,
+		// 		name: value.name,
+		// 		code: value.code,
+		// 		status: value.status,
+		// 	});
+		// 	localStorage.setItem('departmentList', JSON.stringify(reNew));
+		// 	props.setGetStorge(props.totalData);
+		// 	props.setOpenModal(false);
+		// 	props.setData(undefined);
+		// 	showMessage(`${t('add_department_success')}`, 'success');
+		// }
 	};
 
 	const handleCancel = () => {
-		props.setOpenModal(false);
-		props.setData(undefined);
+		// props.setOpenModal(false);
+		// props.setData(undefined);
 	};
 	return (
 
@@ -171,25 +173,24 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 														{t('name_staff')} <span style={{ color: 'red' }}>* </span>
 													</label>
                                                     <Field
-                                                    className="form-input"
-                                                            name="name"
-                                                            render={({ field }: any) => (
-                                                                <>
-                                                                    <Select
-                                                                        // {...field}
-                                                                        defaultValue={{value:detail?.code, label: detail?.name}}
-                                                                        options={listPersonnel}
-                                                                        isSearchable
-                                                                        placeholder={t('choose_name')}
-                                                                        maxMenuHeight={150}
-                                                                        onChange={(item) => {
-                                                                            setFieldValue('name', item)
-                                                                        }}
-                                                                    />
-                                                                </>
-                                                            )}
-                                                        />
-													{submitCount ? errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null : ''}
+                                                        name="name"
+                                                        render={({ field }: any) => (
+                                                            <>
+                                                                <Select
+                                                                    // {...field}
+                                                                    defaultValue={{value:detail?.code, label: detail?.name}}
+                                                                    options={listPersonnel}
+                                                                    isSearchable
+                                                                    placeholder={t('choose_name')}
+                                                                    maxMenuHeight={150}
+                                                                    onChange={(item) => {
+                                                                        setFieldValue('name', item)
+                                                                    }}
+                                                                />
+                                                            </>
+                                                        )}
+                                                    />
+													{/* {submitCount ? (errors.name ? <div className="mt-1 text-danger">{errors.name} </div> : null) : ''} */}
 												</div>
 												<div className="mb-5 w-1/2">
 													<label htmlFor="position" className='label'>
@@ -215,7 +216,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                                 </>
                                                             )}
                                                         />
-                                                        {submitCount ? errors.position ? <div className="mt-1 text-danger"> {errors.department} </div> : null : ''}
+                                                        {/* {submitCount ? errors.position ? <div className="mt-1 text-danger"> {errors.position} </div> : null : ''} */}
 												</div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -224,8 +225,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 														{' '}
 														{t('department')} <span style={{ color: 'red' }}>* </span>
 													</label>
-                                                    <Field name="department">
-                            {({ field, form }: any) => (
+                                                    <Field name="department" className="form-input">
+                            {/* {({ field, form }: any) => (
                                 <TreeSelect
                                 className='form-input'
                                     // style={{ width: '100%' }}
@@ -235,10 +236,10 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                     treeDefaultExpandAll
                                     onChange={(value) => setFieldValue('department', value)}
                                 />
-                            )}
+                            )} */}
                         </Field>
-
-                                                        {submitCount ? errors.department ? <div className="mt-1 text-danger"> {errors.department} </div> : null : ''}
+{/*
+                                                        {submitCount ? errors.department ? <div className="mt-1 text-danger"> {errors.department} </div> : null : ''} */}
 												</div>
                                                 <div className="mb-5 w-1/2">
 													<label htmlFor="submitday" className='label'>
@@ -265,7 +266,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                                 />
                                                             )}
                                                         />
-                                                        {submitCount ? errors.submitday ? <div className="mt-1 text-danger"> {errors.submitday} </div> : null : ''}
+                                                        {/* {submitCount ? errors.submitday ? <div className="mt-1 text-danger"> {errors.submitday} </div> : null : ''} */}
 												</div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -294,7 +295,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                                 />
                                                             )}
                                                         />
-                                                        {submitCount ? errors.fromdate ? <div className="mt-1 text-danger"> {errors.fromdate} </div> : null : ''}
+                                                        {/* {submitCount ? errors.fromdate ? <div className="mt-1 text-danger"> {errors.fromdate} </div> : null : ''} */}
 												</div>
                                                 <div className="mb-5 w-1/2">
 													<label htmlFor="enddate" className='label'>
@@ -321,7 +322,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                                 />
                                                             )}
                                                         />
-                                                        {submitCount ? errors.enddate ? <div className="mt-1 text-danger"> {errors.enddate} </div> : null : ''}
+                                                        {/* {submitCount ? errors.enddate ? <div className="mt-1 text-danger"> {errors.enddate} </div> : null : ''} */}
 												</div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -346,7 +347,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                                 </>
                                                             )}
                                                         />
-                                                        {submitCount ? errors.shift ? <div className="mt-1 text-danger"> {errors.shift} </div> : null : ''}
+                                                        {/* {submitCount ? errors.shift ? <div className="mt-1 text-danger"> {errors.shift} </div> : null : ''} */}
 												</div>
                                                 <div className="mb-5 w-1/2">
 													<label htmlFor="late_second">
@@ -354,7 +355,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 														{t('late_second')} <span style={{ color: 'red' }}>* </span>
 													</label>
 													<Field name="late_second" type="number" id="late_second" placeholder={`${t('fill_late_second')}`} className="form-input" />
-													{submitCount ? errors.late_second ? <div className="mt-1 text-danger"> {errors.late_second} </div> : null : ''}
+													{/* {submitCount ? errors.late_second ? <div className="mt-1 text-danger"> {errors.late_second} </div> : null : ''} */}
 												</div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -364,7 +365,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 														{t('early_second')} <span style={{ color: 'red' }}>* </span>
 													</label>
 													<Field name="early_second" type="number" id="early_second" placeholder={`${t('fill_early_second')}`} className="form-input" />
-													{submitCount ? errors.early_second ? <div className="mt-1 text-danger"> {errors.early_second} </div> : null : ''}
+													{/* {submitCount ? errors.early_second ? <div className="mt-1 text-danger"> {errors.early_second} </div> : null : ''} */}
 												</div>
                                                 <div className="mb-5 w-1/2">
 													<label htmlFor="reason" className='label'>
@@ -372,7 +373,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 														{t('reason')} <span style={{ color: 'red' }}>* </span>
 													</label>
 													<Field name="reason" type="text" id="reason" placeholder={`${t('fill_reason')}`} className="form-input" />
-													{submitCount ? errors.reason ? <div className="mt-1 text-danger"> {errors.reason} </div> : null : ''}
+													{/* {submitCount ? errors.reason ? <div className="mt-1 text-danger"> {errors.reason} </div> : null : ''} */}
 												</div>
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">
@@ -392,4 +393,4 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 	);
 };
 
-export default LateEarlyFormModal;
+export default LateEarlyFormEditModal;

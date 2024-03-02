@@ -30,7 +30,6 @@ import IconFolderMinus from '@/components/Icon/IconFolderMinus';
 import IconDownload from '@/components/Icon/IconDownload';
 import IconChecks from '@/components/Icon/IconChecks';
 
-
 interface Props {
     [key: string]: any;
 }
