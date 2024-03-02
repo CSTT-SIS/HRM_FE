@@ -45,7 +45,7 @@ const Department = ({ ...props }: Props) => {
         dispatch(setPageTitle(`${t('department')}`));
     });
 
-    const router = useRouter();
+    const router = useRouter()
 
     const [display, setDisplay] = useState('tree')
     const [showLoader, setShowLoader] = useState(true);
@@ -84,8 +84,10 @@ const Department = ({ ...props }: Props) => {
     }, [recordsData])
 
     const handleEdit = (data: any) => {
-        setOpenModal(true);
-        setData(data);
+        // setOpenModal(true);
+        // setData(data);
+		router.push(`/hrm/department/${data.id}`)
+
     };
 
     const handleDelete = (data: any) => {

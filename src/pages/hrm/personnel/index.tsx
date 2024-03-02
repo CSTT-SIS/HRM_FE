@@ -113,8 +113,7 @@ const Department = ({ ...props }: Props) => {
 	}, [recordsData]);
 
 	const handleEdit = (data: any) => {
-		setOpenModal(true);
-		setData(data);
+		router.push(`/hrm/personnel/${data.id}`)
 	};
 
 	const handleDelete = (data: any) => {
