@@ -2,7 +2,7 @@ import { useEffect, Fragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Dialog, Transition } from '@headlessui/react';
-
+import { useRouter } from 'next/router';
 import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
 import Swal from 'sweetalert2';
@@ -14,12 +14,14 @@ import Select from 'react-select';
 import Link from 'next/link';
 import IconArrowBackward from '@/components/Icon/IconArrowBackward';
 import IconBack from '@/components/Icon/IconBack';
-import duty_list from '../duty/duty_list.json';
-import personnel_list from '../personnel/personnel_list.json';
-import shift from '../shift/shift.json';
+import duty_list from '../../duty/duty_list.json';
+import personnel_list from '../../personnel/personnel_list.json';
+import shift from '../../shift/shift.json';
+import late_early_form from '../../late-early-form/late_early_form.json';
 import { Vietnamese } from "flatpickr/dist/l10n/vn.js"
 
 import TreeSelect from 'rc-tree-select';
+// import 'rc-tree-select/assets/index.css';
 
 interface TreeNode {
   value: string;
@@ -52,9 +54,11 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
     const [listPersonnel, setListPersonnel] = useState<any>([]);
     const [listDuty, setListDuty] = useState<any>([]);
     const [listShift, setListShift] = useState<any>([]);
+    const [detail, setDetail] = useState<any>();
+
     useEffect(() => {
         const listPer = personnel_list?.map((item: any) =>  {
-            return {label: item.name, value: item.code}
+            return {value: item.code, label: item.name}
         });
         setListPersonnel(listPer);
 
@@ -68,8 +72,13 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
         });
         setListShift(listShift);
     }, []);
-
-
+    const router = useRouter();
+    useEffect(() => {
+        if (Number(router.query.id)) {
+            const detailData = late_early_form?.find((d: any) => d.id === Number(router.query.id));
+            setDetail(detailData);
+        }
+    }, [router])
 	const SubmittedForm = Yup.object().shape({
 		name: Yup.object()
 			.typeError(`${t('please_choose_name_staff')}`),
@@ -123,7 +132,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 
 								<div className="p-5">
                                     <div className='flex justify-between header-page-bottom pb-4 mb-4'>
-                <h1 className='page-title'>{t('add_late_early_form')}</h1>
+                <h1 className='page-title'>{t('update_late_early_form')}</h1>
                 <Link href="/hrm/late-early-form">
                         <button type="button" className="btn btn-primary btn-sm m-1 back-button" >
                                     <IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
@@ -135,22 +144,23 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
             </div>
 									<Formik
 										initialValues={{
-											name: null,
-											code: null,
-                                            position: null,
-                                            department: null,
-                                            submitday: null,
-                                            fromdate: null,
-                                            enddate: null,
-                                            shift: null,
-                                            late_second: null,
-                                            early_second: null,
+											name: listPersonnel?.find((e: any) => e.value === detail?.code) ?? null,
+											code: detail?.code ?? null,
+                                            position: detail?.position ?? null,
+                                            department: detail?.department ?? null,
+                                            submitday: detail?.submitday ?? null,
+                                            fromdate: detail?.fromdate ?? null,
+                                            enddate: detail?.enddate ?? null,
+                                            shift: detail?.shift ?? null,
+                                            late_second: detail?.late_second ?? null,
+                                            early_second: detail?.early_second ?? null,
                                             reason: ''
 										}}
 										validationSchema={SubmittedForm}
 										onSubmit={(values) => {
 											handleDepartment(values);
 										}}
+                                        enableReinitialize
 									>
 										{({ errors, touched, submitCount, setFieldValue }) => (
 											<Form className="space-y-5">
@@ -167,6 +177,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                                 <>
                                                                     <Select
                                                                         // {...field}
+                                                                        defaultValue={{value:detail?.code, label: detail?.name}}
                                                                         options={listPersonnel}
                                                                         isSearchable
                                                                         placeholder={t('choose_name')}
@@ -193,6 +204,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                                     <Select
                                                                         // {...field}
                                                                         options={listDuty}
+                                                                        defaultValue={detail?.position}
                                                                         isSearchable
                                                                         placeholder={t('choose_position')}
                                                                         maxMenuHeight={150}

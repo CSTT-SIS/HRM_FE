@@ -18,7 +18,6 @@ import duty_list from '../duty/duty_list.json';
 import personnel_list from '../personnel/personnel_list.json';
 import shift from '../shift/shift.json';
 import { Vietnamese } from "flatpickr/dist/l10n/vn.js"
-
 import TreeSelect from 'rc-tree-select';
 
 interface TreeNode {
@@ -27,7 +26,7 @@ interface TreeNode {
   children?: TreeNode[];
 }
 
-const treeData: TreeNode[] = [
+const treeData = [
   {
     title: 'Phòng Tài chính',
     value: '0-0',
@@ -46,7 +45,7 @@ interface Props {
 	[key: string]: any;
 }
 
-const LateEarlyFormModal = ({ ...props }: Props) => {
+const OvertimeForm = ({ ...props }: Props) => {
 	const { t } = useTranslation();
 	const [disabled, setDisabled] = useState(false);
     const [listPersonnel, setListPersonnel] = useState<any>([]);
@@ -81,9 +80,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
         fromdate: Yup.date().typeError(`${t('please_choose_from_day')}`),
         enddate: Yup.date().typeError(`${t('please_choose_end_day')}`),
         shift: Yup.date().typeError(`${t('please_choose_shift')}`),
-        late_second: Yup.number().typeError(`${t('please_fill_late_second')}`),
-        early_second: Yup.number().typeError(`${t('please_fill_early_second')}`),
-        reason: Yup.string().required(`${t('please_fill_reason')}`)
+        overtime_time: Yup.number().required(`${t('please_fill_reason')}`)
 	});
 
 	const handleDepartment = (value: any) => {
@@ -123,8 +120,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 
 								<div className="p-5">
                                     <div className='flex justify-between header-page-bottom pb-4 mb-4'>
-                <h1 className='page-title'>{t('add_late_early_form')}</h1>
-                <Link href="/hrm/late-early-form">
+                <h1 className='page-title'>{t('add_overtime_form')}</h1>
+                <Link href="/hrm/overtime-form">
                         <button type="button" className="btn btn-primary btn-sm m-1 back-button" >
                                     <IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                                                     <span>
@@ -143,9 +140,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                             fromdate: null,
                                             enddate: null,
                                             shift: null,
-                                            late_second: null,
-                                            early_second: null,
-                                            reason: ''
+                                            overtime_time: 0
 										}}
 										validationSchema={SubmittedForm}
 										onSubmit={(values) => {
@@ -336,31 +331,15 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                         />
                                                         {submitCount ? errors.shift ? <div className="mt-1 text-danger"> {errors.shift} </div> : null : ''}
 												</div>
+
+
                                                 <div className="mb-5 w-1/2">
-													<label htmlFor="late_second">
+													<label htmlFor="overtime_time" className='label'>
 														{' '}
-														{t('late_second')} <span style={{ color: 'red' }}>* </span>
+														{t('overtime_time')} <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field name="late_second" type="number" id="late_second" placeholder={`${t('fill_late_second')}`} className="form-input" />
-													{submitCount ? errors.late_second ? <div className="mt-1 text-danger"> {errors.late_second} </div> : null : ''}
-												</div>
-                                                </div>
-                                                <div className='flex justify-between gap-5'>
-                                                <div className="mb-5 w-1/2">
-													<label htmlFor="early_second" className='label'>
-														{' '}
-														{t('early_second')} <span style={{ color: 'red' }}>* </span>
-													</label>
-													<Field name="early_second" type="number" id="early_second" placeholder={`${t('fill_early_second')}`} className="form-input" />
-													{submitCount ? errors.early_second ? <div className="mt-1 text-danger"> {errors.early_second} </div> : null : ''}
-												</div>
-                                                <div className="mb-5 w-1/2">
-													<label htmlFor="reason" className='label'>
-														{' '}
-														{t('reason')} <span style={{ color: 'red' }}>* </span>
-													</label>
-													<Field name="reason" type="text" id="reason" placeholder={`${t('fill_reason')}`} className="form-input" />
-													{submitCount ? errors.reason ? <div className="mt-1 text-danger"> {errors.reason} </div> : null : ''}
+													<Field name="overtime_time" type="number" id="overtime_time" placeholder={`${t('fill_overtime_time')}`} className="form-input" />
+													{submitCount ? errors.overtime_time ? <div className="mt-1 text-danger"> {errors.overtime_time} </div> : null : ''}
 												</div>
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">
@@ -380,4 +359,4 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 	);
 };
 
-export default LateEarlyFormModal;
+export default OvertimeForm;

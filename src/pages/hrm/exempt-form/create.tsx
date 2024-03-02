@@ -20,7 +20,7 @@ interface Props {
 	[key: string]: any;
 }
 
-const ForgetFormModal = ({ ...props }: Props) => {
+const ExemptFormModal = ({ ...props }: Props) => {
 	const { t } = useTranslation();
 	const [disabled, setDisabled] = useState(false);
 
@@ -74,9 +74,9 @@ const ForgetFormModal = ({ ...props }: Props) => {
 	return (
 
 								<div className="p-5">
-                                <div className='flex justify-between header-page-bottom pb-4 mb-4'>
-                <h1 className='page-title'>{t('add_department')}</h1>
-                <Link href="/hrm/forget-form">
+                                    <div className='flex justify-between header-page-bottom pb-4 mb-4'>
+                <h1 className='page-title'>{t('add_exempt_form')}</h1>
+                <Link href="/hrm/exempt-form">
                     <button type="button" className="btn btn-primary btn-sm m-1 back-button" >
                         <IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                         <span>
@@ -102,7 +102,7 @@ const ForgetFormModal = ({ ...props }: Props) => {
 											handleDepartment(values);
 										}}
 									>
-										{({ errors, touched }) => (
+										{({ errors, touched, submitCount }) => (
 											<Form className="space-y-5">
                                                 <div className='flex justify-between gap-5'>
                                                 <div className="mb-5 w-1/2">
@@ -111,7 +111,7 @@ const ForgetFormModal = ({ ...props }: Props) => {
 														{t('name')} <span style={{ color: 'red' }}>* </span>
 													</label>
 													<Field name="name" type="text" id="name" placeholder={`${t('choose_name')}`} className="form-input" />
-													{errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null}
+													{submitCount ? errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null : ''}
 												</div>
 												<div className="mb-5 w-1/2">
 													<label className="label" htmlFor="position">
@@ -132,7 +132,7 @@ const ForgetFormModal = ({ ...props }: Props) => {
                                                                 </>
                                                             )}
                                                         />
-                                                        {errors.position ? <div className="mt-1 text-danger"> {errors.department} </div> : null}
+                                                        {submitCount ? errors.position ? <div className="mt-1 text-danger"> {errors.position} </div> : null : ''}
 												</div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -156,7 +156,7 @@ const ForgetFormModal = ({ ...props }: Props) => {
                                                                 </>
                                                             )}
                                                         />
-                                                        {errors.department ? <div className="mt-1 text-danger"> {errors.department} </div> : null}
+                                                         {submitCount ? errors.department ? <div className="mt-1 text-danger"> {errors.department} </div> : null : ''}
 												</div>
                                                 <div className="mb-5 w-1/2">
 													<label className="label" htmlFor="submitday">
@@ -177,7 +177,7 @@ const ForgetFormModal = ({ ...props }: Props) => {
                                                                 />
                                                             )}
                                                         />
-                                                        {errors.submitday ? <div className="mt-1 text-danger"> {errors.submitday} </div> : null}
+                                                         {submitCount ? errors.submitday ? <div className="mt-1 text-danger"> {errors.submitday} </div> : null : ''}
 												</div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -200,7 +200,7 @@ const ForgetFormModal = ({ ...props }: Props) => {
                                                                 />
                                                             )}
                                                         />
-                                                        {errors.fromdate ? <div className="mt-1 text-danger"> {errors.fromdate} </div> : null}
+                                                         {submitCount ? errors.fromdate ? <div className="mt-1 text-danger"> {errors.fromdate} </div> : null : ''}
 												</div>
                                                 <div className="mb-5 w-1/2">
 													<label className="label" htmlFor="enddate">
@@ -221,7 +221,8 @@ const ForgetFormModal = ({ ...props }: Props) => {
                                                                 />
                                                             )}
                                                         />
-                                                        {errors.enddate ? <div className="mt-1 text-danger"> {errors.enddate} </div> : null}
+                                                         {submitCount ? errors.enddate ? <div className="mt-1 text-danger"> {errors.enddate} </div> : null : ''}
+
 												</div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -244,7 +245,8 @@ const ForgetFormModal = ({ ...props }: Props) => {
                                                                 </>
                                                             )}
                                                         />
-                                                        {errors.shift ? <div className="mt-1 text-danger"> {errors.shift} </div> : null}
+                                                                                                                 {submitCount ? errors.shift ? <div className="mt-1 text-danger"> {errors.shift} </div> : null : ''}
+
 												</div>
                                                 <div className="mb-5 w-1/2">
 													<label className="label" htmlFor="reason">
@@ -252,7 +254,7 @@ const ForgetFormModal = ({ ...props }: Props) => {
 														{t('reason')} <span style={{ color: 'red' }}>* </span>
 													</label>
 													<Field name="reason" type="text" id="reason" placeholder={`${t('fill_reason')}`} className="form-input" />
-													{errors.reason ? <div className="mt-1 text-danger"> {errors.reason} </div> : null}
+                                                    {submitCount ? errors.reason ? <div className="mt-1 text-danger"> {errors.reason} </div> : null : ''}
 												</div>
                                                 </div>
 												<div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">
@@ -260,7 +262,7 @@ const ForgetFormModal = ({ ...props }: Props) => {
                                 {t('cancel')}
                             </button>
                             <button type="submit" className="btn :ml-4 rtl:mr-4 add-button" disabled={disabled}>
-                                {props.data !== undefined ? t('update') : t('add')}
+                                {t('add')}
                             </button>
                         </div>
 											</Form>
@@ -271,4 +273,4 @@ const ForgetFormModal = ({ ...props }: Props) => {
 	);
 };
 
-export default ForgetFormModal;
+export default ExemptFormModal;

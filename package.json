@@ -41,6 +41,7 @@
 		"moment-timezone": "^0.5.43",
 		"next": "13.1.2",
 		"ni18n": "^1.0.5",
+		"rc-tree-select": "^5.18.0",
 		"react": "18.2.0",
 		"react-18-image-lightbox": "^5.1.4",
 		"react-animate-height": "^3.1.0",

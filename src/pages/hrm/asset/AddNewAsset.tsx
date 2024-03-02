@@ -109,7 +109,7 @@ const AddNewAsset = ({ ...props }: Props) => {
 
         <div className="p-5">
             <div className='flex justify-between header-page-bottom pb-4 mb-4'>
-                <h1 className='page-title'>{t('add_task')}</h1>
+                <h1 className='page-title'>{t('add_asset')}</h1>
                 <Link href="/hrm/asset">
                     <button type="button" className="btn btn-primary btn-sm m-1 back-button" >
                         <IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
