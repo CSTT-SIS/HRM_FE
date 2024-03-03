@@ -622,6 +622,7 @@
 	"enter_approver": "enter approver",
 	"please_fill_abbreviated_name": "Please fill abbreviated name",
 	"enter_abbreviated_name": "Enter abbreviated name",
-	"date_create": "Date create"
+	"date_create": "Date create",
+	"edit_shift": "Edit shift"
 
 }

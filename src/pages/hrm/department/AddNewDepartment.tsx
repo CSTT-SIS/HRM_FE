@@ -162,8 +162,8 @@ const AddNewDepartment = ({ ...props }: Props) => {
                                 <label htmlFor="departmentparentId" className='label'> {t('Department_Parent')} < span style={{ color: 'red' }}>* </span></label >
                                 <Select
                                     id='unidepartmentparentIdtId'
-                                    name='departmentparentId' 
-                                    placeholder={t('select_departmentparent')}  
+                                    name='departmentparentId'
+                                    placeholder={t('select_departmentparent')}
                                     onInputChange={e => handleSearch(e)}
                                     options={departmentparent}
                                     maxMenuHeight={160}
@@ -181,7 +181,7 @@ const AddNewDepartment = ({ ...props }: Props) => {
                                 <Select
                                     id='manageId'
                                     name='manageId'
-                                    placeholder={t('select_manager')}  
+                                    placeholder={t('select_manager')}
                                     onInputChange={e => handleSearch(e)}
                                     options={manage}
                                     maxMenuHeight={160}
@@ -196,6 +196,13 @@ const AddNewDepartment = ({ ...props }: Props) => {
                             </div>
 
 
+                        </div>
+                        <div className="mb-5">
+                            <label htmlFor="name" className='label'>
+                                {' '}
+                                {t('description')}
+                            </label>
+                            <Field name="name"  as="textarea" id="name" placeholder={`${t('enter_description')}`} className="form-input" />
                         </div>
                         <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">
                             <button type="button" className="btn btn-outline-dark cancel-button" onClick={() => handleCancel()}>
