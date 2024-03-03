@@ -1,8 +1,7 @@
 import { useEffect, Fragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Dialog, Transition } from '@headlessui/react';
-
+import { useRouter } from 'next/router';
 import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
 import Swal from 'sweetalert2';
@@ -13,9 +12,10 @@ import 'flatpickr/dist/flatpickr.css';
 import Select from 'react-select';
 import Link from 'next/link';
 import IconBack from '@/components/Icon/IconBack';
-import duty_list from '../duty/duty_list.json';
-import personnel_list from '../personnel/personnel_list.json';
-import shift from '../shift/shift.json';
+import duty_list from '../../duty/duty_list.json';
+import personnel_list from '../../personnel/personnel_list.json';
+import exempt_form from '../exempt_form.json';
+import shift from '../../shift/shift.json';
 import { Vietnamese } from "flatpickr/dist/l10n/vn.js"
 import DropdownTreeSelect from "react-dropdown-tree-select";
 import "react-dropdown-tree-select/dist/styles.css";
@@ -25,7 +25,8 @@ interface TreeNode {
     label: string;
     checked: boolean;
     children?: TreeNode[];
-  }
+}
+
 const treeData = [
   {
     label: 'Phòng Tài chính',
@@ -48,12 +49,14 @@ interface Props {
 
 const LateEarlyFormModal = ({ ...props }: Props) => {
 	const { t } = useTranslation();
+    const router = useRouter();
 	const [disabled, setDisabled] = useState(false);
     const [listPersonnel, setListPersonnel] = useState<any>([]);
     const [listDuty, setListDuty] = useState<any>([]);
     const [listShift, setListShift] = useState<any>([]);
     const [department, setDepartment] = useState<any>({});
     const [treeDataState, setTreeDataState] = useState<any>(treeData)
+    const [detail, setDetail] = useState<any>({});
 
     useEffect(() => {
         const listPer = personnel_list?.map((item: any) =>  {
@@ -72,6 +75,31 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
         setListShift(listShift);
     }, []);
 
+    useEffect(() => {
+        if (Number(router.query.id)) {
+            const detailData = exempt_form?.find(d => d.id === Number(router.query.id));
+            setDetail(detailData);
+            setTreeDataState((tree: TreeNode[]) => {
+                const newTree = tree;
+                const selectedNodesLabels = detailData?.department;
+
+                function recursiveFindAndUpdateTree(some_tree: TreeNode[] | undefined): void {
+                  if (!some_tree || some_tree.length === 0) return;
+                  some_tree.forEach((e) => {
+                    if (detailData?.department === e.label) {
+                      e.checked = true;
+                    } else {
+                      e.checked = false;
+                    }
+                    recursiveFindAndUpdateTree(e.children);
+                  });
+                }
+
+                recursiveFindAndUpdateTree(newTree);
+                return newTree;
+              });
+        }
+    }, [router])
 
 	const SubmittedForm = Yup.object().shape({
 		name: Yup.object()
@@ -146,8 +174,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 
 		<div className="p-5">
             <div className='flex justify-between header-page-bottom pb-4 mb-4'>
-                <h1 className='page-title'>{t('add_forget_form')}</h1>
-                <Link href="/hrm/forget-form">
+                <h1 className='page-title'>{t('update_exempt_form')}</h1>
+                <Link href="/hrm/exempt-form">
                         <button type="button" className="btn btn-primary btn-sm m-1 back-button" >
                                     <IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                                                     <span>
@@ -158,20 +186,21 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
             </div>
             <Formik
 				initialValues={{
-											name: null,
-											code: null,
-                                            position: null,
-                                            department: null,
-                                            submitday: null,
-                                            fromdate: null,
-                                            enddate: null,
-                                            shift: null,
-                                            reason: ''
+											name: detail ? `${detail?.name}` : '',
+											code: detail ? `${detail?.code}` : '',
+                                            position: detail ? `${detail?.position}` : '',
+                                            department: detail ? `${detail?.department}` : '',
+                                            submitday: detail ? `${detail?.submitday}` : '',
+                                            fromdate: detail ? `${detail?.fromdate}` : '',
+                                            enddate: detail ? `${detail?.enddate}` : '',
+                                            shift: detail ? `${detail?.shift}` : '',
+                                            reason: detail ? `${detail?.reason}` : ''
 										}}
 										validationSchema={SubmittedForm}
 										onSubmit={(values) => {
 											handleDepartment(values);
 										}}
+                                        enableReinitialize
 									>
 										{({ errors, touched, submitCount, setFieldValue }) => (
 											<Form className="space-y-5">
@@ -181,24 +210,16 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('name_staff')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field
-                                                className="form-input"
-                                                        name="name"
-                                                        render={({ field }: any) => (
-                                                            <>
-                                                                <Select
-                                                                    // {...field}
-                                                                    options={listPersonnel}
-                                                                    isSearchable
-                                                                    placeholder={t('choose_name')}
-                                                                    maxMenuHeight={150}
-                                                                    onChange={(item) => {
-                                                                        setFieldValue('name', item)
-                                                                    }}
-                                                                />
-                                                            </>
-                                                        )}
-                                                    />
+                                                <Field as="select" name="name" id="name" className="form-input">
+                                                    { listPersonnel?.map((person: any) => {
+                                                        return (
+                                                            <option key={person.value} value={person.value}>
+                                                                {person.label}
+                                                            </option>
+                                                        );
+                                                    })}
+
+                                </Field>
                                                {submitCount ? (
     errors.name ? <div className="mt-1 text-danger">{errors.name}</div> : null
   ) : null}
@@ -208,24 +229,16 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('duty')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field
-                                                className="form-input"
-                                                        name="position"
-                                                        render={({ field }: any) => (
-                                                            <>
-                                                                <Select
-                                                                    // {...field}
-                                                                    options={listDuty}
-                                                                    isSearchable
-                                                                    placeholder={t('choose_duty')}
-                                                                    maxMenuHeight={150}
-                                                                    onChange={(item) => {
-                                                                        setFieldValue('position', item)
-                                                                    }}
-                                                                />
-                                                            </>
-                                                        )}
-                                                    />
+                                                <Field as="select" name="position" id="position" className="form-input">
+                                                    { listDuty?.map((duty: any) => {
+                                                        return (
+                                                            <option key={duty.value} value={duty.value}>
+                                                                {duty.label}
+                                                            </option>
+                                                        );
+                                                    })}
+
+                                </Field>
                                                     {submitCount ? errors.position ? <div className="mt-1 text-danger"> {errors.position} </div> : null : ''}
                                             </div>
                                             </div>
@@ -261,26 +274,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('submitday')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field
-                                                        name="submitday"
-                                                        render={({ field }: any) => (
-                                                            <Flatpickr
-                                                                data-enable-time
-                                                                placeholder={`${t('choose_submit_day')}`}
-                                                                options={{
-                                                                    enableTime: true,
-                                                                    dateFormat: 'Y-m-d H:i',
-                                                                    locale: {
-                                                                        ...Vietnamese
-                                                                    },
-                                                                }}
-                                                                className="form-input"
-                                                                onChange={(item) => {
-                                                                    setFieldValue('submitday', item)
-                                                                }}
-                                                            />
-                                                        )}
-                                                    />
+                                                <Field id="submitday" type="datetime-local" name="submitday" className="form-input" placeholder={`${t('choose_submit_day')}`} />
                                                     {submitCount ? errors.submitday ? <div className="mt-1 text-danger"> {errors.submitday} </div> : null : ''}
                                             </div>
                                             </div>
@@ -290,26 +284,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('from_date')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field
-                                                        name="from_date"
-                                                        render={({ field }: any) => (
-                                                            <Flatpickr
-                                                                data-enable-time
-                                                                placeholder={`${t('choose_from_day')}`}
-                                                                options={{
-                                                                    enableTime: true,
-                                                                    dateFormat: 'Y-m-d H:i',
-                                                                    locale: {
-                                                                        ...Vietnamese
-                                                                    }
-                                                                }}
-                                                                className="form-input"
-                                                                onChange={(item) => {
-                                                                    setFieldValue('fromdate', item)
-                                                                }}
-                                                            />
-                                                        )}
-                                                    />
+                                                <Field id="fromdate" type="datetime-local" name="fromdate" className="form-input" placeholder={`${t('choose_from_day')}`} />
+
                                                     {submitCount ? errors.fromdate ? <div className="mt-1 text-danger"> {errors.fromdate} </div> : null : ''}
                                             </div>
                                             <div className="mb-5 w-1/2">
@@ -317,26 +293,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('end_date')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field
-                                                        name="end_date"
-                                                        render={({ field }: any) => (
-                                                            <Flatpickr
-                                                                data-enable-time
-                                                                placeholder={`${t('choose_end_day')}`}
-                                                                options={{
-                                                                    enableTime: true,
-                                                                    dateFormat: 'Y-m-d H:i',
-                                                                    locale: {
-                                                                        ...Vietnamese
-                                                                    }
-                                                                }}
-                                                                className="form-input"
-                                                                onChange={(item) => {
-                                                                    setFieldValue('end_date', item)
-                                                                }}
-                                                            />
-                                                        )}
-                                                    />
+                                                <Field id="enddate" type="datetime-local" name="enddate" className="form-input" placeholder={`${t('choose_end_day')}`} />
+
                                                     {submitCount ? errors.enddate ? <div className="mt-1 text-danger"> {errors.enddate} </div> : null : ''}
                                             </div>
                                             </div>
@@ -346,22 +304,17 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('shift')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field
-                                                    name="shift"
-                                                    render={({ field }: any) => (
-                                                        <>
-                                                            <Select
-                                                                options={listShift}
-                                                                isSearchable
-                                                                placeholder={`${t('choose_shift')}`}
-                                                                onChange={(item) => {
-                                                                    setFieldValue('shift', item)
-                                                                }}
-                                                                />
+                                                <Field as="select" name="shift" id="shift" className="form-input">
+                                                    { listShift?.map((shift: any) => {
+                                                        return (
+                                                            <option key={shift.value} value={shift.value}>
+                                                                {shift.label}
+                                                            </option>
+                                                        );
+                                                    })}
 
-                                                            </>
-                                                        )}
-                                                    />
+                                </Field>
+
                                                     {submitCount ? errors.shift ? <div className="mt-1 text-danger"> {errors.shift} </div> : null : ''}
                                             </div>
                                             <div className="mb-5 w-1/2">
@@ -378,7 +331,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {t('cancel')}
                                                 </button>
                                                 <button type="submit" className="btn :ml-4 rtl:mr-4 add-button" disabled={disabled}>
-                                                    {t('save')}
+                                                    {t('update')}
                                                 </button>
                                             </div>
 

@@ -50,6 +50,7 @@
 		"react-copy-to-clipboard": "^5.1.0",
 		"react-countup": "^6.4.1",
 		"react-dom": "18.2.0",
+		"react-dropdown-tree-select": "^2.8.0",
 		"react-export-table-to-excel": "^1.0.6",
 		"react-flatpickr": "^3.10.13",
 		"react-i18next": "^12.1.5",

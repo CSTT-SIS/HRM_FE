@@ -45,6 +45,7 @@
 @import './custom.css';
 @import './custom-table.css';
 @import './custom-accodion.css';
+@import './custom-dropdown.css';
 
 @tailwind base;
 @tailwind components;
