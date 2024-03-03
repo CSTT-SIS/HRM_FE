@@ -12,35 +12,35 @@ import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import Select from 'react-select';
 import Link from 'next/link';
-import IconArrowBackward from '@/components/Icon/IconArrowBackward';
 import IconBack from '@/components/Icon/IconBack';
 import duty_list from '../duty/duty_list.json';
 import personnel_list from '../personnel/personnel_list.json';
 import shift from '../shift/shift.json';
 import { Vietnamese } from "flatpickr/dist/l10n/vn.js"
+import DropdownTreeSelect from "react-dropdown-tree-select";
+import "react-dropdown-tree-select/dist/styles.css";
 
-import TreeSelect from 'rc-tree-select';
 
 interface TreeNode {
-  value: string;
-  title: string;
-  children?: TreeNode[];
-}
-
-const treeData: TreeNode[] = [
+    label: string;
+    checked: boolean;
+    children?: TreeNode[];
+  }
+const treeData = [
   {
-    title: 'Phòng Tài chính',
+    label: 'Phòng Tài chính',
     value: '0-0',
     children: [
-      { title: 'Phòng 1', value: '0-0-1' },
-      { title: 'Phòng 2', value: '0-0-2' },
+      { label: 'Phòng 1', value: '0-0-1' },
+      { label: 'Phòng 2', value: '0-0-2' },
     ],
   },
   {
-    title: 'Phòng Nhân sự',
+    label: 'Phòng Nhân sự',
     value: '0-1',
   },
 ];
+
 
 interface Props {
 	[key: string]: any;
@@ -52,6 +52,9 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
     const [listPersonnel, setListPersonnel] = useState<any>([]);
     const [listDuty, setListDuty] = useState<any>([]);
     const [listShift, setListShift] = useState<any>([]);
+    const [department, setDepartment] = useState<any>({});
+    const [treeDataState, setTreeDataState] = useState<any>(treeData)
+
     useEffect(() => {
         const listPer = personnel_list?.map((item: any) =>  {
             return {label: item.name, value: item.code}
@@ -74,7 +77,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 		name: Yup.object()
 			.typeError(`${t('please_choose_name_staff')}`),
         position: Yup.object()
-            .typeError(`${t('please_choose_position')}`),
+            .typeError(`${t('please_choose_duty')}`),
         department: Yup.object()
             .typeError(`${t('please_choose_department')}`),
         submitday: Yup.date().typeError(`${t('please_choose_submit_day')}`),
@@ -119,10 +122,32 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 		props.setOpenModal(false);
 		props.setData(undefined);
 	};
+
+    const handleChangeTreeData = (selectedNodes: { label: string }[]) => {
+        setTreeDataState((tree: TreeNode[]) => {
+          const newTree = tree;
+          const selectedNodesLabels = selectedNodes.map((e) => e.label);
+
+          function recursiveFindAndUpdateTree(some_tree: TreeNode[] | undefined): void {
+            if (!some_tree || some_tree.length === 0) return;
+            some_tree.forEach((e) => {
+              if (selectedNodesLabels.includes(e.label)) {
+                e.checked = true;
+              } else {
+                e.checked = false;
+              }
+              recursiveFindAndUpdateTree(e.children);
+            });
+          }
+
+          recursiveFindAndUpdateTree(newTree);
+          return newTree;
+        });
+      }
 	return (
 
-								<div className="p-5">
-                                    <div className='flex justify-between header-page-bottom pb-4 mb-4'>
+		<div className="p-5">
+            <div className='flex justify-between header-page-bottom pb-4 mb-4'>
                 <h1 className='page-title'>{t('add_late_early_form')}</h1>
                 <Link href="/hrm/late-early-form">
                         <button type="button" className="btn btn-primary btn-sm m-1 back-button" >
@@ -131,10 +156,10 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {t('back')}
                                                         </span>
                                     </button>
-                        </Link>
+                </Link>
             </div>
             <Formik
-										initialValues={{
+				initialValues={{
 											name: null,
 											code: null,
                                             position: null,
@@ -185,7 +210,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                             <div className="mb-5 w-1/2">
                                                 <label htmlFor="position" className='label'>
                                                     {' '}
-                                                    {t('position')} <span style={{ color: 'red' }}>* </span>
+                                                    {t('duty')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
                                                 <Field
                                                 className="form-input"
@@ -196,7 +221,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                                     // {...field}
                                                                     options={listDuty}
                                                                     isSearchable
-                                                                    placeholder={t('choose_position')}
+                                                                    placeholder={t('choose_duty')}
                                                                     maxMenuHeight={150}
                                                                     onChange={(item) => {
                                                                         setFieldValue('position', item)
@@ -214,19 +239,24 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('department')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field name="department">
-                        {({ field, form }: any) => (
-                            <TreeSelect
-                            className='form-input'
-                                // style={{ width: '100%' }}
-                                // dropdownStyle={{ maxHeight: 400, overflow: 'auto', zIndex: 10 }}
-                                treeData={treeData}
-                                placeholder={t('choose_department')}
-                                treeDefaultExpandAll
-                                onChange={(value) => setFieldValue('department', value)}
-                            />
-                        )}
-                    </Field>
+                                                <Field
+                                                            name="department"
+                                                            render={({ field }: any) => (
+                                                                <DropdownTreeSelect
+                                                                className="dropdown-tree"
+                                                                  data={treeDataState}
+                                                                  texts={{ placeholder: `${t('choose_department')}`}}
+                                                                  showPartiallySelected={true}
+                                                                  inlineSearchInput={true}
+                                                                  mode='radioSelect'
+                                                                  onChange={(currentNode, selectedNodes) => {
+                                                                    console.log(selectedNodes[0]?.value)
+                                                                    setFieldValue('department', selectedNodes[0]);
+                                                                    handleChangeTreeData(selectedNodes)
+                                                                  }}
+                                                                />
+                                                                )}
+        />
 
                                                     {submitCount ? errors.department ? <div className="mt-1 text-danger"> {errors.department} </div> : null : ''}
                                             </div>
@@ -370,7 +400,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {t('cancel')}
                                                 </button>
                                                 <button type="submit" className="btn :ml-4 rtl:mr-4 add-button" disabled={disabled}>
-                                                    {props.data !== undefined ? t('update') : t('add')}
+                                                    {t('save')}
                                                 </button>
                                             </div>
 
@@ -380,6 +410,6 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 								</div>
 
 	);
-};
+}
 
 export default LateEarlyFormModal;

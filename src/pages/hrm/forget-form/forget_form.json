@@ -6,15 +6,16 @@
         "status": "active",
         "position": "Kế toán",
         "department": "Công ty",
-        "submitday": "19/01/2023",
-        "fromdate": "19/01/2023",
-        "enddate": "20/01/2023",
+        "submitday": "2024-01-01T14:30",
+        "fromdate": "2024-01-01T14:30",
+        "enddate": "2024-01-03T14:30",
         "day": "Thứ 2, thứ 3",
         "shift": "Ca hành chính, Ca sáng",
         "late_second": "20",
         "early_second": "20",
         "checker": "Nguyễn Văn A",
-        "isCheck": true
+        "isCheck": true,
+        "reason": ""
     },
     {
         "id": 2,
@@ -23,15 +24,15 @@
         "status": "active",
         "position": "Kế toán",
         "department": "Công ty",
-        "submitday": "19/01/2023",
-        "fromdate": "19/01/2023",
-        "enddate": "20/01/2023",
-        "day": "Thứ 2, thứ 3",
+        "submitday": "2024-01-01T14:30",
+        "fromdate": "2024-01-01T14:30",
+        "enddate": "2024-01-03T14:30",
         "shift": "Ca hành chính, Ca sáng",
         "late_second": "20",
         "early_second": "20",
         "checker": "Nguyễn Văn A",
-        "isCheck": true
+        "isCheck": true,
+        "reason": ""
     },
     {
         "id": 3,
@@ -40,15 +41,16 @@
         "status": "active",
         "position": "Kế toán",
         "department": "Công ty",
-        "submitday": "19/01/2023",
-        "fromdate": "19/01/2023",
-        "enddate": "20/01/2023",
+        "submitday": "2024-01-01T14:30",
+        "fromdate": "2024-01-01T14:30",
+        "enddate": "2024-01-03T14:30",
         "day": "Thứ 2, thứ 3",
         "shift": "Ca hành chính, Ca sáng",
         "late_second": "20",
         "early_second": "20",
         "checker": "Nguyễn Văn A",
-        "isCheck": true
+        "isCheck": true,
+        "reason": ""
     },
     {
         "id": 4,
@@ -57,14 +59,15 @@
         "status": "active",
         "position": "Kế toán",
         "department": "Công ty",
-        "submitday": "19/01/2023",
-        "fromdate": "19/01/2023",
-        "enddate": "20/01/2023",
+        "submitday": "2024-01-01T14:30",
+        "fromdate": "2024-01-01T14:30",
+        "enddate": "2024-01-03T14:30",
         "day": "Thứ 2, thứ 3",
         "shift": "Ca hành chính, Ca sáng",
         "late_second": "20",
         "early_second": "20",
         "checker": "Nguyễn Văn A",
-        "isCheck": true
+        "isCheck": true,
+        "reason": ""
     }
 ]
