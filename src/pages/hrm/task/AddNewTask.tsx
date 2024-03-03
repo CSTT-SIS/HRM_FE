@@ -15,6 +15,8 @@ import Link from 'next/link';
 import IconArrowBackward from '@/components/Icon/IconArrowBackward';
 import { ProductCategorys, Providers } from '@/services/swr/product.twr';
 import IconBack from '@/components/Icon/IconBack';
+import IconCaretDown from '@/components/Icon/IconCaretDown';
+import IconCalendar from '@/components/Icon/IconCalendar';
 
 interface Props {
     [key: string]: any;
@@ -160,7 +162,7 @@ const AddNewTask = ({ ...props }: Props) => {
                                     {' '}
                                     {t('creator_task')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field type="text" name="creator" id="creator" className="form-input" disabled>
+                                <Field type="text" name="creator" id="creator" className="form-input" disabled style={{ color: 'gray' }}>
                                 </Field>
                                 {submitCount ? errors.creator ? <div className="mt-1 text-danger"> {errors.creator} </div> : null : ''}
                             </div>
@@ -184,21 +186,31 @@ const AddNewTask = ({ ...props }: Props) => {
                                     {' '}
                                     {t('executor_task')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field as="select" name="executor" id="executor" className="form-input">
-                                    <option value="">Chọn người thực hiện</option>
-                                    <option value="Người thực hiện 1">Người thực hiện 1</option>
-                                    <option value="Người thực hiện 2">Người thực hiện 2</option>
-                                </Field>
+                                <div className="flex">
+                                    <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
+                                        <IconCaretDown></IconCaretDown>
+                                    </div>
+                                    <Field as="select" name="executor" id="executor" className="form-input ltr:rounded-l-none rtl:rounded-r-none">
+                                        <option value="">Chọn người thực hiện</option>
+                                        <option value="Người thực hiện 1">Người thực hiện 1</option>
+                                        <option value="Người thực hiện 2">Người thực hiện 2</option>
+                                    </Field>
+                                </div>
+
                                 {submitCount ? errors.executor ? <div className="mt-1 text-danger"> {errors.executor} </div> : null : ''}
                             </div>
                             <div className="mb-3 w-1/2">
                                 <label htmlFor="collaborator"> {t('collaborator_task')}</label>
-
-                                <Field as="select" name="collaborator" id="collaborator" className="form-input">
-                                    <option value="">Chọn người phối hợp</option>
-                                    <option value="Người người phối hợp 1">Người phối hợp 1</option>
-                                    <option value="Người người phối hợp 2">Người phối hợp 2</option>
-                                </Field>
+                                <div className="flex">
+                                    <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
+                                        <IconCaretDown></IconCaretDown>
+                                    </div>
+                                    <Field as="select" name="collaborator" id="collaborator" className="form-input ltr:rounded-l-none rtl:rounded-r-none">
+                                        <option value="">Chọn người phối hợp</option>
+                                        <option value="Người người phối hợp 1">Người phối hợp 1</option>
+                                        <option value="Người người phối hợp 2">Người phối hợp 2</option>
+                                    </Field>
+                                </div>
                             </div>
                         </div>
                         <div className="mb-3">
@@ -206,14 +218,20 @@ const AddNewTask = ({ ...props }: Props) => {
                                 {t('deadline_task')} <span style={{ color: 'red' }}>* </span>
 
                             </label>
-                            <Flatpickr
-                                options={{
-                                    dateFormat: 'Y-m-d',
-                                    position: 'auto left',
-                                }}
-                                className="form-input"
-                                placeholder={`${t('enter_deadline_task')}`}
-                            />
+                            <div className="flex">
+                                <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
+                                    <IconCalendar></IconCalendar>
+                                </div>
+                                <Flatpickr
+                                    options={{
+                                        dateFormat: 'Y-m-d',
+                                        position: 'auto left',
+                                    }}
+                                    className="form-input ltr:rounded-l-none rtl:rounded-r-none"
+                                    placeholder={`${t('enter_deadline_task')}`}
+                                />
+                            </div>
+
                             {submitCount ? errors.deadline ? <div className="mt-1 text-danger"> {errors.deadline} </div> : null : ''}
                         </div>
                         <div className="mb-3">

@@ -631,7 +631,7 @@
 	"timekeeping-employee": "Bảng công nhân viên",
 	"choose_month": "Chọn tháng",
 	"other_information": "THÔNG TIN KHÁC",
-	"Department_Parent": "Cơ quan trực thuộc",
+	"Department_Parent": "Phòng ban trực thuộc",
 	"Manager": "Quản lý trực tiếp",
 	"Manager_2": "Quản lý gián tiếp",
 	"date_join": "Ngày vào công ty",
@@ -656,7 +656,7 @@
 	"quantity_asset": "Giá trị tài sản",
 	"enter_name_asset": "Nhâp tên tài sản",
 	"enter_quantity_asset": "Nhập giá trị tài sản",
-	"select_departmentparent": "Chọn cơ quan trực thuộc",
+	"select_departmentparent": "Chọn phòng ban trực thuộc",
 	"select_duty": "Chọn chức vụ",
 	"select_manager": "Chọn quản lý trực tiếp",
 	"select_manager_2": "Chọn quản lý gián tiếp",
@@ -674,5 +674,6 @@
 	"please_fill_abbreviated_name": "Vui lòng nhập tên viết tắt",
 	"enter_abbreviated_name": "Nhập tên viết tắt",
 	"date_create": "Ngày tạo",
-	"please_add_infomation": "Vui lòng thêm thông tin"
+	"please_add_infomation": "Vui lòng thêm thông tin",
+	"edit_shift": "Sửa ca làm việc"
 }
