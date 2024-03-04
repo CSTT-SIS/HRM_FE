@@ -12,6 +12,8 @@ import { CreateProductCategory, EditProductCategory, GetProductCategory } from '
 import Link from 'next/link';
 import IconBackward from '@/components/Icon/IconBackward';
 import { useRouter } from 'next/router';
+import Select, { components } from 'react-select';
+import { DropdownWarehouses } from '@/services/swr/dropdown.twr';
 
 interface Props {
     [key: string]: any;
@@ -23,21 +25,32 @@ const CategoryModal = ({ ...props }: Props) => {
     const { t } = useTranslation();
     const [disabled, setDisabled] = useState(false);
     const [data, setData] = useState<any>();
+    const [dataWarehouseDropdown, setDataWarehouseDropdown] = useState<any>([]);
+    const [pageWarehouse, setPageWarehouse] = useState(1);
 
     const SubmittedForm = Yup.object().shape({
-        name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name')}`)
+        name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name')}`),
+        warehouseId: new Yup.ObjectSchema().required(`${t('please_fill_warehouse')}`)
     });
 
+    const { data: warehouseDropdown, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({ page: pageWarehouse });
+
     const handleCategory = (param: any) => {
+        const query = {
+            "name": param.name,
+            "description": param.description,
+            "warehouseId": param.warehouseId.value
+        }
+
         if (data) {
-            EditProductCategory({ id: data.id, ...param }).then(() => {
+            EditProductCategory({ id: data.id, ...query }).then(() => {
                 handleCancel();
                 showMessage(`${t('edit_category_success')}`, 'success');
             }).catch((err) => {
                 showMessage(`${t('edit_category_error')}`, 'error');
             });
         } else {
-            CreateProductCategory(param).then(() => {
+            CreateProductCategory(query).then(() => {
                 handleCancel();
                 showMessage(`${t('create_category_success')}`, 'success');
             }).catch((err) => {
@@ -58,7 +71,23 @@ const CategoryModal = ({ ...props }: Props) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             })
         }
-    }, [router])
+    }, [router]);
+
+    useEffect(() => {
+        if (warehousePagination?.page === undefined) return;
+        if (warehousePagination?.page === 1) {
+            setDataWarehouseDropdown(warehouseDropdown?.data)
+        } else {
+            setDataWarehouseDropdown([...dataWarehouseDropdown, ...warehouseDropdown?.data])
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [warehousePagination]);
+
+    const handleMenuScrollToBottomWarehouse = () => {
+        setTimeout(() => {
+            setPageWarehouse(warehousePagination?.page + 1);
+        }, 1000);
+    }
 
     return (
         <div>
@@ -78,8 +107,11 @@ const CategoryModal = ({ ...props }: Props) => {
                     initialValues={
                         {
                             name: data ? `${data?.name}` : "",
-                            description: data ? `${data?.description}` : ""
-
+                            description: data ? `${data?.description}` : "",
+                            warehouseId: data ? {
+                                value: `${data?.warehouse?.id}`,
+                                label: `${data?.warehouse?.name}`
+                            } : ""
                         }
                     }
                     validationSchema={SubmittedForm}
@@ -89,7 +121,7 @@ const CategoryModal = ({ ...props }: Props) => {
                     enableReinitialize
                 >
 
-                    {({ errors, touched, submitCount }) => (
+                    {({ values, setFieldValue, errors, submitCount }) => (
                         <Form className="space-y-5" >
                             <div className='flex justify-between gap-5'>
                                 <div className="w-1/2">
@@ -100,12 +132,34 @@ const CategoryModal = ({ ...props }: Props) => {
                                     ) : null}
                                 </div>
                                 <div className="w-1/2">
+                                    <label htmlFor="warehouseId" > {t('warehouse')} < span style={{ color: 'red' }}>* </span></label >
+                                    <Select
+                                        id='warehouseId'
+                                        name='warehouseId'
+                                        options={dataWarehouseDropdown}
+                                        onMenuOpen={() => setPageWarehouse(1)}
+                                        onMenuScrollToBottom={handleMenuScrollToBottomWarehouse}
+                                        isLoading={warehouseLoading}
+                                        maxMenuHeight={160}
+                                        value={values?.warehouseId}
+                                        onChange={e => {
+                                            setFieldValue('warehouseId', e)
+                                        }}
+                                    />
+                                    {submitCount && errors.warehouseId ? (
+                                        <div className="text-danger mt-1"> {`${errors.warehouseId}`} </div>
+                                    ) : null}
+                                </div>
+                            </div>
+                            <div className='flex justify-between gap-5'>
+                                <div className="w-1/2">
                                     <label htmlFor="description" > {t('description')} </label >
                                     <Field name="description" type="text" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
                                     {submitCount && errors.description ? (
                                         <div className="text-danger mt-1"> {errors.description} </div>
                                     ) : null}
                                 </div>
+                                <div className='w-1/2'></div>
                             </div>
                             <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                 <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>

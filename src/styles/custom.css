@@ -173,7 +173,6 @@ li.menu > button.active {
 }
 
 .back-button {
-    width: 117px;
     height: 32px;
     padding: 0px 16px 0px 16px;
     border-radius: 8px;
@@ -216,7 +215,7 @@ li.menu > button.active {
     border-radius: 8px;
     border: 1px;
     gap: 12px;
-    border: 1px solid #082819;
+    border: 1px solid #082819 !important;
     text-transform: uppercase!important;
     background: #959E5E!important;
     color: #fff!important;
@@ -271,6 +270,18 @@ li.menu > button:hover svg.icon-menu {
 }
 
 
+.form-input {
+    font-size: 12px !important;
+}
 
+.text-danger {
+    font-size: 10px !important;
+}
 
-
+.mb-5 {
+    margin-bottom: 0 !important;
+}
+.css-1jqq78o-placeholder {
+    font-size: 12px;
+    font-weight: 600;
+}

@@ -66,93 +66,98 @@ const AddNewDuty = ({ ...props }: Props) => {
             <div className='flex justify-between header-page-bottom pb-4 mb-4'>
                 <h1 className='page-title'>{t('add_duty')}</h1>
                 <Link href="/hrm/duty">
-                        <button type="button" className="btn btn-primary btn-sm m-1 back-button" >
-                                    <IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                                                    <span>
-                                                    {t('back')}
-                                                        </span>
-                                    </button>
-                        </Link>
+                    <button type="button" className="btn btn-primary btn-sm m-1 back-button" >
+                        <IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                        <span>
+                            {t('back')}
+                        </span>
+                    </button>
+                </Link>
             </div>
-                                    <Formik
-                                        initialValues={
-                                            {
-                                                name: props?.data ? `${props?.data?.name}` : "",
-                                                code: props?.data ? `${props?.data?.code}` : "",
-                                                status: props?.data ? `${props?.data?.status}` : "",
-                                                duty_group: props?.data ? `${props?.data?.duty_group}` : "",
-                                                description: props?.data ? `${props?.data?.description}` : ""
-                                            }
-                                        }
-                                        validationSchema={SubmittedForm}
-                                        onSubmit={values => {
-                                            handleDuty(values);
-                                        }}
-                                    >
+            <Formik
+                initialValues={
+                    {
+                        name: props?.data ? `${props?.data?.name}` : "",
+                        code: props?.data ? `${props?.data?.code}` : "",
+                        status: "active",
+                        duty_group: props?.data ? `${props?.data?.duty_group}` : "",
+                        description: props?.data ? `${props?.data?.description}` : ""
+                    }
+                }
+                validationSchema={SubmittedForm}
+                onSubmit={values => {
+                    handleDuty(values);
+                }}
+            >
 
-                                        {({ errors, touched, submitCount }) => (
-                                            <Form className="space-y-5" >
-                                                <div className="mb-5">
-                                                    <label htmlFor="name" className='label'> {t('name_duty')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name_duty')}`} className="form-input" />
-                                                    {submitCount ? errors.name ? (
-                                                        <div className="text-danger mt-1"> {errors.name} </div>
-                                                    ) : null : ''}
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="code" className='label'> {t('code_duty')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="code" type="text" id="code" placeholder={`${t('enter_code_duty')}`} className="form-input" />
-                                                    {submitCount ? errors.code ? (
-                                                        <div className="text-danger mt-1"> {errors.code} </div>
-                                                    ) : null : ''}
-                                                </div>
-                                                <div className="mb-5 flex justify-between gap-4">
-                                                    <div className="flex-1">
-                                                        <label htmlFor="duty_group" className='label'> {t('duty_group')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Field as="select" name="duty_group" id="duty_group" className="form-input">
-                                                            <option value="active">Quản lý</option>
-                                                            <option value="inActive">Nhân viên</option>
-                                                        </Field>
-                                                        {submitCount ? errors.duty_group ? (
-                                                            <div className="text-danger mt-1"> {errors.duty_group} </div>
-                                                        ) : null : ''}
-                                                    </div>
-                                                </div>
-                                                <div className="mb-5 flex justify-between gap-4">
-                                                    <div className="flex-1">
-                                                        <label htmlFor="status" className='label'> {t('status')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Field as="select" name="status" id="status"
-                                                        placeholder={t('enter_duty_status')}
-                                                        className="form-input">
-                                                            <option value="active">{t('active')}</option>
-                                                            <option value="inActive">{t('inactive')}</option>
-                                                        </Field>
-                                                        {submitCount ? errors.status ? (
-                                                            <div className="text-danger mt-1"> {errors.status} </div>
-                                                        ) : null : ''}
-                                                    </div>
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="description" className='label'> {t('description')}</label >
-                                                    <Field name="duty_description" type="text" id="duty_description" placeholder={`${t('enter_description')}`} className="form-input" />
-                                                    {submitCount ? errors.description ? (
-                                                        <div className="text-danger mt-1"> {errors.description} </div>
-                                                    ) : null : ''}
-                                                </div>
-                                                <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">
-                                                    <button type="button" className="btn btn-outline-dark cancel-button" onClick={() => handleCancel()}>
-                                                        {t('cancel')}
-                                                    </button>
-                                                    <button type="submit" className="btn :ml-4 rtl:mr-4 add-button" disabled={disabled}>
-                                                        {props.data !== undefined ? t('update') : t('add')}
-                                                    </button>
-                                                </div>
-
-                                            </Form>
-                                        )}
-                                    </Formik>
-
+                {({ errors, touched, submitCount }) => (
+                    <Form className="space-y-5" >
+                        <div className="flex justify-between gap-5">
+                            <div className="mb-5 w-1/2">
+                                <label htmlFor="name" className='label'> {t('name_duty')} < span style={{ color: 'red' }}>* </span></label >
+                                <Field name="name" type="text" id="name" placeholder={`${t('enter_name_duty')}`} className="form-input" />
+                                {submitCount ? errors.name ? (
+                                    <div className="text-danger mt-1"> {errors.name} </div>
+                                ) : null : ''}
+                            </div>
+                            <div className="mb-5 w-1/2">
+                                <label htmlFor="code" className='label'> {t('code_duty')} < span style={{ color: 'red' }}>* </span></label >
+                                <Field name="code" type="text" id="code" placeholder={`${t('enter_code_duty')}`} className="form-input" />
+                                {submitCount ? errors.code ? (
+                                    <div className="text-danger mt-1"> {errors.code} </div>
+                                ) : null : ''}
+                            </div>
+                        </div>
+                        <div className="flex justify-between gap-5">
+                            <div className="mb-5 w-1/2">
+                                <label htmlFor="duty_group" className='label'> {t('duty_group')} < span style={{ color: 'red' }}>* </span></label >
+                                <Field as="select" name="duty_group" id="duty_group" className="form-input">
+                                    <option value="active">Quản lý</option>
+                                    <option value="inActive">Nhân viên</option>
+                                </Field>
+                                {submitCount ? errors.duty_group ? (
+                                    <div className="text-danger mt-1"> {errors.duty_group} </div>
+                                ) : null : ''}
+                            </div>
+                            <div className="mb-5 w-1/2">
+                                <label htmlFor="status" className='label'> {t('status')} < span style={{ color: 'red' }}>* </span></label >
+                                <div className="flex" style={{ alignItems: 'center', marginTop: '13px' }}>
+                                    <label style={{ marginBottom: 0, marginRight: '10px' }}>
+                                        <Field type="radio" name="status" value="active" className="form-checkbox rounded-full"/>
+                                        {t('active')}
+                                    </label>
+                                    <label style={{ marginBottom: 0 }}>
+                                        <Field type="radio" name="status" value="inactive" className="form-checkbox rounded-full" />
+                                        {t('inactive')}
+                                    </label>
                                 </div>
+
+                                {submitCount ? errors.status ? (
+                                    <div className="text-danger mt-1"> {errors.status} </div>
+                                ) : null : ''}
+                            </div>
+                        </div>
+                        <div className="mb-5">
+                            <label htmlFor="description" className='label'> {t('description')}</label >
+                            <Field name="duty_description" as="textarea" id="duty_description" placeholder={`${t('enter_description')}`} className="form-input" />
+                            {submitCount ? errors.description ? (
+                                <div className="text-danger mt-1"> {errors.description} </div>
+                            ) : null : ''}
+                        </div>
+                        <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">
+                            <button type="button" className="btn btn-outline-dark cancel-button" onClick={() => handleCancel()}>
+                                {t('cancel')}
+                            </button>
+                            <button type="submit" className="btn :ml-4 rtl:mr-4 add-button" disabled={disabled}>
+                                {props.data !== undefined ? t('update') : t('add')}
+                            </button>
+                        </div>
+
+                    </Form>
+                )}
+            </Formik>
+
+        </div>
     );
 };
 

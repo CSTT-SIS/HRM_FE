@@ -19,6 +19,8 @@ import IconPlus from '@/components/Icon/IconPlus';
 import TaskModal from './modal/TaskModal';
 import { ActionIcon, Button, Checkbox, MultiSelect, Stack, TextInput } from '@mantine/core';
 import { useRouter } from 'next/router';
+import IconFile from '@/components/Icon/IconFile';
+import IconTag from '@/components/Icon/IconTag';
 interface Props {
 	[key: string]: any;
 }
@@ -29,7 +31,7 @@ const Task = ({ ...props }: Props) => {
 	useEffect(() => {
 		dispatch(setPageTitle(`${t('task')}`));
 	});
-    const router = useRouter();
+	const router = useRouter();
 	const [showLoader, setShowLoader] = useState(true);
 	const [page, setPage] = useState<any>(PAGE_NUMBER_DEFAULT);
 	const [pageSize, setPageSize] = useState(PAGE_SIZES_DEFAULT);
@@ -72,7 +74,7 @@ const Task = ({ ...props }: Props) => {
 	const handleEdit = (data: any) => {
 		// setOpenModal(true);
 		// setData(data);
-        router.push(`/hrm/task/${data.id}`)
+		router.push(`/hrm/task/${data.id}`)
 	};
 
 	const handleDelete = (data: any) => {
@@ -165,21 +167,15 @@ const Task = ({ ...props }: Props) => {
 			titleClassName: '!text-center',
 			render: (records: any) => (
 				<div className="mx-auto flex w-max items-center gap-2">
-					<Tippy content={`${t('edit')}`}>
-						<button type="button" className='button-edit' onClick={() => handleEdit(records)}>
-							<IconPencil /> Sửa
-						</button>
-					</Tippy>
-					<Tippy content={`${t('delete')}`}>
-						<button type="button" className='button-delete' onClick={() => handleDelete(records)}>
-							<IconTrashLines /> Xóa
-						</button>
-					</Tippy>
-					<Tippy content={`${t('download')}`}>
-						<button type="button" className='button-detail'>
-							<IconDownload /> {t('download')}
-						</button>
-					</Tippy>
+					<button type="button" className='button-edit' onClick={() => handleEdit(records)}>
+						<IconPencil /> Sửa
+					</button>
+					<button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+						<IconTrashLines /> Xóa
+					</button>
+					<button type="button" className='button-detail'>
+						<IconTag /> {t('download')}
+					</button>
 				</div>
 			),
 		},

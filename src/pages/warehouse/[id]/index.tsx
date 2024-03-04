@@ -8,7 +8,7 @@ import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
 import { ProductByIdWarehouse } from '@/services/swr/product.twr';
-import { GetWarehouse } from '@/services/apis/warehouse.api';
+import { CreateWarehouse, EditWarehouse, GetWarehouse } from '@/services/apis/warehouse.api';
 // constants
 import { PAGE_SIZES } from '@/utils/constants';
 // helper
@@ -16,7 +16,12 @@ import { PAGE_SIZES } from '@/utils/constants';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
 import ImportModal from '../modal/importModal';
-//modal
+import { Field, Form, Formik } from 'formik';
+import { showMessage } from '@/@core/utils';
+import * as Yup from 'yup';
+import Link from 'next/link';
+import IconBackward from '@/components/Icon/IconBackward';
+
 
 interface Props {
     [key: string]: any;
@@ -124,30 +129,88 @@ const ShelfPage = ({ ...props }: Props) => {
     const [openTab, setOpenTab] = useState(1);
 
     const RenderData = (data: any) => {
-        delete data?.id;
-        delete data?.createdAt;
-        delete data?.parentId;
-        delete data?.parentPath;
-        delete data?.typeId;
-        delete data?.managerId;
-        delete data?.productCategories;
-        typeof data?.type === 'object' && (data.type = data?.type.name);
+        const SubmittedForm = Yup.object().shape({
+            name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_warehouse')}`),
+            code: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_warehouseCode')}`),
+        });
+
+        const handleWarehouse = (param: any) => {
+            const query = {
+                name: param.name,
+                code: param.code,
+                description: param.description
+            }
+            if (data) {
+                EditWarehouse({ id: data.id, ...query }).then(() => {
+                    // handleCancel();
+                    showMessage(`${t('edit_warehouse_success')}`, 'success');
+                }).catch((err) => {
+                    showMessage(`${t('edit_warehouse_error')}`, 'error');
+                });
+            } else {
+                CreateWarehouse(query).then(() => {
+                    // handleCancel();
+                    showMessage(`${t('create_warehouse_success')}`, 'success');
+                }).catch((err) => {
+                    showMessage(`${t('create_warehouse_error')}`, 'error');
+                });
+            }
+        }
         return (
-            <>
-                {
-                    data && Object.keys(data).map((item) => {
-                        return (
-                            <div className='flex flex-col-reverse divide-y divide-y-reverse' key={item}>
-                                <div className='flex flex-col-revers'>
-                                    <div className="basis-32 text-xl antialiased font-light leading-10 text-current">{item}</div>
-                                    <div className="basis-6 text-xl antialiased font-light leading-10 text-current">:</div>
-                                    <div className="basis-1/4 text-xl antialiased font-light leading-10 text-current">{data[item]}</div>
+            <div className="p-5">
+                <Formik
+                    initialValues={
+                        {
+                            name: data ? `${data?.name}` : "",
+                            code: data ? `${data?.code}` : "",
+                            description: data ? `${data?.description}` : ""
+                        }
+                    }
+                    validationSchema={SubmittedForm}
+                    onSubmit={values => {
+                        handleWarehouse(values);
+                    }}
+                    enableReinitialize={true}
+                >
+
+                    {({ errors, setFieldValue, values }) => (
+                        <Form className="space-y-5" >
+                            <div className='flex justify-between gap-5 mt-5 mb-5'>
+                                <div className="w-1/2">
+                                    <label htmlFor="name" > {t('name')} < span style={{ color: 'red' }}>* </span></label >
+                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name')}`} className="form-input" />
+                                    {errors.name ? (
+                                        <div className="text-danger mt-1"> {errors.name} </div>
+                                    ) : null}
+                                </div>
+                                <div className="w-1/2">
+                                    <label htmlFor="code" > {t('code')} < span style={{ color: 'red' }}>* </span></label >
+                                    <Field name="code" type="text" id="code" placeholder={`${t('enter_code')}`} className="form-input" />
+                                    {errors.code ? (
+                                        <div className="text-danger mt-1"> {errors.code} </div>
+                                    ) : null}
                                 </div>
                             </div>
-                        );
-                    })
-                }
-            </>
+                            <div className="mb-5">
+                                <label htmlFor="description" > {t('description')} </label >
+                                <Field name="description" type="text" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
+                                {errors.description ? (
+                                    <div className="text-danger mt-1"> {errors.description} </div>
+                                ) : null}
+                            </div>
+                            <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left ">
+                                {/* <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
+                                    {t('cancel')}
+                                </button> */}
+                                <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+                                    {router.query.id !== "create" ? t('update') : t('add')}
+                                </button>
+                            </div>
+
+                        </Form>
+                    )}
+                </Formik>
+            </div>
         )
     }
 
@@ -162,61 +225,71 @@ const ShelfPage = ({ ...props }: Props) => {
             <>
                 <div className="flex flex-wrap">
                     <div className="w-full">
-                        <ul
-                            className="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row"
-                            role="tablist"
-                        >
-                            <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
-                                <a
-                                    className={
-                                        "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
-                                        (openTab === 1
-                                            ? "text-white bg-blue-500"
-                                            : "text-black dark:bg-neutral-100")
-                                    }
-                                    onClick={e => {
-                                        e.preventDefault();
-                                        setOpenTab(1);
-                                    }}
-                                    data-toggle="tab"
-                                    href="#link1"
-                                    role="tablist"
-                                >
-                                    {t('warehouse_info')}
-                                </a>
-                            </li>
-                            <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
-                                <a
-                                    className={
-                                        "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
-                                        (openTab === 2
-                                            ? "text-white bg-blue-500"
-                                            : "text-black dark:bg-neutral-100")
-                                    }
-                                    onClick={e => {
-                                        e.preventDefault();
-                                        setOpenTab(2);
-                                    }}
-                                    data-toggle="tab"
-                                    href="#link2"
-                                    role="tablist"
-                                >
-                                    {t('product_in_warehouse')}
-                                </a>
-                            </li>
-                        </ul>
-                        <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+                        <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded panel">
+                            <div className='flex justify-between'>
+                                <Link href="/warehouse">
+                                    <div className="btn btn-primary btn-sm m-1 gap-3 bg-[#E9EBD5] text-[#476704] border-[#E9EBD5] w-28 h-9" >
+                                        <IconBackward />
+                                        <span>
+                                            {t('back')}
+                                        </span>
+                                    </div>
+                                </Link>
+                            </div>
+                            <ul
+                                className="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row"
+                                role="tablist"
+                            >
+                                <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
+                                    <a
+                                        className={
+                                            "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
+                                            (openTab === 1
+                                                ? "text-[#476704] bg-[#E9EBD5]"
+                                                : "text-[#BABABA] bg-[#EBEAEA]")
+                                        }
+                                        onClick={e => {
+                                            e.preventDefault();
+                                            setOpenTab(1);
+                                        }}
+                                        data-toggle="tab"
+                                        href="#link1"
+                                        role="tablist"
+                                    >
+                                        {t('warehouse_info')}
+                                    </a>
+                                </li>
+                                <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
+                                    <a
+                                        className={
+                                            "text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal " +
+                                            (openTab === 2
+                                                ? "text-[#476704] bg-[#E9EBD5]"
+                                                : "text-[#BABABA] bg-[#EBEAEA]")
+                                        }
+                                        onClick={e => {
+                                            e.preventDefault();
+                                            setOpenTab(2);
+                                        }}
+                                        data-toggle="tab"
+                                        href="#link2"
+                                        role="tablist"
+                                    >
+                                        {t('product_in_warehouse')}
+                                    </a>
+                                </li>
+                            </ul>
                             {/* <div className="px-4 py-5 flex-auto"> */}
                             <div className="tab-content tab-space">
                                 <div className={openTab === 1 ? "block" : "hidden"} id="link1">
-                                    <div className="panel" style={{ borderRadius: "0" }}>
+                                    <div className="" style={{ borderRadius: "0" }}>
                                         {
                                             RenderData(dataDetail)
                                         }
                                     </div>
                                 </div>
                                 <div className={openTab === 2 ? "block" : "hidden"} id="link2">
-                                    <div className="panel" style={{ borderRadius: "0" }}>
+                                    <div className="" style={{ borderRadius: "0" }}>
                                         <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                                             <div className="flex items-center flex-wrap">
                                                 <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >

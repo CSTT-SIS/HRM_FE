@@ -128,38 +128,42 @@ const AddNewDepartment = ({ ...props }: Props) => {
             >
                 {({ errors, values, setFieldValue, submitCount }) => (
                     <Form className="space-y-5">
+                        <div className="mb-5">
+                            <label htmlFor="name" className='label'>
+                                {' '}
+                                {t('name_department')} <span style={{ color: 'red' }}>* </span>
+                            </label>
+                            <Field name="name" type="text" id="name" placeholder={`${t('enter_name_department')}`} className="form-input" />
+                            {submitCount ? errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null : ''}
+                        </div>
                         <div className='flex justify-between gap-5'>
-                            <div className="mb-5 w-1/2">
-                                <label htmlFor="name" className='label'>
-                                    {' '}
-                                    {t('name_department')} <span style={{ color: 'red' }}>* </span>
-                                </label>
-                                <Field name="name" type="text" id="name" placeholder={`${t('enter_name_department')}`} className="form-input" />
-                                {submitCount ? errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null  : ''}
-                            </div>
                             <div className="mb-5 w-1/2">
                                 <label htmlFor="code" className='label'>
                                     {' '}
                                     {t('code_department')} <span style={{ color: 'red' }}>* </span>
                                 </label>
                                 <Field name="code" type="text" id="code" placeholder={`${t('enter_code_department')}`} className="form-input" />
-                                {submitCount ? errors.code ? <div className="mt-1 text-danger"> {errors.code} </div> : null  : ''}
+                                {submitCount ? errors.code ? <div className="mt-1 text-danger"> {errors.code} </div> : null : ''}
                             </div>
-                        </div>
-                        <div className='flex justify-between gap-5'>
                             <div className="mb-5 w-1/2">
                                 <label htmlFor="code" className='label'>
                                     {' '}
                                     {t('Abbreviated_name')} <span style={{ color: 'red' }}>* </span>
                                 </label>
                                 <Field name="abbreviated" type="text" id="abbreviated" placeholder={`${t('enter_abbreviated_name')}`} className="form-input" />
-                                {submitCount ? errors.abbreviated ? <div className="mt-1 text-danger"> {errors.abbreviated} </div> : null  : ''}
+                                {submitCount ? errors.abbreviated ? <div className="mt-1 text-danger"> {errors.abbreviated} </div> : null : ''}
                             </div>
+
+                        </div>
+
+
+                        <div className="flex justify-between gap-5">
                             <div className="mb-5 w-1/2">
                                 <label htmlFor="departmentparentId" className='label'> {t('Department_Parent')} < span style={{ color: 'red' }}>* </span></label >
                                 <Select
                                     id='unidepartmentparentIdtId'
                                     name='departmentparentId'
+                                    placeholder={t('select_departmentparent')}
                                     onInputChange={e => handleSearch(e)}
                                     options={departmentparent}
                                     maxMenuHeight={160}
@@ -170,27 +174,35 @@ const AddNewDepartment = ({ ...props }: Props) => {
                                 />
                                 {submitCount ? errors.departmentparentId ? (
                                     <div className="text-danger mt-1"> {errors.departmentparentId} </div>
-                                ) : null  : ''}
+                                ) : null : ''}
                             </div>
+                            <div className="mb-5 w-1/2">
+                                <label htmlFor="manageId" className='label'> {t('Manager')} < span style={{ color: 'red' }}>* </span></label >
+                                <Select
+                                    id='manageId'
+                                    name='manageId'
+                                    placeholder={t('select_manager')}
+                                    onInputChange={e => handleSearch(e)}
+                                    options={manage}
+                                    maxMenuHeight={160}
+                                    value={values.manageId}
+                                    onChange={e => {
+                                        setFieldValue('manageId', e)
+                                    }}
+                                />
+                                {submitCount ? errors.manageId ? (
+                                    <div className="text-danger mt-1"> {errors.manageId} </div>
+                                ) : null : ''}
+                            </div>
+
+
                         </div>
-
-
                         <div className="mb-5">
-                            <label htmlFor="manageId" className='label'> {t('Manager')} < span style={{ color: 'red' }}>* </span></label >
-                            <Select
-                                id='manageId'
-                                name='manageId'
-                                onInputChange={e => handleSearch(e)}
-                                options={manage}
-                                maxMenuHeight={160}
-                                value={values.manageId}
-                                onChange={e => {
-                                    setFieldValue('manageId', e)
-                                }}
-                            />
-                            {submitCount ? errors.manageId ? (
-                                <div className="text-danger mt-1"> {errors.manageId} </div>
-                            ) : null  : ''}
+                            <label htmlFor="name" className='label'>
+                                {' '}
+                                {t('description')}
+                            </label>
+                            <Field name="name"  as="textarea" id="name" placeholder={`${t('enter_description')}`} className="form-input" />
                         </div>
                         <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">
                             <button type="button" className="btn btn-outline-dark cancel-button" onClick={() => handleCancel()}>

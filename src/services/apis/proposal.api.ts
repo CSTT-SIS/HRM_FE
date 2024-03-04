@@ -53,12 +53,22 @@ export const ProposalPending = (body: any) => {
 };
 
 export const ProposalApprove = (body: any) => {
-	const endpoint = `/proposal/${body.id}/approve`;
+	const endpoint = `/proposal/${body.id}/head-approve`;
 	return callApi(endpoint, 'PATCH', body);
 };
 
 export const ProposalReject = (body: any) => {
-	const endpoint = `/proposal/${body.id}/reject`;
+	const endpoint = `/proposal/${body.id}/head-reject`;
+	return callApi(endpoint, 'PATCH', body);
+};
+
+export const ProposalMangementApprove = (body: any) => {
+	const endpoint = `/proposal/${body.id}/manager-approve`;
+	return callApi(endpoint, 'PATCH', body);
+};
+
+export const ProposalManagemetReject = (body: any) => {
+	const endpoint = `/proposal/${body.id}/manager-reject`;
 	return callApi(endpoint, 'PATCH', body);
 };
 

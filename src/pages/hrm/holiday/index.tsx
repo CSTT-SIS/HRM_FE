@@ -8,12 +8,14 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
-
+import { useRouter } from 'next/router';
 import IconXCircle from '@/components/Icon/IconXCircle';
 import AddHolidayScheduleModal from './modal/AddHolidayScheduleModal';
+import Link from 'next/link';
 
 const HolidaySchedule = () => {
 	const dispatch = useDispatch();
+    const router = useRouter();
 	const { t } = useTranslation();
 	useEffect(() => {
 		dispatch(setPageTitle(`${t('work_schedule')}`));
@@ -295,6 +297,9 @@ const HolidaySchedule = () => {
 			</>
 		);
 	};
+    const handleClickEvent = (event: any) => {
+        router.push(`/hrm/holiday/${event.id}`)
+    }
 	return (
 		<Fragment>
 			<div className="panel mb-5">
@@ -302,10 +307,12 @@ const HolidaySchedule = () => {
 					<div className="mb-4 sm:mb-0">
 						<div className="text-center text-lg font-semibold ltr:sm:text-left rtl:sm:text-right">{t('dayoff')}</div>
 					</div>
-					<button type="button" className="btn btn-primary" onClick={() => editHolidaySchedule()}>
-						<IconPlus className="ltr:mr-2 rtl:ml-2" />
-						{t('add')}
-					</button>
+					<Link href="/hrm/holiday/create">
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                                    <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                                    {t('add')}
+                                    </button>
+                        </Link>
 				</div>
 				<div className="calendar-wrapper">
 					<FullCalendar
@@ -320,7 +327,7 @@ const HolidaySchedule = () => {
 						dayMaxEvents={true}
 						selectable={true}
 						droppable={true}
-						eventClick={(event: any) => editHolidaySchedule(event)}
+						eventClick={(event: any) => handleClickEvent(event)}
 						select={(event: any) => editDate(event)}
 						events={holidaySchedules}
 						eventContent={renderEventContent}

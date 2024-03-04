@@ -91,7 +91,7 @@ const AddNewShift = ({ ...props }: Props) => {
                 initialValues={{
                     code_shift: props?.data ? `${props?.data?.code_shift}` : '',
                     name_shift: props?.data ? `${props?.data?.name_shift}` : '',
-                    type_shift: props?.data ? `${props?.data?.type_shift}` : '',
+                    type_shift: props?.data ? `${props?.data?.type_shift}` : 0,
                     work_coefficient: props?.data ? `${props?.data?.work_coefficient}` : '',
                     department_apply: props?.data ? `${props?.data?.department_apply}` : '',
                     from_time: props?.data ? `${props?.data?.from_time}` : '',
@@ -109,6 +109,23 @@ const AddNewShift = ({ ...props }: Props) => {
                     <Form className="space-y-5">
                         <div className='flex justify-between gap-5'>
                             <div className="mb-5 w-1/2">
+                                <label htmlFor="type_shift" className='label'>
+                                    {' '}
+                                    {t('type_shift')} <span style={{ color: 'red' }}>* </span>
+                                </label>
+                                <div className="flex" style={{ alignItems: 'center', marginTop: '13px' }}>
+                                    <label style={{ marginBottom: 0, marginRight: '10px' }}>
+                                        <Field type="radio" name="type_shift" value={0} className="form-checkbox rounded-full" />
+                                        Ca theo thời gian
+                                    </label>
+                                    <label style={{ marginBottom: 0 }}>
+                                        <Field type="radio" name="type_shift" value={1} className="form-checkbox rounded-full" />
+                                        Ca theo số giờ
+                                    </label>
+                                </div>
+                                {errors.type_shift ? <div className="mt-1 text-danger"> {errors.type_shift} </div> : null}
+                            </div>
+                            <div className="mb-5 w-1/2">
                                 <label htmlFor="code_shift" className='label'>
                                     {' '}
                                     {t('code_shift')} <span style={{ color: 'red' }}>* </span>
@@ -116,6 +133,9 @@ const AddNewShift = ({ ...props }: Props) => {
                                 <Field name="code_shift" type="text" id="code_shift" placeholder={`${t('fill_code_shift')}`} className="form-input" />
                                 {errors.code_shift ? <div className="mt-1 text-danger"> {errors.code_shift} </div> : null}
                             </div>
+
+                        </div>
+                        <div className='flex justify-between gap-5'>
                             <div className="mb-5 w-1/2">
                                 <label htmlFor="name_shift" className='label'>
                                     {' '}
@@ -123,21 +143,6 @@ const AddNewShift = ({ ...props }: Props) => {
                                 </label>
                                 <Field name="name_shift" type="text" id="name_shift" placeholder={`${t('fill_name_shift')}`} className="form-input" />
                                 {errors.name_shift ? <div className="mt-1 text-danger"> {errors.name_shift} </div> : null}
-                            </div>
-                        </div>
-                        <div className='flex justify-between gap-5'>
-                            <div className="mb-5 w-1/2">
-                                <label htmlFor="type_shift" className='label'>
-                                    {' '}
-                                    {t('type_shift')} <span style={{ color: 'red' }}>* </span>
-                                </label>
-                                <select className='form-select' value={typeShift}
-                                    onChange={e => handleChangeTypeShift(e.target.value)}
-                                >
-                                    <option value={0}>Ca theo thời gian</option>
-                                    <option value={1}>Ca theo số giờ</option>
-                                </select>
-                                {errors.type_shift ? <div className="mt-1 text-danger"> {errors.type_shift} </div> : null}
                             </div>
                             <div className="mb-5 w-1/2">
                                 <label htmlFor="work_coefficient" className='label'>

@@ -611,6 +611,7 @@
 	"Abbreviated_name": "Abbreviated name",
 	"approver": "Approver",
 	"enter_tax_code": "Enter tax code",
+	"enter_date_join": "Enter date join",
 	"enter_branch": "Enter branch",
 	"enter_bank_number": "Enter bank number",
 	"enter_bank": "Enter bank",
@@ -618,5 +619,10 @@
 	"select_duty": "Select duty",
 	"select_manager": "Select manager",
 	"select_manager_2": "Select indirect manager",
-	"enter_approver": "enter approver"
+	"enter_approver": "enter approver",
+	"please_fill_abbreviated_name": "Please fill abbreviated name",
+	"enter_abbreviated_name": "Enter abbreviated name",
+	"date_create": "Date create",
+	"edit_shift": "Edit shift"
+
 }

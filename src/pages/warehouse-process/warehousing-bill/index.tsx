@@ -40,6 +40,7 @@ const WarehousingPage = ({ ...props }: Props) => {
 
     // get data
     const { data: warehousing, pagination, mutate } = WarehousingBill({ ...router.query });
+
     useEffect(() => {
         dispatch(setPageTitle(`${t('proposal')}`));
     });
@@ -138,14 +139,20 @@ const WarehousingPage = ({ ...props }: Props) => {
         { accessor: 'type', title: 'Loại phiếu', sortable: false },
         {
             accessor: 'proposal',
-            title: 'Yêu cầu',
-            render: ({ proposal }: any) => <span>{proposal?.name}</span>,
+            title: ' Loại yêu cầu',
+            render: ({ proposal, order, repairRequest }: any) => <span>
+                {
+                    proposal !== null ? "Xuất mìn" :
+                        order !== null ? "Mua hàng" :
+                            repairRequest !== null ? "Sửa chữa" : ""
+                }
+            </span>,
         },
-        {
-            accessor: 'order',
-            title: 'Đơn hàng',
-            render: ({ order }: any) => <span>{order?.name}</span>,
-        },
+        // {
+        //     accessor: 'order',
+        //     title: 'Đơn hàng',
+        //     render: ({ order }: any) => <span>{order?.name}</span>,
+        // },
         {
             accessor: 'warehouse',
             title: 'Tên kho',

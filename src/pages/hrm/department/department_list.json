@@ -7,20 +7,26 @@
     },
     {
         "id": 2,
+        "name": "Ban 1.1",
+        "code": "B1.1",
+        "status": "active"
+    },
+    {
+        "id": 3,
         "name": "Phòng 2",
         "code": "PB02",
         "status": "active"
     },
     {
-        "id": 3,
-        "name": "Phòng 3",
-        "code": "PB03",
+        "id": 4,
+        "name": "Ban 2.1",
+        "code": "B2.1",
         "status": "active"
     },
     {
-        "id": 4,
-        "name": "Phòng 4",
-        "code": "PB04",
+        "id": 5,
+        "name": "Ban 2.2",
+        "code": "B2.2",
         "status": "active"
     }
 ]

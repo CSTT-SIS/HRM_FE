@@ -30,7 +30,6 @@ import IconFolderMinus from '@/components/Icon/IconFolderMinus';
 import IconDownload from '@/components/Icon/IconDownload';
 import IconChecks from '@/components/Icon/IconChecks';
 
-
 interface Props {
     [key: string]: any;
 }
@@ -80,9 +79,11 @@ const LateEarlyForm = ({ ...props }: Props) => {
     }, [recordsData])
 
     const handleEdit = (data: any) => {
-        setOpenModal(true);
-        setData(data);
-    };
+		// setOpenModal(true);
+		// setData(data);
+        router.push(`/hrm/late-early-form/${data.id}`)
+	};
+
     const handleDetail = (data: any) => {
         setOpenDetail(true);
         setData(data);
@@ -224,7 +225,7 @@ const LateEarlyForm = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <Link href="/hrm/late-early-form/AddNewForm">
+                        <Link href="/hrm/late-early-form/create">
                         <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                                     <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                                                     {t('add')}

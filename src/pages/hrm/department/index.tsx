@@ -45,7 +45,7 @@ const Department = ({ ...props }: Props) => {
         dispatch(setPageTitle(`${t('department')}`));
     });
 
-    const router = useRouter();
+    const router = useRouter()
 
     const [display, setDisplay] = useState('tree')
     const [showLoader, setShowLoader] = useState(true);
@@ -84,8 +84,10 @@ const Department = ({ ...props }: Props) => {
     }, [recordsData])
 
     const handleEdit = (data: any) => {
-        setOpenModal(true);
-        setData(data);
+        // setOpenModal(true);
+        // setData(data);
+        router.push(`/hrm/department/${data.id}`)
+
     };
 
     const handleDelete = (data: any) => {
@@ -128,27 +130,27 @@ const Department = ({ ...props }: Props) => {
             )
         }
     }
-    type Content = { title: string; description: string };
+    type Content = { id: number; name: string; code: string; status: string };
 
     type Item = {
-        id: string;
+        id: number;
         content: Content;
         hasChildren: boolean;
         children?: Item[];
     };
-    const Title = (props: Content) => <Box as="span">{props.title}</Box>;
+    const Title = (props: Content) => <Box as="span">{props.name}</Box>;
     const Description = (props: Content) => (
-        <Box as="span">{props.description}</Box>
+        <Box as="span">{props.code}</Box>
     );
     const Action = (props: Content) => (
         <div className="flex items-center w-max mx-auto gap-2">
             <Tippy content={`${t('edit')}`}>
-                <button type="button" className='button-edit' >
+                <button type="button" className='button-edit' onClick={() => handleEdit(props)}>
                     <IconPencil /> Sửa
                 </button>
             </Tippy>
             <Tippy content={`${t('delete')}`}>
-                <button type="button" className='button-delete' >
+                <button type="button" className='button-delete' onClick={() => handleDelete(props)}>
                     <IconTrashLines /> Xóa
                 </button>
             </Tippy>
@@ -156,31 +158,63 @@ const Department = ({ ...props }: Props) => {
     );
     const items: Item[] = [
         {
-            id: 'item1',
+            id: 1,
             content: {
-                title: 'Phòng tài chính',
-                description: 'PTC',
-            },
-            hasChildren: false,
-            children: [],
-        },
-        {
-            id: 'item2',
-            content: {
-                title: 'Phòng 1',
-                description: 'P1',
+                id: 1,
+                name: "Phòng 1",
+                code: "PB01",
+                status: "active"
             },
             hasChildren: true,
             children: [
                 {
-                    id: 'child2.1',
+                    id: 2,
                     content: {
-                        title: 'Ban 1',
-                        description: 'B1',
+                        id: 2,
+                        name: "Ban 1.1",
+                        code: "B1.1",
+                        status: "active"
                     },
                     hasChildren: false,
+
                 },
             ],
+
+        },
+        {
+            id: 3,
+            content: {
+                id: 3,
+                name: "Phòng 2",
+                code: "PB02",
+                status: "active"
+            },
+            hasChildren: true,
+            children: [
+                {
+                    id: 4,
+                    content: {
+                        id: 4,
+                        name: "Ban 2.1",
+                        code: "B2.1",
+                        status: "active"
+                    },
+                    hasChildren: false,
+
+                },
+                {
+                    id: 5,
+                    content: {
+                        id: 5,
+                        name: "Ban 2.2",
+                        code: "B2.2",
+                        status: "active"
+                    },
+                    hasChildren: false,
+
+                },
+            ],
+
         },
     ];
     const columns = [
