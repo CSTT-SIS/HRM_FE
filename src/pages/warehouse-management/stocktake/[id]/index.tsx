@@ -17,7 +17,7 @@ import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import HandleDetailModal from '../form/DetailModal';
 import { StocktakeDetail } from '@/services/swr/stocktake.twr';
-import { AddStocktakeDetail, AddStocktakeDetailAuto, AddStocktakeDetails, CreateStocktake, DeleteStocktakeDetail, EditStocktake, GetStocktake, StocktakeFinish, StocktakeStart } from '@/services/apis/stocktake.api';
+import { AddStocktakeDetail, AddStocktakeDetailAuto, AddStocktakeDetails, CreateStocktake, DeleteStocktakeDetail, EditStocktake, GetStocktake, StocktakeApprove, StocktakeCancel, StocktakeFinish, StocktakeStart } from '@/services/apis/stocktake.api';
 import TallyModal from '../form/TallyModal';
 import IconArchive from '@/components/Icon/IconArchive';
 import StocktakeForm from '../form/StocktakeForm';
@@ -45,8 +45,9 @@ const DetailPage = ({ ...props }: Props) => {
     const { t } = useTranslation();
     const router = useRouter();
 
-    const [showLoader, setShowLoader] = useState(true);
     const [data, setData] = useState<any>();
+    const [disable, setDisable] = useState<any>(false);
+    const [dataTally, setDataTally] = useState<any>();
     const [openModal, setOpenModal] = useState(false);
     const [openModalTally, setOpenModalTally] = useState(false);
     const [initialValue, setInitialValue] = useState<any>();
@@ -93,16 +94,9 @@ const DetailPage = ({ ...props }: Props) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
         }
-        // setDisable(router.query.status === "true" ? true : false);
+        setDisable(router.query.status === "true" ? true : false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [router.query]);
-
-    const getData = (id: any) => {
-        GetProduct({ id: id }).then((res) => {
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
 
     const handleEdit = (data: any) => {
         setOpenModal(true);
@@ -169,7 +163,7 @@ const DetailPage = ({ ...props }: Props) => {
 
     const handleOpenTally = (value: any) => {
         setOpenModalTally(true);
-        setData(value);
+        setDataTally(value);
     }
 
     const columns = [
@@ -199,14 +193,29 @@ const DetailPage = ({ ...props }: Props) => {
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
-                <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('edit')}`}>
-                        <button type="button" onClick={() => handleEdit(records)}>
-                            <IconPencil />
-                        </button>
-                    </Tippy>
+                <>
                     {
-                        router.query?.status !== "DRAFT" && router.query.id !== "create" &&
+                        !disable &&
+                        <div className="flex items-center w-max mx-auto gap-2">
+                            {
+                                router.query?.status === "DRAFT" &&
+                                <>
+                                    <Tippy content={`${t('edit')}`}>
+                                        <button type="button" onClick={() => handleEdit(records)}>
+                                            <IconPencil />
+                                        </button>
+                                    </Tippy>
+                                    <Tippy content={`${t('delete')}`}>
+                                        <button type="button" onClick={() => handleDelete(records)}>
+                                            <IconTrashLines />
+                                        </button>
+                                    </Tippy>
+                                </>
+                            }
+                        </div>
+                    }
+                    {
+                        router.query?.type === "tally" && router.query.id !== "create" &&
                         <>
                             <Tippy content={`${t('tally')}`}>
                                 <button type="button" onClick={() => handleOpenTally(records)}>
@@ -215,15 +224,7 @@ const DetailPage = ({ ...props }: Props) => {
                             </Tippy>
                         </>
                     }
-                    {
-                        router.query?.status === "DRAFT" &&
-                        <Tippy content={`${t('delete')}`}>
-                            <button type="button" onClick={() => handleDelete(records)}>
-                                <IconTrashLines />
-                            </button>
-                        </Tippy>
-                    }
-                </div>
+                </>
             ),
         },
     ]
@@ -309,7 +310,7 @@ const DetailPage = ({ ...props }: Props) => {
         };
         if (data) {
             EditStocktake({ id: router.query?.id, ...query }).then(() => {
-                showMessage(`${t('edit_success')}`, 'success');
+                handleChangeComplete(router.query?.id);
                 handleCancel();
             }).catch((err) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
@@ -356,6 +357,25 @@ const DetailPage = ({ ...props }: Props) => {
             showMessage(`${err?.response?.data?.message}`, 'error');
         });
         handleChangeComplete(id);
+    };
+
+
+    const handleStocktakeCancel = () => {
+        StocktakeCancel({ id: router.query.id }).then(() => {
+            mutate();
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
+    const handleApprove = () => {
+        StocktakeApprove({ id: router.query.id }).then(() => {
+            mutate();
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
     }
 
     return (
@@ -368,7 +388,7 @@ const DetailPage = ({ ...props }: Props) => {
                 )}
                 <div className='flex justify-between header-page-bottom pb-4 mb-4'>
                     <h1 className='page-title'>{t('order')}</h1>
-                    <Link href="/warehouse-process/order">
+                    <Link href="/warehouse-management/stocktake">
                         <div className="btn btn-primary btn-sm m-1 back-button h-9" >
                             <IconBackward />
                             <span>
@@ -412,7 +432,8 @@ const DetailPage = ({ ...props }: Props) => {
                                                                 type="text"
                                                                 id="name"
                                                                 placeholder={`${t('enter_name')}`}
-                                                                className="form-input"
+                                                                className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                                disabled={disable}
                                                             />
                                                             {errors.name ? (
                                                                 <div className="text-danger mt-1"> {`${errors.name}`} </div>
@@ -432,6 +453,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                                 onChange={e => {
                                                                     setFieldValue('warehouseId', e)
                                                                 }}
+                                                                isDisabled={disable}
                                                             />
                                                             {errors.warehouseId ? (
                                                                 <div className="text-danger mt-1"> {`${errors.warehouseId}`} </div>
@@ -453,10 +475,10 @@ const DetailPage = ({ ...props }: Props) => {
                                                                     }}
                                                                     value={field?.value}
                                                                     onChange={e => setFieldValue("startDate", moment(e[0]).format("YYYY-MM-DD hh:mm"))}
-                                                                    className="form-input"
+                                                                    className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                                    disabled={disable}
                                                                 />)
                                                                 }
-                                                                className="form-input"
                                                             />
                                                             {errors.startDate ? (
                                                                 <div className="text-danger mt-1"> {`${errors.startDate}`} </div>
@@ -476,10 +498,10 @@ const DetailPage = ({ ...props }: Props) => {
                                                                         }}
                                                                         value={field?.value}
                                                                         onChange={e => setFieldValue("endDate", moment(e[0]).format("YYYY-MM-DD hh:mm"))}
-                                                                        className="form-input"
+                                                                        className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                                        disabled={disable}
                                                                     />
                                                                 )}
-                                                                className="form-input"
                                                             />
                                                             {errors.endDate ? (
                                                                 <div className="text-danger mt-1"> {`${errors.endDate}`} </div>
@@ -502,6 +524,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                                 onChange={e => {
                                                                     setFieldValue('participants', e)
                                                                 }}
+                                                                isDisabled={disable}
                                                             />
                                                             {errors.participants ? (
                                                                 <div className="text-danger mt-1"> {`${errors.participants}`} </div>
@@ -514,7 +537,8 @@ const DetailPage = ({ ...props }: Props) => {
                                                                 as="textarea"
                                                                 id="description"
                                                                 placeholder={`${t('enter_description')}`}
-                                                                className="form-input"
+                                                                className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                                disabled={disable}
                                                             />
                                                             {errors.description ? (
                                                                 <div className="text-danger mt-1"> {`${errors.description}`} </div>
@@ -542,6 +566,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                     <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                                                         <div className="flex items-center flex-wrap">
                                                             {
+                                                                !disable &&
                                                                 <>
                                                                     <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
                                                                         <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
@@ -577,16 +602,49 @@ const DetailPage = ({ ...props }: Props) => {
                                                     listData={listDataDetail}
                                                     setListData={setListDataDetail}
                                                 />
+                                                <TallyModal
+                                                    openModal={openModalTally}
+                                                    setOpenModal={setOpenModalTally}
+                                                    data={dataTally}
+                                                    setData={setDataTally}
+                                                    stocktakeDetailMutate={mutate}
+                                                />
                                             </AnimateHeight>
                                         </div>
                                     </div>
-                                    {
-                                        <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
-                                            <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
-                                                {t('cancel')}
+                                    <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
+                                        {
+                                            !disable &&
+                                            <>
+
+                                                {
+                                                    router.query?.status === "DRAFT" &&
+                                                    <>
+                                                        <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
+                                                            {t('cancel')}
+                                                        </button>
+                                                        <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+                                                            {router.query.id !== "create" ? t('update') : t('add')}
+                                                        </button>
+                                                    </>
+                                                }
+                                            </>
+                                        }
+                                        {
+                                            router.query.type === "tally" &&
+                                            <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button w-32" onClick={() => handleFinish()}>
+                                                {t("finish")}
                                             </button>
-                                            <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
-                                                {router.query.id !== "create" ? t('update') : t('add')}
+                                        }
+                                    </div>
+                                    {
+                                        router.query.type === "approve" &&
+                                        <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
+                                            <button type="button" className="btn btn-outline-danger cancel-button w-28" onClick={() => handleStocktakeCancel()}>
+                                                {t('reject')}
+                                            </button>
+                                            <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleApprove()}>
+                                                {t('approve')}
                                             </button>
                                         </div>
                                     }
