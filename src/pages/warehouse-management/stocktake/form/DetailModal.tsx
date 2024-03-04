@@ -76,7 +76,7 @@ const DetailModal = ({ ...props }: Props) => {
 
     const handleCancel = () => {
         props.setOpenModal(false);
-        props.setData();
+        // props.setData();
         setInitialValue({});
     };
 
@@ -198,11 +198,11 @@ const DetailModal = ({ ...props }: Props) => {
                                                     ) : null}
                                                 </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
-                                                    <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
+                                                    <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
                                                         {t('cancel')}
                                                     </button>
-                                                    <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4">
-                                                        {props.data !== undefined ? t('update') : t('add')}
+                                                    <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+                                                        {router.query.id !== "create" ? t('update') : t('add')}
                                                     </button>
                                                 </div>
                                             </Form>

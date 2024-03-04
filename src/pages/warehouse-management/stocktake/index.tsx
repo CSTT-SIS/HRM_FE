@@ -191,12 +191,12 @@ const StocktakePage = ({ ...props }: Props) => {
                             <IconTrashLines />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('reject')}`}>
+                    <Tippy content={`${t('cancel')}`}>
                         <button type="button" onClick={() => handleReject(records)}>
                             <IconRestore />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('cancel')}`}>
+                    <Tippy content={`${t('reject')}`}>
                         <button type="button" onClick={() => handleCancel(records)}>
                             <IconXCircle />
                         </button>

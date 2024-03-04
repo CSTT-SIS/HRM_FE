@@ -45,8 +45,8 @@ const DetailPage = ({ ...props }: Props) => {
     const { t } = useTranslation();
     const router = useRouter();
 
-    const [showLoader, setShowLoader] = useState(true);
     const [data, setData] = useState<any>();
+    const [dataTally, setDataTally] = useState<any>();
     const [openModal, setOpenModal] = useState(false);
     const [openModalTally, setOpenModalTally] = useState(false);
     const [initialValue, setInitialValue] = useState<any>();
@@ -96,13 +96,6 @@ const DetailPage = ({ ...props }: Props) => {
         // setDisable(router.query.status === "true" ? true : false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [router.query]);
-
-    const getData = (id: any) => {
-        GetProduct({ id: id }).then((res) => {
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
 
     const handleEdit = (data: any) => {
         setOpenModal(true);
@@ -169,7 +162,7 @@ const DetailPage = ({ ...props }: Props) => {
 
     const handleOpenTally = (value: any) => {
         setOpenModalTally(true);
-        setData(value);
+        setDataTally(value);
     }
 
     const columns = [
@@ -309,7 +302,7 @@ const DetailPage = ({ ...props }: Props) => {
         };
         if (data) {
             EditStocktake({ id: router.query?.id, ...query }).then(() => {
-                showMessage(`${t('edit_success')}`, 'success');
+                handleChangeComplete(router.query?.id);
                 handleCancel();
             }).catch((err) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
@@ -368,7 +361,7 @@ const DetailPage = ({ ...props }: Props) => {
                 )}
                 <div className='flex justify-between header-page-bottom pb-4 mb-4'>
                     <h1 className='page-title'>{t('order')}</h1>
-                    <Link href="/warehouse-process/order">
+                    <Link href="/warehouse-management/stocktake">
                         <div className="btn btn-primary btn-sm m-1 back-button h-9" >
                             <IconBackward />
                             <span>
@@ -577,6 +570,13 @@ const DetailPage = ({ ...props }: Props) => {
                                                     listData={listDataDetail}
                                                     setListData={setListDataDetail}
                                                 />
+                                                <TallyModal
+                                                    openModal={openModalTally}
+                                                    setOpenModal={setOpenModalTally}
+                                                    data={dataTally}
+                                                    setData={setDataTally}
+                                                    stocktakeDetailMutate={mutate}
+                                                />
                                             </AnimateHeight>
                                         </div>
                                     </div>
@@ -588,8 +588,15 @@ const DetailPage = ({ ...props }: Props) => {
                                             <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
                                                 {router.query.id !== "create" ? t('update') : t('add')}
                                             </button>
+                                            {
+                                                router.query.id !== "create" &&
+                                                <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button w-32" onClick={() => handleFinish()}>
+                                                    {t("finish")}
+                                                </button>
+                                            }
                                         </div>
                                     }
+
                                 </div>
                             </Form>
                         )
