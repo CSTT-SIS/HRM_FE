@@ -21,7 +21,6 @@ import IconMenuInvoice from '@/components/Icon/Menu/IconMenuInvoice';
 import IconMenuCalendar from '@/components/Icon/Menu/IconMenuCalendar';
 import IconMenuComponents from '@/components/Icon/Menu/IconMenuComponents';
 import IconMenuElements from '@/components/Icon/Menu/IconMenuElements';
-import IconMenuCharts from '@/components/Icon/Menu/IconMenuCharts';
 import IconMenuWidgets from '@/components/Icon/Menu/IconMenuWidgets';
 import IconMenuFontIcons from '@/components/Icon/Menu/IconMenuFontIcons';
 import IconMenuDragAndDrop from '@/components/Icon/Menu/IconMenuDragAndDrop';
