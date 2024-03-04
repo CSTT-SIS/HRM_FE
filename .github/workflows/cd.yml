@@ -17,6 +17,5 @@ jobs:
                   port: 22
                   script: |
                       cd /home/vangtats/HRM_FE
-                      git pull origin master
-                      git status
+                      git pull origin dev
                       docker compose up -b --build
