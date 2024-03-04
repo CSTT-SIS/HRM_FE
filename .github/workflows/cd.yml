@@ -1,11 +1,11 @@
-name: Node.js CI
+name: Deploy HRM_FE
 
 on:
     push:
         branches: [dev]
 
 jobs:
-    build:
+    deploy:
         runs-on: ubuntu-latest
         steps:
             - name: Deploy using ssh
@@ -17,6 +17,5 @@ jobs:
                   port: 22
                   script: |
                       cd /home/vangtats/HRM_FE
-                      git pull origin master
-                      git status
-                      docker compose up -b --build
+                      git pull origin dev
+                      docker compose up -d --build
