@@ -32,7 +32,8 @@ import IconCalendar from '@/components/Icon/IconCalendar';
 import Link from 'next/link';
 
 import { Box } from '@atlaskit/primitives';
-import TableTree from '@atlaskit/table-tree';
+import TableTree, { Cell, Header, Headers, Row, Rows } from '@atlaskit/table-tree';
+
 
 
 interface Props {
@@ -199,7 +200,7 @@ const Department = ({ ...props }: Props) => {
 			id: 1,
 			content: {
 				id: 1,
-				name: "Phòng 1",
+				name: "Phòng hành chính",
 				code: "PB01",
 				type: 'PB'
 			},
@@ -212,7 +213,7 @@ const Department = ({ ...props }: Props) => {
 						name: "Nguyễn Văn A",
 						code: "NV1",
 						type: 'NV',
-						department: 'Phòng 1',
+						department: 'Phòng hành chính',
 						duty: 'Trưởng phòng'
 					},
 					hasChildren: false,
@@ -222,10 +223,10 @@ const Department = ({ ...props }: Props) => {
 
 		},
 		{
-			id: 3,
+			id: 2,
 			content: {
-				id: 3,
-				name: "Phòng 2",
+				id: 2,
+				name: "Phòng kĩ thuật",
 				code: "PB02",
 				type: 'PB'
 			},
@@ -238,7 +239,7 @@ const Department = ({ ...props }: Props) => {
 						name: "Trần Văn B",
 						code: "NV02",
 						type: 'NV',
-						department: 'Phòng 2',
+						department: 'Phòng kĩ thuật',
 						duty: 'Kế toán'
 					},
 					hasChildren: false,
@@ -251,7 +252,7 @@ const Department = ({ ...props }: Props) => {
 						name: "Nguyễn Thị C",
 						code: "NV03",
 						type: 'NV',
-						department: 'Phòng 2',
+						department: 'Phòng kĩ thuật',
 						duty: 'Trợ lý'
 					},
 					hasChildren: false,
@@ -326,12 +327,47 @@ const Department = ({ ...props }: Props) => {
 
 				</div>
 				<div className="mb-5">
-					<TableTree
-						columns={[Name, Code, Duty, Department, Action]}
-						headers={['Tên nhân viên', 'Mã nhân viên', 'Chức vụ', 'Phòng ban', 'Thao tác']}
-						columnWidths={['300px', '300px', '200px', '200px']}
-						items={items}
-					/>
+					<TableTree>
+						<Headers>
+							<Header width={300}>Tên nhân viên</Header>
+							<Header width={300}>Mã nhân viên</Header>
+							<Header width={200}>Chức vụ</Header>
+							<Header width={200}>Phòng ban</Header>
+							<Header width={100}>Thao tác</Header>
+						</Headers>
+						<Rows
+							items={items}
+							render={({ id, content, children = [] }: Item) => (
+								<Row
+									itemId={id}
+									items={children}
+									hasChildren={children.length > 0}
+									isDefaultExpanded
+								>
+									<Cell singleLine>{content.name}</Cell>
+									<Cell>{content.code}</Cell>
+									<Cell>{content.duty}</Cell>
+									<Cell>{content.department}</Cell>
+									<Cell> <div className="flex items-center w-max mx-auto gap-2">
+										{
+											content.type !== 'PB' ?
+												<div className="flex items-center w-max mx-auto gap-2">
+													<Tippy content={`${t('edit')}`}>
+														<button type="button" className='button-edit' onClick={() => handleEdit(content)}>
+															<IconPencil /> Sửa
+														</button>
+													</Tippy>
+													<Tippy content={`${t('delete')}`}>
+														<button type="button" className='button-delete' onClick={() => handleDelete(content)}>
+															<IconTrashLines /> Xóa
+														</button>
+													</Tippy> </div> : <></>
+										}
+									</div></Cell>
+								</Row>
+							)}
+						/>
+					</TableTree>
 					<div className="flex w-full flex-col justify-start">
 						<ul className="inline-flex items-center space-x-1 rtl:space-x-reverse justify-end" style={{ marginTop: '10px' }}>
 							<li>

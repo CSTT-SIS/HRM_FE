@@ -404,8 +404,8 @@
 	"enter_description_task": "Nhập mô tả nhiệm vụ",
 	"deadline_task": "Hạn thực hiện",
 	"enter_deadline_task": "Chọn thời hạn",
-	"directive_task": "Chỉ thị nhiệm vụ",
-	"enter_directive_task": "Nhập chỉ thị nhiệm vụ",
+	"directive_task": "Ý kiến chỉ đạo",
+	"enter_directive_task": "Nhập ý kiến chỉ đạo",
 	"status_task": "Trạng thái nhiệm vụ",
 	"enter_status_task": "Chọn trạng thái nhiệm vụ",
 	"attachment_task": "Đính kèm tập tin",
@@ -696,5 +696,8 @@
     "choose_duty": "Chọn chức vụ",
     "update_exempt_form": "Sửa đơn miễn chấm công",
     "add_holiday": "Thêm lịch nghỉ lễ",
-    "update_holiday": "Sửa lịch nghỉ lễ"
+    "update_holiday": "Sửa lịch nghỉ lễ",
+	"please_fill_staff_code": "Vui lòng nhập mã nhân viên",
+	"please_fill_surname_name": "Vui lòng nhập tên đệm",
+	"please_fill_username": "Vui lòng nhập tên người dùng"
 }

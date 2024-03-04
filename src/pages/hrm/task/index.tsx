@@ -173,9 +173,6 @@ const Task = ({ ...props }: Props) => {
 					<button type="button" className='button-delete' onClick={() => handleDelete(records)}>
 						<IconTrashLines /> Xóa
 					</button>
-					<button type="button" className='button-detail'>
-						<IconTag /> {t('download')}
-					</button>
 				</div>
 			),
 		},

@@ -623,6 +623,8 @@
 	"please_fill_abbreviated_name": "Please fill abbreviated name",
 	"enter_abbreviated_name": "Enter abbreviated name",
 	"date_create": "Date create",
-	"edit_shift": "Edit shift"
-
+	"edit_shift": "Edit shift",
+	"please_fill_staff_code": "Please fill staff code",
+	"please_fill_surname_name": "Please fill surname name",
+	"please_fill_username": "Please fill username"
 }

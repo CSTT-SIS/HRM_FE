@@ -31,7 +31,7 @@ import IconDownload from '@/components/Icon/IconDownload';
 
 import Link from 'next/link';
 import { Box } from '@atlaskit/primitives';
-import TableTree from '@atlaskit/table-tree';
+import TableTree, { Cell, Header, Headers, Row, Rows } from '@atlaskit/table-tree';
 import IconCaretDown from '@/components/Icon/IconCaretDown';
 interface Props {
     [key: string]: any;
@@ -161,7 +161,7 @@ const Department = ({ ...props }: Props) => {
             id: 1,
             content: {
                 id: 1,
-                name: "Phòng 1",
+                name: "Phòng hành chính",
                 code: "PB01",
                 status: "active"
             },
@@ -185,7 +185,7 @@ const Department = ({ ...props }: Props) => {
             id: 3,
             content: {
                 id: 3,
-                name: "Phòng 2",
+                name: "Phòng kĩ thuật",
                 code: "PB02",
                 status: "active"
             },
@@ -288,12 +288,39 @@ const Department = ({ ...props }: Props) => {
                 {
                     display === 'tree' ?
                         <div className="mb-5">
-                            <TableTree
-                                columns={[Title, Description, Action]}
-                                headers={['Tên phòng ban', 'Mã phòng ban', 'Thao tác']}
-                                columnWidths={['600px', '300px', '100px']}
-                                items={items}
-                            />
+                            <TableTree>
+                                <Headers>
+                                    <Header width={600}>Tên phòng ban</Header>
+                                    <Header width={300}>Mã phòng ban</Header>
+                                    <Header width={100}>Thao tác</Header>
+                                </Headers>
+                                <Rows
+                                    items={items}
+                                    render={({ id, content, children = [] }: Item) => (
+                                        <Row
+                                            itemId={id}
+                                            items={children}
+                                            hasChildren={children.length > 0}
+                                            isDefaultExpanded
+                                        >
+                                            <Cell singleLine>{content.name}</Cell>
+                                            <Cell>{content.code}</Cell>
+                                            <Cell> <div className="flex items-center w-max mx-auto gap-2">
+                                                <Tippy content={`${t('edit')}`}>
+                                                    <button type="button" className='button-edit' onClick={() => handleEdit(content)}>
+                                                        <IconPencil /> Sửa
+                                                    </button>
+                                                </Tippy>
+                                                <Tippy content={`${t('delete')}`}>
+                                                    <button type="button" className='button-delete' onClick={() => handleDelete(content)}>
+                                                        <IconTrashLines /> Xóa
+                                                    </button>
+                                                </Tippy>
+                                            </div></Cell>
+                                        </Row>
+                                    )}
+                                />
+                            </TableTree>
                             <div className="flex w-full flex-col justify-start">
                                 <ul className="inline-flex items-center space-x-1 rtl:space-x-reverse justify-end" style={{ marginTop: '10px' }}>
                                     <li>

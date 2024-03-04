@@ -171,13 +171,18 @@ const AddNewTask = ({ ...props }: Props) => {
                                     {' '}
                                     {t('date_create')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Flatpickr
-                                    options={{
-                                        dateFormat: 'Y-m-d',
-                                        position: 'auto left',
-                                    }}
-                                    className="form-input"
-                                />
+                                <div className="flex">
+                                    <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
+                                        <IconCalendar></IconCalendar>
+                                    </div>
+                                    <Flatpickr
+                                        options={{
+                                            dateFormat: 'Y-m-d',
+                                            position: 'auto left',
+                                        }}
+                                        className="form-input ltr:rounded-l-none rtl:rounded-r-none"
+                                    />
+                                </div>
                             </div>
                         </div>
                         <div className='flex justify-between gap-5'>
@@ -186,54 +191,79 @@ const AddNewTask = ({ ...props }: Props) => {
                                     {' '}
                                     {t('executor_task')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <div className="flex">
-                                    <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
-                                        <IconCaretDown></IconCaretDown>
-                                    </div>
-                                    <Field as="select" name="executor" id="executor" className="form-input ltr:rounded-l-none rtl:rounded-r-none">
-                                        <option value="">Chọn người thực hiện</option>
-                                        <option value="Người thực hiện 1">Người thực hiện 1</option>
-                                        <option value="Người thực hiện 2">Người thực hiện 2</option>
-                                    </Field>
-                                </div>
+                                <Select
+                                    id='collaborator'
+                                    name='collaborator'
+                                    options={[{
+                                        value: 'Người thực hiện 1',
+                                        label: 'Người thực hiện 1'
+                                    }, {
+                                        value: 'Người thực hiện 2',
+                                        label: 'Người thực hiện 2'
+                                    }]}
+                                    placeholder={'Chọn người thực hiện'}
+                                    maxMenuHeight={160}
+                                    value={'Nam'}
+                                    onChange={e => {
+                                        setFieldValue('gender', e)
+                                    }}
+                                />
 
                                 {submitCount ? errors.executor ? <div className="mt-1 text-danger"> {errors.executor} </div> : null : ''}
                             </div>
                             <div className="mb-3 w-1/2">
                                 <label htmlFor="collaborator"> {t('collaborator_task')}</label>
-                                <div className="flex">
-                                    <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
-                                        <IconCaretDown></IconCaretDown>
-                                    </div>
-                                    <Field as="select" name="collaborator" id="collaborator" className="form-input ltr:rounded-l-none rtl:rounded-r-none">
-                                        <option value="">Chọn người phối hợp</option>
-                                        <option value="Người người phối hợp 1">Người phối hợp 1</option>
-                                        <option value="Người người phối hợp 2">Người phối hợp 2</option>
-                                    </Field>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="mb-3">
-                            <label htmlFor="deadline">
-                                {t('deadline_task')} <span style={{ color: 'red' }}>* </span>
 
-                            </label>
-                            <div className="flex">
-                                <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
-                                    <IconCalendar></IconCalendar>
-                                </div>
-                                <Flatpickr
-                                    options={{
-                                        dateFormat: 'Y-m-d',
-                                        position: 'auto left',
+                                <Select
+                                    id='collaborator'
+                                    name='collaborator'
+                                    options={[{
+                                        value: 'Người phối hợp 1',
+                                        label: 'Người phối hợp 1'
+                                    }, {
+                                        value: 'Người phối hợp 2',
+                                        label: 'Người phối hợp 2'
+                                    }]}
+                                    placeholder={'Chọn người phối hợp'}
+                                    maxMenuHeight={160}
+                                    value={'Nam'}
+                                    onChange={e => {
+                                        setFieldValue('gender', e)
                                     }}
-                                    className="form-input ltr:rounded-l-none rtl:rounded-r-none"
-                                    placeholder={`${t('enter_deadline_task')}`}
                                 />
                             </div>
-
-                            {submitCount ? errors.deadline ? <div className="mt-1 text-danger"> {errors.deadline} </div> : null : ''}
                         </div>
+                        <div className='flex justify-between gap-5'>
+                            <div className="mb-3 w-1/2">
+                                <label htmlFor="deadline">
+                                    {t('deadline_task')} <span style={{ color: 'red' }}>* </span>
+
+                                </label>
+                                <div className="flex">
+                                    <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
+                                        <IconCalendar></IconCalendar>
+                                    </div>
+                                    <Flatpickr
+                                        options={{
+                                            dateFormat: 'Y-m-d',
+                                            position: 'auto left',
+                                        }}
+                                        className="form-input ltr:rounded-l-none rtl:rounded-r-none"
+                                        placeholder={`${t('enter_deadline_task')}`}
+                                    />
+                                </div>
+
+                                {submitCount ? errors.deadline ? <div className="mt-1 text-danger"> {errors.deadline} </div> : null : ''}
+                            </div>
+                            <div className="mb-3 w-1/2">
+                                <label htmlFor="file">
+                                    {' '}
+                                    {t('File')} <span style={{ color: 'red' }}>* </span>
+                                </label>
+                                <Field name="file" type="file" rows="2" id="file" style={{ height: '37.6px' }} placeholder={`${t('enter_description_task')}`} className="form-input" />
+                            </div>
+                        </div>
+
                         <div className="mb-3">
                             <label htmlFor="description">
                                 {' '}
