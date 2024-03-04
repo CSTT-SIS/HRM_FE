@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Deploy HRM_FE
 
 on:
     push:
