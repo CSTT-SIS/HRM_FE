@@ -39,6 +39,7 @@ const DetailPage = ({ ...props }: Props) => {
     const router = useRouter();
 
     const [data, setData] = useState<any>();
+    const [disable, setDisable] = useState<any>(false);
     const [dataDetail, setDataDetail] = useState<any>();
     const [openModal, setOpenModal] = useState(false);
     const [query, setQuery] = useState<any>();
@@ -79,8 +80,9 @@ const DetailPage = ({ ...props }: Props) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
         }
+        setDisable(router.query.status === "true" ? true : false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [router.query.id]);
+    }, [router.query]);
 
     useEffect(() => {
         setInitialValue({
@@ -189,16 +191,21 @@ const DetailPage = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('edit')}`}>
-                        <button type="button" onClick={() => handleEdit(records)}>
-                            <IconPencil />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('delete')}`}>
-                        <button type="button" onClick={() => handleDelete(records)}>
-                            <IconTrashLines />
-                        </button>
-                    </Tippy>
+                    {
+                        !disable &&
+                        <>
+                            <Tippy content={`${t('edit')}`}>
+                                <button type="button" onClick={() => handleEdit(records)}>
+                                    <IconPencil />
+                                </button>
+                            </Tippy>
+                            <Tippy content={`${t('delete')}`}>
+                                <button type="button" onClick={() => handleDelete(records)}>
+                                    <IconTrashLines />
+                                </button>
+                            </Tippy>
+                        </>
+                    }
                 </div>
             ),
         },
@@ -211,7 +218,7 @@ const DetailPage = ({ ...props }: Props) => {
     const handleChangeComplete = (id: any) => {
         OrderPlace({ id: id }).then(() => {
             router.push("/warehouse-process/order")
-            showMessage(`${t('update_success')}`, 'success');
+            // showMessage(`${t('update_success')}`, 'success');
         }).catch((err) => {
             showMessage(`${err?.response?.data?.message}`, 'error');
         });
@@ -228,7 +235,7 @@ const DetailPage = ({ ...props }: Props) => {
         };
         if (data) {
             EditOrder({ id: data.id, ...query }).then(() => {
-                handleConfirm({ id: data.id, message: "create_success" });
+                showMessage(`${t('edit_success')}`, 'success');
             }).catch((err) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
@@ -250,38 +257,11 @@ const DetailPage = ({ ...props }: Props) => {
         AddOrderDetails({
             id: id, details: listDataDetail
         }).then(() => {
-            handleConfirm({ id: id, message: "create_success" });
+            handleChangeComplete({ id: id, message: "create_success" });
         }).catch((err) => {
             showMessage(`${err?.response?.data?.message}`, 'error');
         });
     }
-
-    const handleConfirm = ({ id, message }: any) => {
-        const swalDeletes = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-secondary',
-                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-                popup: 'sweet-alerts',
-            },
-            buttonsStyling: false,
-        });
-        swalDeletes
-            .fire({
-                icon: 'question',
-                title: `${t('complete_order')}`,
-                text: `${t('')}`,
-                padding: '2em',
-                showCancelButton: true,
-                reverseButtons: true,
-            })
-            .then((result) => {
-                if (result.value) {
-                    handleChangeComplete(id);
-                }
-                showMessage(`${t(`${message}`)}`, 'success');
-                handleCancel();
-            });
-    };
 
     const handleActive = (value: any) => {
         if (active.includes(value)) {
@@ -386,7 +366,8 @@ const DetailPage = ({ ...props }: Props) => {
                                                                 type="text"
                                                                 id="name"
                                                                 placeholder={`${t('enter_name')}`}
-                                                                className="form-input"
+                                                                className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                                disabled={disable}
                                                             />
                                                             {submitCount && errors.name ? (
                                                                 <div className="text-danger mt-1"> {`${errors.name}`} </div>
@@ -395,6 +376,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                         <div className="w-1/2">
                                                             <label htmlFor="proposalIds" className='label'> {t('proposal')} < span style={{ color: 'red' }}>* </span></label >
                                                             <Select
+                                                                isDisabled={disable}
                                                                 id='proposalIds'
                                                                 name='proposalIds'
                                                                 options={dataProposalDropdown}
@@ -422,7 +404,8 @@ const DetailPage = ({ ...props }: Props) => {
                                                                 type="text"
                                                                 id="code"
                                                                 placeholder={`${t('enter_code')}`}
-                                                                className="form-input"
+                                                                className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                                disabled={disable}
                                                             />
                                                             {submitCount && errors.code ? (
                                                                 <div className="text-danger mt-1"> {`${errors.code}`} </div>
@@ -442,24 +425,32 @@ const DetailPage = ({ ...props }: Props) => {
                                                                         }}
                                                                         value={field?.value}
                                                                         onChange={e => setFieldValue("estimatedDeliveryDate", moment(e[0]).format("YYYY-MM-DD hh:mm"))}
-                                                                        className="form-input"
+                                                                        className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                                        disabled={disable}
                                                                     />
                                                                 )}
-                                                                className="form-input"
                                                             />
                                                             {submitCount && errors.estimatedDeliveryDate ? (
                                                                 <div className="text-danger mt-1"> {`${errors.estimatedDeliveryDate}`} </div>
                                                             ) : null}
                                                         </div>
                                                     </div>
-                                                    <div className='flex justify-between gap-5'>
+                                                    <div className='flex justify-between gap-5 mt-5'>
                                                         <div className="w-1/2">
                                                             <label htmlFor="provider" className='label'> {t('provider')}< span style={{ color: 'red' }}>* </span></label >
-                                                            <Field id="provider" as="textarea" rows="2" name="provider" className="form-input" />
+                                                            <Field
+                                                                id="provider"
+                                                                as="textarea"
+                                                                rows="2"
+                                                                name="provider"
+                                                                className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                                disabled={disable}
+                                                            />
                                                             {submitCount && errors.provider ? (
                                                                 <div className="text-danger mt-1"> {`${errors.provider}`} </div>
                                                             ) : null}
                                                         </div>
+                                                        <div className="w-1/2"></div>
                                                     </div>
                                                 </div>
                                             </AnimateHeight>
@@ -481,13 +472,16 @@ const DetailPage = ({ ...props }: Props) => {
                                                 <div className='p-4'>
                                                     <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                                                         <div className="flex items-center flex-wrap">
-                                                            <button type="button" onClick={e => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
-                                                                <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                                                                {t('add_detail')}
-                                                            </button>
+                                                            {
+                                                                !disable &&
+                                                                <button type="button" onClick={e => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
+                                                                    <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                                                    {t('add_detail')}
+                                                                </button>
+                                                            }
                                                         </div>
 
-                                                        <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
+                                                        {/* <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
                                                     </div>
                                                     <div className="datatables">
                                                         <DataTable
@@ -513,14 +507,17 @@ const DetailPage = ({ ...props }: Props) => {
                                             </AnimateHeight>
                                         </div>
                                     </div>
-                                    <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
-                                        <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
-                                            {t('cancel')}
-                                        </button>
-                                        <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
-                                            {router.query.id !== "create" ? t('update') : t('add')}
-                                        </button>
-                                    </div>
+                                    {
+                                        !disable &&
+                                        <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
+                                            <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
+                                                {t('cancel')}
+                                            </button>
+                                            <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+                                                {router.query.id !== "create" ? t('update') : t('add')}
+                                            </button>
+                                        </div>
+                                    }
                                 </div>
                                 {
                                     <RenturnError errors={errors} submitCount={submitCount} />

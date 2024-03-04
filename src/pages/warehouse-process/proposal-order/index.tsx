@@ -10,7 +10,7 @@ import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
 import { Proposals } from '@/services/swr/proposal.twr';
-import { DeleteProposal, ProposalApprove, ProposalReject, ProposalReturn } from '@/services/apis/proposal.api';
+import { DeleteProposal, ProposalApprove, ProposalManagemetReject, ProposalMangementApprove, ProposalReject, ProposalReturn } from '@/services/apis/proposal.api';
 // constants
 import { PAGE_SIZES } from '@/utils/constants';
 // helper
@@ -22,6 +22,7 @@ import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
 import IconCircleCheck from '@/components/Icon/IconCircleCheck';
 import IconXCircle from '@/components/Icon/IconXCircle';
+import IconEye from '@/components/Icon/IconEye';
 
 interface Props {
     [key: string]: any;
@@ -125,8 +126,26 @@ const ProposalPage = ({ ...props }: Props) => {
         });
     }
 
+    const handleManagementApprove = ({ id }: any) => {
+        ProposalMangementApprove({ id }).then(() => {
+            mutate();
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
     const handleReject = ({ id }: any) => {
         ProposalReject({ id }).then(() => {
+            mutate();
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
+    const handleManagementReject = ({ id }: any) => {
+        ProposalManagemetReject({ id }).then(() => {
             mutate();
             showMessage(`${t('update_success')}`, 'success');
         }).catch((err) => {
@@ -155,6 +174,11 @@ const ProposalPage = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
+                    <Tippy content={`${t('detail')}`}>
+                        <button type="button" onClick={() => router.push(`/warehouse-process/proposal-order/${records.id}?status=${true}`)}>
+                            <IconEye />
+                        </button>
+                    </Tippy>
                     <Tippy content={`${t('edit')}`}>
                         <button type="button" onClick={() => handleDetail(records)}>
                             <IconPencil />
@@ -170,8 +194,18 @@ const ProposalPage = ({ ...props }: Props) => {
                             <IconCircleCheck size={20} />
                         </button>
                     </Tippy>
+                    <Tippy content={`${t('manager_approve')}`}>
+                        <button type="button" onClick={() => handleManagementApprove(records)}>
+                            <IconCircleCheck size={20} />
+                        </button>
+                    </Tippy>
                     <Tippy content={`${t('reject')}`}>
                         <button type="button" onClick={() => handleReject(records)}>
+                            <IconXCircle />
+                        </button>
+                    </Tippy>
+                    <Tippy content={`${t('manager_reject')}`}>
+                        <button type="button" onClick={() => handleManagementReject(records)}>
                             <IconXCircle />
                         </button>
                     </Tippy>
