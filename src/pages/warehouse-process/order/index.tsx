@@ -24,6 +24,7 @@ import IconXCircle from '@/components/Icon/IconXCircle';
 import { IconCartCheck } from '@/components/Icon/IconCartCheck';
 import { IconShipping } from '@/components/Icon/IconShipping';
 import moment from 'moment';
+import IconEye from '@/components/Icon/IconEye';
 
 interface Props {
     [key: string]: any;
@@ -166,6 +167,11 @@ const OrderForm = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
+                    <Tippy content={`${t('detail')}`}>
+                        <button type="button" onClick={() => router.push(`/warehouse-process/order/${records.id}?status=${true}`)}>
+                            <IconEye />
+                        </button>
+                    </Tippy>
                     <Tippy content={`${t('edit')}`}>
                         <button type="button" onClick={() => handleDetail(records)}>
                             <IconPencil />
