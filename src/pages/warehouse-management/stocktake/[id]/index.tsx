@@ -193,11 +193,14 @@ const DetailPage = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('edit')}`}>
-                        <button type="button" onClick={() => handleEdit(records)}>
-                            <IconPencil />
-                        </button>
-                    </Tippy>
+                    {
+                        router.query?.status === "DRAFT" &&
+                        <Tippy content={`${t('edit')}`}>
+                            <button type="button" onClick={() => handleEdit(records)}>
+                                <IconPencil />
+                            </button>
+                        </Tippy>
+                    }
                     {
                         router.query?.status !== "DRAFT" && router.query.id !== "create" &&
                         <>
@@ -580,22 +583,26 @@ const DetailPage = ({ ...props }: Props) => {
                                             </AnimateHeight>
                                         </div>
                                     </div>
-                                    {
-                                        <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
-                                            <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
-                                                {t('cancel')}
-                                            </button>
-                                            <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
-                                                {router.query.id !== "create" ? t('update') : t('add')}
-                                            </button>
-                                            {
-                                                router.query.id !== "create" &&
-                                                <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button w-32" onClick={() => handleFinish()}>
-                                                    {t("finish")}
+                                    <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
+                                        {
+                                            router.query?.status === "DRAFT" &&
+                                            <>
+                                                <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
+                                                    {t('cancel')}
                                                 </button>
-                                            }
-                                        </div>
-                                    }
+                                                <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+                                                    {router.query.id !== "create" ? t('update') : t('add')}
+                                                </button>
+                                            </>
+                                        }
+
+                                        {
+                                            router.query.id !== "create" && router.query?.status !== "DRAFT" &&
+                                            <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button w-32" onClick={() => handleFinish()}>
+                                                {t("finish")}
+                                            </button>
+                                        }
+                                    </div>
 
                                 </div>
                             </Form>
