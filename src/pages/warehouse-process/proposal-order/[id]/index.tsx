@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { showMessage } from '@/@core/utils';
 import { useRouter } from 'next/router';
-import { AddProposalDetail, AddProposalDetails, CreateProposal, DeleteProposalDetail, EditProposal, EditProposalDetail, GetProposal, ProposalPending } from '@/services/apis/proposal.api';
+import { AddProposalDetail, AddProposalDetails, CreateProposal, DeleteProposalDetail, EditProposal, EditProposalDetail, GetProposal, ProposalApprove, ProposalManagemetReject, ProposalMangementApprove, ProposalPending, ProposalReject } from '@/services/apis/proposal.api';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
@@ -269,6 +269,42 @@ const DetailPage = ({ ...props }: Props) => {
         setTimeout(() => {
             setPage(paginationDepartment?.page + 1);
         }, 1000);
+    };
+
+    const handleApprove = () => {
+        ProposalApprove({ id: router.query.id }).then(() => {
+            handleCancel();
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
+    const handleManagerApprove = () => {
+        ProposalMangementApprove({ id: router.query.id }).then(() => {
+            handleCancel();
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
+    const handleReject = () => {
+        ProposalReject({ id: router.query.id }).then(() => {
+            handleCancel();
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
+    const handleManagerReject = () => {
+        ProposalManagemetReject({ id: router.query.id }).then(() => {
+            handleCancel();
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
     }
 
     return (
@@ -423,6 +459,28 @@ const DetailPage = ({ ...props }: Props) => {
                                         </button>
                                         <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
                                             {router.query.id !== "create" ? t('update') : t('add')}
+                                        </button>
+                                    </div>
+                                }
+                                {
+                                    router.query.type === "approve" &&
+                                    <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
+                                        <button type="button" className="btn btn-outline-danger cancel-button w-28" onClick={() => handleReject()}>
+                                            {t('reject')}
+                                        </button>
+                                        <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleApprove()}>
+                                            {t('approve')}
+                                        </button>
+                                    </div>
+                                }
+                                {
+                                    router.query.type === "managerApprove" &&
+                                    <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
+                                        <button type="button" className="btn btn-outline-danger cancel-button w-28" onClick={() => handleManagerReject()}>
+                                            {t('reject')}
+                                        </button>
+                                        <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleManagerApprove()}>
+                                            {t('approve')}
                                         </button>
                                     </div>
                                 }

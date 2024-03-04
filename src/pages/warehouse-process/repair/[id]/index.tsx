@@ -14,7 +14,7 @@ import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
 import HandleDetailModal from '../modal/DetailModal';
 import { RepairDetails } from '@/services/swr/repair.twr';
-import { AddRepairDetail, AddRepairDetails, CreateRepair, DeleteRepairDetail, EditRepair, GetRepair, RepairInprogress } from '@/services/apis/repair.api';
+import { AddRepairDetail, AddRepairDetails, CreateRepair, DeleteRepairDetail, EditRepair, GetRepair, RepairApprove, RepairInprogress, RepairReject } from '@/services/apis/repair.api';
 import { Field, Form, Formik } from 'formik';
 import AnimateHeight from 'react-animate-height';
 import IconCaretDown from '@/components/Icon/IconCaretDown';
@@ -286,6 +286,24 @@ const DetailPage = ({ ...props }: Props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [router.query.id]);
 
+    const handleApprove = () => {
+        RepairApprove({ id: router.query.id }).then(() => {
+            showMessage(`${t('update_success')}`, 'success');
+            handleCancel();
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
+    const handleReject = () => {
+        RepairReject({ id: router.query.id }).then(() => {
+            showMessage(`${t('update_success')}`, 'success');
+            handleCancel();
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
     return (
         <div>
             {isLoading && (
@@ -453,6 +471,17 @@ const DetailPage = ({ ...props }: Props) => {
                                         </button>
                                         <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
                                             {router.query.id !== "create" ? t('update') : t('add')}
+                                        </button>
+                                    </div>
+                                }
+                                {
+                                    router.query.type === "approve" &&
+                                    <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
+                                        <button type="button" className="btn btn-outline-danger cancel-button w-28" onClick={() => handleReject()}>
+                                            {t('reject')}
+                                        </button>
+                                        <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleApprove()}>
+                                            {t('approve')}
                                         </button>
                                     </div>
                                 }
