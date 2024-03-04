@@ -13,7 +13,7 @@ test('should login success with valid credentials', async ({ page }) => {
 	await expect(page).toHaveURL('/');
 });
 
-test('should login failed with valid credentials', async ({ page }) => {
+test('should login failed with valid credentials1', async ({ page }) => {
 	await page.goto('/auth/boxed-signin');
 
 	await page.getByTestId('username').fill('admin');
@@ -25,3 +25,4 @@ test('should login failed with valid credentials', async ({ page }) => {
 
 	await expect(page).toHaveURL('/auth/boxed-signin');
 });
+
