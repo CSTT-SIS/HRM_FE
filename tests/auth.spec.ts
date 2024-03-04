@@ -25,3 +25,4 @@ test('should login failed with valid credentials', async ({ page }) => {
 
 	await expect(page).toHaveURL('/auth/boxed-signin');
 });
+

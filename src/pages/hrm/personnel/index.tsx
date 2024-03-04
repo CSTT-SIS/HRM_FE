@@ -157,59 +157,108 @@ const Department = ({ ...props }: Props) => {
 			);
 		}
 	};
-	type Content = { title: string; description: string };
+	type Content = { id: number; name: string; code: string; department?: string; duty?: string, type: string };
 
 	type Item = {
-		id: string;
+		id: number;
 		content: Content;
 		hasChildren: boolean;
 		children?: Item[];
 	};
-	const Title = (props: Content) => <Box as="span">{props.title}</Box>;
-	const Description = (props: Content) => (
-		<Box as="span">{props.description}</Box>
+	const Name = (props: Content) => <Box as="span">{props.name}</Box>;
+	const Code = (props: Content) => (
+		<Box as="span">{props.code}</Box>
+	);
+	const Duty = (props: Content) => (
+		<Box as="span">{props.duty}</Box>
+	);
+	const Department = (props: Content) => (
+		<Box as="span">{props.department}</Box>
 	);
 	const Action = (props: Content) => (
-		<div className="flex items-center w-max mx-auto gap-2">
-			<Tippy content={`${t('edit')}`}>
-				<button type="button" className='button-edit' >
-					<IconPencil /> Sửa
-				</button>
-			</Tippy>
-			<Tippy content={`${t('delete')}`}>
-				<button type="button" className='button-delete' >
-					<IconTrashLines /> Xóa
-				</button>
-			</Tippy>
-		</div>
+		<>
+			{
+				props.type !== 'PB' ?
+					<div className="flex items-center w-max mx-auto gap-2">
+						<Tippy content={`${t('edit')}`}>
+							<button type="button" className='button-edit' onClick={() => handleEdit(props)}>
+								<IconPencil /> Sửa
+							</button>
+						</Tippy>
+						<Tippy content={`${t('delete')}`}>
+							<button type="button" className='button-delete' onClick={() => handleDelete(props)}>
+								<IconTrashLines /> Xóa
+							</button>
+						</Tippy> </div> : <></>
+			}
+		</>
+
 	);
 	const items: Item[] = [
 		{
-			id: 'item1',
+			id: 1,
 			content: {
-				title: 'Nguyễn Văn A',
-				description: 'NV1',
-			},
-			hasChildren: false,
-			children: [],
-		},
-		{
-			id: 'item2',
-			content: {
-				title: 'Trần Văn B',
-				description: 'NV2',
+				id: 1,
+				name: "Phòng 1",
+				code: "PB01",
+				type: 'PB'
 			},
 			hasChildren: true,
 			children: [
 				{
-					id: 'item3',
+					id: 2,
 					content: {
-						title: 'Vũ Văn C',
-						description: 'NV3',
+						id: 1,
+						name: "Nguyễn Văn A",
+						code: "NV1",
+						type: 'NV',
+						department: 'Phòng 1',
+						duty: 'Trưởng phòng'
 					},
 					hasChildren: false,
+
 				},
 			],
+
+		},
+		{
+			id: 3,
+			content: {
+				id: 3,
+				name: "Phòng 2",
+				code: "PB02",
+				type: 'PB'
+			},
+			hasChildren: true,
+			children: [
+				{
+					id: 4,
+					content: {
+						id: 2,
+						name: "Trần Văn B",
+						code: "NV02",
+						type: 'NV',
+						department: 'Phòng 2',
+						duty: 'Kế toán'
+					},
+					hasChildren: false,
+
+				},
+				{
+					id: 5,
+					content: {
+						id: 3,
+						name: "Nguyễn Thị C",
+						code: "NV03",
+						type: 'NV',
+						department: 'Phòng 2',
+						duty: 'Trợ lý'
+					},
+					hasChildren: false,
+
+				},
+			],
+
 		},
 	];
 	const columns = [
@@ -276,23 +325,38 @@ const Department = ({ ...props }: Props) => {
 					<input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
 
 				</div>
-				<div className="datatables">
-					<DataTable
-						highlightOnHover
-						className="table-hover whitespace-nowrap custom_table"
-						records={recordsData}
-						columns={columns}
-						totalRecords={total}
-						recordsPerPage={pageSize}
-						page={page}
-						onPageChange={(p) => setPage(p)}
-						recordsPerPageOptions={PAGE_SIZES}
-						onRecordsPerPageChange={setPageSize}
-						sortStatus={sortStatus}
-						onSortStatusChange={setSortStatus}
-						minHeight={200}
-						paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
+				<div className="mb-5">
+					<TableTree
+						columns={[Name, Code, Duty, Department, Action]}
+						headers={['Tên nhân viên', 'Mã nhân viên', 'Chức vụ', 'Phòng ban', 'Thao tác']}
+						columnWidths={['300px', '300px', '200px', '200px']}
+						items={items}
 					/>
+					<div className="flex w-full flex-col justify-start">
+						<ul className="inline-flex items-center space-x-1 rtl:space-x-reverse justify-end" style={{ marginTop: '10px' }}>
+							<li>
+								<button
+									type="button"
+									className="flex justify-center rounded-full bg-white-light p-2 font-semibold text-dark transition hover:bg-primary hover:text-white dark:bg-[#191e3a] dark:text-white-light dark:hover:bg-primary"
+								>
+									<IconCaretDown className="w-5 h-5 rotate-90 rtl:-rotate-90" />
+								</button>
+							</li>
+							<li>
+								<button type="button" className="flex justify-center rounded-full px-3.5 py-2 font-semibold text-white transition dark:bg-primary dark:text-white-light bt-pagination-active">
+									1
+								</button>
+							</li>
+							<li>
+								<button
+									type="button"
+									className="flex justify-center rounded-full bg-white-light p-2 font-semibold text-dark transition hover:bg-primary hover:text-white dark:bg-[#191e3a] dark:text-white-light dark:hover:bg-primary"
+								>
+									<IconCaretDown className="w-5 h-5 -rotate-90 rtl:rotate-90" />
+								</button>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 			<PersonnelModal openModal={openModal} setOpenModal={setOpenModal} data={data} totalData={getStorge} setData={setData} setGetStorge={setGetStorge} />
