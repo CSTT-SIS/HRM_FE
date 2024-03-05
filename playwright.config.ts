@@ -29,7 +29,11 @@ export default defineConfig({
 		/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
 		trace: 'on-first-retry',
 		headless: true,
+		storageState: 'state.json',
 	},
+
+	globalSetup: require.resolve('./tests/global-setup'),
+	globalTeardown: require.resolve('./tests/global-teardown'),
 
 	/* Configure projects for major browsers */
 	projects: [
