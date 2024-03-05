@@ -27,6 +27,11 @@ export const AddStocktakeDetail = (body: any) => {
     return callApi(endpoint, 'POST', body);
 };
 
+export const AddStocktakeDetails = (body: any) => {
+    const endpoint = `/stocktake/${body.id}/add-details`;
+    return callApi(endpoint, 'POST', body);
+};
+
 export const AddStocktakeDetailAuto = (body: any) => {
     const endpoint = `/stocktake/${body.id}/auto-add-detail`;
     return callApi(endpoint, 'POST', body);

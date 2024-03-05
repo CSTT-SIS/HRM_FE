@@ -36,6 +36,7 @@ const DetailModal = ({ ...props }: Props) => {
     const { t } = useTranslation();
     const router = useRouter();
 
+    const [disable, setDisable] = useState<any>(false);
     const [data, setData] = useState<any>();
     const [dataDetail, setDataDetail] = useState<any>();
     const [listDataDetail, setListDataDetail] = useState<any>([]);
@@ -60,8 +61,9 @@ const DetailModal = ({ ...props }: Props) => {
         if (Number(router.query.id)) {
             setQuery({ id: router.query.id, ...router.query })
         }
+        setDisable(router.query.status === "true" ? true : false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [router.query.id]);
+    }, [router.query]);
 
     const handleEdit = (data: any) => {
         setOpenModal(true);
@@ -115,7 +117,7 @@ const DetailModal = ({ ...props }: Props) => {
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
                     {
-                        router.query.id !== "create" &&
+                        router.query.id !== "create" && !disable &&
                         <Tippy content={`${t('enter_quantity')}`}>
                             <button type="button" onClick={() => handleEdit(records)}>
                                 <IconPencil />
@@ -126,7 +128,6 @@ const DetailModal = ({ ...props }: Props) => {
             ),
         },
     ]
-
     const handleCancel = () => {
         router.push("/warehouse-process/warehousing-bill")
     };
@@ -426,7 +427,8 @@ const DetailModal = ({ ...props }: Props) => {
                                                                 type="text"
                                                                 id="name"
                                                                 placeholder={`${t('enter_name')}`}
-                                                                className="form-input"
+                                                                className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                                disabled={disable}
                                                             />
                                                             {submitCount && errors.name ? (
                                                                 <div className="text-danger mt-1"> {`${errors.name}`} </div>
@@ -446,6 +448,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                                 onChange={e => {
                                                                     setFieldValue('warehouseId', e)
                                                                 }}
+                                                                isDisabled={disable}
                                                             />
                                                             {submitCount && errors.warehouseId ? (
                                                                 <div className="text-danger mt-1"> {`${errors.warehouseId}`} </div>
@@ -471,6 +474,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                                     }
                                                                     setFieldValue('type', e)
                                                                 }}
+                                                                isDisabled={disable}
                                                             />
                                                             {submitCount && errors.type ? (
                                                                 <div className="text-danger mt-1"> {`${errors.type}`} </div>
@@ -493,6 +497,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                                             setFieldValue('repairRequestId', e);
                                                                             getValueDetail({ value: e?.value, type: "repairRequest" });
                                                                         }}
+                                                                        isDisabled={disable}
                                                                     />
                                                                     {submitCount && errors.repairRequestId ? (
                                                                         <div className="text-danger mt-1"> {`${errors.repairRequestId}`} </div>
@@ -514,6 +519,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                                                 setFieldValue('proposalId', e)
                                                                                 getValueDetail({ value: e?.value, type: "proposal" });
                                                                             }}
+                                                                            isDisabled={disable}
                                                                         />
                                                                         {submitCount && errors.proposalId ? (
                                                                             <div className="text-danger mt-1"> {`${errors.proposalId}`} </div>
@@ -534,6 +540,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                                                 setFieldValue('orderId', e)
                                                                                 getValueDetail({ value: e?.value, type: "order" });
                                                                             }}
+                                                                            isDisabled={disable}
                                                                         />
                                                                         {submitCount && errors.orderId ? (
                                                                             <div className="text-danger mt-1"> {`${errors.orderId}`} </div>
@@ -541,7 +548,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                                     </div>
                                                         }
                                                     </div>
-                                                    <div className="mb-5 flex justify-between gap-4">
+                                                    <div className="mb-5 flex justify-between gap-4 mt-5">
                                                         <div className="w-1/2">
                                                             <label htmlFor="note" className='label'> {t('notes')}</label >
                                                             <Field
@@ -549,12 +556,14 @@ const DetailModal = ({ ...props }: Props) => {
                                                                 as="textarea"
                                                                 id="note"
                                                                 placeholder={`${t('enter_note')}`}
-                                                                className="form-input"
+                                                                className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                                disabled={disable}
                                                             />
                                                             {submitCount && errors.note ? (
                                                                 <div className="text-danger mt-1"> {`${errors.note}`} </div>
                                                             ) : null}
                                                         </div>
+                                                        <div className="w-1/2"></div>
                                                     </div>
                                                 </div>
                                             </AnimateHeight>
@@ -598,14 +607,19 @@ const DetailModal = ({ ...props }: Props) => {
                                         </div>
                                     </div>
                                     <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
-                                        <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
-                                            {t('cancel')}
-                                        </button>
-                                        <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
-                                            {router.query.id !== "create" ? t('update') : t('add')}
-                                        </button>
                                         {
-                                            router.query.id !== "create" &&
+                                            !disable &&
+                                            <>
+                                                <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
+                                                    {t('cancel')}
+                                                </button>
+                                                <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+                                                    {router.query.id !== "create" ? t('update') : t('add')}
+                                                </button>
+                                            </>
+                                        }
+                                        {
+                                            router.query.id !== "create" && !disable &&
                                             <button type="button" onClick={e => handleChangeComplete()} className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
                                                 {t('complete')}
                                             </button>

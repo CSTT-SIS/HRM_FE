@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { showMessage } from '@/@core/utils';
 import { useRouter } from 'next/router';
-import { AddProposalDetail, AddProposalDetails, CreateProposal, DeleteProposalDetail, EditProposal, EditProposalDetail, GetProposal, ProposalPending } from '@/services/apis/proposal.api';
+import { AddProposalDetail, AddProposalDetails, CreateProposal, DeleteProposalDetail, EditProposal, EditProposalDetail, GetProposal, ProposalApprove, ProposalPending, ProposalReject } from '@/services/apis/proposal.api';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
@@ -36,6 +36,7 @@ const DetailPage = ({ ...props }: Props) => {
     const { t } = useTranslation();
     const router = useRouter();
 
+    const [disable, setDisable] = useState<any>(false);
     const [dataDetail, setDataDetail] = useState<any>();
     const [listDataDetail, setListDataDetail] = useState<any>();
     const [openModal, setOpenModal] = useState(false);
@@ -72,8 +73,9 @@ const DetailPage = ({ ...props }: Props) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
         }
+        setDisable(router.query.status === "true" ? true : false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [router.query.id])
+    }, [router.query])
 
     useEffect(() => {
         setInitialValue({
@@ -171,16 +173,21 @@ const DetailPage = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('edit')}`}>
-                        <button type="button" onClick={() => handleEdit(records)}>
-                            <IconPencil />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('delete')}`}>
-                        <button type="button" onClick={() => handleDelete(records)}>
-                            <IconTrashLines />
-                        </button>
-                    </Tippy>
+                    {
+                        !disable &&
+                        <>
+                            <Tippy content={`${t('edit')}`}>
+                                <button type="button" onClick={() => handleEdit(records)}>
+                                    <IconPencil />
+                                </button>
+                            </Tippy>
+                            <Tippy content={`${t('delete')}`}>
+                                <button type="button" onClick={() => handleDelete(records)}>
+                                    <IconTrashLines />
+                                </button>
+                            </Tippy>
+                        </>
+                    }
                 </div>
             ),
         },
@@ -217,7 +224,7 @@ const DetailPage = ({ ...props }: Props) => {
 
         if (data) {
             EditProposal({ id: data?.id, ...query }).then((res) => {
-                handleConfirm({ id: data.id, message: "edit_success" });
+                showMessage(`${t('edit_success')}`, 'success');
             }).catch((err) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
@@ -238,38 +245,11 @@ const DetailPage = ({ ...props }: Props) => {
         AddProposalDetails({
             id: id, details: listDataDetail
         }).then(() => {
-            handleConfirm({ id: id, message: "create_success" });
+            handleChangeComplete({ id: id });
         }).catch((err) => {
             showMessage(`${err?.response?.data?.message}`, 'error');
         });
     }
-
-    const handleConfirm = ({ id, message }: any) => {
-        const swalDeletes = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-secondary',
-                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-                popup: 'sweet-alerts',
-            },
-            buttonsStyling: false,
-        });
-        swalDeletes
-            .fire({
-                icon: 'question',
-                title: `${t('complete_supply')}`,
-                text: `${t('')}`,
-                padding: '2em',
-                showCancelButton: true,
-                reverseButtons: true,
-            })
-            .then((result) => {
-                if (result.value) {
-                    handleChangeComplete(id);
-                }
-                showMessage(`${t(`${message}`)}`, 'success');
-                handleCancel();
-            });
-    };
 
     const RenturnError = (param: any) => {
         if (Object.keys(param?.errors || {}).length > 0 && param?.submitCount > 0) {
@@ -291,6 +271,24 @@ const DetailPage = ({ ...props }: Props) => {
         setTimeout(() => {
             setPage(paginationDepartment?.page + 1);
         }, 1000);
+    }
+
+    const handleApprove = () => {
+        ProposalApprove({ id: router.query.id }).then(() => {
+            handleCancel();
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
+    const handleReject = () => {
+        ProposalReject({ id: router.query.id }).then(() => {
+            handleCancel();
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
     }
 
     return (
@@ -346,7 +344,8 @@ const DetailPage = ({ ...props }: Props) => {
                                                             type="text"
                                                             id="name"
                                                             placeholder={`${t('enter_name')}`}
-                                                            className="form-input"
+                                                            className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                            disabled={disable}
                                                         />
                                                         {submitCount && errors.name ? (
                                                             <div className="text-danger mt-1"> {`${errors.name}`} </div>
@@ -359,7 +358,8 @@ const DetailPage = ({ ...props }: Props) => {
                                                             type="text"
                                                             id="content"
                                                             placeholder={`${t('enter_content')}`}
-                                                            className="form-input"
+                                                            className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                            disabled={disable}
                                                         />
                                                         {submitCount && errors.content ? (
                                                             <div className="text-danger mt-1"> {`${errors.content}`} </div>
@@ -381,6 +381,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                             onChange={e => {
                                                                 setFieldValue('departmentId', e)
                                                             }}
+                                                            isDisabled={disable}
                                                         />
                                                         {submitCount && errors.departmentId ? (
                                                             <div className="text-danger mt-1"> {`${errors.departmentId}`} </div>
@@ -408,10 +409,13 @@ const DetailPage = ({ ...props }: Props) => {
                                             <div className='p-4'>
                                                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4 gap-5">
                                                     <div className="flex items-center flex-wrap">
-                                                        <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
-                                                            <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                                                            {t('add_detail')}
-                                                        </button>
+                                                        {
+                                                            !disable &&
+                                                            <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
+                                                                <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                                                {t('add_detail')}
+                                                            </button>
+                                                        }
                                                     </div>
 
                                                     {/* <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
@@ -431,14 +435,28 @@ const DetailPage = ({ ...props }: Props) => {
                                         </AnimateHeight>
                                     </div>
                                 </div>
-                                <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
-                                    <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
-                                        {t('cancel')}
-                                    </button>
-                                    <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
-                                        {router.query.id !== "create" ? t('update') : t('add')}
-                                    </button>
-                                </div>
+                                {
+                                    !disable &&
+                                    <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
+                                        <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
+                                            {t('cancel')}
+                                        </button>
+                                        <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+                                            {router.query.id !== "create" ? t('update') : t('add')}
+                                        </button>
+                                    </div>
+                                }
+                                {
+                                    router.query.type === "approve" &&
+                                    <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
+                                        <button type="button" className="btn btn-outline-danger cancel-button w-28" onClick={() => handleReject()}>
+                                            {t('reject')}
+                                        </button>
+                                        <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleApprove()}>
+                                            {t('approve')}
+                                        </button>
+                                    </div>
+                                }
                             </div>
                             {
                                 <RenturnError errors={errors} submitCount={submitCount} />

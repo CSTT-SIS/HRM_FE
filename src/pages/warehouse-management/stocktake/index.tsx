@@ -24,6 +24,8 @@ import IconTrashLines from '@/components/Icon/IconTrashLines';
 import IconXCircle from '@/components/Icon/IconXCircle';
 import IconCircleCheck from '@/components/Icon/IconCircleCheck';
 import IconRestore from '@/components/Icon/IconRestore';
+import IconEye from '@/components/Icon/IconEye';
+import { IconInventory } from '@/components/Icon/IconInventory';
 
 interface Props {
     [key: string]: any;
@@ -122,24 +124,6 @@ const StocktakePage = ({ ...props }: Props) => {
         });
     }
 
-    const handleCancel = ({ id }: any) => {
-        StocktakeCancel({ id }).then(() => {
-            mutate();
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
-
-    const handleApprove = ({ id }: any) => {
-        StocktakeApprove({ id }).then(() => {
-            mutate();
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
-
     const columns = [
         {
             accessor: 'id',
@@ -182,6 +166,11 @@ const StocktakePage = ({ ...props }: Props) => {
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
                     <Tippy content={`${t('edit')}`}>
+                        <button type="button" onClick={() => router.push(`/warehouse-management/stocktake/${records.id}?status=${true}`)}>
+                            <IconEye />
+                        </button>
+                    </Tippy>
+                    <Tippy content={`${t('edit')}`}>
                         <button type="button" onClick={() => handleDetail(records)}>
                             <IconPencil />
                         </button>
@@ -191,18 +180,18 @@ const StocktakePage = ({ ...props }: Props) => {
                             <IconTrashLines />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('reject')}`}>
-                        <button type="button" onClick={() => handleReject(records)}>
-                            <IconRestore />
+                    <Tippy content={`${t('tally')}`}>
+                        <button type="button" onClick={() => router.push(`/warehouse-management/stocktake/${records.id}?type=tally&&status=${true}`)}>
+                            <IconInventory />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('cancel')}`}>
+                    {/* <Tippy content={`${t('reject')}`}>
                         <button type="button" onClick={() => handleCancel(records)}>
                             <IconXCircle />
                         </button>
-                    </Tippy>
+                    </Tippy> */}
                     <Tippy content={`${t('approve')}`}>
-                        <button type="button" onClick={() => handleApprove(records)}>
+                        <button type="button" onClick={() => router.push(`/warehouse-management/stocktake/${records.id}?type=approve&&status=${true}`)}>
                             <IconCircleCheck size={20} />
                         </button>
                     </Tippy>
