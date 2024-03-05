@@ -81,7 +81,7 @@ const Department = ({ ...props }: Props) => {
     const currentYear = currentDate.getFullYear();
     const [isSelected, setIsSelected]= useState<any>(undefined);
     const [isDelete, setDelete]= useState<undefined | string[]>(undefined);
-
+    const [listSelected, setListSelected]= useState<any>([]);
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const data = localStorage.getItem('employeeList');
@@ -184,11 +184,27 @@ const Department = ({ ...props }: Props) => {
             )
         }
     }
+    const handleSelect = (data: any, selected: any) => {
+        console.log(data, selected);
+        let listSelectTempt = [];
+        if (selected) {
+            listSelectTempt = [...listSelected, data?.id];
+        } else {
+            listSelectTempt = listSelected?.filter((item: any) => { return item!== data?.id });
+        }
+        setListSelected(listSelectTempt);
+        if (selected || listSelectTempt.length > 0) {
+        setIsSelected(true);
+        } else {
+        setIsSelected(false);
+        }
+    }
+
     const columns = [
         {
             accessor: 'id',
             title: '#',
-            render: (records: any, index: any) =>                                     <input type="checkbox" className="form-checkbox" onChange={(e) => setIsSelected(e.target.value)} />
+            render: (records: any, index: any) =>                                     <input type="checkbox" className="form-checkbox" onChange={(e) => handleSelect(records, e.target.checked)} />
             ,
         },
         { accessor: 'code', title: 'Mã chấm công', sortable: false
@@ -224,7 +240,7 @@ const Department = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-1">
                     <div className="flex items-center flex-wrap">
-                        <Link href="/hrm/exempt-timekeeping/ExemptTimekeepingAdd">
+                        <Link href="/hrm/exempt-timekeeping/add">
                         <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                                     <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                                                     {t('add')}
@@ -248,7 +264,7 @@ const Department = ({ ...props }: Props) => {
                     </div>
                     <div className='flex gap-2'>
                         <div className='flex gap-1'>
-                        <div className="flex items-center w-auto">{t('choose_month')}</div>
+                        <div className="flex items-center" style={{width: "50%"}}>{t('choose_month')}</div>
                         <Flatpickr
                             className='form-input'
                             options = {{
