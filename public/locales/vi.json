@@ -722,5 +722,14 @@
     "inactive": "Khóa",
     "please_choose_type_shift": "Vui lòng chọn loại ca",
     "please_fill_code_shift": "Vui lòng nhập mã ca",
-    "please_fill_name_shift": "Vui lòng nhập tên ca"
+    "please_fill_name_shift": "Vui lòng nhập tên ca",
+    "please_fill_work_coefficient": "Vui lòng nhập hệ số công việc",
+    "please_fill_from_time": "Vui lòng nhập thời gian bắt đầu ca",
+    "please_fill_end_time": "Vui lòng nhập thời gian kết thúc ca",
+    "please_fill_break_from_time": "Vui lòng nhập thời gian bắt đầu nghỉ giữa ca",
+    "please_fill_break_end_time": "Vui lòng nhập thời gian kết thúc nghỉ giữa ca",
+    "please_fill_total_time": "Vui lòng nhập tổng thời gian",
+    "fill_description": "Nhập mô tả",
+    "fill_total_time": "Nhập tổng thời gian",
+    "update_shift": "Cập nhật ca làm việc"
 }

@@ -77,9 +77,7 @@ const Duty = ({ ...props }: Props) => {
     }, [recordsData])
 
     const handleEdit = (data: any) => {
-
 		router.push(`/hrm/shift/${data.id}`)
-
     };
 
     const handleDelete = (data: any) => {
