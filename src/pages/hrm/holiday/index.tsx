@@ -298,7 +298,8 @@ const HolidaySchedule = () => {
 		);
 	};
     const handleClickEvent = (event: any) => {
-        router.push(`/hrm/holiday/${event.id}`)
+        let obj = JSON.parse(JSON.stringify(event.event));
+        router.push(`/hrm/holiday/${obj.id}`)
     }
 	return (
 		<Fragment>

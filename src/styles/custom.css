@@ -1,12 +1,73 @@
 .initechNode {
-    border: solid 1px #ccc;
-    border-radius: 3px;
-    padding: 5px;
-    width: 75px;
+    border: solid 1px #E9EBD5;
     display: inline-block;
-    background-color: #ffdead;
-    min-height: 120px;
-    font-weight: bold;
+    background-color: #E9EBD5;
+    border-radius: 8px;
+    gap: 10px;
+    color: #082819!important;
+}
+.initechNode h1 {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.nodeLineTable * {
+    border-color: #476704!important;
+}
+
+.reactOrgChart .level-0 {
+    text-transform: uppercase!important;
+    width: 120px!important;
+    height: 64px!important;
+    font-size: 14px!important;
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 18px;
+    letter-spacing: 0em;
+    text-align: center;
+}
+
+.reactOrgChart .level-1 {
+    width:  64px!important;
+    height: 144px!important;
+    padding: 8px 4px 8px 4px;
+    border-radius: 8px;
+    gap: 10px;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 15px;
+    letter-spacing: 0em;
+    text-align: center;
+}
+
+.reactOrgChart .level-2 {
+    width:  64px!important;
+    height: 120px!important;
+    padding: 8px 4px 8px 4px;
+    border-radius: 8px;
+    gap: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 15px;
+    letter-spacing: 0em;
+    text-align: center;
+}
+
+.reactOrgChart .level-3 {
+    width:  64px!important;
+    height: 106px!important;
+    padding: 8px 4px 8px 4px;
+    border-radius: 8px;
+    gap: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 15px;
+    letter-spacing: 0em;
+    text-align: center;
 }
 
 #initechOrgChart .orgNodeChildGroup .nodeGroupLineVerticalMiddle {
@@ -284,4 +345,12 @@ li.menu > button:hover svg.icon-menu {
 .css-1jqq78o-placeholder {
     font-size: 12px;
     font-weight: 600;
+}
+.company-name {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 25px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #476704;
 }

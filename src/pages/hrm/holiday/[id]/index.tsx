@@ -1,12 +1,12 @@
-import IconX from '@/components/Icon/IconX';
-import { Dialog, Transition } from '@headlessui/react';
+import { useRouter } from 'next/router';
+import { useState, useEffect} from "react";
 import React, { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
 import Link from 'next/link';
 import IconBack from '@/components/Icon/IconBack';
-
+import holiday from "../holiday.json";
 interface Props {
 	[key: string]: any;
 }
@@ -136,13 +136,22 @@ const getEmployeeOptions = () => {
 
 const AddWorkScheduleModal = ({ ...props }: Props) => {
 	const { t } = useTranslation();
+    const router = useRouter();
+    const [detail, setDetail] = useState<any>();
+    useEffect(() => {
+        if (Number(router.query.id)) {
+            const detailData = holiday?.find(d => d.id === Number(router.query.id));
+            console.log(detailData)
+            setDetail(detailData);
+        }
+    }, [router]);
 	const SubmittedForm = Yup.object().shape({
 		user: Yup.string().required(`${t('please_select_the_staff')}`),
 		title: Yup.string().required(`${t('please_fill_title_holiday_schedule')}`),
 		start: Yup.date().required(`${t('please_fill_holiday_start_date')}`),
 		end: Yup.date().required(`${t('please_fill_holiday_end_date')}`),
 	});
-	const { isAddHolidayScheduleModal, setIsAddHolidayScheduleModal, params, minStartDate, minEndDate, saveHolidaySchedule, handleDelete } = props;
+	const { isAddHolidayScheduleModal, setIsAddHolidayScheduleModal, minStartDate, minEndDate, saveHolidaySchedule, handleDelete } = props;
 	return (
 
 								<div className="p-5">
@@ -159,76 +168,74 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
             </div>
 									<Formik
 										initialValues={{
-											id: params ? `${params?.id}` : '',
-											user: params ? `${params?.user}` : '',
-											title: params ? `${params?.title}` : '',
-											start: params ? `${params?.start}` : '',
-											end: params ? `${params?.end}` : '',
-											description: params ? `${params?.description}` : '',
+											id: detail ? `${detail?.id}` : '',
+											user: detail ? `${detail?.user}` : '',
+											title: detail ? `${detail?.title}` : '',
+											start: detail ? `${detail?.start}` : '',
+											end: detail ? `${detail?.end}` : '',
+											description: detail ? `${detail?.description}` : '',
 										}}
+                                        enableReinitialize
 										validationSchema={SubmittedForm}
 										onSubmit={(values) => {
 											saveHolidaySchedule(values);
 										}}
 									>
-										{({ errors, touched }) => (
-											<Form className="space-y-5">
-												<div className="mb-3">
-													<label htmlFor="user">
-														Nhân viên
+										{({ errors, touched, submitCount }) => (
+												<Form className="space-y-5">
+                                                <div className="mb-3">
+													<label htmlFor="title">
+														{t('holiday_title')}
 														<span style={{ color: 'red' }}> *</span>
 													</label>
-													<Field as="select" name="user" id="user" className="form-input">
-														<option value="">Chọn nhân viên</option>
+													<Field name="title" type="text" id="title" placeholder={t('fill_holiday_title')} className="form-input" />
+													{submitCount? errors.title ? <div className="mt-1 text-danger"> {errors.title} </div> : null : ''}
+												</div>
+												<div className="mb-3">
+													<label htmlFor="user">
+														{t('participants')}
+														<span style={{ color: 'red' }}> *</span>
+													</label>
+													<Field as="select" name="user" id="user" className="form-input" placeholder="test">
+														{/* <option value="">Chọn nhân viên</option> */}
 														{getEmployeeOptions().map((employee) => (
 															<option key={employee.value} value={employee.value}>
 																{employee.label}
 															</option>
 														))}
 													</Field>
-													{errors.user ? <div className="mt-1 text-danger"> {errors.user} </div> : null}
+													{submitCount ? errors.user ? <div className="mt-1 text-danger"> {errors.user} </div> : null : ''}
 												</div>
-												<div className="mb-3">
-													<label htmlFor="title">
-														Tiêu đề lịch nghỉ lễ
-														<span style={{ color: 'red' }}> *</span>
+
+												<div className="mb-3 flex gap-2">
+                                                    <div className='flex-1'>
+                                                    <label htmlFor="dateStart">
+														{t('from_time')}<span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field name="title" type="text" id="title" placeholder="Nhập tiêu đề lịch nghỉ lễ" className="form-input" />
-													{errors.title ? <div className="mt-1 text-danger"> {errors.title} </div> : null}
-												</div>
-												<div className="mb-3">
-													<label htmlFor="dateStart">
-														Giờ bắt đầu <span style={{ color: 'red' }}>* </span>
-													</label>
-													<Field id="start" type="datetime-local" name="start" className="form-input" placeholder="Giờ bắt đầu" min={minStartDate} />
-													{errors.start ? <div className="mt-1 text-danger"> {errors.start} </div> : null}
-												</div>
-												<div className="mb-3">
+													<Field id="start" type="datetime-local" name="start" className="form-input" placeholder={t('choose_start_time')} min={minStartDate} />
+													{submitCount ? errors.start ? <div className="mt-1 text-danger"> {errors.start} </div> : null : ''}
+                                                    </div>
+                                                    <div className='flex-1'>
 													<label htmlFor="dateEnd">
-														Giờ kết thúc <span style={{ color: 'red' }}>* </span>
+														{t('end_time')} <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field id="end" type="datetime-local" name="end" className="form-input" placeholder="Giờ kết thúc" min={minEndDate} />
-													{errors.end ? <div className="mt-1 text-danger"> {errors.end} </div> : null}
+													<Field id="end" type="datetime-local" name="end" className="form-input" placeholder={t('choose_end_time')} min={minEndDate} />
+													{submitCount ? errors.end ? <div className="mt-1 text-danger"> {errors.end} </div> : null : ''}
 												</div>
+												</div>
+
 												<div className="mb-3">
-													<label htmlFor="description">Mô tả ngày lễ</label>
-													<Field id="description" as="textarea" rows="5" name="description" className="form-input" placeholder="Nhập mô tả ngày lễ" />
+													<label htmlFor="description">{t('discription')}</label>
+													<Field id="description" as="textarea" rows="2" name="description" className="form-input" placeholder={t('fill_holiday_schedule_description')} />
 												</div>
-												<div>
-													<div className="!mt-8 flex items-center justify-end">
-														<button type="button" className="btn btn-outline-danger" onClick={() => setIsAddHolidayScheduleModal(false)}>
+                                                <div className="!mt-8 flex items-center justify-end">
+														<button type="button" className="btn cancel-button">
 															{t('cancel')}
 														</button>
-														{params?.id && (
-															<button type="button" className="btn btn-outline-warning ltr:ml-4 rtl:mr-4" onClick={() => handleDelete(params)}>
-																Remove
-															</button>
-														)}
-														<button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4">
+														<button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
 															{t('update')}
 														</button>
 													</div>
-												</div>
 											</Form>
 										)}
 									</Formik>

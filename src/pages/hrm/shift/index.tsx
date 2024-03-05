@@ -77,9 +77,7 @@ const Duty = ({ ...props }: Props) => {
     }, [recordsData])
 
     const handleEdit = (data: any) => {
-       
 		router.push(`/hrm/shift/${data.id}`)
-
     };
 
     const handleDelete = (data: any) => {
@@ -160,16 +158,16 @@ const Duty = ({ ...props }: Props) => {
             sortable: false,
             render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.end_time}</span>
         },
-            { accessor: 'break_from_time',
-            title: `${t('break_from_time')}`, sortable: false,         render: (records: any, index: any) => <span onClick={(records) => handleDetail(records)}>{records?.break_from_time}</span>
-        },
-        { accessor: 'break_end_time',
-         title: `${t('break_end_time')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.break_end_time}</span>
-    },
+    //         { accessor: 'break_from_time',
+    //         title: `${t('break_from_time')}`, sortable: false,         render: (records: any, index: any) => <span onClick={(records) => handleDetail(records)}>{records?.break_from_time}</span>
+    //     },
+    //     { accessor: 'break_end_time',
+    //      title: `${t('break_end_time')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.break_end_time}</span>
+    // },
     { accessor: 'time_total', title: `${t('time_shift')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.time_total}</span>
 },
-{ accessor: 'description', title: `${t('description')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.description}</span>
-},
+// { accessor: 'description', title: `${t('description')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.description}</span>
+// },
         {
             accessor: 'action',
             title: 'Thao tác',
@@ -209,7 +207,7 @@ const Duty = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <Link href="/hrm/shift/AddNewShift">
+                        <Link href="/hrm/shift/create">
                         <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                                     <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                                                     {t('add')}
