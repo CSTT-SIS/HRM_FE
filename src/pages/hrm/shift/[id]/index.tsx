@@ -148,7 +148,7 @@ const AddNewShift = ({ ...props }: Props) => {
                                         {t('shift_base_total_time')}
                                     </label>
                                 </div>
-                                {submitCount ? errors.type_shift ? <div className="mt-1 text-danger"> {errors.type_shift} </div> : null : ''}
+                                {submitCount ? errors?.type_shift ? <div className="mt-1 text-danger"> {errors?.type_shift} </div> : null : ''}
                             </div>
                             <div className="mb-5 w-1/2">
                                 <label htmlFor="code_shift" className='label'>
@@ -156,7 +156,8 @@ const AddNewShift = ({ ...props }: Props) => {
                                     {t('code_shift')} <span style={{ color: 'red' }}>* </span>
                                 </label>
                                 <Field name="code_shift" type="text" id="code_shift" placeholder={`${t('fill_code_shift')}`} className="form-input" />
-                                {submitCount ? errors.code_shift ? <div className="mt-1 text-danger"> {errors.code_shift} </div> : null : ''}
+                                {submitCount ? errors?.code_shift ? <div className="mt-1 text-danger">
+                                {`${errors?.code_shift}`}</div> : null : ''}
                             </div>
 
                         </div>
@@ -167,7 +168,7 @@ const AddNewShift = ({ ...props }: Props) => {
                                     {t('name_shift')} <span style={{ color: 'red' }}>* </span>
                                 </label>
                                 <Field name="name_shift" type="text" id="name_shift" placeholder={`${t('fill_name_shift')}`} className="form-input" />
-                                {submitCount ? errors.name_shift ? <div className="mt-1 text-danger"> {errors.name_shift} </div> : null : ''}
+                                {submitCount ? errors?.name_shift ? <div className="mt-1 text-danger">{`${errors?.name_shift}`} </div> : null : ''}
                             </div>
                             <div className="mb-5 w-1/2">
                                 <label htmlFor="work_coefficient" className='label'>
@@ -175,7 +176,8 @@ const AddNewShift = ({ ...props }: Props) => {
                                     {t('work_coefficient')} <span style={{ color: 'red' }}>* </span>
                                 </label>
                                 <Field name="work_coefficient" type="number" id="work_coefficient" placeholder="" className="form-input" />
-                                {submitCount ? errors.work_coefficient ? <div className="mt-1 text-danger"> {errors.work_coefficient} </div> : null : ""}
+                                {submitCount ? errors?.work_coefficient ? <div className="mt-1 text-danger">
+                                {`${errors?.work_coefficient}`}</div> : null : ""}
                             </div>
                         </div>
                         {typeShift === "0" && <> <div className='flex justify-between gap-5'>
@@ -198,7 +200,9 @@ const AddNewShift = ({ ...props }: Props) => {
                                         />
                                     )}
                                 />
-                                {submitCount ? errors.from_time ? <div className="mt-1 text-danger"> {errors.from_time} </div> : null : ''}
+                                {submitCount ? errors?.from_time ? <div className="mt-1 text-danger">
+                                {`${errors?.from_time}`}
+                                    </div> : null : ''}
                             </div>
                             <div className="mb-5 w-1/2">
                                 <label htmlFor="end_time" className='label'>
@@ -219,7 +223,9 @@ const AddNewShift = ({ ...props }: Props) => {
                                         />
                                     )}
                                 />
-                                {submitCount ? errors.end_time ? <div className="mt-1 text-danger"> {errors.end_time} </div> : null : ''}
+                                {submitCount ? errors?.end_time ? <div className="mt-1 text-danger">
+                                {`${errors?.end_time}`}
+                                     </div> : null : ''}
                             </div>
                         </div>
                             <div className='flex justify-between gap-5'>
@@ -242,7 +248,9 @@ const AddNewShift = ({ ...props }: Props) => {
                                             />
                                         )}
                                     />
-                                    {submitCount ? errors.break_from_time ? <div className="mt-1 text-danger"> {errors.break_from_time} </div> : null : ''}
+                                    {submitCount ? errors?.break_from_time ? <div className="mt-1 text-danger">
+                                    {`${errors?.break_from_time}`}
+                                    </div> : null : ''}
                                 </div>
                                 <div className="mb-5 w-1/2">
                                     <label htmlFor="break_end_time" className='label'>
@@ -263,7 +271,9 @@ const AddNewShift = ({ ...props }: Props) => {
                                             />
                                         )}
                                     />
-                                    {submitCount ? errors.break_end_time ? <div className="mt-1 text-danger"> {errors.break_end_time} </div> : null : ''}
+                                    {submitCount ? errors?.break_end_time ? <div className="mt-1 text-danger">
+                                    {`${errors?.break_end_time}`}
+                                         </div> : null : ''}
                                 </div>
                             </div>
                         </>}
@@ -274,7 +284,9 @@ const AddNewShift = ({ ...props }: Props) => {
                                     {t('description')} <span style={{ color: 'red' }}>* </span>
                                 </label>
                                 <Field name="description" type="text" id="description" placeholder={t('fill_description')} className="form-input" />
-                                {submitCount ? errors.description ? <div className="mt-1 text-danger"> {errors.description} </div> : null : ''}
+                                {submitCount ? errors?.description ? <div className="mt-1 text-danger">
+                                {`${errors?.description}`}
+                                    </div> : null : ''}
                             </div>
                             <div className="mb-5 w-1/2">
                                 <label htmlFor="description" className='label'>
@@ -282,7 +294,9 @@ const AddNewShift = ({ ...props }: Props) => {
                                     {t('time_shift')} <span style={{ color: 'red' }}>* </span>
                                 </label>
                                 <Field name="time" type="number" id="time" placeholder={t('fill_total_time')} className="form-input" />
-                                {submitCount ? errors.time ? <div className="mt-1 text-danger"> {errors.time} </div> : null : ''}
+                                {submitCount ? errors?.time ? <div className="mt-1 text-danger">
+                                {`${errors?.time}`}
+                                   </div> : null : ''}
                             </div>
                         </div>
                         <div className='flex justify-between gap-5'>
@@ -299,8 +313,10 @@ const AddNewShift = ({ ...props }: Props) => {
                                     </label>
                                 </div>
 
-                                {submitCount ? errors.status ? (
-                                    <div className="text-danger mt-1"> {errors.status} </div>
+                                {submitCount ? errors?.status ? (
+                                    <div className="text-danger mt-1">
+                                                                    {`${errors?.status}`}
+                                </div>
                                 ) : null : ''}
                             </div>
                             <div className="mb-5 w-1/2">
@@ -309,7 +325,9 @@ const AddNewShift = ({ ...props }: Props) => {
                                     {t('note')}
                                 </label>
                                 <Field name="note" type="text" id="note" placeholder={t('fill_note')} className="form-input" />
-                                {errors.note ? <div className="mt-1 text-danger"> {errors.note} </div> : null}
+                                {submitCount ? errors?.note ? <div className="mt-1 text-danger">
+                                {`${errors?.status}`}
+                                </div> : null : ''}
                             </div>
 
                         </div>
