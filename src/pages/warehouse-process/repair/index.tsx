@@ -117,24 +117,6 @@ const RepairPage = ({ ...props }: Props) => {
         router.push(`/warehouse-process/repair/${value.id}?status=${value.status}`)
     }
 
-    const handleComplete = ({ id }: any) => {
-        RepairApprove({ id }).then(() => {
-            mutate();
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
-
-    const handleReject = ({ id }: any) => {
-        RepairReject({ id }).then(() => {
-            mutate();
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
-
     const columns = [
         {
             accessor: 'id',
@@ -176,15 +158,15 @@ const RepairPage = ({ ...props }: Props) => {
                         </button>
                     </Tippy>
                     <Tippy content={`${t('approve')}`}>
-                        <button type="button" onClick={() => handleComplete(records)}>
+                        <button type="button" onClick={() => router.push(`/warehouse-process/repair/${records.id}?status=${true}&&type=approve`)}>
                             <IconCircleCheck size={20} />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('reject')}`}>
+                    {/* <Tippy content={`${t('reject')}`}>
                         <button type="button" onClick={() => handleReject(records)}>
                             <IconXCircle />
                         </button>
-                    </Tippy>
+                    </Tippy> */}
                 </div>
             ),
         },
