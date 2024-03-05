@@ -8,7 +8,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
-
+import { useRouter } from 'next/router';
 import IconXCircle from '@/components/Icon/IconXCircle';
 import AddWorkScheduleModal from './modal/AddWorkScheduleModal';
 import Link from 'next/link';
@@ -16,6 +16,7 @@ import Link from 'next/link';
 const Canlendar = () => {
 	const dispatch = useDispatch();
 	const { t } = useTranslation();
+    const router = useRouter();
 	useEffect(() => {
 		dispatch(setPageTitle(`${t('work_schedule')}`));
 	});
@@ -300,6 +301,10 @@ const Canlendar = () => {
 			</>
 		);
 	};
+    const handleClickEvent = (event: any) => {
+        let obj = JSON.parse(JSON.stringify(event.event));
+        router.push(`/hrm/calendar/${obj.id}`)
+    }
 	return (
 		<Fragment>
 			<div className="panel mb-5">
@@ -308,19 +313,19 @@ const Canlendar = () => {
 						<div className="mt-2 flex flex-wrap items-center justify-center sm:justify-start">
 							<div className="flex items-center ltr:mr-4 rtl:ml-4">
 								<div className="h-2.5 w-2.5 rounded-sm bg-primary ltr:mr-2 rtl:ml-2"></div>
-								<div>Ít quan trọng</div>
+								<div>{t('less_important')}</div>
 							</div>
 							<div className="flex items-center ltr:mr-4 rtl:ml-4">
 								<div className="h-2.5 w-2.5 rounded-sm bg-info ltr:mr-2 rtl:ml-2"></div>
-								<div>Bình thường</div>
+								<div>{t('normal')}</div>
 							</div>
 							<div className="flex items-center ltr:mr-4 rtl:ml-4">
 								<div className="h-2.5 w-2.5 rounded-sm bg-success ltr:mr-2 rtl:ml-2"></div>
-								<div>Quan trọng</div>
+								<div>{t('important')}</div>
 							</div>
 							<div className="flex items-center">
 								<div className="h-2.5 w-2.5 rounded-sm bg-danger ltr:mr-2 rtl:ml-2"></div>
-								<div>Ưu tiên cao</div>
+								<div>{t('priority')}</div>
 							</div>
 						</div>
 					</div>
@@ -344,24 +349,12 @@ const Canlendar = () => {
 						dayMaxEvents={true}
 						selectable={true}
 						droppable={true}
-						eventClick={(event: any) => editWorkSchedule(event)}
+						eventClick={(event: any) => handleClickEvent(event)}
 						select={(event: any) => editDate(event)}
 						events={workSchedules}
 						eventContent={renderEventContent}
 					/>
 				</div>
-				<AddWorkScheduleModal
-					isAddWorkScheduleModal={isAddWorkScheduleModal}
-					setIsAddWokScheduleModal={setIsAddWokScheduleModal}
-					params={params}
-					handleDelete={handleDelete}
-					changeValue={changeValue}
-					minStartDate={minStartDate}
-					startDateChange={startDateChange}
-					minEndDate={minEndDate}
-					setParams={setParams}
-					saveWorkSchedule={saveWorkSchedule}
-				/>
 			</div>
 		</Fragment>
 	);

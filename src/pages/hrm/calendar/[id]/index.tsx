@@ -1,11 +1,13 @@
+import { useRouter } from 'next/router';
+import { useState, useEffect} from "react";
 import IconX from '@/components/Icon/IconX';
-import { Dialog, Transition } from '@headlessui/react';
 import React, { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
-import IconBack from '@/components/Icon/IconBack';
 import Link from 'next/link';
+import IconBack from '@/components/Icon/IconBack';
+import workSchedules from '../workSchedules.json'
 
 interface Props {
 	[key: string]: any;
@@ -138,18 +140,28 @@ const getEmployeeOptions = () => {
 
 const AddWorkScheduleModal = ({ ...props }: Props) => {
 	const { t } = useTranslation();
+    const router = useRouter();
+    const [detail, setDetail] = useState<any>();
+    useEffect(() => {
+        if (Number(router.query.id)) {
+            const detailData = workSchedules?.find(d => d.id === Number(router.query.id));
+            console.log(detailData)
+            setDetail(detailData);
+        }
+    }, [router]);
+
 	const SubmittedForm = Yup.object().shape({
 		user: Yup.string().required(`${t('please_select_the_staff')}`),
 		title: Yup.string().required(`${t('please_fill_title_work_schedule')}`),
 		start: Yup.date().required(`${t('please_fill_work_start_date')}`),
 		end: Yup.date().required(`${t('please_fill_work_end_date')}`),
 	});
-	const { isAddWorkScheduleModal, setIsAddWokScheduleModal, params, minStartDate, minEndDate, saveWorkSchedule, handleDelete } = props;
+	const { isAddWorkScheduleModal, setIsAddWokScheduleModal, minStartDate, minEndDate, saveWorkSchedule, handleDelete } = props;
 	return (
 
 								<div className="p-5">
-                                     <div className='flex justify-between header-page-bottom pb-4 mb-4'>
-                <h1 className='page-title'>{t('add_calendar')}</h1>
+                                      <div className='flex justify-between header-page-bottom pb-4 mb-4'>
+                <h1 className='page-title'>{t('update_calendar')}</h1>
                 <Link href="/hrm/calendar">
                         <button type="button" className="btn btn-primary btn-sm m-1 back-button" >
                                     <IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
@@ -161,22 +173,23 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
             </div>
 									<Formik
 										initialValues={{
-											id: params ? `${params?.id}` : '',
-											user: params ? `${params?.user}` : '',
-											title: params ? `${params?.title}` : '',
-											start: params ? `${params?.start}` : '',
-											end: params ? `${params?.end}` : '',
-											type: params ? `${params?.type}` : '',
-											description: params ? `${params?.description}` : '',
+											id: detail ? `${detail?.id}` : '',
+											user: detail ? `${detail?.user}` : '',
+											title: detail ? `${detail?.title}` : '',
+											start: detail ? `${detail?.start}` : '',
+											end: detail ? `${detail?.end}` : '',
+											type: detail ? `${detail?.type}` : '',
+											description: detail ? `${detail?.description}` : '',
 										}}
 										validationSchema={SubmittedForm}
 										onSubmit={(values) => {
 											saveWorkSchedule(values);
 										}}
+                                        enableReinitialize
 									>
-										{({ errors, touched, submitCount }) => (
-											<Form className="space-y-5">
-                                                <div className="mb-3">
+										{({ errors, touched, submitCount}) => (
+												<Form className="space-y-5">
+                                               <div className="mb-3">
 													<label htmlFor="title">
 														{t('calendar_title')}
 														<span style={{ color: 'red' }}> *</span>
@@ -225,19 +238,27 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 													<label>{t('level')}</label>
 													<div className="mt-3">
 														<label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-															<Field type="radio" name="type" value="primary" className="form-radio" />
+															<Field type="radio" name="type" value="primary"
+                                                            checked={detail?.className === "primary"}
+                                                            className="form-radio" />
 															<span className="ltr:pl-2 rtl:pr-2">{t('less_important')}</span>
 														</label>
 														<label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-															<Field type="radio" name="type" value="info" className="form-radio text-info" />
+															<Field type="radio" name="type" value="info"
+                                                            checked={detail?.className === "info"}
+                                                            className="form-radio text-info" />
 															<span className="ltr:pl-2 rtl:pr-2">{t('normal')}</span>
 														</label>
 														<label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-															<Field type="radio" name="type" value="success" className="form-radio text-success" />
+															<Field type="radio" name="type"
+                                                                                                                        checked={detail?.className === "success"}
+                                                                                                                        value="success" className="form-radio text-success" />
 															<span className="ltr:pl-2 rtl:pr-2">{t('important')}</span>
 														</label>
 														<label className="inline-flex cursor-pointer">
-															<Field type="radio" name="type" value="danger" className="form-radio text-danger" />
+															<Field type="radio" name="type" value="danger"
+                                                                                                                        checked={detail?.className === "danger"}
+                                                                                                                        className="form-radio text-danger" />
 															<span className="ltr:pl-2 rtl:pr-2">{t('priority')}</span>
 														</label>
 													</div>
@@ -245,13 +266,9 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 														<button type="button" className="btn cancel-button" onClick={() => setIsAddWokScheduleModal(false)}>
 															{t('cancel')}
 														</button>
-														{params?.id && (
-															<button type="button" className="btn btn-outline-warning ltr:ml-4 rtl:mr-4" onClick={() => handleDelete(params)}>
-																{t('delete')}
-															</button>
-														)}
+
 														<button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
-															{params?.id ? t('update') : t('add') }
+															{t('update')}
 														</button>
 													</div>
 												</div>
