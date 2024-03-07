@@ -430,7 +430,6 @@ li.menu>button:hover svg.icon-menu {
     text-transform: uppercase;
 }
 
-<<<<<<< HEAD
 .custom-uploadfile {
     width: 80px !important;
     height: 80px;
@@ -451,7 +450,6 @@ li.menu>button:hover svg.icon-menu {
         }
     }
 }
-=======
 .company-name {
     text-transform: uppercase !important;
 }
@@ -551,4 +549,3 @@ li.menu>button:hover svg.icon-menu {
     gap: 12px;
     border: 1px solid #BABABA;
  }
->>>>>>> 0acfca5331b7f5d1c1d4a633b8179fb90d52bda8
