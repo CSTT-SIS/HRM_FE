@@ -34,7 +34,6 @@ import Link from 'next/link';
 import { Box } from '@atlaskit/primitives';
 import TableTree, { Cell, Header, Headers, Row, Rows } from '@atlaskit/table-tree';
 
-import TableTree from '@atlaskit/table-tree';
 import IconNewEdit from '@/components/Icon/IconNewEdit';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
 import IconNewCalendar from '@/components/Icon/IconNewCalendar';
