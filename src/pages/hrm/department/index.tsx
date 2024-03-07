@@ -35,6 +35,8 @@ import TableTree, { Cell, Header, Headers, Row, Rows } from '@atlaskit/table-tre
 import IconCaretDown from '@/components/Icon/IconCaretDown';
 import IconNewEdit from '@/components/Icon/IconNewEdit';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
+import IconDisplaylist from '@/components/Icon/IconDisplaylist';
+import IconDisplayTree from '@/components/Icon/IconDisplayTree';
 interface Props {
     [key: string]: any;
 }
@@ -284,11 +286,12 @@ const Department = ({ ...props }: Props) => {
                     </div>
                     <div className='display-style'>
                         Cách hiển thị
-                        <button type="button" className="btn btn-primary btn-sm m-1  custom-button-display" style={{ backgroundColor: display === 'flat' ? '#E9EBD5' : '#FAFBFC' }} onClick={() => setDisplay('flat')}>
-                            <img src="/assets/images/display-flat.svg" alt="img" />
+                        <button type="button" className="btn btn-primary btn-sm m-1  custom-button-display" style={{ backgroundColor: display === 'flat' ? '#E9EBD5' : '#FAFBFC', color: 'black' }} onClick={() => setDisplay('flat')}>
+                            <IconDisplaylist fill={display === 'flat' ? '#959E5E' : '#BABABA'}></IconDisplaylist>
                         </button>
                         <button type="button" className="btn btn-primary btn-sm m-1  custom-button-display" style={{ backgroundColor: display === 'tree' ? '#E9EBD5' : '#FAFBFC' }} onClick={() => setDisplay('tree')}>
-                            <img src="/assets/images/display-tree.png" alt="img" />
+                            <IconDisplayTree fill={display === 'tree' ? '#959E5E' : '#BABABA'}></IconDisplayTree>
+
                         </button>
                         <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
 
