@@ -736,5 +736,8 @@
     "confirm_delete": "Xác nhận xóa",
     "confirm": "Xác nhận",
     "delete_shift": "Xóa ca làm việc",
-    "delete_form": "Xóa đơn"
+    "delete_form": "Xóa đơn",
+    "welcome": "Chào mừng",
+    "vangtat_participants": "Thành viên Vangtat",
+    "forget_password": "Quên mật khẩu"
 }
