@@ -403,7 +403,7 @@ const Header = () => {
 												{dataNoti?.map((item: any) => {
 													return (
 														<li key={item?.id} className={"dark:text-white-light/90"} style={{ cursor: "pointer" }} onClick={(e) => handleNoti(item)}>
-															<div className={"group flex items-center px-4 py-2" + `${item?.isRead === 0 ? " bg-slate-50 dark: bg-slate-800" : ""}`}>
+															<div className={"group flex items-center px-4 py-2" + `${item?.isRead === 0 ? " bg-slate-100" : ""}`}>
 																<div className="grid place-content-center rounded">
 																	<div className="relative h-12 w-12">
 																		<img className="h-12 w-12 rounded-full object-cover" alt="profile" src={item?.profile ? `${process.env.NEXT_PUBLIC_BE_URL + "/" + item?.profile}` : "/assets/images/user-profile.jpeg"} />

@@ -219,7 +219,7 @@ const DetailPage = ({ ...props }: Props) => {
     };
 
     const handleChangeComplete = (id: any) => {
-        OrderPlace({ id: id }).then(() => {
+        OrderPlace(id).then(() => {
             router.push("/warehouse-process/order")
             // showMessage(`${t('update_success')}`, 'success');
         }).catch((err) => {
