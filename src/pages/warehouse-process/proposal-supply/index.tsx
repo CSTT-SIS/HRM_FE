@@ -149,7 +149,7 @@ const ProposalPage = ({ ...props }: Props) => {
                         </Tippy>
                     }
                     {
-                        records.status === "DRAFT" || records.status === "HEAD_REJECTED" &&
+                        (records.status === "DRAFT" || records.status === "HEAD_REJECTED") &&
                         <Tippy content={`${t('delete')}`}>
                             <button type="button" onClick={() => handleDelete(records)}>
                                 <IconTrashLines />
