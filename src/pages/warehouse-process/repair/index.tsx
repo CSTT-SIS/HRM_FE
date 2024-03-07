@@ -57,14 +57,14 @@ const RepairPage = ({ ...props }: Props) => {
 
     const handleDelete = ({ id, name }: any) => {
         const swalDeletes = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-secondary',
-				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-				popup: 'confirm-delete',
-			},
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'confirm-delete',
+            },
             imageUrl: '/assets/images/delete_popup.png',
-			buttonsStyling: false,
-		});
+            buttonsStyling: false,
+        });
         swalDeletes
             .fire({
                 icon: 'question',
@@ -74,7 +74,7 @@ const RepairPage = ({ ...props }: Props) => {
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
                 confirmButtonText: `${t('confirm')}`,
-				reverseButtons: true,
+                reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -150,21 +150,30 @@ const RepairPage = ({ ...props }: Props) => {
                             <IconEye />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('edit')}`}>
-                        <button type="button" onClick={() => handleDetail(records)}>
-                            <IconPencil />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('delete')}`}>
-                        <button type="button" onClick={() => handleDelete(records)}>
-                            <IconTrashLines />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('approve')}`}>
-                        <button type="button" onClick={() => router.push(`/warehouse-process/repair/${records.id}?status=${true}&&type=approve`)}>
-                            <IconCircleCheck size={20} />
-                        </button>
-                    </Tippy>
+                    {
+                        records.status === "DRAFT" &&
+                        <Tippy content={`${t('edit')}`}>
+                            <button type="button" onClick={() => handleDetail(records)}>
+                                <IconPencil />
+                            </button>
+                        </Tippy>
+                    }
+                    {
+                        (records.status === "DRAFT" || records.status === "HEAD_REJECTED") &&
+                        <Tippy content={`${t('delete')}`}>
+                            <button type="button" onClick={() => handleDelete(records)}>
+                                <IconTrashLines />
+                            </button>
+                        </Tippy>
+                    }
+                    {
+                        records.status === "IN_PROGRESS" &&
+                        <Tippy content={`${t('approve')}`}>
+                            <button type="button" onClick={() => router.push(`/warehouse-process/repair/${records.id}?status=${true}&&type=approve`)}>
+                                <IconCircleCheck size={20} />
+                            </button>
+                        </Tippy>
+                    }
                     {/* <Tippy content={`${t('reject')}`}>
                         <button type="button" onClick={() => handleReject(records)}>
                             <IconXCircle />

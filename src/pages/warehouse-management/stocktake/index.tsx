@@ -55,14 +55,14 @@ const StocktakePage = ({ ...props }: Props) => {
 
     const handleDelete = ({ id, name }: any) => {
         const swalDeletes = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-secondary',
-				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-				popup: 'confirm-delete',
-			},
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'confirm-delete',
+            },
             imageUrl: '/assets/images/delete_popup.png',
-			buttonsStyling: false,
-		});
+            buttonsStyling: false,
+        });
         swalDeletes
             .fire({
                 icon: 'question',
@@ -72,7 +72,7 @@ const StocktakePage = ({ ...props }: Props) => {
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
                 confirmButtonText: `${t('confirm')}`,
-				reverseButtons: true,
+                reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -168,36 +168,47 @@ const StocktakePage = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('edit')}`}>
+                    <Tippy content={`${t('detail')}`}>
                         <button type="button" onClick={() => router.push(`/warehouse-management/stocktake/${records.id}?status=${true}`)}>
                             <IconEye />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('edit')}`}>
-                        <button type="button" onClick={() => handleDetail(records)}>
-                            <IconPencil />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('delete')}`}>
-                        <button type="button" onClick={() => handleDelete(records)}>
-                            <IconTrashLines />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('tally')}`}>
-                        <button type="button" onClick={() => router.push(`/warehouse-management/stocktake/${records.id}?type=tally&&status=${true}`)}>
-                            <IconInventory />
-                        </button>
-                    </Tippy>
+                    {
+                        records.status === "DRAFT" &&
+                        <>
+                            <Tippy content={`${t('edit')}`}>
+                                <button type="button" onClick={() => handleDetail(records)}>
+                                    <IconPencil />
+                                </button>
+                            </Tippy>
+                            <Tippy content={`${t('delete')}`}>
+                                <button type="button" onClick={() => handleDelete(records)}>
+                                    <IconTrashLines />
+                                </button>
+                            </Tippy>
+                        </>
+                    }
+                    {
+                        records.status === "IN_PROGRESS" &&
+                        <Tippy content={`${t('tally')}`}>
+                            <button type="button" onClick={() => router.push(`/warehouse-management/stocktake/${records.id}?type=tally&&status=${true}`)}>
+                                <IconInventory />
+                            </button>
+                        </Tippy>
+                    }
                     {/* <Tippy content={`${t('reject')}`}>
                         <button type="button" onClick={() => handleCancel(records)}>
                             <IconXCircle />
                         </button>
                     </Tippy> */}
-                    <Tippy content={`${t('approve')}`}>
-                        <button type="button" onClick={() => router.push(`/warehouse-management/stocktake/${records.id}?type=approve&&status=${true}`)}>
-                            <IconCircleCheck size={20} />
-                        </button>
-                    </Tippy>
+                    {
+                        records.status === "FINISHED" &&
+                        <Tippy content={`${t('approve')}`}>
+                            <button type="button" onClick={() => router.push(`/warehouse-management/stocktake/${records.id}?type=approve&&status=${true}`)}>
+                                <IconCircleCheck size={20} />
+                            </button>
+                        </Tippy>
+                    }
                 </div>
             ),
         },
@@ -214,7 +225,7 @@ const StocktakePage = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" onClick={(e) => router.push(`/warehouse-management/stocktake/create`)} className="btn btn-primary btn-sm m-1 custom-button" >
+                        <button type="button" onClick={(e) => router.push(`/warehouse-management/stocktake/create?status=DRAFT`)} className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                             {t('add')}
                         </button>
