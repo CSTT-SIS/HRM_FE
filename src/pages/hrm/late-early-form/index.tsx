@@ -29,6 +29,9 @@ import DetailModal from './modal/DetailModal';
 import IconFolderMinus from '@/components/Icon/IconFolderMinus';
 import IconDownload from '@/components/Icon/IconDownload';
 import IconChecks from '@/components/Icon/IconChecks';
+import IconNewEdit from '@/components/Icon/IconNewEdit';
+import IconNewCheck from '@/components/Icon/IconNewCheck';
+import IconNewTrash from '@/components/Icon/IconNewTrash';
 
 interface Props {
     [key: string]: any;
@@ -90,21 +93,23 @@ const LateEarlyForm = ({ ...props }: Props) => {
     };
     const handleDelete = (data: any) => {
         const swalDeletes = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-secondary',
-                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-                popup: 'sweet-alerts',
-            },
-            buttonsStyling: false,
-        });
+			customClass: {
+				confirmButton: 'btn btn-secondary',
+				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+				popup: 'confirm-delete',
+			},
+            imageUrl: '/assets/images/delete_popup.png',
+			buttonsStyling: false,
+		});
         swalDeletes
             .fire({
-                icon: 'question',
                 title: `${t('delete_form')}`,
-                text: `${t('delete_form')} ${data.name}`,
+				html: `<span class='confirm-span'>${t('delete_form')}</span> ${data.name}?`,
                 padding: '2em',
                 showCancelButton: true,
-                reverseButtons: true,
+                cancelButtonText: `${t('cancel')}`,
+                confirmButtonText: `${t('confirm')}`,
+				reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -118,21 +123,23 @@ const LateEarlyForm = ({ ...props }: Props) => {
 
     const handleCheck = (data: any) => {
         const swalDeletes = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-secondary',
-                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-                popup: 'sweet-alerts',
-            },
-            buttonsStyling: false,
-        });
+			customClass: {
+				confirmButton: 'btn btn-secondary',
+				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+				popup: 'confirm-delete',
+			},
+            imageUrl: '/assets/images/delete_popup.png',
+			buttonsStyling: false,
+		});
         swalDeletes
             .fire({
-                icon: 'question',
                 title: `${t('check_form')}`,
-                text: `${t('check')} ${data.name}`,
+				html: `<span class='confirm-span'>${t('check')}</span> ${data.name}?`,
                 padding: '2em',
                 showCancelButton: true,
-                reverseButtons: true,
+                cancelButtonText: `${t('cancel')}`,
+                confirmButtonText: `${t('confirm')}`,
+				reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -194,22 +201,29 @@ const LateEarlyForm = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('edit')}`}>
-                        <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
-                            <IconPencil /> {t('edit')}
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('check')}`}>
-                        <button type="button" className="button-check" onClick={() => handleCheck(records)}>
-                            <IconChecks /> {t('approve')}
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('delete')}`}>
-                        <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
-                            <IconTrashLines /> {t('delete')}
-                        </button>
-                    </Tippy>
-                </div>
+                <Tippy content={`${t('edit')}`}>
+                    <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
+                    <IconNewEdit /><span>
+                            {t('edit')}
+                                </span>
+                    </button>
+                </Tippy>
+                <Tippy content={`${t('check')}`}>
+                    <button type="button" className="button-check" onClick={() => handleCheck(records)}>
+                        <IconNewCheck /> <span>
+                        {t('approve')}
+                        </span>
+                    </button>
+                </Tippy>
+                <Tippy content={`${t('delete')}`}>
+                    <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                    <IconNewTrash />
+                            <span>
+                            {t('delete')}
+                                </span>
+                    </button>
+                </Tippy>
+            </div>
             ),
         },
     ]
