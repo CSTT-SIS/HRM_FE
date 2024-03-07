@@ -279,10 +279,8 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             id='sex'
                                                             name='sex'
                                                             options={[{
-                                                                value: 1,
                                                                 label: 'Nam'
                                                             }, {
-                                                                value: 0,
                                                                 label: 'Nữ'
                                                             }]}
                                                             placeholder={'Chọn giới tính'}

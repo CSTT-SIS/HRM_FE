@@ -195,10 +195,8 @@ const AddNewTask = ({ ...props }: Props) => {
                                     id='collaborator'
                                     name='collaborator'
                                     options={[{
-                                        value: 1,
                                         label: 'Người thực hiện 1'
                                     }, {
-                                        value: 2,
                                         label: 'Người thực hiện 2'
                                     }]}
                                     placeholder={'Chọn người thực hiện'}
@@ -217,15 +215,12 @@ const AddNewTask = ({ ...props }: Props) => {
                                     id='collaborator'
                                     name='collaborator'
                                     options={[{
-                                        value: 'Người phối hợp 1',
                                         label: 'Người phối hợp 1'
                                     }, {
-                                        value: 'Người phối hợp 2',
                                         label: 'Người phối hợp 2'
                                     }]}
                                     placeholder={'Chọn người phối hợp'}
                                     maxMenuHeight={160}
-                                    value={'Nam'}
                                     onChange={e => {
                                         setFieldValue('gender', e)
                                     }}
