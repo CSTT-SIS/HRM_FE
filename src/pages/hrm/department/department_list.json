@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "name": "Phòng 1",
+        "name": "Phòng hành chính",
         "code": "PB01",
         "status": "active"
     },
@@ -13,7 +13,7 @@
     },
     {
         "id": 3,
-        "name": "Phòng 2",
+        "name": "Phòng kĩ thuật",
         "code": "PB02",
         "status": "active"
     },

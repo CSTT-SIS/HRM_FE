@@ -47,13 +47,22 @@ const AddNewPersonel = ({ ...props }: Props) => {
     const SubmittedForm = Yup.object().shape({
         name: Yup.string()
             .min(2, 'Too Short!')
-            .required(`${t('please_fill_name_department')}`),
+            .required(`${t('please_fill_name_staff')}`),
         code: Yup.string()
             .min(2, 'Too Short!')
-            .required(`${t('please_fill_departmentCode')}`),
-        abbreviated: Yup.string()
+            .required(`${t('please_fill_staff_code')}`),
+        surname: Yup.string()
             .min(2, 'Too Short!')
-            .required(`${t('please_fill_abbreviated_name')}`),
+            .required(`${t('please_fill_surname_name')}`),
+        email: Yup.string()
+            .min(2, 'Too Short!')
+            .required(`${t('please_fill_email')}`),
+        phone: Yup.string()
+            .min(2, 'Too Short!')
+            .required(`${t('please_fill_phone')}`),
+        userName: Yup.string()
+            .min(2, 'Too Short!')
+            .required(`${t('please_fill_username')}`),
     });
     const handleSearch = (param: any) => {
         setQuery({ search: param });
@@ -125,7 +134,10 @@ const AddNewPersonel = ({ ...props }: Props) => {
                     userName: props?.data ? `${props?.data?.userName}` : '',
                     othername: props?.data ? `${props?.data?.othername}` : '',
                     dateofbirth: props?.data ? `${props?.data?.dateofbirth}` : '',
-                    sex: props?.data ? `${props?.data?.sex}` : '',
+                    sex: props?.data ? {
+                        value: `${props?.data?.sex.id}`,
+                        label: `${props?.data?.sex.name}`
+                    } : "",
                     IDnumber: props?.data ? `${props?.data?.IDnumber}` : '',
                     dateissue: props?.data ? `${props?.data?.dateissue}` : '',
                     manageId: props?.data ? {
@@ -238,15 +250,14 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="othername" className='label'>
                                                             {' '}
-                                                            {t('other_name')}<span style={{ color: 'red' }}>* </span>
+                                                            {t('other_name')}
                                                         </label>
                                                         <Field name="othername" type="text" id="othername" placeholder={t('enter_other_name')} className="form-input" />
-                                                        {submitCount ? errors.othername ? <div className="mt-1 text-danger"> {errors.othername} </div> : null : ''}
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="dateofbirth" className='label'>
                                                             {' '}
-                                                            {t('date_of_birth')} <span style={{ color: 'red' }}>* </span>
+                                                            {t('date_of_birth')}
                                                         </label>
                                                         <Flatpickr
                                                             options={{
@@ -256,35 +267,42 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             className="form-input"
                                                             placeholder={`${t('enter_date_of_birth')}`}
                                                         />
-                                                        {submitCount ? errors.dateofbirth ? <div className="mt-1 text-danger"> {errors.dateofbirth} </div> : null : ''}
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="sex" className='label'>
                                                             {' '}
-                                                            {t('gender')} <span style={{ color: 'red' }}>* </span>
+                                                            {t('gender')}
                                                         </label>
-                                                        <select className="form-select w-100">
-                                                            <option>{t('male')}</option>
-                                                            <option>{t('female')}</option>
-                                                        </select>
-                                                        {submitCount ? errors.sex ? <div className="mt-1 text-danger"> {errors.sex} </div> : null : ''}
+                                                        <Select
+                                                            id='sex'
+                                                            name='sex'
+                                                            options={[{
+                                                                label: 'Nam'
+                                                            }, {
+                                                                label: 'Nữ'
+                                                            }]}
+                                                            placeholder={'Chọn giới tính'}
+                                                            maxMenuHeight={160}
+                                                            onChange={e => {
+                                                                setFieldValue('sex', e)
+                                                            }}
+                                                        />
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="IDnumber" className='label'>
                                                             {' '}
-                                                            {t('id_number')} <span style={{ color: 'red' }}>* </span>
+                                                            {t('id_number')}
                                                         </label>
                                                         <Field name="IDnumber" type="text" id="IDnumber" placeholder={t('enter_id_number')} className="form-input" />
-                                                        {submitCount ? errors.IDnumber ? <div className="mt-1 text-danger"> {errors.IDnumber} </div> : null : ''}
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="dateissue" className='label'>
                                                             {' '}
-                                                            {t('date_of_issue')}<span style={{ color: 'red' }}>* </span>
+                                                            {t('date_of_issue')}
                                                         </label>
                                                         <Flatpickr
                                                             options={{
@@ -294,15 +312,13 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             className="form-input"
                                                             placeholder={`${t('enter_date_of_issue')}`}
                                                         />
-                                                        {submitCount ? errors.dateissue ? <div className="mt-1 text-danger"> {errors.dateissue} </div> : null : ''}
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="IDnumber" className='label'>
                                                             {' '}
-                                                            {t('address_issue')}<span style={{ color: 'red' }}>* </span>
+                                                            {t('address_issue')}
                                                         </label>
                                                         <Field name="IDnumber" type="text" id="IDnumber" placeholder={t('enter_address_issue')} className="form-input" />
-                                                        {submitCount ? errors.IDnumber ? <div className="mt-1 text-danger"> {errors.IDnumber} </div> : null : ''}
                                                     </div>
                                                 </div>
                                             </div>
@@ -325,7 +341,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                             <div className="space-y-2 border-t border-[#d3d3d3] p-4 text-[13px] text-white-dark dark:border-[#1b2e4b]">
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
-                                                        <label htmlFor="departmentparentId" className='label'> {t('Department_Parent')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <label htmlFor="departmentparentId" className='label'> {t('Department_Parent')}</label >
                                                         <Select
                                                             id='unidepartmentparentIdtId'
                                                             name='departmentparentId'
@@ -338,12 +354,10 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                                 setFieldValue('departmentparentId', e)
                                                             }}
                                                         />
-                                                        {submitCount ? errors.departmentparentId ? (
-                                                            <div className="text-danger mt-1"> {errors.departmentparentId} </div>
-                                                        ) : null : ''}
+
                                                     </div>
                                                     <div className="mb-5 w-1/2">
-                                                        <label htmlFor="manageId" className='label'> {t('duty')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <label htmlFor="manageId" className='label'> {t('duty')}</label >
                                                         <Select
                                                             id='manageId'
                                                             name='manageId'
@@ -357,14 +371,12 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                                 setFieldValue('manageId', e)
                                                             }}
                                                         />
-                                                        {submitCount ? errors.manageId ? (
-                                                            <div className="text-danger mt-1"> {errors.manageId} </div>
-                                                        ) : null : ''}
+
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
-                                                        <label htmlFor="manageId" className='label'> {t('Manager')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <label htmlFor="manageId" className='label'> {t('Manager')} </label >
                                                         <Select
                                                             id='manageId'
                                                             name='manageId'
@@ -377,12 +389,10 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                                 setFieldValue('manageId', e)
                                                             }}
                                                         />
-                                                        {submitCount ? errors.manageId ? (
-                                                            <div className="text-danger mt-1"> {errors.manageId} </div>
-                                                        ) : null : ''}
+
                                                     </div>
                                                     <div className="mb-5 w-1/2">
-                                                        <label htmlFor="manageId" className='label'> {t('Manager_2')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <label htmlFor="manageId" className='label'> {t('Manager_2')} </label >
                                                         <Select
                                                             id='manageId'
                                                             name='manageId'
@@ -395,9 +405,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                                 setFieldValue('manageId', e)
                                                             }}
                                                         />
-                                                        {submitCount ? errors.manageId ? (
-                                                            <div className="text-danger mt-1"> {errors.manageId} </div>
-                                                        ) : null : ''}
+
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
