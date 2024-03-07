@@ -54,14 +54,14 @@ const OrderForm = ({ ...props }: Props) => {
 
     const handleDelete = ({ id, name }: any) => {
         const swalDeletes = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-secondary',
-				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-				popup: 'confirm-delete',
-			},
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'confirm-delete',
+            },
             imageUrl: '/assets/images/delete_popup.png',
-			buttonsStyling: false,
-		});
+            buttonsStyling: false,
+        });
         swalDeletes
             .fire({
                 icon: 'question',
@@ -71,7 +71,7 @@ const OrderForm = ({ ...props }: Props) => {
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
                 confirmButtonText: `${t('confirm')}`,
-				reverseButtons: true,
+                reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -175,31 +175,44 @@ const OrderForm = ({ ...props }: Props) => {
                             <IconEye />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('edit')}`}>
-                        <button type="button" onClick={() => handleDetail(records)}>
-                            <IconPencil />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('delete')}`}>
-                        <button type="button" onClick={() => handleDelete(records)}>
-                            <IconTrashLines />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('shipping')}`}>
-                        <button type="button" onClick={() => handleShipping(records)}>
-                            <IconShipping size={20} />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('receive')}`}>
-                        <button type="button" onClick={() => handleReceive(records)}>
-                            <IconCartCheck />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('cancel')}`}>
-                        <button type="button" onClick={() => handleCancel(records)}>
-                            <IconXCircle />
-                        </button>
-                    </Tippy>
+                    {
+                        records.status === "PENDING" &&
+                        <Tippy content={`${t('edit')}`}>
+                            <button type="button" onClick={() => handleDetail(records)}>
+                                <IconPencil />
+                            </button>
+                        </Tippy>
+                    }
+                    {
+                        records.status === "PENDING" || records.status === "CANCELLED" &&
+                        <Tippy content={`${t('delete')}`}>
+                            <button type="button" onClick={() => handleDelete(records)}>
+                                <IconTrashLines />
+                            </button>
+                        </Tippy>
+                    }
+                    {
+                        records.status === "PENDING" || records.status === "PLACED" &&
+                        <>                        <Tippy content={`${t('shipping')}`}>
+                            <button type="button" onClick={() => handleShipping(records)}>
+                                <IconShipping size={20} />
+                            </button>
+                        </Tippy>
+                            <Tippy content={`${t('cancel')}`}>
+                                <button type="button" onClick={() => handleCancel(records)}>
+                                    <IconXCircle />
+                                </button>
+                            </Tippy>
+                        </>
+                    }
+                    {
+                        records.status === "PENDING" || records.status === "SHIPPING" &&
+                        <Tippy content={`${t('receive')}`}>
+                            <button type="button" onClick={() => handleReceive(records)}>
+                                <IconCartCheck />
+                            </button>
+                        </Tippy>
+                    }
                 </div>
             ),
         },

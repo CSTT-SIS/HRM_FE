@@ -36,7 +36,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                 productId: Number(param.productId.value),
                 quantity: Number(param.quantity),
                 note: param.note,
-                price: param?.price ? param?.price : 0
+                // price: param?.price ? param?.price : 0
             };
             if (props?.data) {
                 EditProposalDetail({ id: router.query.id, detailId: props?.data?.id, ...query }).then(() => {
@@ -63,7 +63,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                 productId: Number(param.productId.value),
                 quantity: Number(param.quantity),
                 note: param.note,
-                price: param?.price ? param?.price : 0
+                // price: param?.price ? param?.price : 0
             };
             if (props?.data?.id) {
                 const filteredItems = props.listData.filter((item: any) => item.id !== props.data.id)
@@ -95,7 +95,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                 label: `${props?.data?.product?.name}`
             } : "",
             note: props?.data ? `${props?.data?.note}` : "",
-            price: props?.data ? props?.data.price : ""
+            // price: props?.data ? props?.data.price : ""
         })
     }, [props?.data]);
 
@@ -200,13 +200,13 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                             <div className="text-danger mt-1"> {`${errors.quantity}`} </div>
                                                         ) : null}
                                                     </div>
-                                                    <div className="mb-5">
+                                                    {/* <div className="mb-5">
                                                         <label htmlFor="price" > {t('price')} </label >
                                                         <Field name="price" type="number" id="price" placeholder={`${t('enter_price')}`} className="form-input" />
                                                         {submitCount && errors.price ? (
                                                             <div className="text-danger mt-1"> {`${errors.price}`} </div>
                                                         ) : null}
-                                                    </div>
+                                                    </div> */}
                                                     <div className="mb-5">
                                                         <label htmlFor="note" > {t('description')} </label >
                                                         <Field

@@ -478,6 +478,7 @@
 	"enter_min_quantity": "Nhập số lượng tối thiểu",
 	"warehouse_management": "Quản lý kho",
 	"stocktake": "Kiểm kê",
+	"stocktake_info": "Thông tin kiểm kê",
 	"delete_stocktake": "Xóa kiểm kê",
 	"add_detail": "Tạo mới chi tiết",
 	"edit_detail": "Sửa chi tiết",
@@ -742,5 +743,8 @@
     "delete_form": "Xóa đơn",
     "welcome": "Chào mừng",
     "vangtat_participants": "Thành viên Vangtat",
-    "forget_password": "Quên mật khẩu"
+    "forget_password": "Quên mật khẩu",
+    "manager_approve": "Giám đốc phê duyệt",
+    "shipping": "Đang giao hàng",
+    "receive": "Đã nhận hàng"
 }
