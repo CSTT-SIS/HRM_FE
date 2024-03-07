@@ -134,7 +134,10 @@ const AddNewPersonel = ({ ...props }: Props) => {
                     userName: props?.data ? `${props?.data?.userName}` : '',
                     othername: props?.data ? `${props?.data?.othername}` : '',
                     dateofbirth: props?.data ? `${props?.data?.dateofbirth}` : '',
-                    sex: props?.data ? `${props?.data?.sex}` : '',
+                    sex: props?.data ? {
+                        value: `${props?.data?.sex.id}`,
+                        label: `${props?.data?.sex.name}`
+                    } : "",
                     IDnumber: props?.data ? `${props?.data?.IDnumber}` : '',
                     dateissue: props?.data ? `${props?.data?.dateissue}` : '',
                     manageId: props?.data ? {
@@ -273,20 +276,19 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {t('gender')}
                                                         </label>
                                                         <Select
-                                                            id='gender'
-                                                            name='gender'
+                                                            id='sex'
+                                                            name='sex'
                                                             options={[{
-                                                                value: 'Nam',
+                                                                value: 1,
                                                                 label: 'Nam'
                                                             }, {
-                                                                value: 'Nữ',
+                                                                value: 0,
                                                                 label: 'Nữ'
                                                             }]}
                                                             placeholder={'Chọn giới tính'}
                                                             maxMenuHeight={160}
-                                                            value={'Nam'}
                                                             onChange={e => {
-                                                                setFieldValue('gender', e)
+                                                                setFieldValue('sex', e)
                                                             }}
                                                         />
                                                     </div>

@@ -195,15 +195,14 @@ const AddNewTask = ({ ...props }: Props) => {
                                     id='collaborator'
                                     name='collaborator'
                                     options={[{
-                                        value: 'Người thực hiện 1',
+                                        value: 1,
                                         label: 'Người thực hiện 1'
                                     }, {
-                                        value: 'Người thực hiện 2',
+                                        value: 2,
                                         label: 'Người thực hiện 2'
                                     }]}
                                     placeholder={'Chọn người thực hiện'}
                                     maxMenuHeight={160}
-                                    value={'Nam'}
                                     onChange={e => {
                                         setFieldValue('gender', e)
                                     }}
