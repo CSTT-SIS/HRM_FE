@@ -184,7 +184,7 @@ const OrderForm = ({ ...props }: Props) => {
                         </Tippy>
                     }
                     {
-                        records.status === "PENDING" || records.status === "CANCELLED" &&
+                        (records.status === "PENDING" || records.status === "CANCELLED") &&
                         <Tippy content={`${t('delete')}`}>
                             <button type="button" onClick={() => handleDelete(records)}>
                                 <IconTrashLines />
@@ -192,7 +192,7 @@ const OrderForm = ({ ...props }: Props) => {
                         </Tippy>
                     }
                     {
-                        records.status === "PENDING" || records.status === "PLACED" &&
+                        (records.status === "PENDING" || records.status === "PLACED") &&
                         <>                        <Tippy content={`${t('shipping')}`}>
                             <button type="button" onClick={() => handleShipping(records)}>
                                 <IconShipping size={20} />
@@ -206,7 +206,7 @@ const OrderForm = ({ ...props }: Props) => {
                         </>
                     }
                     {
-                        records.status === "PENDING" || records.status === "SHIPPING" &&
+                        (records.status === "PENDING" || records.status === "SHIPPING") &&
                         <Tippy content={`${t('receive')}`}>
                             <button type="button" onClick={() => handleReceive(records)}>
                                 <IconCartCheck />
