@@ -149,14 +149,14 @@ const Department = ({ ...props }: Props) => {
     const Action = (props: Content) => (
         <div className="flex items-center w-max mx-auto gap-2">
            <Tippy content={`${t('edit')}`}>
-						<button type="button" className='button-edit' onClick={() => handleEdit(records)}>
+						<button type="button" className='button-edit' onClick={() => handleEdit(props)}>
                         <IconNewEdit /><span>
                             {t('edit')}
                                 </span>
 						</button>
 					</Tippy>
 					<Tippy content={`${t('delete')}`}>
-						<button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+						<button type="button" className='button-delete' onClick={() => handleDelete(props)}>
                         <IconNewTrash />
                             <span>
                             {t('delete')}
