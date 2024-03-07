@@ -124,7 +124,6 @@ const ExemptFormModal = ({ ...props }: Props) => {
                                                             <>
                                                                 <Select
                                                                     {...field}
-                                                                    // options={dutyList}
                                                                     isSearchable
                                                                     placeholder={`${t('choose_position')}`}
                                                                     />

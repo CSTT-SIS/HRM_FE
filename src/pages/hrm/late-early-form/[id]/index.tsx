@@ -147,7 +147,6 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 	};
 
 	const handleCancel = () => {
-		props.setOpenModal(false);
 		props.setData(undefined);
 	};
 

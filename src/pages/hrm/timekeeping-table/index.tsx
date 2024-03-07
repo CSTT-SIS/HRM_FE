@@ -181,9 +181,14 @@ const Department = ({ ...props }: Props) => {
                 <div className="flex items-center w-max mx-auto gap-2">
                      <Tippy content={`${t('detail')}`}>
                         <Link href="/hrm/timekeeping-detail-table">
-                        <IconNewEye/><span>
+                        <button type="button" className="button-detail">
+                        <IconNewEye/>
+                        <span>
                                 {t('detail')}
-                            </span>                            </Link>
+                            </span>
+                        </button>
+                        </Link>
+
                     </Tippy>
                     <Tippy content={`${t('check')}`}>
                     <button type="button" className="button-check" onClick={() => handleCheck(records)}>

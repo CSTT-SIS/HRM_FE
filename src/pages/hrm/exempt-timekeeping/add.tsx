@@ -33,6 +33,9 @@ import Link from 'next/link';
 import { Box } from '@atlaskit/primitives';
 import TableTree from '@atlaskit/table-tree';
 import personnel_list from './personnel_list.json';
+import IconNewEdit from '@/components/Icon/IconNewEdit';
+import IconNewTrash from '@/components/Icon/IconNewTrash';
+import IconNewCalendar from '@/components/Icon/IconNewCalendar';
 
 interface Props {
 	[key: string]: any;
@@ -69,7 +72,7 @@ const Department = ({ ...props }: Props) => {
 	};
 	const [treeview1, setTreeview1] = useState<string[]>(['images']);
 	const [pagesSubMenu, setPagesSubMenu] = useState(false);
-
+    const [listSelected, setListSelected] = useState<any>([]);
 	const toggleTreeview1 = (name: any) => {
 		if (treeview1.includes(name)) {
 			setTreeview1((value) => value.filter((d) => d !== name));
@@ -214,8 +217,16 @@ const Department = ({ ...props }: Props) => {
 			],
 		},
 	];
+    const handleChangeSelect = (isSelected: any, record: any) => {
+        if (isSelected) {
+            setListSelected([...listSelected, record]);
+        } else {
+            setListSelected(listSelected?.filter((item: any) => item.id!== record.id));
+        };
+    };
+
 	const columns = [
-        { accessor: 'check', title: 'Chọn', sortable: false, render: (records: any) => <input type="checkbox" className='form-checkbox'/>},
+        { accessor: 'check', title: 'Chọn', sortable: false, render: (records: any) => <input type="checkbox" onChange={(e) => handleChangeSelect(e.target.checked, records)} className='form-checkbox'/>},
 		{
 			accessor: 'id',
 			title: '#',
@@ -231,18 +242,30 @@ const Department = ({ ...props }: Props) => {
 			render: (records: any) => (
 				<div className="mx-auto flex w-max items-center gap-2">
 					<Tippy content={`${t('edit')}`}>
-						<button type="button" onClick={() => handleEdit(records)}>
-							<IconPencil />
+						<button type="button" className='button-edit' onClick={() => handleEdit(records)}>
+							<IconNewEdit />
+                            <span>
+                                {t('edit')}
+                            </span>
 						</button>
 					</Tippy>
 					<Tippy content={`${t('delete')}`}>
-						<button type="button" onClick={() => handleDelete(records)}>
-							<IconTrashLines />
+						<button className='button-delete' type="button" onClick={() => handleDelete(records)}>
+							<IconNewTrash />
+                            <span>
+                                {t('delete')}
+                            </span>
 						</button>
 					</Tippy>
 					<Tippy content={`${t('work_schedule')}`}>
 						<Link href="/hrm/calendar" className="group">
-							<IconCalendar />
+                            <button className='button-calendar' type='button'>
+                            <IconNewCalendar />
+                            <span>
+                                {t('work_schedule')}
+                            </span>
+                            </button>
+
 						</Link>
 					</Tippy>
 				</div>
@@ -269,6 +292,14 @@ const Department = ({ ...props }: Props) => {
 							<IconDownload className="ltr:mr-2 rtl:ml-2" />
 							Xuất file excel
 						</button>
+                        {
+                            listSelected?.length > 0 &&
+                             <button type="button" className="btn btn-primary btn-sm m-1  custom-button">
+							<IconPlus className="ltr:mr-2 rtl:ml-2" />
+							Thêm vào danh sách
+						</button>
+                        }
+
 					</div>
 					<div className='display-style'>
 						<input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />

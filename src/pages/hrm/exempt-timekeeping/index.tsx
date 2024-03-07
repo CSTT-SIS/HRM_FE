@@ -52,7 +52,7 @@ interface Day {
 
 const monthSelectConfig: Partial<Config> = {
     shorthand: true, //defaults to false
-    dateFormat: "F Y", //defaults to "F Y"
+    dateFormat: "m/Y", //defaults to "F Y"
     theme: "light" // defaults to "light"
 };
 
@@ -267,11 +267,11 @@ const Department = ({ ...props }: Props) => {
                     </div>
                     <div className='flex gap-2'>
                         <div className='flex gap-1'>
-                        <div className="flex items-center" style={{width: "50%"}}>{t('choose_month')}</div>
+                        <div className="flex items-center min-w-[80px]" style={{width: "50%"}}>{t('choose_month')}</div>
                         <Flatpickr
                             className='form-input'
                             options = {{
-                            // dateFormat: 'd/m/y',
+                            // dateFormat: 'm/Y',
                             defaultDate: new Date(),
                             locale: {
                                 ...Vietnamese

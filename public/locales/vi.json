@@ -710,7 +710,7 @@
     "less_important": "Ít quan trọng",
     "normal": "Bình thường",
     "important": "Quan trọng",
-    "priority": "Uu tiên cao",
+    "priority": "Ưu tiên cao",
     "discription": "Mô tả",
     "update_calendar": "Chỉnh sửa lịch làm việc",
     "fill_work_schedule_description": "Nhập mô tả lịch làm việc",
@@ -742,5 +742,6 @@
     "delete_form": "Xóa đơn",
     "welcome": "Chào mừng",
     "vangtat_participants": "Thành viên Vangtat",
-    "forget_password": "Quên mật khẩu"
+    "forget_password": "Quên mật khẩu",
+    "choose_participants": "Chọn người tham gia"
 }

@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
 import IconBack from '@/components/Icon/IconBack';
 import Link from 'next/link';
-
+import Select from 'react-select';
 interface Props {
 	[key: string]: any;
 }
@@ -139,7 +139,7 @@ const getEmployeeOptions = () => {
 const AddWorkScheduleModal = ({ ...props }: Props) => {
 	const { t } = useTranslation();
 	const SubmittedForm = Yup.object().shape({
-		user: Yup.string().required(`${t('please_select_the_staff')}`),
+		user: new Yup.ArraySchema().required(`${t('please_select_the_staff')}`),
 		title: Yup.string().required(`${t('please_fill_title_work_schedule')}`),
 		start: Yup.date().required(`${t('please_fill_work_start_date')}`),
 		end: Yup.date().required(`${t('please_fill_work_end_date')}`),
@@ -162,7 +162,7 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 									<Formik
 										initialValues={{
 											id: params ? `${params?.id}` : '',
-											user: params ? `${params?.user}` : '',
+											user: params ? `${params?.user}` : [],
 											title: params ? `${params?.title}` : '',
 											start: params ? `${params?.start}` : '',
 											end: params ? `${params?.end}` : '',
@@ -174,7 +174,7 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 											saveWorkSchedule(values);
 										}}
 									>
-										{({ errors, touched, submitCount }) => (
+										{({ errors, touched, submitCount, setFieldValue }) => (
 											<Form className="space-y-5">
                                                 <div className="mb-3">
 													<label htmlFor="title">
@@ -189,14 +189,33 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 														{t('participants')}
 														<span style={{ color: 'red' }}> *</span>
 													</label>
-													<Field as="select" name="user" id="user" className="form-input" placeholder="test">
-														{/* <option value="">Chọn nhân viên</option> */}
+                                                    <Field
+                                                        name="user"
+                                                        render={({ field }: any) => (
+                                                            <>
+                                                                <Select
+                                                                    {...field}
+                                                                    options={getEmployeeOptions()}
+                                                                    isMulti
+                                                                    isSearchable
+                                                                    placeholder={`${t('choose_participants')}`}
+                                                                    onChange={e => {
+                                                                        setFieldValue('user', e)
+                                                                    }}
+                                                                    />
+
+                                                                </>
+                                                            )}
+                                                        />
+													{/* <Field as="select" name="user" id="user" className="form-input"
+                                                    isMultiple="true"
+                                                    placeholder="test">
 														{getEmployeeOptions().map((employee) => (
 															<option key={employee.value} value={employee.value}>
 																{employee.label}
 															</option>
 														))}
-													</Field>
+													</Field> */}
 													{submitCount ? errors.user ? <div className="mt-1 text-danger"> {errors.user} </div> : null : ''}
 												</div>
 
@@ -242,7 +261,7 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 														</label>
 													</div>
 													<div className="!mt-8 flex items-center justify-end">
-														<button type="button" className="btn cancel-button" onClick={() => setIsAddWokScheduleModal(false)}>
+														<button type="button" className="btn cancel-button">
 															{t('cancel')}
 														</button>
 														{params?.id && (
