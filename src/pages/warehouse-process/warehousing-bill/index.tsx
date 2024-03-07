@@ -52,24 +52,24 @@ const WarehousingPage = ({ ...props }: Props) => {
 
     const handleDelete = ({ id, name }: any) => {
         const swalDeletes = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-secondary',
-				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-				popup: 'confirm-delete',
-			},
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'confirm-delete',
+            },
             imageUrl: '/assets/images/delete_popup.png',
-			buttonsStyling: false,
-		});
+            buttonsStyling: false,
+        });
         swalDeletes
             .fire({
                 icon: 'question',
                 title: `${t('delete_order')}`,
-				html: `<span class='confirm-span'>${t('delete')}</span> ${name}?`,
+                html: `<span class='confirm-span'>${t('delete')}</span> ${name}?`,
                 padding: '2em',
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
                 confirmButtonText: `${t('confirm')}`,
-				reverseButtons: true,
+                reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -175,17 +175,22 @@ const WarehousingPage = ({ ...props }: Props) => {
                             <IconEye />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('edit')}`}>
-                        <button type="button" onClick={() => handleDetail(records)}>
-                            <IconPencil />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('delete')}`}>
-                        <button type="button" onClick={() => handleDelete(records)}>
-                            <IconTrashLines />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('approve')}`}>
+                    {
+                        records.status === "PENDING" &&
+                        <>
+                            <Tippy content={`${t('edit')}`}>
+                                <button type="button" onClick={() => handleDetail(records)}>
+                                    <IconPencil />
+                                </button>
+                            </Tippy>
+                            <Tippy content={`${t('delete')}`}>
+                                <button type="button" onClick={() => handleDelete(records)}>
+                                    <IconTrashLines />
+                                </button>
+                            </Tippy>
+                        </>
+                    }
+                    {/* <Tippy content={`${t('approve')}`}>
                         <button type="button" onClick={() => handleApprove(records)}>
                             <IconCircleCheck size={20} />
                         </button>
@@ -194,7 +199,7 @@ const WarehousingPage = ({ ...props }: Props) => {
                         <button type="button" onClick={() => handleReject(records)}>
                             <IconXCircle />
                         </button>
-                    </Tippy>
+                    </Tippy> */}
                 </div>
             ),
         },

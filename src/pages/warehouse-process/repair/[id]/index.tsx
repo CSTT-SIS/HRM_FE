@@ -83,14 +83,14 @@ const DetailPage = ({ ...props }: Props) => {
 
     const handleDelete = ({ id, replacementPart }: any) => {
         const swalDeletes = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-secondary',
-				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-				popup: 'confirm-delete',
-			},
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'confirm-delete',
+            },
             imageUrl: '/assets/images/delete_popup.png',
-			buttonsStyling: false,
-		});
+            buttonsStyling: false,
+        });
         swalDeletes
             .fire({
                 icon: 'question',
@@ -100,7 +100,7 @@ const DetailPage = ({ ...props }: Props) => {
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
                 confirmButtonText: `${t('confirm')}`,
-				reverseButtons: true,
+                reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -192,7 +192,7 @@ const DetailPage = ({ ...props }: Props) => {
     };
 
     const handleChangeComplete = (id: any) => {
-        RepairInprogress({ id: id }).then(() => {
+        RepairInprogress(id).then(() => {
             router.push("/warehouse-process/repair");
             showMessage(`${t('update_success')}`, 'success');
         }).catch((err) => {

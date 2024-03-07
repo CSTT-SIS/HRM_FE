@@ -105,14 +105,14 @@ const DetailPage = ({ ...props }: Props) => {
 
     const handleDelete = ({ id, product }: any) => {
         const swalDeletes = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-secondary',
-				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-				popup: 'confirm-delete',
-			},
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'confirm-delete',
+            },
             imageUrl: '/assets/images/delete_popup.png',
-			buttonsStyling: false,
-		});
+            buttonsStyling: false,
+        });
         swalDeletes
             .fire({
                 icon: 'question',
@@ -122,7 +122,7 @@ const DetailPage = ({ ...props }: Props) => {
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
                 confirmButtonText: `${t('confirm')}`,
-				reverseButtons: true,
+                reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -237,7 +237,7 @@ const DetailPage = ({ ...props }: Props) => {
     };
 
     const handleChangeComplete = (id: any) => {
-        StocktakeStart({ id: id }).then(() => {
+        StocktakeStart(id).then(() => {
             showMessage(`${t('update_success')}`, 'success');
             handleCancel();
         }).catch((err) => {
@@ -419,7 +419,7 @@ const DetailPage = ({ ...props }: Props) => {
                                             className={`flex w-full items-center p-4 text-white-dark dark:bg-[#1b2e4b] custom-accordion uppercase`}
                                             onClick={() => handleActive(1)}
                                         >
-                                            {t('order_infomation')}
+                                            {t('stocktake_info')}
                                             <div className={`ltr:ml-auto rtl:mr-auto ${active.includes(1) ? 'rotate-180' : ''}`}>
                                                 <IconCaretDown />
                                             </div>
@@ -558,7 +558,7 @@ const DetailPage = ({ ...props }: Props) => {
                                             className={`flex w-full items-center p-4 text-white-dark dark:bg-[#1b2e4b] custom-accordion uppercase`}
                                             onClick={() => handleActive(2)}
                                         >
-                                            {t('order_detail')}
+                                            {t('stocktake_detail')}
                                             <div className={`ltr:ml-auto rtl:mr-auto ${active.includes(2) ? 'rotate-180' : ''}`}>
                                                 <IconCaretDown />
                                             </div>
