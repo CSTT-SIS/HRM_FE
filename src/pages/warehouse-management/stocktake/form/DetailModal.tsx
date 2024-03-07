@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
 import { DropdownProducts } from '@/services/swr/dropdown.twr';
 import { AddStocktakeDetail, EditStocktakeDetail } from '@/services/apis/stocktake.api';
+import { GetProduct } from '@/services/apis/product.api';
 
 interface Props {
     [key: string]: any;
@@ -23,48 +24,69 @@ const DetailModal = ({ ...props }: Props) => {
     const [initialValue, setInitialValue] = useState<any>();
     const [dataProductDropdown, setDataProductDropdown] = useState<any>([]);
     const [page, setPage] = useState(1);
-
+    const [data, setData] = useState<any>([]);
     const SubmittedForm = Yup.object().shape({
         productId: new Yup.ObjectSchema().required(`${t('please_fill_product')}`),
     });
 
     const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ page: page });
-
     const handleStocktake = (param: any) => {
         const query = {
-            productId: Number(param.productId.value)
+            productId: Number(param.productId.value),
+            openingQuantity: param?.openingQuantity || 0
         };
-        if (props?.data) {
-            EditStocktakeDetail({ id: router.query.id, itemId: props?.data?.id, ...query }).then(() => {
-                props.stocktakeDetailMutate();
-                handleCancel();
-                showMessage(`${t('edit_success')}`, 'success');
-            }).catch((err) => {
-                showMessage(`${err?.response?.data?.message}`, 'error');
-            });
+        if (Number(router.query.id)) {
+            if (props?.data) {
+                EditStocktakeDetail({ id: router.query.id, itemId: props?.data?.id, ...query }).then(() => {
+                    props.stocktakeDetailMutate();
+                    handleCancel();
+                    showMessage(`${t('edit_success')}`, 'success');
+                }).catch((err) => {
+                    showMessage(`${err?.response?.data?.message}`, 'error');
+                });
+            } else {
+                AddStocktakeDetail({ id: router.query.id, ...query }).then(() => {
+                    props.stocktakeDetailMutate();
+                    handleCancel();
+                    showMessage(`${t('create_success')}`, 'success');
+                }).catch((err) => {
+                    showMessage(`${err?.response?.data?.message}`, 'error');
+                });
+            }
         } else {
-            AddStocktakeDetail({ id: router.query.id, ...query }).then(() => {
-                props.stocktakeDetailMutate();
-                handleCancel();
-                showMessage(`${t('create_success')}`, 'success');
-            }).catch((err) => {
-                showMessage(`${err?.response?.data?.message}`, 'error');
-            });
+            const query = {
+                productId: Number(param.productId.value),
+                openingQuantity: param?.openingQuantity || 0,
+                ...data
+            };
+            if (props?.data?.id) {
+                const filteredItems = props.listData.filter((item: any) => item.id !== props.data.id)
+                props.setListData([...filteredItems, query])
+                props.setData(query);
+            } else {
+                if (props.listData && props.listData.length > 0) {
+                    props.setListData([...props.listData, query])
+                } else {
+                    props.setListData([query])
+                }
+            }
+            handleCancel();
         }
     }
 
     const handleCancel = () => {
         props.setOpenModal(false);
-        props.setData();
+        // props.setData();
         setInitialValue({});
     };
 
     useEffect(() => {
         setInitialValue({
             productId: props?.data ? {
-                value: `${props?.data?.product?.id}`,
-                label: `${props?.data?.product?.name}`
+                value: `${props?.data?.product?.id || props.data.productId}`,
+                label: `${props?.data?.product?.name || props.data.name}`
             } : "",
+            openingQuantity: props?.data ? props.data.openingQuantity : ""
         })
     }, [props?.data, router]);
 
@@ -82,6 +104,14 @@ const DetailModal = ({ ...props }: Props) => {
         setTimeout(() => {
             setPage(productPagination?.page + 1);
         }, 1000);
+    }
+
+    const handleProduct = (id: any) => {
+        GetProduct({ id: id }).then((res) => {
+            setData(res.data);
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
     }
 
     return (
@@ -133,7 +163,7 @@ const DetailModal = ({ ...props }: Props) => {
                                         {({ errors, values, setFieldValue }) => (
                                             <Form className="space-y-5" >
                                                 <div className="mb-5 flex justify-between gap-4">
-                                                    <div className="flex-1 mb-24">
+                                                    <div className="flex-1">
                                                         <label htmlFor="productId" > {t('product')} < span style={{ color: 'red' }}>* </span></label >
                                                         <Select
                                                             id='productId'
@@ -142,10 +172,11 @@ const DetailModal = ({ ...props }: Props) => {
                                                             onMenuOpen={() => setPage(1)}
                                                             onMenuScrollToBottom={handleMenuScrollToBottom}
                                                             isLoading={productLoading}
-                                                            maxMenuHeight={160}
+                                                            maxMenuHeight={140}
                                                             value={values.productId}
                                                             onChange={e => {
                                                                 setFieldValue('productId', e)
+                                                                handleProduct(e?.value);
                                                             }}
                                                         />
                                                         {errors.productId ? (
@@ -153,12 +184,25 @@ const DetailModal = ({ ...props }: Props) => {
                                                         ) : null}
                                                     </div>
                                                 </div>
+                                                <div className="">
+                                                    <label htmlFor="openingQuantity" > {t('opening_quantity')}</label >
+                                                    <Field
+                                                        name="openingQuantity"
+                                                        type="number"
+                                                        id="openingQuantity"
+                                                        placeholder={`${t('enter_quantity')}`}
+                                                        className="form-input"
+                                                    />
+                                                    {errors.openingQuantity ? (
+                                                        <div className="text-danger mt-1"> {`${errors.openingQuantity}`} </div>
+                                                    ) : null}
+                                                </div>
                                                 <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
-                                                    <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
+                                                    <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
                                                         {t('cancel')}
                                                     </button>
-                                                    <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4">
-                                                        {props.data !== undefined ? t('update') : t('add')}
+                                                    <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+                                                        {router.query.id !== "create" ? t('update') : t('add')}
                                                     </button>
                                                 </div>
                                             </Form>

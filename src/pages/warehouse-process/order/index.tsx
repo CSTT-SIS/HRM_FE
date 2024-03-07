@@ -24,6 +24,7 @@ import IconXCircle from '@/components/Icon/IconXCircle';
 import { IconCartCheck } from '@/components/Icon/IconCartCheck';
 import { IconShipping } from '@/components/Icon/IconShipping';
 import moment from 'moment';
+import IconEye from '@/components/Icon/IconEye';
 
 interface Props {
     [key: string]: any;
@@ -53,13 +54,14 @@ const OrderForm = ({ ...props }: Props) => {
 
     const handleDelete = ({ id, name }: any) => {
         const swalDeletes = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-secondary',
-                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-                popup: 'sweet-alerts',
-            },
-            buttonsStyling: false,
-        });
+			customClass: {
+				confirmButton: 'btn btn-secondary',
+				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+				popup: 'confirm-delete',
+			},
+            imageUrl: '/assets/images/delete_popup.png',
+			buttonsStyling: false,
+		});
         swalDeletes
             .fire({
                 icon: 'question',
@@ -67,7 +69,9 @@ const OrderForm = ({ ...props }: Props) => {
                 text: `${t('delete')} ${name}`,
                 padding: '2em',
                 showCancelButton: true,
-                reverseButtons: true,
+                cancelButtonText: `${t('cancel')}`,
+                confirmButtonText: `${t('confirm')}`,
+				reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -166,6 +170,11 @@ const OrderForm = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
+                    <Tippy content={`${t('detail')}`}>
+                        <button type="button" onClick={() => router.push(`/warehouse-process/order/${records.id}?status=${true}`)}>
+                            <IconEye />
+                        </button>
+                    </Tippy>
                     <Tippy content={`${t('edit')}`}>
                         <button type="button" onClick={() => handleDetail(records)}>
                             <IconPencil />

@@ -32,7 +32,7 @@ import Link from 'next/link';
 
 import { Box } from '@atlaskit/primitives';
 import TableTree from '@atlaskit/table-tree';
-
+import personnel_list from './personnel_list.json';
 
 interface Props {
 	[key: string]: any;
@@ -127,11 +127,12 @@ const Department = ({ ...props }: Props) => {
 		});
 		swalDeletes
 			.fire({
-				icon: 'question',
 				title: `${t('delete_staff')}`,
-				text: `${t('delete')} ${data.name}`,
+				html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.name}?`,
 				padding: '2em',
 				showCancelButton: true,
+                cancelButtonText: `${t('cancel')}`,
+                confirmButtonText: `${t('confirm')}`,
 				reverseButtons: true,
 			})
 			.then((result) => {
@@ -174,7 +175,7 @@ const Department = ({ ...props }: Props) => {
 		<div className="flex items-center w-max mx-auto gap-2">
 			<Tippy content={`${t('edit')}`}>
 				<button type="button" className='button-edit' >
-					<IconPencil /> Sửa
+					<IconPencil /> {t('edit')}
 				</button>
 			</Tippy>
 			<Tippy content={`${t('delete')}`}>
@@ -214,12 +215,13 @@ const Department = ({ ...props }: Props) => {
 		},
 	];
 	const columns = [
+        { accessor: 'check', title: 'Chọn', sortable: false, render: (records: any) => <input type="checkbox" className='form-checkbox'/>},
 		{
 			accessor: 'id',
 			title: '#',
 			render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
 		},
-        { accessor: 'check', title: 'Chọn', sortable: false, render: (records: any) => <input type="checkbox" className='form-checkbox'/>},
+
 		{ accessor: 'name', title: 'Tên nhân viên', sortable: false },
 		{ accessor: 'code', title: 'Mã nhân viên', sortable: false },
 		{
@@ -269,31 +271,15 @@ const Department = ({ ...props }: Props) => {
 						</button>
 					</div>
 					<div className='display-style'>
-						Cách hiển thị
-						<button type="button" className="btn btn-primary btn-sm m-1  custom-button-display" style={{ backgroundColor: display === 'flat' ? '#E9EBD5' : '#FAFBFC' }} onClick={() => setDisplay('flat')}>
-							<img src="/assets/images/display-flat.svg" alt="img" />
-						</button>
-						<button type="button" className="btn btn-primary btn-sm m-1  custom-button-display" style={{ backgroundColor: display === 'tree' ? '#E9EBD5' : '#FAFBFC' }} onClick={() => setDisplay('tree')}>
-							<img src="/assets/images/display-tree.png" alt="img" />
-						</button>
 						<input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
 
 					</div>
 				</div>
-				{
-					display === 'tree' ?
-						<div className="mb-5">
-							<TableTree
-								columns={[CheckBox, Title, Description, Action]}
-								headers={['Chọn', 'Tên nhân viên', 'Mã nhân viên', 'Thao tác']}
-								columnWidths={['100px', '600px', '300px', '100px']}
-								items={items}
-							/>
-						</div> : <div className="datatables">
+				<div className="datatables">
 							<DataTable
 								highlightOnHover
 								className="table-hover whitespace-nowrap custom_table"
-								records={recordsData}
+								records={personnel_list}
 								columns={columns}
 								totalRecords={total}
 								recordsPerPage={pageSize}
@@ -307,7 +293,6 @@ const Department = ({ ...props }: Props) => {
 								paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
 							/>
 						</div>
-				}
 			</div>
 		</div>
 	);

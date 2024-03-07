@@ -93,11 +93,12 @@ const Department = ({ ...props }: Props) => {
 		});
 		swalDeletes
 			.fire({
-				icon: 'question',
 				title: `${t('delete_staff')}`,
-				text: `${t('delete')} ${data.name}`,
+				html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.name}?`,
 				padding: '2em',
 				showCancelButton: true,
+                cancelButtonText: `${t('cancel')}`,
+                confirmButtonText: `${t('confirm')}`,
 				reverseButtons: true,
 			})
 			.then((result) => {

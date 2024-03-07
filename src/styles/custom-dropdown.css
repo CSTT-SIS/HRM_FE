@@ -1,4 +1,4 @@
-div.dropdown {
+.dropdown-tree div.dropdown {
     width: 100%;
 }
 
@@ -19,7 +19,7 @@ div.dropdown {
     outline-offset: 2px !important;
 }
 
-div.dropdown ul{
+.dropdown-tree div.dropdown ul{
     width: 100%;
     box-shadow: none!important;
 }
@@ -44,10 +44,10 @@ div.dropdown-content i {
     font-style: normal!important;
 }
 
-div.dropdown span, div.dropdown label{
+.dropdown-tree div.dropdown span, .dropdown-tree div.dropdown label{
     font-size: 12px!important;
 }
 
-div.dropdown span {
+.dropdown-tree div.dropdown span {
     color: #848689!important;
 }

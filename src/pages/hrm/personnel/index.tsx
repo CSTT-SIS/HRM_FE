@@ -34,6 +34,10 @@ import Link from 'next/link';
 import { Box } from '@atlaskit/primitives';
 import TableTree, { Cell, Header, Headers, Row, Rows } from '@atlaskit/table-tree';
 
+import TableTree from '@atlaskit/table-tree';
+import IconNewEdit from '@/components/Icon/IconNewEdit';
+import IconNewTrash from '@/components/Icon/IconNewTrash';
+import IconNewCalendar from '@/components/Icon/IconNewCalendar';
 
 
 interface Props {
@@ -122,19 +126,21 @@ const Department = ({ ...props }: Props) => {
 			customClass: {
 				confirmButton: 'btn btn-secondary',
 				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-				popup: 'sweet-alerts',
+				popup: 'confirm-delete',
 			},
+            imageUrl: '/assets/images/delete_popup.png',
 			buttonsStyling: false,
 		});
 		swalDeletes
-			.fire({
-				icon: 'question',
-				title: `${t('delete_staff')}`,
-				text: `${t('delete')} ${data.name}`,
-				padding: '2em',
-				showCancelButton: true,
-				reverseButtons: true,
-			})
+        .fire({
+            title: `${t('delete_asset')}`,
+            html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.name}?`,
+            padding: '2em',
+            showCancelButton: true,
+            cancelButtonText: `${t('cancel')}`,
+            confirmButtonText: `${t('confirm')}`,
+            reverseButtons: true,
+        })
 			.then((result) => {
 				if (result.value) {
 					const value = getStorge.filter((item: any) => {
@@ -180,17 +186,32 @@ const Department = ({ ...props }: Props) => {
 		<>
 			{
 				props.type !== 'PB' ?
-					<div className="flex items-center w-max mx-auto gap-2">
-						<Tippy content={`${t('edit')}`}>
-							<button type="button" className='button-edit' onClick={() => handleEdit(props)}>
-								<IconPencil /> Sửa
-							</button>
-						</Tippy>
-						<Tippy content={`${t('delete')}`}>
-							<button type="button" className='button-delete' onClick={() => handleDelete(props)}>
-								<IconTrashLines /> Xóa
-							</button>
-						</Tippy> </div> : <></>
+                <div className="flex items-center w-max mx-auto gap-2">
+                <Tippy content={`${t('edit')}`}>
+                    <button type="button"  className='button-edit' onClick={() => handleEdit(props)}>
+                    <IconNewEdit /><span>
+                            {t('edit')}
+                                </span>
+                    </button>
+                </Tippy>
+
+                <Tippy content={`${t('delete')}`}>
+                    <button type="button" className='button-delete' onClick={() => handleDelete(props)}>
+                    <IconNewTrash />
+                            <span>
+                            {t('delete')}
+                                </span>
+                    </button>
+                </Tippy>
+                <Tippy content={`${t('work_schedule')}`}>
+						<Link href="/hrm/calendar" className="group">
+							<IconNewCalendar />
+                            <span>
+                            {t('work_schedule')}
+                                </span>
+						</Link>
+					</Tippy>
+            </div> : <></>
 			}
 		</>
 

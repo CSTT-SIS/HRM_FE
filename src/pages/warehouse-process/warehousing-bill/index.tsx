@@ -22,6 +22,7 @@ import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
 import IconXCircle from '@/components/Icon/IconXCircle';
 import IconCircleCheck from '@/components/Icon/IconCircleCheck';
+import IconEye from '@/components/Icon/IconEye';
 
 interface Props {
     [key: string]: any;
@@ -51,21 +52,24 @@ const WarehousingPage = ({ ...props }: Props) => {
 
     const handleDelete = ({ id, name }: any) => {
         const swalDeletes = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-secondary',
-                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-                popup: 'sweet-alerts',
-            },
-            buttonsStyling: false,
-        });
+			customClass: {
+				confirmButton: 'btn btn-secondary',
+				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+				popup: 'confirm-delete',
+			},
+            imageUrl: '/assets/images/delete_popup.png',
+			buttonsStyling: false,
+		});
         swalDeletes
             .fire({
                 icon: 'question',
                 title: `${t('delete_order')}`,
-                text: `${t('delete')} ${name}`,
+				html: `<span class='confirm-span'>${t('delete')}</span> ${name}?`,
                 padding: '2em',
                 showCancelButton: true,
-                reverseButtons: true,
+                cancelButtonText: `${t('cancel')}`,
+                confirmButtonText: `${t('confirm')}`,
+				reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -144,7 +148,7 @@ const WarehousingPage = ({ ...props }: Props) => {
                 {
                     proposal !== null ? "Xuất mìn" :
                         order !== null ? "Mua hàng" :
-                            repairRequest !== null ? "Sửa chữa" : ""
+                            repairRequest !== null ? "{t('edit')} chữa" : ""
                 }
             </span>,
         },
@@ -166,6 +170,11 @@ const WarehousingPage = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
+                    <Tippy content={`${t('detail')}`}>
+                        <button type="button" onClick={() => router.push(`/warehouse-process/warehousing-bill/${records.id}?status=${true}`)}>
+                            <IconEye />
+                        </button>
+                    </Tippy>
                     <Tippy content={`${t('edit')}`}>
                         <button type="button" onClick={() => handleDetail(records)}>
                             <IconPencil />

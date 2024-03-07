@@ -19,6 +19,7 @@ import { showMessage } from '@/@core/utils';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPencil from '@/components/Icon/IconPencil';
 import { WarehousingBillListRequest } from '@/services/swr/warehousing-bill.twr';
+import IconEye from '@/components/Icon/IconEye';
 
 interface Props {
     [key: string]: any;
@@ -33,41 +34,11 @@ const ProposalPage = ({ ...props }: Props) => {
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
     // get data
-    const { data: listRequest, pagination, mutate, isLoading } = WarehousingBillListRequest({ sortBy: 'id.ASC', ...router.query });
+    const { data: listRequest, pagination, isLoading } = WarehousingBillListRequest({ sortBy: 'id.ASC', ...router.query });
 
     useEffect(() => {
         dispatch(setPageTitle(`${t('proposal')}`));
     });
-
-    const handleDelete = ({ id, name }: any) => {
-        const swalDeletes = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-secondary',
-                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-                popup: 'sweet-alerts',
-            },
-            buttonsStyling: false,
-        });
-        swalDeletes
-            .fire({
-                icon: 'question',
-                title: `${t('delete_proposal')}`,
-                text: `${t('delete')} ${name}`,
-                padding: '2em',
-                showCancelButton: true,
-                reverseButtons: true,
-            })
-            .then((result) => {
-                if (result.value) {
-                    DeleteProposal({ id }).then(() => {
-                        mutate();
-                        showMessage(`${t('delete_success')}`, 'success');
-                    }).catch((err) => {
-                        showMessage(`${err?.response?.data?.message}`, 'error');
-                    });
-                }
-            });
-    };
 
     const handleChangePage = (page: number, pageSize: number) => {
         router.replace(
@@ -87,33 +58,6 @@ const ProposalPage = ({ ...props }: Props) => {
 
     const handleDetail = (value: any) => {
         router.push(`/warehouse-process/warehousing-bill/create/?proposalId=${value.id}`);
-    }
-
-    const handleApprove = ({ id }: any) => {
-        ProposalApprove({ id }).then(() => {
-            mutate();
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
-
-    const handleReject = ({ id }: any) => {
-        ProposalReject({ id }).then(() => {
-            mutate();
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
-
-    const handleReturn = ({ id }: any) => {
-        ProposalReturn({ id }).then(() => {
-            mutate();
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
     }
 
     const columns = [
@@ -136,7 +80,7 @@ const ProposalPage = ({ ...props }: Props) => {
             render: ({ entity }: any) => <span>
                 {
                     entity === "proposal" ? "Xuất mìn" :
-                        entity === "repairRequest" ? "Sửa chữa" :
+                        entity === "repairRequest" ? "{t('edit')} chữa" :
                             "Đặt hàng"
                 }
             </span>,
@@ -149,6 +93,11 @@ const ProposalPage = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
+                    <Tippy content={`${t('detail')}`}>
+                        <button type="button" onClick={() => handlePath(records)}>
+                            <IconEye />
+                        </button>
+                    </Tippy>
                     <Tippy content={`${t('add_warehousing')}`}>
                         <button type="button" onClick={() => handleDetail(records)}>
                             <IconPencil />
@@ -178,6 +127,17 @@ const ProposalPage = ({ ...props }: Props) => {
             ),
         },
     ]
+
+    const handlePath = (param: any) => {
+        switch (param.entity) {
+            case "proposal":
+                router.push(`/warehouse-process/proposal-supply/${param.id}?status=${true}`)
+            case "repairRequest":
+                router.push(`/warehouse-process/repair/${param.id}?status=${true}`)
+            default:
+                router.push(`/warehouse-process/order/${param.id}?status=${true}`)
+        }
+    }
 
     return (
         <div>

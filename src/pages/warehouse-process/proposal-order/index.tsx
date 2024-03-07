@@ -10,7 +10,7 @@ import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
 import { Proposals } from '@/services/swr/proposal.twr';
-import { DeleteProposal, ProposalApprove, ProposalReject, ProposalReturn } from '@/services/apis/proposal.api';
+import { DeleteProposal, ProposalApprove, ProposalManagemetReject, ProposalMangementApprove, ProposalReject, ProposalReturn } from '@/services/apis/proposal.api';
 // constants
 import { PAGE_SIZES } from '@/utils/constants';
 // helper
@@ -22,6 +22,7 @@ import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
 import IconCircleCheck from '@/components/Icon/IconCircleCheck';
 import IconXCircle from '@/components/Icon/IconXCircle';
+import IconEye from '@/components/Icon/IconEye';
 
 interface Props {
     [key: string]: any;
@@ -56,13 +57,14 @@ const ProposalPage = ({ ...props }: Props) => {
 
     const handleDelete = ({ id, name }: any) => {
         const swalDeletes = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-secondary',
-                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-                popup: 'sweet-alerts',
-            },
-            buttonsStyling: false,
-        });
+			customClass: {
+				confirmButton: 'btn btn-secondary',
+				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+				popup: 'confirm-delete',
+			},
+            imageUrl: '/assets/images/delete_popup.png',
+			buttonsStyling: false,
+		});
         swalDeletes
             .fire({
                 icon: 'question',
@@ -70,7 +72,9 @@ const ProposalPage = ({ ...props }: Props) => {
                 text: `${t('delete')} ${name}`,
                 padding: '2em',
                 showCancelButton: true,
-                reverseButtons: true,
+                cancelButtonText: `${t('cancel')}`,
+                confirmButtonText: `${t('confirm')}`,
+				reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -116,24 +120,6 @@ const ProposalPage = ({ ...props }: Props) => {
         router.push(`/warehouse-process/proposal-order/${value.id}?type=${value.type}&&status=${value.status}`)
     }
 
-    const handleApprove = ({ id }: any) => {
-        ProposalApprove({ id }).then(() => {
-            mutate();
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
-
-    const handleReject = ({ id }: any) => {
-        ProposalReject({ id }).then(() => {
-            mutate();
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
-
     const columns = [
         {
             accessor: 'id',
@@ -155,6 +141,11 @@ const ProposalPage = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
+                    <Tippy content={`${t('detail')}`}>
+                        <button type="button" onClick={() => router.push(`/warehouse-process/proposal-order/${records.id}?status=${true}`)}>
+                            <IconEye />
+                        </button>
+                    </Tippy>
                     <Tippy content={`${t('edit')}`}>
                         <button type="button" onClick={() => handleDetail(records)}>
                             <IconPencil />
@@ -166,15 +157,25 @@ const ProposalPage = ({ ...props }: Props) => {
                         </button>
                     </Tippy>
                     <Tippy content={`${t('approve')}`}>
-                        <button type="button" onClick={() => handleApprove(records)}>
+                        <button type="button" onClick={() => router.push(`/warehouse-process/proposal-order/${records.id}?status=${true}&&type=approve`)}>
                             <IconCircleCheck size={20} />
                         </button>
                     </Tippy>
-                    <Tippy content={`${t('reject')}`}>
+                    <Tippy content={`${t('manager_approve')}`}>
+                        <button type="button" onClick={() => router.push(`/warehouse-process/proposal-order/${records.id}?status=${true}&&type=managerApprove`)}>
+                            <IconCircleCheck size={20} />
+                        </button>
+                    </Tippy>
+                    {/* <Tippy content={`${t('reject')}`}>
                         <button type="button" onClick={() => handleReject(records)}>
                             <IconXCircle />
                         </button>
                     </Tippy>
+                    <Tippy content={`${t('manager_reject')}`}>
+                        <button type="button" onClick={() => handleManagementReject(records)}>
+                            <IconXCircle />
+                        </button>
+                    </Tippy> */}
                 </div>
             ),
         },
