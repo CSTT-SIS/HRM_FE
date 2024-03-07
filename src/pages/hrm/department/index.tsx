@@ -94,14 +94,14 @@ const Department = ({ ...props }: Props) => {
 
     const handleDelete = (data: any) => {
         const swalDeletes = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-secondary',
-				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-				popup: 'confirm-delete',
-			},
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'confirm-delete',
+            },
             imageUrl: '/assets/images/delete_popup.png',
-			buttonsStyling: false,
-		});
+            buttonsStyling: false,
+        });
         swalDeletes
             .fire({
                 title: `${t('delete_department')}`,
@@ -110,7 +110,7 @@ const Department = ({ ...props }: Props) => {
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
                 confirmButtonText: `${t('confirm')}`,
-				reverseButtons: true,
+                reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -148,21 +148,21 @@ const Department = ({ ...props }: Props) => {
     );
     const Action = (props: Content) => (
         <div className="flex items-center w-max mx-auto gap-2">
-           <Tippy content={`${t('edit')}`}>
-						<button type="button" className='button-edit' onClick={() => handleEdit(props)}>
-                        <IconNewEdit /><span>
-                            {t('edit')}
-                                </span>
-						</button>
-					</Tippy>
-					<Tippy content={`${t('delete')}`}>
-						<button type="button" className='button-delete' onClick={() => handleDelete(props)}>
-                        <IconNewTrash />
-                            <span>
-                            {t('delete')}
-                                </span>
-						</button>
-					</Tippy>
+            <Tippy content={`${t('edit')}`}>
+                <button type="button" className='button-edit' onClick={() => handleEdit(props)}>
+                    <IconNewEdit /><span>
+                        {t('edit')}
+                    </span>
+                </button>
+            </Tippy>
+            <Tippy content={`${t('delete')}`}>
+                <button type="button" className='button-delete' onClick={() => handleDelete(props)}>
+                    <IconNewTrash />
+                    <span>
+                        {t('delete')}
+                    </span>
+                </button>
+            </Tippy>
         </div>
     );
     const items: Item[] = [
@@ -299,7 +299,7 @@ const Department = ({ ...props }: Props) => {
                         <div className="mb-5">
                             <TableTree>
                                 <Headers>
-                                    <Header width={600}>Tên phòng ban</Header>
+                                    <Header width={400}>Tên phòng ban</Header>
                                     <Header width={300}>Mã phòng ban</Header>
                                     <Header width={100}>Thao tác</Header>
                                 </Headers>
@@ -317,12 +317,17 @@ const Department = ({ ...props }: Props) => {
                                             <Cell> <div className="flex items-center w-max mx-auto gap-2">
                                                 <Tippy content={`${t('edit')}`}>
                                                     <button type="button" className='button-edit' onClick={() => handleEdit(content)}>
-                                                        <IconPencil /> Sửa
+                                                        <IconNewEdit /><span>
+                                                            {t('edit')}
+                                                        </span>
                                                     </button>
                                                 </Tippy>
                                                 <Tippy content={`${t('delete')}`}>
                                                     <button type="button" className='button-delete' onClick={() => handleDelete(content)}>
-                                                        <IconTrashLines /> Xóa
+                                                        <IconNewTrash />
+                                                        <span>
+                                                            {t('delete')}
+                                                        </span>
                                                     </button>
                                                 </Tippy>
                                             </div></Cell>
