@@ -28,6 +28,8 @@ import DutyModal from './modal/DutyModal';
 import IconFolderMinus from '@/components/Icon/IconFolderMinus';
 import IconDownload from '@/components/Icon/IconDownload';
 import duty_list from './duty_list.json'
+import IconNewEdit from '@/components/Icon/IconNewEdit';
+import IconNewTrash from '@/components/Icon/IconNewTrash';
 interface Props {
     [key: string]: any;
 }
@@ -84,21 +86,23 @@ const Duty = ({ ...props }: Props) => {
 
     const handleDelete = (data: any) => {
         const swalDeletes = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-secondary',
-                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-                popup: 'sweet-alerts',
-            },
-            buttonsStyling: false,
-        });
+			customClass: {
+				confirmButton: 'btn btn-secondary',
+				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+				popup: 'confirm-delete',
+			},
+            imageUrl: '/assets/images/delete_popup.png',
+			buttonsStyling: false,
+		});
         swalDeletes
             .fire({
-                icon: 'question',
                 title: `${t('delete_duty')}`,
-                text: `${t('delete')} ${data.name}`,
+				html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.name}?`,
                 padding: '2em',
                 showCancelButton: true,
-                reverseButtons: true,
+                cancelButtonText: `${t('cancel')}`,
+                confirmButtonText: `${t('confirm')}`,
+				reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -145,12 +149,17 @@ const Duty = ({ ...props }: Props) => {
                 <div className="flex items-center w-max mx-auto gap-2">
                     <Tippy content={`${t('edit')}`}>
                         <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
-                            <IconPencil /> Sửa
+                            <IconNewEdit /><span>
+                            {t('edit')}
+                                </span>
                         </button>
                     </Tippy>
                     <Tippy content={`${t('delete')}`}>
                         <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
-                            <IconTrashLines /> Xóa
+                            <IconNewTrash />
+                            <span>
+                            {t('delete')}
+                                </span>
                         </button>
                     </Tippy>
                 </div>

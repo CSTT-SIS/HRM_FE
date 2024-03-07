@@ -49,7 +49,7 @@
     },
     {
         "id": 7,
-        "name": "Nhân viên Sửa chữa",
+        "name": "Nhân viên {t('edit')} chữa",
         "code": "NV-SC",
         "duty_group": "Nhân viên",
         "description": "",

@@ -193,11 +193,12 @@ const HolidaySchedule = () => {
 		});
 		swalDeletes
 			.fire({
-				icon: 'question',
 				title: `${t('delete_holiday_schedule')}`,
-				text: `${t('delete')} ${data.title}`,
+				html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.title}?`,
 				padding: '2em',
 				showCancelButton: true,
+                cancelButtonText: `${t('cancel')}`,
+                confirmButtonText: `${t('confirm')}`,
 				reverseButtons: true,
 			})
 			.then((result) => {

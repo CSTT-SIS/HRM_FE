@@ -53,9 +53,20 @@
     background-color: #8CD7F7 !important;
     color: black !important;
 }
+
+.button-edit span {
+    font-size: 12px;
+    margin-left: 8px;
+}
+
 .button-delete {
     background-color: #ED1B24 !important;
     color: white !important;
+}
+
+.button-delete span, .button-detail span, .button-check span {
+    font-size: 12px;
+    margin-left: 8px;
 }
 
 .button-detail {

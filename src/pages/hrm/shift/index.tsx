@@ -28,6 +28,9 @@ import shiftList from './shift.json';
 import IconFolderMinus from '@/components/Icon/IconFolderMinus';
 import IconDownload from '@/components/Icon/IconDownload';
 import IconEye from '@/components/Icon/IconEye';
+import IconNewEye from '@/components/Icon/IconNewEye';
+import IconNewEdit from '@/components/Icon/IconNewEdit';
+import IconNewTrash from '@/components/Icon/IconNewTrash';
 
 interface Props {
     [key: string]: any;
@@ -82,21 +85,23 @@ const Duty = ({ ...props }: Props) => {
 
     const handleDelete = (data: any) => {
         const swalDeletes = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-secondary',
-                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-                popup: 'sweet-alerts',
-            },
-            buttonsStyling: false,
-        });
+			customClass: {
+				confirmButton: 'btn btn-secondary',
+				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+				popup: 'confirm-delete',
+			},
+            imageUrl: '/assets/images/delete_popup.png',
+			buttonsStyling: false,
+		});
         swalDeletes
             .fire({
-                icon: 'question',
                 title: `${t('delete_shift')}`,
-                text: `${t('delete')} ${data.name}`,
+				html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.name_shift}?`,
                 padding: '2em',
                 showCancelButton: true,
-                reverseButtons: true,
+                cancelButtonText: `${t('cancel')}`,
+                confirmButtonText: `${t('confirm')}`,
+				reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -177,20 +182,25 @@ const Duty = ({ ...props }: Props) => {
                     <Tippy content={`${t('detail_shift_employee')}`}>
                         <Link href={`/hrm/shift/detail-shift-employee/${records?.id}`}>
                             <button type='button' className='button-detail'>
-                            <IconEye /> Chi tiết
+                                <IconNewEye /> <span>{t('detail')}</span>
                             </button>
                             </Link>
                     </Tippy>
                     <Tippy content={`${t('edit')}`}>
-                        <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
-                            <IconPencil /> Sửa
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('delete')}`}>
-                        <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
-                            <IconTrashLines /> Xóa
-                        </button>
-                    </Tippy>
+                    <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
+                    <IconNewEdit /><span>
+                            {t('edit')}
+                                </span>
+                    </button>
+                </Tippy>
+                <Tippy content={`${t('delete')}`}>
+                    <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                    <IconNewTrash />
+                            <span>
+                            {t('delete')}
+                                </span>
+                    </button>
+                </Tippy>
                 </div>
             ),
         },

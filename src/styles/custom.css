@@ -354,3 +354,72 @@ li.menu > button:hover svg.icon-menu {
     text-align: left;
     color: #476704;
 }
+.confirm-delete {
+    padding: 40px 40px 40px 40px!important;
+    border-radius: 16px!important;
+    width: 25em!important;
+    /* gap: 24px!important; */
+
+}
+
+.confirm-delete .swal2-popup .swal2-html-container {
+    padding-right: 0!important;
+}
+
+.confirm-delete .swal2-image {
+    margin: auto!important;
+}
+
+.confirm-delete .swal2-title {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 25px;
+    letter-spacing: 0em;
+    text-transform: uppercase;
+    color: #476704;
+    padding-left: 2.5rem!important;
+    /* padding-right: 0!important; */
+    /* padding-left: 0!important; */
+
+}
+
+.confirm-delete .swal2-html-container {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 18px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #082819;
+    padding-left: 2.5rem!important;
+}
+
+.confirm-delete .confirm-span {
+    font-weight: 400!important;
+}
+
+.confirm-delete .swal2-cancel {
+    width: 79px;
+    height: 40px;
+    padding: 0px 24px 0px 24px;
+    border-radius: 8px;
+    border: 1px;
+    gap: 12px;
+    color: #082819;
+    text-transform: uppercase;
+    background: #fff;
+    border: 1px solid #082819;
+    font-size: 14px!important;
+}
+
+.confirm-delete .swal2-confirm {
+    width: Hug 124px;
+    height: 40px;
+    padding: 0px 24px 0px 24px;
+    border-radius: 8px;
+    gap: 12px;
+    background: #959E5E;
+    border-color: #959E5E;
+    color: #fff;
+    font-size: 14px!important;
+    text-transform: uppercase;
+}

@@ -189,18 +189,20 @@ const Canlendar = () => {
 			customClass: {
 				confirmButton: 'btn btn-secondary',
 				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-				popup: 'sweet-alerts',
+				popup: 'confirm-delete',
 			},
+            imageUrl: '/assets/images/delete_popup.png',
 			buttonsStyling: false,
 		});
 		swalDeletes
 			.fire({
-				icon: 'question',
 				title: `${t('delete_work_schedule')}`,
-				text: `${t('delete')} ${data.title}`,
+				html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.title}?`,
 				padding: '2em',
 				showCancelButton: true,
 				reverseButtons: true,
+                cancelButtonText: `${t('cancel')}`,
+                confirmButtonText: `${t('confirm')}`,
 			})
 			.then((result) => {
 				if (result.value) {
