@@ -20,5 +20,5 @@ Install Playwright VSCode Extension [link](https://marketplace.visualstudio.com/
 
 ## How to Run Tests
 
-Open test file and click on the `Run Test` button on the top right corner of the test file.
-![alt text](image-1.png)
+Open test file and click on the `Run Test` button on the top right corner of the test suite.
+![alt text](global/image.png)
