@@ -139,8 +139,8 @@ const WarehousingPage = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
-        { accessor: 'name', title: 'Tên phiếu kho', sortable: false },
-        { accessor: 'type', title: 'Loại phiếu', sortable: false },
+        // { accessor: 'name', title: 'Tên phiếu kho', sortable: false },
+        // { accessor: 'type', title: 'Loại phiếu', sortable: false },
         {
             accessor: 'proposal',
             title: ' Loại yêu cầu',
@@ -163,43 +163,27 @@ const WarehousingPage = ({ ...props }: Props) => {
             render: ({ warehouse }: any) => <span>{warehouse?.name}</span>,
         },
         { accessor: 'status', title: 'Trạng thái', sortable: false },
-        { accessor: 'note', title: 'Ghi chú', sortable: false },
+        // { accessor: 'note', title: 'Ghi chú', sortable: false },
         {
             accessor: 'action',
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('detail')}`}>
-                        <button type="button" onClick={() => router.push(`/warehouse-process/warehousing-bill/${records.id}?status=${true}`)}>
-                            <IconEye />
-                        </button>
-                    </Tippy>
+                    <button className='bg-[#F2E080] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/warehousing-bill/${records.id}?status=${true}`)}>
+                        <IconEye /> <span>{`${t('detail')}`}</span>
+                    </button>
                     {
                         records.status === "PENDING" &&
                         <>
-                            <Tippy content={`${t('edit')}`}>
-                                <button type="button" onClick={() => handleDetail(records)}>
-                                    <IconPencil />
-                                </button>
-                            </Tippy>
-                            <Tippy content={`${t('delete')}`}>
-                                <button type="button" onClick={() => handleDelete(records)}>
-                                    <IconTrashLines />
-                                </button>
-                            </Tippy>
+                            <button className='bg-[#9CD3EB] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleDetail(records)}>
+                                <IconPencil /> <span>{`${t('edit')}`}</span>
+                            </button>
+                            <button className='bg-[#E43940] flex justify-between gap-1 p-1 rounded text-[#F5F5F5]' type="button" onClick={() => handleDelete(records)}>
+                                <IconTrashLines /> <span>{`${t('delete')}`}</span>
+                            </button>
                         </>
                     }
-                    {/* <Tippy content={`${t('approve')}`}>
-                        <button type="button" onClick={() => handleApprove(records)}>
-                            <IconCircleCheck size={20} />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('reject')}`}>
-                        <button type="button" onClick={() => handleReject(records)}>
-                            <IconXCircle />
-                        </button>
-                    </Tippy> */}
                 </div>
             ),
         },
