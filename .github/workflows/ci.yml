@@ -45,7 +45,7 @@ jobs:
             - name: 'Upload report.tar'
               if: always()
               run: |
-                  sshpass -p "${{ secrets.PASSWORD }}" scp -o StrictHostKeyChecking=no report.tar ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/vangtats/HRM_FE/report_${{ github.run_id }}-${{ github.run_number }}-${{ github.run_attempt }}.tar
+                  sshpass -p "${{ secrets.PASSWORD }}" scp -o StrictHostKeyChecking=no report.tar ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/vangtats/HRM_FE/report/report_${{ github.run_id }}-${{ github.run_number }}-${{ github.run_attempt }}.tar
             - name: Extract report using
               if: always()
               uses: appleboy/ssh-action@master
@@ -57,11 +57,7 @@ jobs:
                   script: |
                       cd /home/vangtats/report
                       tar -xvf report_${{ github.run_id }}-${{ github.run_number }}-${{ github.run_attempt }}.tar
-            - name: Deploy to Chromatic
-              if: always()
-              id: chromatic
-              uses: chromaui/action@v1
             - name: Publish Summary
               if: always()
               run: |
-                  echo -e "## 📊 Test Summary\n\n- [Test Report](http://test.abc)"
+                  echo -e "## 📊 Test Summary\n\n- [Test Report](http://test.abc)" >> $GITHUB_STEP_SUMMARY
