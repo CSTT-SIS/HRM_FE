@@ -23,6 +23,7 @@ import IconTrashLines from '@/components/Icon/IconTrashLines';
 import IconCircleCheck from '@/components/Icon/IconCircleCheck';
 import IconXCircle from '@/components/Icon/IconXCircle';
 import IconEye from '@/components/Icon/IconEye';
+import IconChecks from '@/components/Icon/IconChecks';
 
 interface Props {
     [key: string]: any;
@@ -137,7 +138,7 @@ const RepairPage = ({ ...props }: Props) => {
             title: 'Người phụ trách',
             render: ({ repairBy }: any) => <span>{repairBy?.fullName}</span>,
         },
-        { accessor: 'description', title: 'Ghi chú', sortable: false },
+        // { accessor: 'description', title: 'Ghi chú', sortable: false },
         { accessor: 'status', title: 'Trạng thái', sortable: false },
         {
             accessor: 'action',
@@ -145,41 +146,33 @@ const RepairPage = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('detail')}`}>
-                        <button type="button" onClick={() => router.push(`/warehouse-process/repair/${records.id}?status=${true}`)}>
-                            <IconEye />
-                        </button>
-                    </Tippy>
+                    <button className='bg-[#F2E080] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/repair/${records.id}?status=${true}`)}>
+                        <IconEye /> <span>{`${t('detail')}`}</span>
+                    </button>
                     {
                         records.status === "DRAFT" &&
-                        <Tippy content={`${t('edit')}`}>
-                            <button type="button" onClick={() => handleDetail(records)}>
-                                <IconPencil />
-                            </button>
-                        </Tippy>
+                        <button className='bg-[#9CD3EB] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleDetail(records)}>
+                            <IconPencil /> <span>{`${t('edit')}`}</span>
+                        </button>
                     }
                     {
                         (records.status === "DRAFT" || records.status === "HEAD_REJECTED") &&
-                        <Tippy content={`${t('delete')}`}>
-                            <button type="button" onClick={() => handleDelete(records)}>
-                                <IconTrashLines />
-                            </button>
-                        </Tippy>
+                        <button className='bg-[#E43940] flex justify-between gap-1 p-1 rounded text-[#F5F5F5]' type="button" onClick={() => handleDelete(records)}>
+                            <IconTrashLines /> <span>{`${t('delete')}`}</span>
+                        </button>
                     }
                     {
                         records.status === "IN_PROGRESS" &&
-                        <Tippy content={`${t('approve')}`}>
-                            <button type="button" onClick={() => router.push(`/warehouse-process/repair/${records.id}?status=${true}&&type=approve`)}>
-                                <IconCircleCheck size={20} />
-                            </button>
-                        </Tippy>
+                        <button className='bg-[#C5E7AF] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/repair/${records.id}?status=${true}&&type=approve`)}>
+                            <IconChecks /> <span>{`${t('approve')}`}</span>
+                        </button>
                     }
                     {/* <Tippy content={`${t('reject')}`}>
                         <button type="button" onClick={() => handleReject(records)}>
                             <IconXCircle />
                         </button>
                     </Tippy> */}
-                </div>
+                </div >
             ),
         },
     ]

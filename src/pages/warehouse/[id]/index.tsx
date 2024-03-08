@@ -177,14 +177,14 @@ const ShelfPage = ({ ...props }: Props) => {
                         <Form className="space-y-5" >
                             <div className='flex justify-between gap-5 mt-5 mb-5'>
                                 <div className="w-1/2">
-                                    <label htmlFor="name" > {t('name')} < span style={{ color: 'red' }}>* </span></label >
+                                    <label htmlFor="name" > {t('name_warehouse')} < span style={{ color: 'red' }}>* </span></label >
                                     <Field name="name" type="text" id="name" placeholder={`${t('enter_name')}`} className="form-input" />
                                     {errors.name ? (
                                         <div className="text-danger mt-1"> {errors.name} </div>
                                     ) : null}
                                 </div>
                                 <div className="w-1/2">
-                                    <label htmlFor="code" > {t('code')} < span style={{ color: 'red' }}>* </span></label >
+                                    <label htmlFor="code" > {t('code_warehouse')} < span style={{ color: 'red' }}>* </span></label >
                                     <Field name="code" type="text" id="code" placeholder={`${t('enter_code')}`} className="form-input" />
                                     {errors.code ? (
                                         <div className="text-danger mt-1"> {errors.code} </div>

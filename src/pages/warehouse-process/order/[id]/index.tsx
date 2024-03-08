@@ -45,7 +45,7 @@ const DetailPage = ({ ...props }: Props) => {
     const [query, setQuery] = useState<any>();
     const [initialValue, setInitialValue] = useState<any>();
     const [dataProposalDropdown, setDataProposalDropdown] = useState<any>([]);
-    const [active, setActive] = useState<any>([1]);
+    const [active, setActive] = useState<any>([1, 2]);
     const [pageProposal, setPageProposal] = useState(1);
     const [listDataDetail, setListDataDetail] = useState<any>();
     const SubmittedForm = Yup.object().shape({
@@ -115,14 +115,14 @@ const DetailPage = ({ ...props }: Props) => {
 
     const handleDelete = ({ id, product }: any) => {
         const swalDeletes = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-secondary',
-				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-				popup: 'confirm-delete',
-			},
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'confirm-delete',
+            },
             imageUrl: '/assets/images/delete_popup.png',
-			buttonsStyling: false,
-		});
+            buttonsStyling: false,
+        });
         swalDeletes
             .fire({
                 icon: 'question',
@@ -132,7 +132,7 @@ const DetailPage = ({ ...props }: Props) => {
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
                 confirmButtonText: `${t('confirm')}`,
-				reverseButtons: true,
+                reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -197,16 +197,12 @@ const DetailPage = ({ ...props }: Props) => {
                     {
                         !disable &&
                         <>
-                            <Tippy content={`${t('edit')}`}>
-                                <button type="button" onClick={() => handleEdit(records)}>
-                                    <IconPencil />
-                                </button>
-                            </Tippy>
-                            <Tippy content={`${t('delete')}`}>
-                                <button type="button" onClick={() => handleDelete(records)}>
-                                    <IconTrashLines />
-                                </button>
-                            </Tippy>
+                            <button className='bg-[#9CD3EB] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleEdit(records)}>
+                                <IconPencil /> <span>{`${t('edit')}`}</span>
+                            </button>
+                            <button className='bg-[#E43940] flex justify-between gap-1 p-1 rounded text-[#F5F5F5]' type="button" onClick={() => handleDelete(records)}>
+                                <IconTrashLines />  <span>{`${t('delete')}`}</span>
+                            </button>
                         </>
                     }
                 </div>
@@ -363,7 +359,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                 <div className='p-4'>
                                                     <div className='flex justify-between gap-5'>
                                                         <div className="w-1/2">
-                                                            <label htmlFor="name" className='label'> {t('name')} < span style={{ color: 'red' }}>* </span></label >
+                                                            <label htmlFor="name" className='label'> {t('name_order')} < span style={{ color: 'red' }}>* </span></label >
                                                             <Field
                                                                 name="name"
                                                                 type="text"
@@ -401,7 +397,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                     </div>
                                                     <div className='flex justify-between gap-5 mt-5 mb-5'>
                                                         <div className="w-1/2">
-                                                            <label htmlFor="code" className='label'> {t('code')} < span style={{ color: 'red' }}>* </span></label >
+                                                            <label htmlFor="code" className='label'> {t('code_order')} < span style={{ color: 'red' }}>* </span></label >
                                                             <Field
                                                                 name="code"
                                                                 type="text"
