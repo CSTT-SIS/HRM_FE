@@ -61,14 +61,14 @@ const WarehousePage = ({ ...props }: Props) => {
 
     const handleDelete = ({ id, name }: any) => {
         const swalDeletes = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-secondary',
-				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-				popup: 'confirm-delete',
-			},
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'confirm-delete',
+            },
             imageUrl: '/assets/images/delete_popup.png',
-			buttonsStyling: false,
-		});
+            buttonsStyling: false,
+        });
         swalDeletes
             .fire({
                 icon: 'question',
@@ -78,7 +78,7 @@ const WarehousePage = ({ ...props }: Props) => {
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
                 confirmButtonText: `${t('confirm')}`,
-				reverseButtons: true,
+                reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -128,7 +128,7 @@ const WarehousePage = ({ ...props }: Props) => {
         },
         { accessor: 'name', title: 'Tên kho', sortable: false },
         { accessor: 'code', title: 'Mã kho', sortable: false },
-        { accessor: 'description', title: 'Ghi chú', sortable: false },
+        { accessor: 'description', title: 'Mô tả', sortable: false },
         // {
         //     accessor: 'type',
         //     title: 'Loại kho',
@@ -141,21 +141,9 @@ const WarehousePage = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('detail')}`}>
-                        <button type="button" onClick={() => router.push(`/warehouse/${records.id}`)}>
-                            <IconEye />
-                        </button>
-                    </Tippy>
-                    {/* <Tippy content={`${t('edit')}`}>
-                        <button type="button" onClick={() => handleEdit(records)}>
-                            <IconPencil />
-                        </button>
-                    </Tippy> */}
-                    {/* <Tippy content={`${t('delete')}`}>
-                        <button type="button" onClick={() => handleDelete(records)}>
-                            <IconTrashLines />
-                        </button>
-                    </Tippy> */}
+                    <button type="button" className='bg-[#F2E080] flex justify-between gap-1 p-1 rounded' onClick={() => router.push(`/warehouse/${records.id}`)}>
+                        <IconEye /> <span>{t('detail')}</span>
+                    </button>
                 </div>
             ),
         },
@@ -195,7 +183,7 @@ const WarehousePage = ({ ...props }: Props) => {
                         sortStatus={sortStatus}
                         onSortStatusChange={setSortStatus}
                         minHeight={200}
-                        // paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
+                    // paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
                     />
                 </div>
             </div>

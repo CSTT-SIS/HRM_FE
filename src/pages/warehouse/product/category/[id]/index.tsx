@@ -125,7 +125,7 @@ const CategoryModal = ({ ...props }: Props) => {
                         <Form className="space-y-5" >
                             <div className='flex justify-between gap-5'>
                                 <div className="w-1/2">
-                                    <label htmlFor="name" > {t('name')} < span style={{ color: 'red' }}>* </span></label >
+                                    <label htmlFor="name" > {t('name_category')} < span style={{ color: 'red' }}>* </span></label >
                                     <Field name="name" type="text" id="name" placeholder={`${t('enter_name')}`} className="form-input" />
                                     {submitCount && errors.name ? (
                                         <div className="text-danger mt-1"> {errors.name} </div>
@@ -151,15 +151,12 @@ const CategoryModal = ({ ...props }: Props) => {
                                     ) : null}
                                 </div>
                             </div>
-                            <div className='flex justify-between gap-5'>
-                                <div className="w-1/2">
-                                    <label htmlFor="description" > {t('description')} </label >
-                                    <Field name="description" type="text" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
-                                    {submitCount && errors.description ? (
-                                        <div className="text-danger mt-1"> {errors.description} </div>
-                                    ) : null}
-                                </div>
-                                <div className='w-1/2'></div>
+                            <div className="">
+                                <label htmlFor="description" > {t('description')} </label >
+                                <Field name="description" type="text" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
+                                {submitCount && errors.description ? (
+                                    <div className="text-danger mt-1"> {errors.description} </div>
+                                ) : null}
                             </div>
                             <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                 <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>

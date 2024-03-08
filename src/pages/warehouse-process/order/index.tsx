@@ -150,9 +150,9 @@ const OrderForm = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
         },
-        { accessor: 'name', title: 'Tên đơn hàng', sortable: false },
         { accessor: 'code', title: 'Mã đơn hàng', sortable: false },
-        { accessor: 'type', title: 'Loại phiếu', sortable: false },
+        { accessor: 'name', title: 'Tên đơn hàng', sortable: false },
+        // { accessor: 'type', title: 'Loại phiếu', sortable: false },
         {
             accessor: 'proposal',
             title: 'Yêu cầu',
@@ -170,48 +170,37 @@ const OrderForm = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('detail')}`}>
-                        <button type="button" onClick={() => router.push(`/warehouse-process/order/${records.id}?status=${true}`)}>
-                            <IconEye />
-                        </button>
-                    </Tippy>
+                    <button className='bg-[#F2E080] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/order/${records.id}?status=${true}`)}>
+                        <IconEye /> <span>{`${t('detail')}`}</span>
+                    </button>
                     {
                         records.status === "PENDING" &&
-                        <Tippy content={`${t('edit')}`}>
-                            <button type="button" onClick={() => handleDetail(records)}>
-                                <IconPencil />
-                            </button>
-                        </Tippy>
+                        <button className='bg-[#9CD3EB] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleDetail(records)}>
+                            <IconPencil /> <span>{`${t('edit')}`}</span>
+                        </button>
                     }
                     {
                         (records.status === "PENDING" || records.status === "CANCELLED") &&
-                        <Tippy content={`${t('delete')}`}>
-                            <button type="button" onClick={() => handleDelete(records)}>
-                                <IconTrashLines />
-                            </button>
-                        </Tippy>
+                        <button className='bg-[#E43940] flex justify-between gap-1 p-1 rounded text-[#F5F5F5]' type="button" onClick={() => handleDelete(records)}>
+                            <IconTrashLines /> <span>{`${t('delete')}`}</span>
+                        </button>
                     }
                     {
                         (records.status === "PENDING" || records.status === "PLACED") &&
-                        <>                        <Tippy content={`${t('shipping')}`}>
-                            <button type="button" onClick={() => handleShipping(records)}>
-                                <IconShipping size={20} />
+                        <>
+                            <button className='bg-[#C5E7AF] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleShipping(records)}>
+                                <IconShipping size={20} />  <span>{`${t('shipping')}`}</span>
                             </button>
-                        </Tippy>
-                            <Tippy content={`${t('cancel')}`}>
-                                <button type="button" onClick={() => handleCancel(records)}>
-                                    <IconXCircle />
-                                </button>
-                            </Tippy>
+                            <button className='bg-[#E43940] flex justify-between gap-1 p-1 rounded text-[#F5F5F5]' type="button" onClick={() => handleCancel(records)}>
+                                <IconXCircle /> <span>{`${t('cancel')}`}</span>
+                            </button>
                         </>
                     }
                     {
                         (records.status === "PENDING" || records.status === "SHIPPING") &&
-                        <Tippy content={`${t('receive')}`}>
-                            <button type="button" onClick={() => handleReceive(records)}>
-                                <IconCartCheck />
-                            </button>
-                        </Tippy>
+                        <button className='bg-[#C5E7AF] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleReceive(records)}>
+                            <IconCartCheck /> <span>{`${t('receive')}`}</span>
+                        </button>
                     }
                 </div>
             ),

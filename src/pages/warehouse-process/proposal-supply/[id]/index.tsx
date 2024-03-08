@@ -41,7 +41,7 @@ const DetailPage = ({ ...props }: Props) => {
     const [listDataDetail, setListDataDetail] = useState<any>();
     const [openModal, setOpenModal] = useState(false);
     const [query, setQuery] = useState<any>({});
-    const [active, setActive] = useState<any>([1]);
+    const [active, setActive] = useState<any>([1, 2]);
     const [initialValue, setInitialValue] = useState<any>();
     const [data, setData] = useState<any>();
     const [page, setPage] = useState(1);
@@ -179,16 +179,12 @@ const DetailPage = ({ ...props }: Props) => {
                     {
                         !disable &&
                         <>
-                            <Tippy content={`${t('edit')}`}>
-                                <button type="button" onClick={() => handleEdit(records)}>
-                                    <IconPencil />
-                                </button>
-                            </Tippy>
-                            <Tippy content={`${t('delete')}`}>
-                                <button type="button" onClick={() => handleDelete(records)}>
-                                    <IconTrashLines />
-                                </button>
-                            </Tippy>
+                            <button className='bg-[#9CD3EB] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleEdit(records)}>
+                                <IconPencil /> <span>{`${t('edit')}`}</span>
+                            </button>
+                            <button className='bg-[#E43940] flex justify-between gap-1 p-1 rounded text-[#F5F5F5]' type="button" onClick={() => handleDelete(records)}>
+                                <IconTrashLines />  <span>{`${t('delete')}`}</span>
+                            </button>
                         </>
                     }
                 </div>
@@ -342,7 +338,7 @@ const DetailPage = ({ ...props }: Props) => {
                                             <div className='p-4'>
                                                 <div className='flex justify-between gap-5'>
                                                     <div className=" w-1/2">
-                                                        <label htmlFor="name" className='label'> {t('content_proposal')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <label htmlFor="name" className='label'> {t('name_proposal')} < span style={{ color: 'red' }}>* </span></label >
                                                         <Field
                                                             name="name"
                                                             type="text"
@@ -355,22 +351,6 @@ const DetailPage = ({ ...props }: Props) => {
                                                             <div className="text-danger mt-1"> {`${errors.name}`} </div>
                                                         ) : null}
                                                     </div>
-                                                    <div className=" w-1/2">
-                                                        <label htmlFor="type" className='label'> {t('description')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Field
-                                                            name="content"
-                                                            type="text"
-                                                            id="content"
-                                                            placeholder={`${t('enter_content')}`}
-                                                            className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
-                                                            disabled={disable}
-                                                        />
-                                                        {submitCount && errors.content ? (
-                                                            <div className="text-danger mt-1"> {`${errors.content}`} </div>
-                                                        ) : null}
-                                                    </div>
-                                                </div>
-                                                <div className='flex justify-between gap-5 mt-5'>
                                                     <div className=" w-1/2">
                                                         <label htmlFor="departmentId" className='label'> {t('department')} < span style={{ color: 'red' }}>* </span></label >
                                                         <Select
@@ -391,7 +371,20 @@ const DetailPage = ({ ...props }: Props) => {
                                                             <div className="text-danger mt-1"> {`${errors.departmentId}`} </div>
                                                         ) : null}
                                                     </div>
-                                                    <div className='w-1/2'></div>
+                                                </div>
+                                                <div className='mt-5'>
+                                                    <label htmlFor="type" className='label'> {t('content')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field
+                                                        name="content"
+                                                        as="textarea"
+                                                        id="content"
+                                                        placeholder={`${t('enter_content')}`}
+                                                        className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                        disabled={disable}
+                                                    />
+                                                    {submitCount && errors.content ? (
+                                                        <div className="text-danger mt-1"> {`${errors.content}`} </div>
+                                                    ) : null}
                                                 </div>
                                             </div>
                                         </AnimateHeight>
