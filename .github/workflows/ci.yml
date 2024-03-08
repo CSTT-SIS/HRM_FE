@@ -39,8 +39,28 @@ jobs:
               run: npx playwright install chromium
             - run: bun i @playwright/test
             - name: Run e2e tests
-              run: PLAYWRIGHT_JSON_OUTPUT_NAME=results.json npx playwright test --reporter json
+              run: PLAYWRIGHT_JSON_OUTPUT_NAME=results.json npx playwright test --reporter json,html
+            - name: 'Tar report files'
+              run: |
+                  cp playwright-report/index.html ./report_${{ github.run_id }}${{ github.run_number }}${{ github.run_attempt }}.html
+                  tar -cvf report.tar report_${{ github.run_id }}${{ github.run_number }}${{ github.run_attempt }}.html
+            - name: 'Upload report.tar'
+              run: |
+                  sshpass -p "${{ secrets.PASSWORD }}" scp -o StrictHostKeyChecking=no report.tar ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/vangtats/report/report.tar
+            - name: Extract report
+              uses: appleboy/ssh-action@master
+              with:
+                  host: ${{ secrets.HOST }}
+                  username: ${{ secrets.USERNAME }}
+                  password: ${{ secrets.PASSWORD }}
+                  port: 22
+                  script: |
+                      cd /home/vangtats/report
+                      tar -xvf report.tar
+                      rm report.tar
             - uses: daun/playwright-report-summary@v3
               if: always()
               with:
                   report-file: results.json
+                  report-url: 'https://user.github.io/repo/yyyy-mm-dd-id/'
+                  job-summary: true
