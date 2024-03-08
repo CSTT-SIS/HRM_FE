@@ -19,16 +19,16 @@ jobs:
         container:
             image: mcr.microsoft.com/playwright:v1.42.1-jammy
         steps:
-            - uses: actions/checkout@v2
-            - uses: actions/setup-node@v2
+            - name: Checkout code
+              uses: actions/checkout@v2
+            - name: Setup Node.js
+              uses: actions/setup-node@v2
               with:
                   node-version: 18.x
             - name: Install dependencies
               run: npm i --force
             - name: Build app
               run: npm run build --if-present
-            - name: Start local server
-              run: npm run start
             - name: Run your tests
               run: npm run test
               env:
