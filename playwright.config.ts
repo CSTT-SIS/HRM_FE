@@ -32,8 +32,8 @@ export default defineConfig({
 		storageState: 'state.json',
 	},
 
-	globalSetup: require.resolve('./tests/global-setup'),
-	globalTeardown: require.resolve('./tests/global-teardown'),
+	globalSetup: require.resolve('./tests/global/global-setup'),
+	globalTeardown: require.resolve('./tests/global/global-teardown'),
 
 	/* Configure projects for major browsers */
 	projects: [
