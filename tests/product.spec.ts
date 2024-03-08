@@ -20,7 +20,7 @@ test('create/delete new product', async ({ page }) => {
 	await page.keyboard.press('Enter');
 
 	await page.locator('#categoryId').click();
-	await page.keyboard.type('Computers');
+	await page.keyboard.type('vat tu');
 	await page.keyboard.press('Enter');
 
 	await page.getByTestId('submit-btn').click();
