@@ -40,6 +40,7 @@ jobs:
             - name: Run e2e tests
               run: npx playwright test
             - name: 'Tar report files'
+              if: always()
               run: tar -cvf report.tar playwright-report
             - name: 'Upload report.tar'
               run: |
@@ -59,4 +60,4 @@ jobs:
               uses: chromaui/action@v1
             - name: Publish Summary
               run: |
-                echo -e "## 📊 Test Summary\n\n- [Test Report](http://test.abc)"
+                  echo -e "## 📊 Test Summary\n\n- [Test Report](http://test.abc)"
