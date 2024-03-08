@@ -23,8 +23,6 @@ jobs:
     test:
         needs: build
         runs-on: ubuntu-latest
-        container:
-            image: mcr.microsoft.com/playwright:v1.42.1-jammy
         steps:
             - uses: actions/download-artifact@v4
               with:
