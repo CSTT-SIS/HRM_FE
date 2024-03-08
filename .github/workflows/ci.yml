@@ -1,4 +1,4 @@
-name: Build HRM_FE
+name: HRM_FE
 
 on:
     pull_request:
@@ -33,31 +33,16 @@ jobs:
               with:
                   name: build
             - run: tar -xvf build.tar
+            - uses: geekyeggo/delete-artifact@v4
+              with:
+                name: build
             - uses: oven-sh/setup-bun@v1
             - name: Install playwright
               run: npx playwright install chromium
             - run: bun i @playwright/test
             - name: Run e2e tests
-              run: npx playwright test
-            - name: 'Tar report files'
+              run: PLAYWRIGHT_JSON_OUTPUT_NAME=results.json npx playwright test --reporter json
+            - uses: daun/playwright-report-summary@v3
               if: always()
-              run: tar -cvf report.tar playwright-report
-            - name: 'Upload report.tar'
-              if: always()
-              run: |
-                  sshpass -p "${{ secrets.PASSWORD }}" scp -o StrictHostKeyChecking=no report.tar ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/vangtats/HRM_FE/report/report_${{ github.run_id }}-${{ github.run_number }}-${{ github.run_attempt }}.tar
-            - name: Extract report using
-              if: always()
-              uses: appleboy/ssh-action@master
               with:
-                  host: ${{ secrets.HOST }}
-                  username: ${{ secrets.USERNAME }}
-                  password: ${{ secrets.PASSWORD }}
-                  port: 22
-                  script: |
-                      cd /home/vangtats/report
-                      tar -xvf report_${{ github.run_id }}-${{ github.run_number }}-${{ github.run_attempt }}.tar
-            - name: Publish Summary
-              if: always()
-              run: |
-                  echo -e "## 📊 Test Summary\n\n- [Test Report](http://test.abc)" >> $GITHUB_STEP_SUMMARY
+                  report-file: results.json
