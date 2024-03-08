@@ -41,13 +41,16 @@ jobs:
             - name: Run e2e tests
               run: PLAYWRIGHT_JSON_OUTPUT_NAME=results.json npx playwright test --reporter json,html
             - name: 'Tar report files'
+              if: always()
               run: |
                   cp playwright-report/index.html ./report_${{ github.run_id }}${{ github.run_number }}${{ github.run_attempt }}.html
                   tar -cvf report.tar report_${{ github.run_id }}${{ github.run_number }}${{ github.run_attempt }}.html
             - name: 'Upload report.tar'
+              if: always()
               run: |
                   sshpass -p "${{ secrets.PASSWORD }}" scp -o StrictHostKeyChecking=no report.tar ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/vangtats/report/report.tar
             - name: Extract report
+              if: always()
               uses: appleboy/ssh-action@master
               with:
                   host: ${{ secrets.HOST }}
