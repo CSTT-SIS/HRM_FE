@@ -24,8 +24,10 @@ jobs:
               with:
                   node-version: 18.x
             - name: Install dependencies
-              run: npm ci --force
+              run: npm i --force
+            - name: Start local server
+              run: npm run start
             - name: Run your tests
-              run: npx playwright test
+              run: npm run test
               env:
                   HOME: /root
