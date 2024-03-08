@@ -33,10 +33,6 @@ jobs:
               with:
                   name: build
             - run: tar -xvf build.tar
-            - uses: geekyeggo/delete-artifact@v4
-              with:
-                name: build
-                failOnError: false
             - uses: oven-sh/setup-bun@v1
             - name: Install playwright
               run: npx playwright install chromium
