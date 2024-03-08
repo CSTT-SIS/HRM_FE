@@ -5,33 +5,32 @@ on:
         branches: [dev]
 
 jobs:
-    # build:
-    #     runs-on: ubuntu-latest
-    #     steps:
-    #         - uses: actions/checkout@v2
-    #         - uses: actions/setup-node@v2
-    #           with:
-    #               node-version: 18.x
-    #         - run: npm i --force
-    #         - run: npm run build --if-present
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: oven-sh/setup-bun@v1
+            - run: bun i
+            - run: bun run build
+            - name: 'Tar build files'
+              run: tar -cvf build.tar .next
+            - name: 'Upload build.tar'
+              uses: actions/upload-artifact@v4
+              with:
+                  name: build
+                  path: build.tar
+
     test:
+        needs: build
         runs-on: ubuntu-latest
         container:
             image: mcr.microsoft.com/playwright:v1.42.1-jammy
         steps:
-            - name: Checkout code
-              uses: actions/checkout@v2
-            - name: Setup Node.js
-              uses: actions/setup-node@v2
+            - uses: actions/download-artifact@v4
               with:
-                  node-version: 18.x
-            - name: Install dependencies
-              run: npm i --force
+                  name: build
+            - uses: oven-sh/setup-bun@v1
             - name: Install playwright
               run: npx playwright install
-            - name: Build app
-              run: npm run build --if-present
             - name: Run e2e tests
-              run: npm run test
-              env:
-                  HOME: /root
+              run: npx playwright test
