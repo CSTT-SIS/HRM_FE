@@ -64,6 +64,7 @@ jobs:
             - uses: daun/playwright-report-summary@v3
               if: always()
               with:
+                  comment-title: 'Test Summary'
                   report-file: results.json
-                  report-url: 'https://user.github.io/repo/yyyy-mm-dd-id/'
+                  report-url: 'http://103.167.89.184:8081/report_${{ github.run_id }}${{ github.run_number }}${{ github.run_attempt }}.html'
                   job-summary: true
