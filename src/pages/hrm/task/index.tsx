@@ -173,21 +173,17 @@ const Task = ({ ...props }: Props) => {
 			titleClassName: '!text-center',
 			render: (records: any) => (
 				<div className="mx-auto flex w-max items-center gap-2">
-					<Tippy content={`${t('edit')}`}>
                     <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
                     <IconNewEdit /><span>
                             {t('edit')}
                                 </span>
                     </button>
-                </Tippy>
-                <Tippy content={`${t('delete')}`}>
                     <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
                     <IconNewTrash />
                             <span>
                             {t('delete')}
                                 </span>
                     </button>
-                </Tippy>
 					<button type="button" className='button-detail'>
 						<IconNewDownload />
                         <span>{t('download')}</span>

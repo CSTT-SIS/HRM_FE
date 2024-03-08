@@ -14,10 +14,13 @@ import { PAGE_SIZES, PAGE_SIZES_DEFAULT, PAGE_NUMBER_DEFAULT } from '@/utils/con
 // helper
 import { capitalize, formatDate, showMessage } from '@/@core/utils';
 // icons
-import IconPencil from '../../../components/Icon/IconPencil';
-import IconTrashLines from '../../../components/Icon/IconTrashLines';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
+import Flatpickr from 'react-flatpickr';
+import 'flatpickr/dist/flatpickr.css';
+import { Vietnamese } from "flatpickr/dist/l10n/vn.js"
+import "flatpickr/dist/plugins/monthSelect/style.css"
+import monthSelectPlugin, { Config } from "flatpickr/dist/plugins/monthSelect"
 
 import { useRouter } from 'next/router';
 
@@ -32,13 +35,34 @@ import Link from 'next/link';
 import IconNewEdit from '@/components/Icon/IconNewEdit';
 import IconNewCheck from '@/components/Icon/IconNewCheck';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
-
+import DropdownTreeSelect from "react-dropdown-tree-select";
+import "react-dropdown-tree-select/dist/styles.css";
 
 interface Props {
     [key: string]: any;
 }
+const monthSelectConfig: Partial<Config> = {
+    shorthand: true, //defaults to false
+    dateFormat: "m/Y", //defaults to "F Y"
+    theme: "light" // defaults to "light"
+};
+const treeData = [
+    {
+      label: 'Phòng Tài chính',
+      value: '0-0',
+      children: [
+        { label: 'Phòng 1', value: '0-0-1' },
+        { label: 'Phòng 2', value: '0-0-2' },
+      ],
+    },
+    {
+      label: 'Phòng Nhân sự',
+      value: '0-1',
+    },
+  ];
 
 const ForgetForm = ({ ...props }: Props) => {
+    const [treeDataState, setTreeDataState] = useState<any>(treeData)
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -196,30 +220,24 @@ const ForgetForm = ({ ...props }: Props) => {
         titleClassName: '!text-center',
         render: (records: any) => (
             <div className="flex items-center w-max mx-auto gap-2">
-                <Tippy content={`${t('edit')}`}>
                     <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
                     <IconNewEdit /><span>
                             {t('edit')}
                                 </span>
                     </button>
-                </Tippy>
-                <Tippy content={`${t('check')}`}>
                     <button type="button" className="button-check" onClick={() => handleCheck(records)}>
                     <IconNewCheck /> <span>
                         {t('approve')}
                         </span>
                     </button>
-                </Tippy>
-                <Tippy content={`${t('delete')}`}>
                     <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
                     <IconNewTrash />
                             <span>
                             {t('delete')}
                                 </span>
                     </button>
-                </Tippy>
             </div>
-        ),
+        )
     },
     ]
 
@@ -249,7 +267,39 @@ const ForgetForm = ({ ...props }: Props) => {
                             Xuất file excel
                         </button>
                     </div>
-                    <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                    <div className='flex flex-row gap-2'>
+                        <div className='flex flex-1 gap-1'>
+                        <div className="flex items-center min-w-[80px]">{t('choose_department')}</div>
+                        <DropdownTreeSelect
+                                className="dropdown-tree flex-1 for-search"
+                                                                  data={treeDataState}
+                                                                  texts={{ placeholder: `${t('choose_department')}`}}
+                                                                  showPartiallySelected={true}
+                                                                  inlineSearchInput={true}
+                                                                  mode='radioSelect'
+                                                                />
+                        </div>
+                        <div className='flex flex-1 gap-1 justify-end'>
+                        <div className="flex items-center min-w-[80px]">{t('choose_month')}</div>
+                        <Flatpickr
+                            className='form-input flex-[20%]'
+                            options = {{
+                            // dateFormat: 'd/m/y',
+                            defaultDate: new Date(),
+                            locale: {
+                                ...Vietnamese
+                            },
+                                plugins: [
+                                    monthSelectPlugin(monthSelectConfig) // Sử dụng plugin với cấu hình
+                                ]
+                            }}
+                            onChange={(selectedDates, dateStr, instance) => {
+                                // Xử lý sự kiện thay đổi ngày tháng ở đây
+                            }}
+                         />
+                        </div>
+                        <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                        </div>
                 </div>
                 <div className="datatables">
                     <DataTable

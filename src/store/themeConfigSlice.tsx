@@ -88,7 +88,7 @@ const themeConfigSlice = createSlice({
         },
 
         setPageTitle(state, { payload }) {
-            document.title = `${payload} | Văng Tắt`;
+            document.title = `${payload} | Vangtat`;
         },
     },
 });

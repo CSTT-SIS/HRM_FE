@@ -80,7 +80,7 @@ const ProposalPage = ({ ...props }: Props) => {
             render: ({ entity }: any) => <span>
                 {
                     entity === "proposal" ? "Xuất mìn" :
-                        entity === "repairRequest" ? "{t('edit')} chữa" :
+                        entity === "repairRequest" ? "Sửa chữa" :
                             "Đặt hàng"
                 }
             </span>,

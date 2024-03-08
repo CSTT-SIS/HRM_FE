@@ -263,7 +263,7 @@ const AddNewShift = ({ ...props }: Props) => {
                                     {' '}
                                     {t('description')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field name="description" type="text" id="description" placeholder={t('fill_description')} className="form-input" />
+                                <Field name="description" as="textarea" id="description" placeholder={t('fill_description')} className="form-input" />
                                 {submitCount ? errors.description ? <div className="mt-1 text-danger"> {errors.description} </div> : null : ''}
                             </div>
                             <div className="mb-5 w-1/2">

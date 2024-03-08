@@ -186,30 +186,24 @@ const Department = ({ ...props }: Props) => {
 			{
 				props.type !== 'PB' ?
                 <div className="flex items-center w-max mx-auto gap-2">
-                <Tippy content={`${t('edit')}`}>
                     <button type="button"  className='button-edit' onClick={() => handleEdit(props)}>
                     <IconNewEdit /><span>
                             {t('edit')}
                                 </span>
                     </button>
-                </Tippy>
 
-                <Tippy content={`${t('delete')}`}>
                     <button type="button" className='button-delete' onClick={() => handleDelete(props)}>
                     <IconNewTrash />
                             <span>
                             {t('delete')}
                                 </span>
                     </button>
-                </Tippy>
-                <Tippy content={`${t('work_schedule')}`}>
 						<Link href="/hrm/calendar" className="group">
 							<IconNewCalendar />
                             <span>
                             {t('work_schedule')}
                                 </span>
 						</Link>
-					</Tippy>
             </div> : <></>
 			}
 		</>
@@ -297,21 +291,28 @@ const Department = ({ ...props }: Props) => {
 			titleClassName: '!text-center',
 			render: (records: any) => (
 				<div className="mx-auto flex w-max items-center gap-2">
-					<Tippy content={`${t('edit')}`}>
 						<button type="button" onClick={() => handleEdit(records)}>
-							<IconPencil />
+							<IconNewEdit />
+                            <span>
+                                {t('edit')}
+                            </span>
 						</button>
-					</Tippy>
-					<Tippy content={`${t('delete')}`}>
 						<button type="button" onClick={() => handleDelete(records)}>
-							<IconTrashLines />
+							<IconNewTrash />
+                            <span>
+                                {t('delete')}
+                            </span>
 						</button>
-					</Tippy>
-					<Tippy content={`${t('work_schedule')}`}>
+
 						<Link href="/hrm/calendar" className="group">
-							<IconCalendar />
+                            <button className="button-calendar">
+                            <span>
+                                {t('work_schedule')}
+                            </span>
+                            </button>
+							<IconNewCalendar />
+
 						</Link>
-					</Tippy>
 				</div>
 			),
 		},
@@ -372,16 +373,13 @@ const Department = ({ ...props }: Props) => {
 										{
 											content.type !== 'PB' ?
 												<div className="flex items-center w-max mx-auto gap-2">
-													<Tippy content={`${t('edit')}`}>
 														<button type="button" className='button-edit' onClick={() => handleEdit(content)}>
 															<IconPencil /> Sửa
 														</button>
-													</Tippy>
-													<Tippy content={`${t('delete')}`}>
 														<button type="button" className='button-delete' onClick={() => handleDelete(content)}>
 															<IconTrashLines /> Xóa
 														</button>
-													</Tippy> </div> : <></>
+													</div> : <></>
 										}
 									</div></Cell>
 								</Row>

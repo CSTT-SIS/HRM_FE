@@ -227,10 +227,10 @@ const Department = ({ ...props }: Props) => {
                                     </button>
                         </Link> */}
 
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                        {/* <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
                             Nhập file
-                        </button>
+                        </button> */}
                         <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconDownload className="ltr:mr-2 rtl:ml-2" />
                             Xuất file excel

@@ -174,16 +174,13 @@ const Department = ({ ...props }: Props) => {
 	);
 	const Action = (props: Content) => (
 		<div className="flex items-center w-max mx-auto gap-2">
-			<Tippy content={`${t('edit')}`}>
 				<button type="button" className='button-edit' >
-					<IconPencil /> {t('edit')}
+					<IconNewEdit /><span> {t('edit')}
+                        </span>
 				</button>
-			</Tippy>
-			<Tippy content={`${t('delete')}`}>
 				<button type="button" className='button-delete' >
-					<IconTrashLines /> Xóa
+					<IconNewTrash /> <span>{t('delete')}</span>
 				</button>
-			</Tippy>
 		</div>
 	);
 	const items: Item[] = [
@@ -239,23 +236,18 @@ const Department = ({ ...props }: Props) => {
 			titleClassName: '!text-center',
 			render: (records: any) => (
 				<div className="mx-auto flex w-max items-center gap-2">
-					<Tippy content={`${t('edit')}`}>
 						<button type="button" className='button-edit' onClick={() => handleEdit(records)}>
 							<IconNewEdit />
                             <span>
                                 {t('edit')}
                             </span>
 						</button>
-					</Tippy>
-					<Tippy content={`${t('delete')}`}>
 						<button className='button-delete' type="button" onClick={() => handleDelete(records)}>
 							<IconNewTrash />
                             <span>
                                 {t('delete')}
                             </span>
 						</button>
-					</Tippy>
-					<Tippy content={`${t('work_schedule')}`}>
 						<Link href="/hrm/calendar" className="group">
                             <button className='button-calendar' type='button'>
                             <IconNewCalendar />
@@ -265,7 +257,6 @@ const Department = ({ ...props }: Props) => {
                             </button>
 
 						</Link>
-					</Tippy>
 				</div>
 			),
 		},
