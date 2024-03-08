@@ -31,5 +31,6 @@ jobs:
             - uses: oven-sh/setup-bun@v1
             - name: Install playwright
               run: npx playwright install chromium
+            - run: bun i @playwright/test
             - name: Run e2e tests
               run: npx playwright test
