@@ -765,5 +765,6 @@
     "forget_password": "Quên mật khẩu",
     "manager_approve": "Giám đốc phê duyệt",
     "shipping": "Đang giao hàng",
-    "receive": "Đã nhận hàng"
+    "receive": "Đã nhận hàng",
+	"timekeeping_history": "Lịch sử chấm công"
 }

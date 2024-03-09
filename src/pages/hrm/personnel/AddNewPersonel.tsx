@@ -175,37 +175,34 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                             <IconCaretDown />
                                         </div>
                                     </button>
-                                    <div className={`${active === '1' ? 'custom-content-accordion' : ''}`}>
-                                        <AnimateHeight duration={300} height={active === '1' ? 'auto' : 0}>
+                                    <div className={`custom-content-accordion`}>
+
+                                        <AnimateHeight duration={300} height={'auto'}>
                                             <div className="space-y-2 border-[#d3d3d3] p-4 text-[13px] text-white-dark dark:border-[#1b2e4b]">
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
                                                         <div className="custom-file-container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} data-upload-id="myFirstImage">
-                                                            {
-                                                                images.length === 0 ? <div className="label-container" style={{ marginBottom: '0', marginRight: '20px' }}>
-                                                                    <label style={{ color: '#476704', fontSize: '14px', marginBottom: '0' }}> {t('update_avatar')} </label>
-                                                                </div> : <></>
-                                                            }
-
+                                                            <div className="label-container" style={{ marginBottom: '0', marginRight: '20px' }}>
+                                                                <label style={{ color: '#476704', fontSize: '14px', marginBottom: '0' }}> {t('update_avatar')} </label>
+                                                            </div>
                                                             <ImageUploading value={images} onChange={onChange} maxNumber={maxNumber}>
                                                                 {({ imageList, onImageUpload, onImageRemoveAll, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
                                                                     <div className="upload__image-wrapper">
-                                                                        {
-                                                                            imageList.length === 0 ? <div className="custom-uploadfile" style={{ cursor: 'pointer' }} onClick={onImageUpload}>
-                                                                                <div className='upfile_content'>
-                                                                                    <img src='/assets/images/uploadfile.png' className='icon_upload'></img>
-                                                                                    Tải lên
 
-                                                                                </div>
-                                                                            </div> : <></>
-                                                                        }
+                                                                        <div className="custom-uploadfile" style={{ cursor: 'pointer' }} onClick={onImageUpload}>
+                                                                            <div className='upfile_content' style={{marginTop: imageList.length !== 0 ? '-1px' : '20px'}}>
+                                                                                {
+                                                                                    imageList.length === 0 ? <>
+                                                                                        <img src='/assets/images/uploadfile.png' className='icon_upload'></img>
+                                                                                        Tải lên</> : <></>
+                                                                                }
 
-                                                                        &nbsp;
-                                                                        {imageList.map((image, index) => (
-                                                                            <div key={index} className="custom-file-container__image-preview relative" style={{ width: '120px' }}>
-                                                                                <img src={image.dataURL} alt="img" className="m-auto" />
+                                                                                {imageList.map((image, index) => (
+                                                                                    <img src={image.dataURL} alt="img" className="m-auto" style={{ width: '80px', height: '80px', borderRadius: '50px' }} />
+                                                                                ))}
                                                                             </div>
-                                                                        ))}
+                                                                        </div>
+                                                                        &nbsp;
                                                                     </div>
                                                                 )}
                                                             </ImageUploading>
@@ -286,8 +283,9 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                             <IconCaretDown />
                                         </div>
                                     </button>
-                                    <div className={`${active === '2' ? 'custom-content-accordion' : ''}`}>
-                                        <AnimateHeight duration={300} height={active === '2' ? 'auto' : 0}>
+                                    <div className={`custom-content-accordion`}>
+
+                                        <AnimateHeight duration={300} height={'auto'}>
                                             <div className="space-y-2 border-t border-[#d3d3d3] p-4 text-[13px] text-white-dark dark:border-[#1b2e4b]">
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
@@ -464,8 +462,8 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                             <IconCaretDown />
                                         </div>
                                     </button>
-                                    <div className={`${active === '3' ? 'custom-content-accordion' : ''}`}>
-                                        <AnimateHeight duration={300} height={active === '3' ? 'auto' : 0}>
+                                    <div className={`custom-content-accordion`}>
+                                        <AnimateHeight duration={300} height={'auto'}>
                                             <div className="space-y-2 border-t border-[#d3d3d3] p-4 text-[13px] text-white-dark dark:border-[#1b2e4b]">
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">

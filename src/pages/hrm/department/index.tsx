@@ -136,7 +136,7 @@ const Department = ({ ...props }: Props) => {
             )
         }
     }
-    type Content = { id: number; name: string; code: string; status: string };
+    type Content = { id: number; name: string; code: string; status: string; abbreviated: string };
 
     type Item = {
         id: number;
@@ -174,6 +174,7 @@ const Department = ({ ...props }: Props) => {
                 id: 1,
                 name: "Phòng hành chính",
                 code: "PB01",
+                abbreviated: "PHC",
                 status: "active"
             },
             hasChildren: true,
@@ -184,7 +185,9 @@ const Department = ({ ...props }: Props) => {
                         id: 2,
                         name: "Ban 1.1",
                         code: "B1.1",
-                        status: "active"
+                        status: "active",
+                        abbreviated: "PHCB1",
+
                     },
                     hasChildren: false,
 
@@ -198,6 +201,7 @@ const Department = ({ ...props }: Props) => {
                 id: 3,
                 name: "Phòng kĩ thuật",
                 code: "PB02",
+                abbreviated: "PHKT",
                 status: "active"
             },
             hasChildren: true,
@@ -208,6 +212,7 @@ const Department = ({ ...props }: Props) => {
                         id: 4,
                         name: "Ban 2.1",
                         code: "B2.1",
+                        abbreviated: "PHKTB1",
                         status: "active"
                     },
                     hasChildren: false,
@@ -219,6 +224,7 @@ const Department = ({ ...props }: Props) => {
                         id: 5,
                         name: "Ban 2.2",
                         code: "B2.2",
+                        abbreviated: "PHKTB2",
                         status: "active"
                     },
                     hasChildren: false,
@@ -229,13 +235,10 @@ const Department = ({ ...props }: Props) => {
         },
     ];
     const columns = [
-        {
-            accessor: 'id',
-            title: '#',
-            render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
-        },
+
         { accessor: 'name', title: 'Tên phòng ban', sortable: false },
         { accessor: 'code', title: 'Mã phòng ban', sortable: false },
+        { accessor: 'abbreviated', title: 'Tên viết tắt', sortable: false },
 
         {
             accessor: 'action',
@@ -302,8 +305,9 @@ const Department = ({ ...props }: Props) => {
                         <div className="mb-5">
                             <TableTree>
                                 <Headers>
-                                    <Header width={400}>Tên phòng ban</Header>
-                                    <Header width={300}>Mã phòng ban</Header>
+                                    <Header width={300}>Tên PB</Header>
+                                    <Header width={150}>Mã PB</Header>
+                                    <Header width={150}>Tên viết tắt</Header>
                                     <Header width={100}>Thao tác</Header>
                                 </Headers>
                                 <Rows
@@ -317,6 +321,8 @@ const Department = ({ ...props }: Props) => {
                                         >
                                             <Cell singleLine>{content.name}</Cell>
                                             <Cell>{content.code}</Cell>
+                                            <Cell>{content.abbreviated}</Cell>
+
                                             <Cell> <div className="flex items-center w-max mx-auto gap-2">
                                                 <Tippy content={`${t('edit')}`}>
                                                     <button type="button" className='button-edit' onClick={() => handleEdit(content)}>

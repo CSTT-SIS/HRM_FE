@@ -25,7 +25,6 @@ import { useRouter } from 'next/router';
 
 // json
 import TimekeepingList from './timekeeping_fake.json';
-import DepartmentModal from './modal/DepartmentModal';
 import IconFolderMinus from '@/components/Icon/IconFolderMinus';
 import IconDownload from '@/components/Icon/IconDownload';
 import IconEye from '@/components/Icon/IconEye';
@@ -254,14 +253,6 @@ const Department = ({ ...props }: Props) => {
                     />
                 </div>
             </div>
-            <DepartmentModal
-                openModal={openModal}
-                setOpenModal={setOpenModal}
-                data={data}
-                totalData={getStorge}
-                setData={setData}
-                setGetStorge={setGetStorge}
-            />
         </div>
     );
 };
