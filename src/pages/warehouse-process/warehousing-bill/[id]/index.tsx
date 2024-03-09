@@ -20,9 +20,9 @@ import { DropdownOrder, DropdownProposals, DropdownRepair, DropdownWarehouses } 
 import IconBackward from '@/components/Icon/IconBackward';
 import Link from 'next/link';
 import IconCaretDown from '@/components/Icon/IconCaretDown';
-import { GetProposalDetail } from '@/services/apis/proposal.api';
-import { GetRepairDetail } from '@/services/apis/repair.api';
-import { GetOrderDetail } from '@/services/apis/order.api';
+import { GetProposal, GetProposalDetail } from '@/services/apis/proposal.api';
+import { GetRepair, GetRepairDetail } from '@/services/apis/repair.api';
+import { GetOrder, GetOrderDetail } from '@/services/apis/order.api';
 
 interface Props {
     [key: string]: any;
@@ -40,6 +40,7 @@ const DetailModal = ({ ...props }: Props) => {
     const [listDataDetail, setListDataDetail] = useState<any>([]);
     const [openModal, setOpenModal] = useState(false);
     const [query, setQuery] = useState<any>();
+    const [createBy, setCreateBy] = useState<any>();
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
@@ -345,22 +346,25 @@ const DetailModal = ({ ...props }: Props) => {
     const getValueDetail = (param: any) => {
         switch (param.type) {
             case "proposal":
-                GetProposalDetail({ id: param.value }).then((res) => {
-                    return setListDataDetail(res.data)
+                GetProposal({ id: param.value }).then((res) => {
+                    setListDataDetail(res.data.details);
+                    param.setFieldValue("createdBy", res.data.createdBy.fullName)
                 }).catch((err) => {
                     showMessage(`${err?.response?.data?.message}`, 'error');
                 });
                 break;
             case "repairRequest":
-                GetRepairDetail({ id: param.value }).then((res) => {
-                    setListDataDetail(res.data)
+                GetRepair({ id: param.value }).then((res) => {
+                    setListDataDetail(res.data.details);
+                    param.setFieldValue("createdBy", res.data.createdBy.fullName)
                 }).catch((err) => {
                     showMessage(`${err?.response?.data?.message}`, 'error');
                 });
                 break;
             default:
-                GetOrderDetail({ id: param.value }).then((res) => {
-                    return setListDataDetail(res.data);
+                GetOrder({ id: param.value }).then((res) => {
+                    setListDataDetail(res.data.details);
+                    param.setFieldValue("createdBy", res.data.createdBy.fullName)
                 }).catch((err) => {
                     showMessage(`${err?.response?.data?.message}`, 'error');
                 });
@@ -455,7 +459,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                                         value={values?.repairRequestId}
                                                                         onChange={e => {
                                                                             setFieldValue('repairRequestId', e);
-                                                                            getValueDetail({ value: e?.value, type: "repairRequest" });
+                                                                            getValueDetail({ value: e?.value, type: "repairRequest", setFieldValue });
                                                                         }}
                                                                         isDisabled={disable}
                                                                     />
@@ -477,7 +481,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                                             value={values?.proposalId}
                                                                             onChange={e => {
                                                                                 setFieldValue('proposalId', e)
-                                                                                getValueDetail({ value: e?.value, type: "proposal" });
+                                                                                getValueDetail({ value: e?.value, type: "proposal", setFieldValue });
                                                                             }}
                                                                             isDisabled={disable}
                                                                         />
@@ -498,7 +502,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                                             value={values?.orderId}
                                                                             onChange={e => {
                                                                                 setFieldValue('orderId', e)
-                                                                                getValueDetail({ value: e?.value, type: "order" });
+                                                                                getValueDetail({ value: e?.value, type: "order", setFieldValue });
                                                                             }}
                                                                             isDisabled={disable}
                                                                         />
