@@ -41,5 +41,6 @@ test('create/delete new product', async ({ page }) => {
 	await page.waitForLoadState('networkidle');
 
 	await expect(page.getByTestId('delete-product-btn')).not.toBeVisible();
+
 });
 
