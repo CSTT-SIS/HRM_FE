@@ -4,11 +4,13 @@
 
 ## Installation
 
+* Install Playwright using the following command:
 ```bash
 npm install -D @playwright/test
 ```
 
-Install Playwright VSCode Extension [link](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright)
+* Install Playwright VSCode Extension [Link](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright)
+![alt text](global/pw-ext.png)
 
 ## How to Write Tests
 
