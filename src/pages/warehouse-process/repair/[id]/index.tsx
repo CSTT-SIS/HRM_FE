@@ -43,7 +43,7 @@ const DetailPage = ({ ...props }: Props) => {
     const [initialValue, setInitialValue] = useState<any>();
     const [dataUserDropdown, setDataUserDropdown] = useState<any>([]);
     const [page, setPage] = useState(1);
-    const [active, setActive] = useState<any>([1]);
+    const [active, setActive] = useState<any>([1, 2]);
     const [listDataDetail, setListDataDetail] = useState<any>();
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
@@ -170,16 +170,12 @@ const DetailPage = ({ ...props }: Props) => {
                     {
                         !disable &&
                         <>
-                            <Tippy content={`${t('edit')}`}>
-                                <button type="button" onClick={() => handleEdit(records)}>
-                                    <IconPencil />
-                                </button>
-                            </Tippy>
-                            <Tippy content={`${t('delete')}`}>
-                                <button type="button" onClick={() => handleDelete(records)}>
-                                    <IconTrashLines />
-                                </button>
-                            </Tippy>
+                            <button className='bg-[#9CD3EB] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleEdit(records)}>
+                                <IconPencil /> <span>{`${t('edit')}`}</span>
+                            </button>
+                            <button className='bg-[#E43940] flex justify-between gap-1 p-1 rounded text-[#F5F5F5]' type="button" onClick={() => handleDelete(records)}>
+                                <IconTrashLines />  <span>{`${t('delete')}`}</span>
+                            </button>
                         </>
                     }
                 </div>
@@ -257,7 +253,8 @@ const DetailPage = ({ ...props }: Props) => {
 
     const handleDetail = (id: any) => {
         AddRepairDetails({ id: id, details: listDataDetail }).then(() => {
-            handleChangeComplete({ id: id });
+            // handleChangeComplete({ id: id });
+            handleCancel();
         }).catch((err) => {
             showMessage(`${err?.response?.data?.message}`, 'error');
         });
@@ -352,7 +349,7 @@ const DetailPage = ({ ...props }: Props) => {
                                     <div className={`mb-2 ${active.includes(1) ? 'custom-content-accordion' : ''}`}>
                                         <AnimateHeight duration={300} height={active.includes(1) ? 'auto' : 0}>
                                             <div className='p-4'>
-                                                <div className='flex justify-between gap-5 mb-4'>
+                                                <div className='flex justify-between gap-5'>
                                                     <div className="w-1/2">
                                                         <label htmlFor="repairById" className='label' > {t('repair_by_id')} < span style={{ color: 'red' }}>* </span></label >
                                                         <Select
@@ -388,35 +385,33 @@ const DetailPage = ({ ...props }: Props) => {
                                                         ) : null}
                                                     </div>
                                                 </div>
-                                                <div className='flex justify-between gap-5'>
-                                                    <div className="w-1/2">
-                                                        <label htmlFor="description" className='label'> {t('description')}</label >
-                                                        <Field
-                                                            name="description"
-                                                            as="textarea"
-                                                            id="description"
-                                                            placeholder={`${t('enter_description')}`}
-                                                            className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
-                                                            disabled={disable}
-                                                        />
-                                                        {submitCount && errors.description ? (
-                                                            <div className="text-danger mt-1"> {`${errors.description}`} </div>
-                                                        ) : null}
-                                                    </div>
-                                                    <div className="w-1/2">
-                                                        <label htmlFor="damageLevel" className='label'> {t('damage_level')} </label >
-                                                        <Field
-                                                            name="damageLevel"
-                                                            as="textarea"
-                                                            id="damageLevel"
-                                                            className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
-                                                            disabled={disable}
-                                                            placeholder={`${t('enter_damage_level')}`}
-                                                        />
-                                                        {submitCount && errors.damageLevel ? (
-                                                            <div className="text-danger mt-1"> {`${errors.damageLevel}`} </div>
-                                                        ) : null}
-                                                    </div>
+                                                <div className='mt-5'>
+                                                    <label htmlFor="description" className='label'> {t('description')}</label >
+                                                    <Field
+                                                        name="description"
+                                                        as="textarea"
+                                                        id="description"
+                                                        placeholder={`${t('enter_description')}`}
+                                                        className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                        disabled={disable}
+                                                    />
+                                                    {submitCount && errors.description ? (
+                                                        <div className="text-danger mt-1"> {`${errors.description}`} </div>
+                                                    ) : null}
+                                                </div>
+                                                <div className='mt-5'>
+                                                    <label htmlFor="damageLevel" className='label'> {t('damage_level')} </label >
+                                                    <Field
+                                                        name="damageLevel"
+                                                        as="textarea"
+                                                        id="damageLevel"
+                                                        className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                        disabled={disable}
+                                                        placeholder={`${t('enter_damage_level')}`}
+                                                    />
+                                                    {submitCount && errors.damageLevel ? (
+                                                        <div className="text-danger mt-1"> {`${errors.damageLevel}`} </div>
+                                                    ) : null}
                                                 </div>
                                             </div>
                                         </AnimateHeight>

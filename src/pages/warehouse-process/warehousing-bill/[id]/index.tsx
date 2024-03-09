@@ -12,7 +12,6 @@ import { useDispatch } from 'react-redux';
 import HandleDetailModal from '../form/HandleDetailModal';
 import { WarehousingBillDetail, WarehousingBillListRequest } from '@/services/swr/warehousing-bill.twr';
 import { CreateWarehousingBill, EditWarehousingBill, GetWarehousingBill, WarehousingBillFinish } from '@/services/apis/warehousing-bill.api';
-import DetailPage from '../form/WarehousingBillForm';
 import { Field, Form, Formik } from 'formik';
 import AnimateHeight from 'react-animate-height';
 import Select from 'react-select';
@@ -21,10 +20,9 @@ import { DropdownOrder, DropdownProposals, DropdownRepair, DropdownWarehouses } 
 import IconBackward from '@/components/Icon/IconBackward';
 import Link from 'next/link';
 import IconCaretDown from '@/components/Icon/IconCaretDown';
-import IconPlus from '@/components/Icon/IconPlus';
-import { GetProposalDetail } from '@/services/apis/proposal.api';
-import { GetRepairDetail } from '@/services/apis/repair.api';
-import { GetOrderDetail } from '@/services/apis/order.api';
+import { GetProposal, GetProposalDetail } from '@/services/apis/proposal.api';
+import { GetRepair, GetRepairDetail } from '@/services/apis/repair.api';
+import { GetOrder, GetOrderDetail } from '@/services/apis/order.api';
 
 interface Props {
     [key: string]: any;
@@ -42,6 +40,7 @@ const DetailModal = ({ ...props }: Props) => {
     const [listDataDetail, setListDataDetail] = useState<any>([]);
     const [openModal, setOpenModal] = useState(false);
     const [query, setQuery] = useState<any>();
+    const [createBy, setCreateBy] = useState<any>();
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
@@ -118,11 +117,9 @@ const DetailModal = ({ ...props }: Props) => {
                 <div className="flex items-center w-max mx-auto gap-2">
                     {
                         router.query.id !== "create" && !disable &&
-                        <Tippy content={`${t('enter_quantity')}`}>
-                            <button type="button" onClick={() => handleEdit(records)}>
-                                <IconPencil />
-                            </button>
-                        </Tippy>
+                        <button className='bg-[#C5E7AF] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleEdit(records)}>
+                            <IconPencil /> <span>{`${t('enter_quantity')}`}</span>
+                        </button>
                     }
                 </div>
             ),
@@ -155,7 +152,7 @@ const DetailModal = ({ ...props }: Props) => {
     const [entity, setEntity] = useState<any>("");
 
     const SubmittedForm = Yup.object().shape({
-        name: Yup.string().required(`${t('please_fill_name')}`),
+        // name: Yup.string().required(`${t('please_fill_name')}`),
         type: new Yup.ObjectSchema().required(`${t('please_fill_type')}`),
         // proposalId: new Yup.ObjectSchema().required(`${t('please_fill_proposal')}`),
         warehouseId: new Yup.ObjectSchema().required(`${t('please_fill_warehouse')}`),
@@ -179,7 +176,7 @@ const DetailModal = ({ ...props }: Props) => {
             warehouseId: Number(param.warehouseId.value),
             type: param.type.value,
             note: param.note,
-            name: param.name
+            // name: param.name
         };
         if (param.proposalId) {
             query.proposalId = Number(param.proposalId.value)
@@ -204,7 +201,6 @@ const DetailModal = ({ ...props }: Props) => {
             });
         }
     }
-
     useEffect(() => {
         setInitialValue({
             proposalId: data ? {
@@ -217,7 +213,7 @@ const DetailModal = ({ ...props }: Props) => {
             } : "",
             orderId: data ? {
                 value: `${data?.order?.id || data.id}`,
-                label: `${data?.order?.name || data.id}`
+                label: `${data?.order?.name || data.name}`
             } : "",
             warehouseId: data?.warehouse ? {
                 value: `${data?.warehouse?.id}`,
@@ -234,7 +230,8 @@ const DetailModal = ({ ...props }: Props) => {
                 label: `Phiếu nhập kho`
             } : "",
             note: data?.note ? `${data?.note}` : "",
-            name: router.query.proposalId ? "" : data?.name ? `${data?.name}` : ""
+            name: router.query.proposalId ? "" : data?.name ? `${data?.name}` : "",
+            createdBy: data?.createdBy ? data?.createdBy.fullName + " " + (data.department || "") : "",
         })
         setEntity(
             data?.entity === "repairRequest" || (data?.type === "EXPORT" && data.repairRequestId !== null) ?
@@ -349,22 +346,25 @@ const DetailModal = ({ ...props }: Props) => {
     const getValueDetail = (param: any) => {
         switch (param.type) {
             case "proposal":
-                GetProposalDetail({ id: param.value }).then((res) => {
-                    return setListDataDetail(res.data)
+                GetProposal({ id: param.value }).then((res) => {
+                    setListDataDetail(res.data.details);
+                    param.setFieldValue("createdBy", res.data.createdBy.fullName)
                 }).catch((err) => {
                     showMessage(`${err?.response?.data?.message}`, 'error');
                 });
                 break;
             case "repairRequest":
-                GetRepairDetail({ id: param.value }).then((res) => {
-                    setListDataDetail(res.data)
+                GetRepair({ id: param.value }).then((res) => {
+                    setListDataDetail(res.data.details);
+                    param.setFieldValue("createdBy", res.data.createdBy.fullName)
                 }).catch((err) => {
                     showMessage(`${err?.response?.data?.message}`, 'error');
                 });
                 break;
             default:
-                GetOrderDetail({ id: param.value }).then((res) => {
-                    return setListDataDetail(res.data);
+                GetOrder({ id: param.value }).then((res) => {
+                    setListDataDetail(res.data.details);
+                    param.setFieldValue("createdBy", res.data.createdBy.fullName)
                 }).catch((err) => {
                     showMessage(`${err?.response?.data?.message}`, 'error');
                 });
@@ -421,43 +421,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                 <div className='p-4'>
                                                     <div className='flex justify-between gap-5'>
                                                         <div className="w-1/2">
-                                                            <label htmlFor="name" className='label'> {t('name')}< span style={{ color: 'red' }}>* </span></label >
-                                                            <Field
-                                                                name="name"
-                                                                type="text"
-                                                                id="name"
-                                                                placeholder={`${t('enter_name')}`}
-                                                                className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
-                                                                disabled={disable}
-                                                            />
-                                                            {submitCount && errors.name ? (
-                                                                <div className="text-danger mt-1"> {`${errors.name}`} </div>
-                                                            ) : null}
-                                                        </div>
-                                                        <div className="w-1/2">
-                                                            <label htmlFor="warehouseId" className='label'>< span style={{ color: 'red' }}>* </span> {t('warehouse')}</label >
-                                                            <Select
-                                                                id='warehouseId'
-                                                                name='warehouseId'
-                                                                options={dataWarehouseDropdown}
-                                                                onMenuOpen={() => setPageWarehouse(1)}
-                                                                onMenuScrollToBottom={handleMenuScrollToBottomWarehouse}
-                                                                isLoading={warehouseLoading}
-                                                                maxMenuHeight={160}
-                                                                value={values?.warehouseId}
-                                                                onChange={e => {
-                                                                    setFieldValue('warehouseId', e)
-                                                                }}
-                                                                isDisabled={disable}
-                                                            />
-                                                            {submitCount && errors.warehouseId ? (
-                                                                <div className="text-danger mt-1"> {`${errors.warehouseId}`} </div>
-                                                            ) : null}
-                                                        </div>
-                                                    </div>
-                                                    <div className='flex justify-between gap-5 mt-5 mb-5'>
-                                                        <div className="w-1/2">
-                                                            <label htmlFor="type" className='label'> < span style={{ color: 'red' }}>* </span>{t('type')}</label >
+                                                            <label htmlFor="type" className='label'> < span style={{ color: 'red' }}>* </span>{t('type_proposal')}</label >
                                                             <Select
                                                                 id='type'
                                                                 name='type'
@@ -495,7 +459,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                                         value={values?.repairRequestId}
                                                                         onChange={e => {
                                                                             setFieldValue('repairRequestId', e);
-                                                                            getValueDetail({ value: e?.value, type: "repairRequest" });
+                                                                            getValueDetail({ value: e?.value, type: "repairRequest", setFieldValue });
                                                                         }}
                                                                         isDisabled={disable}
                                                                     />
@@ -517,7 +481,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                                             value={values?.proposalId}
                                                                             onChange={e => {
                                                                                 setFieldValue('proposalId', e)
-                                                                                getValueDetail({ value: e?.value, type: "proposal" });
+                                                                                getValueDetail({ value: e?.value, type: "proposal", setFieldValue });
                                                                             }}
                                                                             isDisabled={disable}
                                                                         />
@@ -538,7 +502,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                                             value={values?.orderId}
                                                                             onChange={e => {
                                                                                 setFieldValue('orderId', e)
-                                                                                getValueDetail({ value: e?.value, type: "order" });
+                                                                                getValueDetail({ value: e?.value, type: "order", setFieldValue });
                                                                             }}
                                                                             isDisabled={disable}
                                                                         />
@@ -548,22 +512,54 @@ const DetailModal = ({ ...props }: Props) => {
                                                                     </div>
                                                         }
                                                     </div>
-                                                    <div className="mb-5 flex justify-between gap-4 mt-5">
+                                                    <div className='flex justify-between gap-5 mt-5 mb-5'>
                                                         <div className="w-1/2">
-                                                            <label htmlFor="note" className='label'> {t('notes')}</label >
-                                                            <Field
-                                                                name="note"
-                                                                as="textarea"
-                                                                id="note"
-                                                                placeholder={`${t('enter_note')}`}
-                                                                className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
-                                                                disabled={disable}
+                                                            <label htmlFor="warehouseId" className='label'>< span style={{ color: 'red' }}>* </span> {t('warehouse')}</label >
+                                                            <Select
+                                                                id='warehouseId'
+                                                                name='warehouseId'
+                                                                options={dataWarehouseDropdown}
+                                                                onMenuOpen={() => setPageWarehouse(1)}
+                                                                onMenuScrollToBottom={handleMenuScrollToBottomWarehouse}
+                                                                isLoading={warehouseLoading}
+                                                                maxMenuHeight={160}
+                                                                value={values?.warehouseId}
+                                                                onChange={e => {
+                                                                    setFieldValue('warehouseId', e)
+                                                                }}
+                                                                isDisabled={disable}
                                                             />
-                                                            {submitCount && errors.note ? (
-                                                                <div className="text-danger mt-1"> {`${errors.note}`} </div>
+                                                            {submitCount && errors.warehouseId ? (
+                                                                <div className="text-danger mt-1"> {`${errors.warehouseId}`} </div>
                                                             ) : null}
                                                         </div>
-                                                        <div className="w-1/2"></div>
+                                                        <div className="w-1/2">
+                                                            <label htmlFor="createdBy" className='label'>< span style={{ color: 'red' }}>* </span> {t('proposal_by')}</label >
+                                                            <Field
+                                                                name="createdBy"
+                                                                id="createdBy"
+                                                                type="text"
+                                                                className={true ? "form-input bg-[#f2f2f2] text-[#797979]" : "form-input"}
+                                                                disabled={true}
+                                                            />
+                                                            {submitCount && errors.createdBy ? (
+                                                                <div className="text-danger mt-1"> {`${errors.createdBy}`} </div>
+                                                            ) : null}
+                                                        </div>
+                                                    </div>
+                                                    <div className="mt-5">
+                                                        <label htmlFor="note" className='label'> {t('notes')}</label >
+                                                        <Field
+                                                            name="note"
+                                                            as="textarea"
+                                                            id="note"
+                                                            placeholder={`${t('enter_note')}`}
+                                                            className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                            disabled={disable}
+                                                        />
+                                                        {submitCount && errors.note ? (
+                                                            <div className="text-danger mt-1"> {`${errors.note}`} </div>
+                                                        ) : null}
                                                     </div>
                                                 </div>
                                             </AnimateHeight>

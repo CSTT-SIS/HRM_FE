@@ -32,8 +32,8 @@ export default defineConfig({
 		storageState: 'state.json',
 	},
 
-	globalSetup: require.resolve('./tests/global-setup'),
-	globalTeardown: require.resolve('./tests/global-teardown'),
+	globalSetup: require.resolve('./tests/global/global-setup'),
+	globalTeardown: require.resolve('./tests/global/global-teardown'),
 
 	/* Configure projects for major browsers */
 	projects: [
@@ -74,9 +74,9 @@ export default defineConfig({
 	],
 
 	/* Run your local dev server before starting the tests */
-	// webServer: {
-	//   command: 'npm run start',
-	//   url: 'http://127.0.0.1:3000',
-	//   reuseExistingServer: !process.env.CI,
-	// },
+	webServer: {
+		command: 'npm run start',
+		url: 'http://127.0.0.1:3000',
+		reuseExistingServer: !process.env.CI,
+	},
 });

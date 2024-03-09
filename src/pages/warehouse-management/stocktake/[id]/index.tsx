@@ -34,6 +34,7 @@ import Select, { components } from 'react-select';
 import { DropdownUsers, DropdownWarehouses } from '@/services/swr/dropdown.twr';
 import moment from 'moment';
 import { GetProduct } from '@/services/apis/product.api';
+import IconListCheck from '@/components/Icon/IconListCheck';
 
 interface Props {
     [key: string]: any;
@@ -51,7 +52,7 @@ const DetailPage = ({ ...props }: Props) => {
     const [openModal, setOpenModal] = useState(false);
     const [openModalTally, setOpenModalTally] = useState(false);
     const [initialValue, setInitialValue] = useState<any>();
-    const [active, setActive] = useState<any>([1]);
+    const [active, setActive] = useState<any>([1, 2]);
     const [query, setQuery] = useState<any>();
     const [dataWarehouseDropdown, setDataWarehouseDropdown] = useState<any>([]);
     const [dataUserDropdown, setDataUserDropdown] = useState<any>([]);
@@ -203,16 +204,12 @@ const DetailPage = ({ ...props }: Props) => {
                             {
                                 router.query?.status === "DRAFT" &&
                                 <>
-                                    <Tippy content={`${t('edit')}`}>
-                                        <button type="button" onClick={() => handleEdit(records)}>
-                                            <IconPencil />
-                                        </button>
-                                    </Tippy>
-                                    <Tippy content={`${t('delete')}`}>
-                                        <button type="button" onClick={() => handleDelete(records)}>
-                                            <IconTrashLines />
-                                        </button>
-                                    </Tippy>
+                                    <button className='bg-[#9CD3EB] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleEdit(records)}>
+                                        <IconPencil /> <span>{`${t('edit')}`}</span>
+                                    </button>
+                                    <button className='bg-[#E43940] flex justify-between gap-1 p-1 rounded text-[#F5F5F5]' type="button" onClick={() => handleDelete(records)}>
+                                        <IconTrashLines />  <span>{`${t('delete')}`}</span>
+                                    </button>
                                 </>
                             }
                         </div>
@@ -220,11 +217,9 @@ const DetailPage = ({ ...props }: Props) => {
                     {
                         router.query?.type === "tally" && router.query.id !== "create" &&
                         <>
-                            <Tippy content={`${t('tally')}`}>
-                                <button type="button" onClick={() => handleOpenTally(records)}>
-                                    <IconInventory />
-                                </button>
-                            </Tippy>
+                            <button className='bg-[#C5E7AF] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleOpenTally(records)}>
+                                <IconListCheck />  <span>{`${t('tally')}`}</span>
+                            </button>
                         </>
                     }
                 </>
