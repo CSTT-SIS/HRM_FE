@@ -93,16 +93,19 @@ const ProposalPage = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('detail')}`}>
+                    {/* <Tippy content={`${t('detail')}`}>
                         <button type="button" onClick={() => handlePath(records)}>
                             <IconEye />
                         </button>
-                    </Tippy>
-                    <Tippy content={`${t('add_warehousing')}`}>
+                    </Tippy> */}
+                    {/* <Tippy content={`${t('add_warehousing')}`}>
                         <button type="button" onClick={() => handleDetail(records)}>
                             <IconPencil />
                         </button>
-                    </Tippy>
+                    </Tippy> */}
+                    <button className='bg-[#9CD3EB] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleDetail(records)}>
+                        <IconPencil /> <span>{`${t('edit')}`}</span>
+                    </button>
                     {/* <Tippy content={`${t('delete')}`}>
                         <button type="button" onClick={() => handleDelete(records)}>
                             <IconTrashLines />

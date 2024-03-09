@@ -93,7 +93,7 @@ const UnitModal = ({ ...props }: Props) => {
                         <Form className="space-y-5" >
                             <div className='flex justify-between gap-5'>
                                 <div className="w-1/2">
-                                    <label htmlFor="name" > {t('name')} < span style={{ color: 'red' }}>* </span></label >
+                                    <label htmlFor="name" > {t('name') + " dvt"} < span style={{ color: 'red' }}>* </span></label >
                                     <Field name="name" type="text" id="name" placeholder={`${t('enter_name')}`} className="form-input" />
                                     {submitCount && errors.name ? (
                                         <div className="text-danger mt-1"> {errors.name} </div>

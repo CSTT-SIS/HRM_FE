@@ -1,18 +1,70 @@
 name: Build HRM_FE
 
 on:
-  pull_request:
-    branches: [ dev ]
-
+    pull_request:
+        branches: [dev]
+permissions:
+    pull-requests: write
 jobs:
-  build:
-    runs-on: ubuntu-latest
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: oven-sh/setup-bun@v1
+            - run: bun i
+            - name: 'Create env file'
+              run: |
+                  touch .env
+                  echo NEXT_PUBLIC_BE_URL=${{ secrets.NEXT_PUBLIC_BE_URL }} >> .env
+            - run: bun run build
+            - name: 'Tar build files'
+              run: tar -cvf build.tar .next
+            - name: 'Upload build.tar'
+              uses: actions/upload-artifact@v4
+              with:
+                  name: build
+                  path: build.tar
 
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js 18
-      uses: actions/setup-node@v2
-      with:
-        node-version: 18.x
-    - run: npm i --force
-    - run: npm run build --if-present
+    test:
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/download-artifact@v4
+              with:
+                  name: build
+            - run: tar -xvf build.tar
+            - uses: oven-sh/setup-bun@v1
+            - name: Install playwright
+              run: npx playwright install chromium
+            - run: bun i @playwright/test
+            - name: Run e2e tests
+              run: PLAYWRIGHT_JSON_OUTPUT_NAME=results.json npx playwright test --reporter json,html
+            - name: 'Tar report files'
+              if: always()
+              run: |
+                  cp playwright-report/index.html ./report_${{ github.run_id }}${{ github.run_number }}${{ github.run_attempt }}.html
+                  tar -cvf report.tar report_${{ github.run_id }}${{ github.run_number }}${{ github.run_attempt }}.html
+            - name: 'Upload report.tar'
+              if: always()
+              run: |
+                  sshpass -p "${{ secrets.PASSWORD }}" scp -o StrictHostKeyChecking=no report.tar ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/vangtats/report/report.tar
+            - name: Extract report
+              if: always()
+              uses: appleboy/ssh-action@master
+              with:
+                  host: ${{ secrets.HOST }}
+                  username: ${{ secrets.USERNAME }}
+                  password: ${{ secrets.PASSWORD }}
+                  port: 22
+                  script: |
+                      cd /home/vangtats/report
+                      tar -xvf report.tar
+                      rm report.tar
+            - uses: daun/playwright-report-summary@v3
+              if: always()
+              with:
+                  comment-title: 'Test Summary'
+                  report-file: results.json
+                  report-url: 'http://103.167.89.184:8081/report_${{ github.run_id }}${{ github.run_number }}${{ github.run_attempt }}.html'
+                  job-summary: true
