@@ -28,6 +28,8 @@ jobs:
     test:
         needs: build
         runs-on: ubuntu-latest
+        env:
+            reportName: report-${{ github.run_id }}${{ github.run_number }}${{ github.run_attempt }}
         steps:
             - uses: actions/checkout@v4
             - uses: actions/download-artifact@v4
@@ -43,12 +45,12 @@ jobs:
             - name: 'Tar report files'
               if: always()
               run: |
-                  cp playwright-report/index.html ./report_${{ github.run_id }}${{ github.run_number }}${{ github.run_attempt }}.html
-                  tar -cvf report.tar report_${{ github.run_id }}${{ github.run_number }}${{ github.run_attempt }}.html
+                  cp playwright-report ./${{ env.reportName }}
+                  tar -cvf report.tar ${{ env.reportName }}
             - name: 'Upload report.tar'
               if: always()
               run: |
-                  sshpass -p "${{ secrets.PASSWORD }}" scp -o StrictHostKeyChecking=no report.tar ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/vangtats/report/report.tar
+                  sshpass -p "${{ secrets.PASSWORD }}" scp -o StrictHostKeyChecking=no report.tar ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/root/workspace/hrm-e2e-rp/playwright-report/report.tar
             - name: Extract report
               if: always()
               uses: appleboy/ssh-action@master
@@ -58,7 +60,7 @@ jobs:
                   password: ${{ secrets.PASSWORD }}
                   port: 22
                   script: |
-                      cd /home/vangtats/report
+                      cd /root/workspace/hrm-e2e-rp/playwright-report
                       tar -xvf report.tar
                       rm report.tar
             - uses: daun/playwright-report-summary@v3
@@ -66,5 +68,5 @@ jobs:
               with:
                   comment-title: 'Test Summary'
                   report-file: results.json
-                  report-url: 'http://103.167.89.184:8081/report_${{ github.run_id }}${{ github.run_number }}${{ github.run_attempt }}.html'
+                  report-url: 'https://hrm-e2e-rp.rsrm.dev/${{ env.reportName }}/index.html'
                   job-summary: true
