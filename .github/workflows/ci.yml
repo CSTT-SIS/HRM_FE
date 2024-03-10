@@ -45,7 +45,7 @@ jobs:
             - name: 'Tar report files'
               if: always()
               run: |
-                  cp playwright-report ./${{ env.reportName }}
+                  cp -r playwright-report ./${{ env.reportName }}
                   tar -cvf report.tar ${{ env.reportName }}
             - name: 'Upload report.tar'
               if: always()
