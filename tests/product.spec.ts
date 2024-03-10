@@ -1,6 +1,8 @@
 import { test, expect, Page } from '@playwright/test';
+import { makeRamdomText } from '@/utils/commons';
 
 test('create/delete new product', async ({ page }) => {
+	const text = makeRamdomText(5);
 	// Create new product
 	await page.goto('/warehouse/product/list');
 
@@ -10,10 +12,10 @@ test('create/delete new product', async ({ page }) => {
 	await expect(page).toHaveURL('/warehouse/product/list/create');
 
 	await page.getByTestId('name').click();
-	await page.keyboard.type('product-name-test');
+	await page.keyboard.type(text);
 
 	await page.getByTestId('code').click();
-	await page.keyboard.type('product-code-test');
+	await page.keyboard.type(text);
 
 	await page.locator('#unitId').click();
 	await page.keyboard.type('g');
@@ -30,7 +32,7 @@ test('create/delete new product', async ({ page }) => {
 	await expect(page).toHaveURL('/warehouse/product/list');
 
 	// Delete product
-	await page.getByTestId('search-product-input').fill('product name test');
+	await page.getByTestId('search-product-input').fill(text);
 	await page.waitForLoadState('networkidle');
 
 	await page.getByTestId('delete-product-btn').first().click();
@@ -40,5 +42,5 @@ test('create/delete new product', async ({ page }) => {
 
 	await page.waitForLoadState('networkidle');
 
-	// await expect(page.getByTestId('delete-product-btn')).not.toBeVisible();
+	await expect(page.getByTestId('delete-product-btn')).not.toBeVisible();
 });
