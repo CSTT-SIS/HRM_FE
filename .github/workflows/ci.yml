@@ -42,12 +42,11 @@ jobs:
             - run: bun i @playwright/test
             - name: Run e2e tests
               run: PLAYWRIGHT_JSON_OUTPUT_NAME=results.json npx playwright test --reporter json,html
-            - name: 'Tar report files'
+            - name: 'Create report files'
               if: always()
               run: |
                   cp -r playwright-report ./${{ env.reportName }}
-                  tar -cvf report.tar ${{ env.reportName }}
-            - name: Upload report.tar
+            - name: Upload report
               if: always()
               uses: appleboy/scp-action@v0.1.7
               with:
@@ -55,20 +54,8 @@ jobs:
                   username: ${{ secrets.USERNAME }}
                   key: ${{ secrets.SSH_PRIVATE_KEY }}
                   port: 22
-                  source: 'report.tar'
-                  target: /root/workspace/hrm-e2e-rp/playwright-report/report.tar
-            - name: Extract report
-              if: always()
-              uses: appleboy/ssh-action@master
-              with:
-                  host: ${{ secrets.HOST }}
-                  username: ${{ secrets.USERNAME }}
-                  key: ${{ secrets.SSH_PRIVATE_KEY }}
-                  port: 22
-                  script: |
-                      cd /root/workspace/hrm-e2e-rp/playwright-report
-                      tar -xvf report.tar
-                      rm report.tar
+                  source: '${{ env.reportName }}'
+                  target: /root/workspace/hrm-e2e-rp/playwright-report
             - uses: daun/playwright-report-summary@v3
               if: always()
               with:
