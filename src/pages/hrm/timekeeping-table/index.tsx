@@ -232,6 +232,14 @@ const Department = ({ ...props }: Props) => {
                             <IconDownload className="ltr:mr-2 rtl:ml-2" />
                             Xuất file excel
                         </button>
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                            <IconPlus className="ltr:mr-2 rtl:ml-2" />
+                            Tổng hợp
+                        </button>
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                            <IconChecks className="ltr:mr-2 rtl:ml-2" />
+                            Khóa công tổng hợp
+                        </button>
                     </div>
                     <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
                 </div>
