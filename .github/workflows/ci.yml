@@ -50,14 +50,13 @@ jobs:
             - name: 'Upload report.tar'
               if: always()
               run: |
-                  sshpass -p "${{ secrets.PASSWORD }}" scp -o StrictHostKeyChecking=no report.tar ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/root/workspace/hrm-e2e-rp/playwright-report/report.tar
+                  scp -o StrictHostKeyChecking=no report.tar ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/root/workspace/hrm-e2e-rp/playwright-report/report.tar
             - name: Extract report
               if: always()
               uses: appleboy/ssh-action@master
               with:
                   host: ${{ secrets.HOST }}
                   username: ${{ secrets.USERNAME }}
-                  password: ${{ secrets.PASSWORD }}
                   port: 22
                   script: |
                       cd /root/workspace/hrm-e2e-rp/playwright-report
