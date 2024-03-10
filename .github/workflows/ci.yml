@@ -50,9 +50,9 @@ jobs:
               if: always()
               uses: appleboy/scp-action@v0.1.7
               with:
-                  host: ${{ secrets.HOST }}
-                  username: ${{ secrets.USERNAME }}
-                  key: ${{ secrets.SSH_PRIVATE_KEY }}
+                  host: ${{ secrets.E2E_HOST }}
+                  username: ${{ secrets.E2E_USERNAME }}
+                  key: ${{ secrets.E2E_SSH_PRIVATE_KEY }}
                   port: 22
                   source: '${{ env.reportName }}'
                   target: /root/workspace/hrm-e2e-rp/playwright-report
