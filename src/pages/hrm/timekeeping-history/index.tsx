@@ -32,6 +32,9 @@ import IconChecks from '@/components/Icon/IconChecks';
 import IconNewEye from '@/components/Icon/IconNewEye';
 import IconNewCheck from '@/components/Icon/IconNewCheck';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
+import Flatpickr from 'react-flatpickr';
+import 'flatpickr/dist/flatpickr.css';
+import { toDateStringMonth } from '@/utils/commons';
 
 
 interface Props {
@@ -59,6 +62,21 @@ const Department = ({ ...props }: Props) => {
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
     const [openModal, setOpenModal] = useState(false);
+    const getCurrentMonth = () => {
+        var currentDate = new Date();
+
+        // Lấy tháng và năm hiện tại
+        var month = currentDate.getMonth() + 1; // Tháng bắt đầu từ 0 nên cần cộng thêm 1
+        var year = currentDate.getFullYear();
+
+        // Chuyển đổi tháng và năm thành chuỗi và kết hợp lại với nhau
+        var dateString = month.toString() + '-' + year.toString();
+
+        return dateString;
+    }
+    const [currentTime, setCurrentTime] = useState<any>(getCurrentMonth())
+
+    
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -163,15 +181,6 @@ const Department = ({ ...props }: Props) => {
         },
         { accessor: 'code', title: 'Mã nhân viên', sortable: false },
         { accessor: 'name', title: 'Tên nhân viên', sortable: false },
-        { accessor: 'standard_working_hours', title: 'Số công chuẩn', sortable: false },
-        { accessor: 'regular_workday_hours', title: 'Công ngày thường', sortable: false },
-        { accessor: 'non_working_day_hours', title: 'Công ngày nghỉ', sortable: false },
-        { accessor: 'holiday_hours', title: 'Công ngày lễ', sortable: false },
-        { accessor: 'overtime_with_pay', title: 'Làm thêm giờ hưởng lương', sortable: false },
-        { accessor: 'leave_of_absence', title: 'Nghỉ phép', sortable: false },
-        { accessor: 'holiday_leave', title: 'Nghỉ lễ', sortable: false },
-        { accessor: 'business_trip', title: 'Công tác', sortable: false },
-        { accessor: 'total_hours_worked', title: 'Tổng công thực tế', sortable: false },
         {
             accessor: 'action',
             title: 'Thao tác',
@@ -205,7 +214,123 @@ const Department = ({ ...props }: Props) => {
             ),
         },
     ]
+    const getDaysOfWeek = () => {
+        return ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
+    }
+    const getDaysInMonthWithWeekdays = (year: any, month: any) => {
+        var daysInMonth = [];
+        var daysOfWeek = getDaysOfWeek();
 
+        // Tạo một đối tượng ngày cho ngày đầu tiên của tháng
+        var date = new Date(year, month - 1, 1);
+
+        // Lặp qua tất cả các ngày trong tháng
+        while (date.getMonth() === month - 1) {
+            // Lấy thứ tương ứng của ngày hiện tại
+            var dayOfWeek = daysOfWeek[date.getDay()];
+            var day = date.getDate();
+
+            // Kết hợp ngày và tháng vào chuỗi
+            var formattedDate = day + '/' + month;
+            // Thêm ngày và thứ vào mảng
+            daysInMonth.push({
+                accessor: `${day}`,
+                title: `${dayOfWeek} ${formattedDate}`
+            });
+
+            // Tăng ngày lên 1 để tiếp tục vòng lặp
+            date.setDate(date.getDate() + 1);
+        }
+
+        return daysInMonth;
+    }
+    const [column, setColumn] = useState<any>([
+        {
+            accessor: 'id',
+            title: '#',
+            render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
+        },
+        { accessor: 'code', title: 'Mã nhân viên', sortable: false },
+        { accessor: 'name', title: 'Tên nhân viên', sortable: false },
+        ...getDaysInMonthWithWeekdays(parseInt(currentTime.split('-')[1], 10), parseInt(currentTime.split('-')[0], 10)),
+
+        {
+            accessor: 'action',
+            title: 'Thao tác',
+            titleClassName: '!text-center',
+            render: (records: any) => (
+                <div className="flex items-center w-max mx-auto gap-2">
+                    <Tippy content={`${t('detail')}`}>
+                        <Link href="/hrm/timekeeping-detail-table" className="button-detail">
+                            <IconNewEye /><span>
+                                {t('detail')}
+                            </span>
+                        </Link>
+
+                    </Tippy>
+                    <Tippy content={`${t('check')}`}>
+                        <button type="button" className="button-check" onClick={() => handleCheck(records)}>
+                            <IconNewCheck /> <span>
+                                {t('approve')}
+                            </span>
+                        </button>
+                    </Tippy>
+                    <Tippy content={`${t('delete')}`}>
+                        <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                            <IconNewTrash />
+                            <span>
+                                {t('delete')}
+                            </span>
+                        </button>
+                    </Tippy>
+                </div>
+            ),
+        },
+    ])
+    useEffect(() => {
+        setColumn([
+            {
+                accessor: 'id',
+                title: '#',
+                render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
+            },
+            { accessor: 'code', title: 'Mã nhân viên', sortable: false },
+            { accessor: 'name', title: 'Tên nhân viên', sortable: false },
+            ...getDaysInMonthWithWeekdays(parseInt(currentTime.split('-')[1], 10), parseInt(currentTime.split('-')[0], 10)),
+            {
+                accessor: 'action',
+                title: 'Thao tác',
+                titleClassName: '!text-center',
+                render: (records: any) => (
+                    <div className="flex items-center w-max mx-auto gap-2">
+                        <Tippy content={`${t('detail')}`}>
+                            <Link href="/hrm/timekeeping-detail-table" className="button-detail">
+                                <IconNewEye /><span>
+                                    {t('detail')}
+                                </span>
+                            </Link>
+
+                        </Tippy>
+                        <Tippy content={`${t('check')}`}>
+                            <button type="button" className="button-check" onClick={() => handleCheck(records)}>
+                                <IconNewCheck /> <span>
+                                    {t('approve')}
+                                </span>
+                            </button>
+                        </Tippy>
+                        <Tippy content={`${t('delete')}`}>
+                            <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                                <IconNewTrash />
+                                <span>
+                                    {t('delete')}
+                                </span>
+                            </button>
+                        </Tippy>
+                    </div>
+                ),
+            },
+        ])
+    }, [currentTime])
     return (
         <div>
             {showLoader && (
@@ -227,19 +352,27 @@ const Department = ({ ...props }: Props) => {
                             <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
                             Nhập file
                         </button>
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
-                            <IconDownload className="ltr:mr-2 rtl:ml-2" />
-                            Xuất file excel
-                        </button>
                     </div>
-                    <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                    <div className="flex items-center">
+                        <Flatpickr
+                            options={{
+                                dateFormat: 'm-Y',
+                            }}
+                            value={currentTime}
+                            onChange={(date) => setCurrentTime(toDateStringMonth(date[0]))}
+                            style={{ marginRight: '10px' }}
+                            className="form-input"
+                        />
+                        <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+
+                    </div>
                 </div>
                 <div className="datatables">
                     <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover custom_table"
                         records={recordsData}
-                        columns={columns}
+                        columns={column}
                         totalRecords={total}
                         recordsPerPage={pageSize}
                         page={page}
