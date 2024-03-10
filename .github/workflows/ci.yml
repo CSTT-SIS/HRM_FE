@@ -28,6 +28,8 @@ jobs:
     test:
         needs: build
         runs-on: ubuntu-latest
+        env:
+            reportName: report-${{ github.run_id }}${{ github.run_number }}${{ github.run_attempt }}
         steps:
             - uses: actions/checkout@v4
             - uses: actions/download-artifact@v4
@@ -40,31 +42,24 @@ jobs:
             - run: bun i @playwright/test
             - name: Run e2e tests
               run: PLAYWRIGHT_JSON_OUTPUT_NAME=results.json npx playwright test --reporter json,html
-            - name: 'Tar report files'
+            - name: 'Create report files'
               if: always()
               run: |
-                  cp playwright-report/index.html ./report_${{ github.run_id }}${{ github.run_number }}${{ github.run_attempt }}.html
-                  tar -cvf report.tar report_${{ github.run_id }}${{ github.run_number }}${{ github.run_attempt }}.html
-            - name: 'Upload report.tar'
+                  cp -r playwright-report ./${{ env.reportName }}
+            - name: Upload report
               if: always()
-              run: |
-                  sshpass -p "${{ secrets.PASSWORD }}" scp -o StrictHostKeyChecking=no report.tar ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/home/vangtats/report/report.tar
-            - name: Extract report
-              if: always()
-              uses: appleboy/ssh-action@master
+              uses: appleboy/scp-action@v0.1.7
               with:
                   host: ${{ secrets.HOST }}
                   username: ${{ secrets.USERNAME }}
-                  password: ${{ secrets.PASSWORD }}
+                  key: ${{ secrets.SSH_PRIVATE_KEY }}
                   port: 22
-                  script: |
-                      cd /home/vangtats/report
-                      tar -xvf report.tar
-                      rm report.tar
+                  source: '${{ env.reportName }}'
+                  target: /root/workspace/hrm-e2e-rp/playwright-report
             - uses: daun/playwright-report-summary@v3
               if: always()
               with:
                   comment-title: 'Test Summary'
                   report-file: results.json
-                  report-url: 'http://103.167.89.184:8081/report_${{ github.run_id }}${{ github.run_number }}${{ github.run_attempt }}.html'
+                  report-url: 'https://hrm-e2e-rp.rsrm.dev/${{ env.reportName }}/index.html'
                   job-summary: true
