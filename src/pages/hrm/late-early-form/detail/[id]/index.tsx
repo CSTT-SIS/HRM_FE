@@ -12,10 +12,10 @@ import 'flatpickr/dist/flatpickr.css';
 import Select from 'react-select';
 import Link from 'next/link';
 import IconBack from '@/components/Icon/IconBack';
-import duty_list from '../../duty/duty_list.json';
-import late_Early_form from '../../late-early-form/late_early_form.json';
-import personnel_list from '../../personnel/personnel_list.json';
-import shift from '../../shift/shift.json';
+import duty_list from '../../../duty/duty_list.json';
+import late_Early_form from '../../../late-early-form/late_early_form.json';
+import personnel_list from '../../../personnel/personnel_list.json';
+import shift from '../../../shift/shift.json';
 import { Vietnamese } from "flatpickr/dist/l10n/vn.js"
 import DropdownTreeSelect from "react-dropdown-tree-select";
 import "react-dropdown-tree-select/dist/styles.css";
@@ -105,8 +105,6 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 	const SubmittedForm = Yup.object().shape({
 		name: Yup.object()
 			.typeError(`${t('please_choose_name_staff')}`),
-            checker: Yup.object()
-			.typeError(`${t('please_choose_name_staff')}`),
         position: Yup.object()
             .typeError(`${t('please_choose_duty')}`),
         department: Yup.object()
@@ -114,6 +112,11 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
         submitday: Yup.date().typeError(`${t('please_choose_submit_day')}`),
         fromdate: Yup.date().typeError(`${t('please_choose_from_day')}`),
         enddate: Yup.date().typeError(`${t('please_choose_end_day')}`),
+        checker: Yup.object()
+			.typeError(`${t('please_choose_name_checker')}`),
+        // shift: Yup.date().typeError(`${t('please_choose_shift')}`),
+        // late_second: Yup.number().typeError(`${t('please_fill_late_second')}`),
+        // early_second: Yup.number().typeError(`${t('please_fill_early_second')}`),
         reason: Yup.string().required(`${t('please_fill_reason')}`)
 	});
 
@@ -175,7 +178,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 
 		<div className="p-5">
             <div className='flex justify-between header-page-bottom pb-4 mb-4'>
-                <h1 className='page-title'>{t('update_late_early_form')}</h1>
+                <h1 className='page-title'>{t('detail_late_early_form')}</h1>
                 <Link href="/hrm/late-early-form">
                         <button type="button" className="btn btn-primary btn-sm m-1 back-button" >
                                     <IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
@@ -188,13 +191,14 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
             <Formik
 				initialValues={{
 											name: detail ? `${detail?.name}` : '',
-                                            checker: detail ? `${detail?.name}` : '',
 											code: detail ? `${detail?.code}` : '',
                                             position: detail ? `${detail?.position}` : '',
                                             department: detail ? `${detail?.department}` : '',
                                             submitday: detail ? `${detail?.submitday}` : getCurrentFormattedTime(),
                                             fromdate: detail ? `${detail?.fromdate}` : '',
                                             enddate: detail ? `${detail?.enddate}` : '',
+                                            // shift: detail ? `${detail?.shift}` : '',
+                                            checker: detail? `${detail?.checker}` : '',
                                             reason: detail ? `${detail?.reason}` : ''
 										}}
 										validationSchema={SubmittedForm}
@@ -203,7 +207,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 										}}
                                         enableReinitialize
 									>
-											{({ errors, touched, submitCount, setFieldValue }) => (
+										{({ errors, touched, submitCount, setFieldValue }) => (
 											<Form className="space-y-5">
                                             <div className='flex justify-between gap-5'>
                                             <div className="mb-5 w-1/2">
@@ -211,7 +215,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('name_staff')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field as="select" name="name" id="name" className="form-input">
+                                                <Field disabled as="select" name="name" id="name" className="form-input">
                                                     { listPersonnel?.map((person: any) => {
                                                         return (
                                                             <option key={person.value} value={person.value}>
@@ -230,7 +234,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('duty')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field as="select" name="position" id="position" className="form-input">
+                                                <Field disabled as="select" name="position" id="position" className="form-input">
                                                     { listDuty?.map((duty: any) => {
                                                         return (
                                                             <option key={duty.value} value={duty.value}>
@@ -272,9 +276,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('submitday')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field  id="submitday" type="datetime-local" name="submitday" className="form-input"
-                                                defaultValue={new Date()}
-                                                placeholder={`${t('choose_submit_day')}`} />
+                                                <Field disabled id="submitday" type="datetime-local" name="submitday" className="form-input" placeholder={`${t('choose_submit_day')}`} />
                                                     {submitCount ? errors.submitday ? <div className="mt-1 text-danger"> {errors.submitday} </div> : null : ''}
                                             </div>
                                             </div>
@@ -284,7 +286,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('register_from_date')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field  id="fromdate" type="time" name="fromdate" className="form-input" placeholder={`${t('choose_register_from_date')}`} />
+                                                <Field disabled id="fromdate" type="time" name="fromdate" className="form-input" placeholder={`${t('choose_register_from_date')}`} />
 
                                                     {submitCount ? errors.fromdate ? <div className="mt-1 text-danger"> {errors.fromdate} </div> : null : ''}
                                             </div>
@@ -293,9 +295,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('register_end_date')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field  id="enddate" type="time" name="enddate"
-                                                onChange={(e:any) => console.log(e.target.value)}
-                                                className="form-input" placeholder={`${t('choose_register_end_date')}`} />
+                                                <Field disabled id="enddate" type="time" name="enddate" className="form-input" placeholder={`${t('choose_register_end_date')}`} />
 
                                                     {submitCount ? errors.enddate ? <div className="mt-1 text-danger"> {errors.enddate} </div> : null : ''}
                                             </div>
@@ -306,7 +306,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('checker_name')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field  as="select" name="checker" id="checker" className="form-input">
+                                                <Field disabled as="select" name="checker" id="checker" className="form-input">
                                                     { listPersonnel?.map((person: any) => {
                                                         return (
                                                             <option key={person.value} value={person.value}>
@@ -325,16 +325,16 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('reason')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field  as="textarea" name="reason" id="reason" className="form-input" />
+                                                <Field disabled as="textarea" name="reason" id="reason" className="form-input" />
                                                     {submitCount ? errors.reason ? <div className="mt-1 text-danger"> {errors.reason} </div> : null : ''}
                                             </div>
                                             </div>
                                             <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">
                                                 <button type="button" className="btn btn-outline-dark cancel-button" onClick={() => handleCancel()}>
-                                                    {t('cancel')}
+                                                    {t('not_approve')}
                                                 </button>
                                                 <button type="submit" className="btn :ml-4 rtl:mr-4 add-button" disabled={disabled}>
-                                                    {t('update')}
+                                                    {t('approve')}
                                                 </button>
                                             </div>
 

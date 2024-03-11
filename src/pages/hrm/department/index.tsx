@@ -246,18 +246,15 @@ const Department = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('edit')}`}>
                         <button type="button" className='button-edit' onClick={() => handleEdit(records)}>
                             <IconNewEdit /> {t('edit')}
                         </button>
-                    </Tippy>
-                    <Tippy content={`${t('delete')}`}>
+
                         <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
                             <IconNewTrash /> {t('delete')}
                         </button>
-                    </Tippy>
                 </div>
-            ),
+            )
         },
     ]
 
@@ -278,14 +275,14 @@ const Department = ({ ...props }: Props) => {
                                 {t('add')}
                             </button>
                         </Link>
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                        {/* <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
                             Nhập file
                         </button>
                         <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconDownload className="ltr:mr-2 rtl:ml-2" />
                             Xuất file excel
-                        </button>
+                        </button> */}
                     </div>
                     <div className='display-style'>
                         Cách hiển thị
@@ -324,21 +321,17 @@ const Department = ({ ...props }: Props) => {
                                             <Cell>{content.abbreviated}</Cell>
 
                                             <Cell> <div className="flex items-center w-max mx-auto gap-2">
-                                                <Tippy content={`${t('edit')}`}>
                                                     <button type="button" className='button-edit' onClick={() => handleEdit(content)}>
                                                         <IconNewEdit /><span>
                                                             {t('edit')}
                                                         </span>
                                                     </button>
-                                                </Tippy>
-                                                <Tippy content={`${t('delete')}`}>
                                                     <button type="button" className='button-delete' onClick={() => handleDelete(content)}>
                                                         <IconNewTrash />
                                                         <span>
                                                             {t('delete')}
                                                         </span>
                                                     </button>
-                                                </Tippy>
                                             </div></Cell>
                                         </Row>
                                     )}

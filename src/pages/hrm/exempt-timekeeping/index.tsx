@@ -52,7 +52,7 @@ interface Day {
 
 const monthSelectConfig: Partial<Config> = {
     shorthand: true, //defaults to false
-    dateFormat: "F Y", //defaults to "F Y"
+    dateFormat: "m/Y", //defaults to "F Y"
     theme: "light" // defaults to "light"
 };
 
@@ -243,17 +243,15 @@ const Department = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-1">
                     <div className="flex items-center flex-wrap">
-                        <Link href="/hrm/exempt-timekeeping/add">
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" onClick={() => setOpenModal(true)}>
                                     <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                                                     {t('add')}
                                     </button>
-                        </Link>
 
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                        {/* <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
                             Nhập file
-                        </button>
+                        </button> */}
                         <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconDownload className="ltr:mr-2 rtl:ml-2" />
                             Xuất file excel
@@ -267,11 +265,11 @@ const Department = ({ ...props }: Props) => {
                     </div>
                     <div className='flex gap-2'>
                         <div className='flex gap-1'>
-                        <div className="flex items-center" style={{width: "50%"}}>{t('choose_month')}</div>
+                        <div className="flex items-center min-w-[80px]" style={{width: "50%"}}>{t('choose_month')}</div>
                         <Flatpickr
                             className='form-input'
                             options = {{
-                            // dateFormat: 'd/m/y',
+                            // dateFormat: 'm/Y',
                             defaultDate: new Date(),
                             locale: {
                                 ...Vietnamese

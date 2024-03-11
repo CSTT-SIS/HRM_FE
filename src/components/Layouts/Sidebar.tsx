@@ -285,22 +285,22 @@ const Sidebar = () => {
                                                                 </div>
                                                             </Link>
                                                         </li>
-                                                        <li className="nav-item">
+                                                        {/* <li className="nav-item">
                                                             <Link href="/hrm/asset" className="group final-level-menu">
                                                                 <div className="flex items-center">
                                                                     <IconMenuAssets className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('assets_list')}</span>
                                                                 </div>
                                                             </Link>
-                                                        </li>
-                                                        <li className="nav-item">
+                                                        </li> */}
+                                                        {/* <li className="nav-item">
                                                             <Link href="#" className="group final-level-menu">
                                                                 <div className="flex items-center">
                                                                     <IconMenuDocuments className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('document_list')}</span>
                                                                 </div>
                                                             </Link>
-                                                        </li>
+                                                        </li> */}
                                                         <li className="nav-item">
                                                             <Link href="#" className="group final-level-menu">
                                                                 <div className="flex items-center">
@@ -364,14 +364,14 @@ const Sidebar = () => {
                                                 </div>
                                             </Link>
                                         </li>
-                                        <li className="nav-item">
+                                        {/* <li className="nav-item">
                                             <Link href="/hrm/exempt-form" className="group final-level-menu">
                                                 <div className="flex items-center">
                                                     <IconMenuFormForget className="shrink-0 group-hover:!text-primary" />
                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('exempt_form')}</span>
                                                 </div>
                                             </Link>
-                                        </li>
+                                        </li> */}
 
                                     </ul>
                                 </AnimateHeight>

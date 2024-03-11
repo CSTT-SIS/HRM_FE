@@ -33,7 +33,7 @@
 }
 
 div.dropdown-content {
-    width: 100%;
+    width: 220px;
 }
 
 div.dropdown-content li {
@@ -50,4 +50,17 @@ div.dropdown-content i {
 
 .dropdown-tree div.dropdown span {
     color: #848689!important;
+}
+
+.react-dropdown-tree-select .dropdown .dropdown-trigger {
+    overflow: unset!important;
+}
+
+.for-search {
+    border-color: rgba(224,230,237,1)!important;
+}
+
+.for-search div.dropdown {
+    width: 100%;
+    z-index: 5;
 }

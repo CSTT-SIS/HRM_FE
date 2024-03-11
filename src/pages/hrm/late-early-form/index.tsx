@@ -15,27 +15,54 @@ import { PAGE_SIZES, PAGE_SIZES_DEFAULT, PAGE_NUMBER_DEFAULT } from '@/utils/con
 // helper
 import { capitalize, formatDate, showMessage } from '@/@core/utils';
 // icons
-import IconPencil from '../../../components/Icon/IconPencil';
-import IconTrashLines from '../../../components/Icon/IconTrashLines';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
 
 import { useRouter } from 'next/router';
+import Flatpickr from 'react-flatpickr';
+import 'flatpickr/dist/flatpickr.css';
+import { Vietnamese } from "flatpickr/dist/l10n/vn.js"
+import "flatpickr/dist/plugins/monthSelect/style.css"
+import monthSelectPlugin, { Config } from "flatpickr/dist/plugins/monthSelect"
 
 // json
 import LateEarlyFormList from './late_early_form.json';
 import LateEarlyFormModal from './modal/LateEarlyFormModal';
-import DetailModal from './modal/DetailModal';
-import IconFolderMinus from '@/components/Icon/IconFolderMinus';
 import IconDownload from '@/components/Icon/IconDownload';
-import IconChecks from '@/components/Icon/IconChecks';
 import IconNewEdit from '@/components/Icon/IconNewEdit';
-import IconNewCheck from '@/components/Icon/IconNewCheck';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
+import DropdownTreeSelect from "react-dropdown-tree-select";
+import "react-dropdown-tree-select/dist/styles.css";
+import IconNewEye from '@/components/Icon/IconNewEye';
 
 interface Props {
     [key: string]: any;
 }
+const monthSelectConfig: Partial<Config> = {
+    shorthand: true, //defaults to false
+    dateFormat: "m/Y", //defaults to "F Y"
+    theme: "light" // defaults to "light"
+};
+interface TreeNode {
+    label: string;
+    checked: boolean;
+    children?: TreeNode[];
+}
+
+const treeData = [
+    {
+      label: 'Phòng Tài chính',
+      value: '0-0',
+      children: [
+        { label: 'Phòng 1', value: '0-0-1' },
+        { label: 'Phòng 2', value: '0-0-2' },
+      ],
+    },
+    {
+      label: 'Phòng Nhân sự',
+      value: '0-1',
+    },
+  ];
 
 const LateEarlyForm = ({ ...props }: Props) => {
     const dispatch = useDispatch();
@@ -58,6 +85,7 @@ const LateEarlyForm = ({ ...props }: Props) => {
 
     const [openModal, setOpenModal] = useState(false);
     const [openDetail, setOpenDetail] = useState(false);
+    const [treeDataState, setTreeDataState] = useState<any>(treeData)
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -88,9 +116,9 @@ const LateEarlyForm = ({ ...props }: Props) => {
 	};
 
     const handleDetail = (data: any) => {
-        setOpenDetail(true);
-        setData(data);
-    };
+        router.push(`/hrm/late-early-form/detail/${data.id}`)
+	};
+
     const handleDelete = (data: any) => {
         const swalDeletes = Swal.mixin({
 			customClass: {
@@ -173,9 +201,6 @@ const LateEarlyForm = ({ ...props }: Props) => {
         { accessor: 'name', title: `${t('personel_name')}`, sortable: false,
         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.name}</span>
     },
-        { accessor: 'position', title: `${t('personel_position')}`, sortable: false,
-        render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.position}</span>
-    },
         { accessor: 'department', title: `${t('personel_department')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.department}</span>
     },
         { accessor: 'submitday', title: `${t('submitday')}`, sortable: false,         render: (records: any, index: any) => <span onClick={(records) => handleDetail(records)}>{records?.submitday}</span>
@@ -183,11 +208,6 @@ const LateEarlyForm = ({ ...props }: Props) => {
         { accessor: 'fromdate', title: `${t('fromdate')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.fromdate}</span>
     },
         { accessor: 'enddate', title: `${t('enddate')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.enddate}</span>
-    },
-        { accessor: 'shift', title: `${t('late_early_shift')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.shift}</span> },
-        { accessor: 'late_second', title: `${t('late_second')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.late_second}</span>
-    },
-        { accessor: 'early_second', title: `${t('early_second')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.early_second}</span>
     },
         { accessor: 'checker', title: `${t('checker')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.checker}</span> },
         { accessor: 'isCheck',
@@ -201,30 +221,31 @@ const LateEarlyForm = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                <Tippy content={`${t('edit')}`}>
+                    <button type="button"  className='button-detail' onClick={() => handleDetail(records)}>
+                    <IconNewEye /><span>
+                            {t('detail')}
+                                </span>
+                    </button>
                     <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
                     <IconNewEdit /><span>
                             {t('edit')}
                                 </span>
                     </button>
-                </Tippy>
-                <Tippy content={`${t('check')}`}>
-                    <button type="button" className="button-check" onClick={() => handleCheck(records)}>
+
+                    {/* <button type="button" className="button-check" onClick={() => handleCheck(records)}>
                         <IconNewCheck /> <span>
                         {t('approve')}
                         </span>
-                    </button>
-                </Tippy>
-                <Tippy content={`${t('delete')}`}>
+                    </button> */}
+
                     <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
                     <IconNewTrash />
                             <span>
                             {t('delete')}
                                 </span>
                     </button>
-                </Tippy>
             </div>
-            ),
+            )
         },
     ]
 
@@ -246,16 +267,48 @@ const LateEarlyForm = ({ ...props }: Props) => {
                                     </button>
                         </Link>
 
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                        {/* <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
                             Nhập file
-                        </button>
+                        </button> */}
                         <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconDownload className="ltr:mr-2 rtl:ml-2" />
                             Xuất file excel
                         </button>
                     </div>
-                    <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                    <div className='flex flex-row gap-2'>
+                        <div className='flex flex-1 gap-1'>
+                        <div className="flex items-center min-w-[80px]">{t('choose_department')}</div>
+                        <DropdownTreeSelect
+                                className="dropdown-tree flex-1 for-search"
+                                                                  data={treeDataState}
+                                                                  texts={{ placeholder: `${t('choose_department')}`}}
+                                                                  showPartiallySelected={true}
+                                                                  inlineSearchInput={true}
+                                                                  mode='radioSelect'
+                                                                />
+                        </div>
+                        <div className='flex flex-1 gap-1 justify-end'>
+                        <div className="flex items-center min-w-[80px]">{t('choose_month')}</div>
+                        <Flatpickr
+                            className='form-input flex-[20%]'
+                            options = {{
+                            // dateFormat: 'd/m/y',
+                            defaultDate: new Date(),
+                            locale: {
+                                ...Vietnamese
+                            },
+                                plugins: [
+                                    monthSelectPlugin(monthSelectConfig) // Sử dụng plugin với cấu hình
+                                ]
+                            }}
+                            onChange={(selectedDates, dateStr, instance) => {
+                                // Xử lý sự kiện thay đổi ngày tháng ở đây
+                            }}
+                         />
+                        </div>
+                        <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                        </div>
                 </div>
                 <div className="datatables">
                     <DataTable

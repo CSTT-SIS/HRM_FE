@@ -72,12 +72,12 @@ const LoginBoxed = () => {
 			<div className="absolute inset-0">
 				<img src="/assets/images/bg.png" alt="image" className="w-full h-full object-cover" />
 			</div>
-			<div className="relative flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat px-6 py-10 dark:bg-[#060818] sm:px-28 gap-1 ml-8 mr-8" style={{width: "90%", margin: "auto"}}>
-                <div className='flex-1'>
-                    <img src='/assets/images/favicon.png' style={{width: "240px"}} className='mb-6'/>
-                    <h1 className='company-name mb-2'>vangtat mining</h1>
-                    <h1 className='welcome'>{t('welcome')}</h1>
-                    <h1 className='welcome-member'>{t('vangtat_participants')}</h1>
+			<div className="relative flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat px-6 py-10 dark:bg-[#060818] sm:px-28 gap-20 ml-8 mr-8" style={{margin: "auto"}}>
+                <div className='flex-1 items-center' style={{display: "flex", flexDirection: 'column', alignSelf: "flex-start"}}>
+                    <img src='/assets/images/logo_login.png' style={{width: "70%"}} className=''/>
+                    {/* <h1 className='company-name mb-2'>vangtat mining</h1> */}
+                    <h1 className='welcome uppercase'>{t('welcome')}</h1>
+                    <h1 className='welcome-member uppercase'>{t('vangtat_participants')}</h1>
                 </div>
 				<div className="relative w-full rounded-md p-2 flex-1 form-login-container">
 					<div className="relative flex flex-col justify-center rounded-md bg-white/60 px-6 py-20 backdrop-blur-lg dark:bg-black/50 lg:min-h-[70vh]">
@@ -124,7 +124,7 @@ const LoginBoxed = () => {
 						</div>
 						<div className="mx-auto w-full max-w-[440px]">
 							<div className="mb-10">
-								<h1 className="uppercase !leading-snug sign-in-text">{t('sign_in')}</h1>
+								<h1 className="uppercase !leading-snug sign-in-text !text-center">{t('sign_in')}</h1>
 							</div>
 							<Formik
 								initialValues={{
@@ -138,7 +138,7 @@ const LoginBoxed = () => {
 									<Form className="space-y-5 dark:text-white">
 										<div className={submitCount ? (errors.userName ? 'has-error' : 'has-success') : ''}>
 											<label htmlFor="userName" className='label-login'>
-												{t('username')} <span style={{ color: 'red' }}>*</span>
+												{t('username')}
 											</label>
 											<div className="relative text-white-dark">
 												<Field
@@ -158,7 +158,7 @@ const LoginBoxed = () => {
 										<div>
 											<p style={{ display: 'flex', justifyContent: 'space-between' }}>
 												<label htmlFor="passWord" className='label-login'>
-													{t('password')} <span style={{ color: 'red' }}>*</span>
+													{t('password')}
 												</label>
 
 											</p>
@@ -188,7 +188,7 @@ const LoginBoxed = () => {
 									</Form>
 								)}
 							</Formik>
-							<div className="relative my-7 md:mb-9">
+							<div className="relative my-7 md:mb-9 !text-center">
 													<Link href="/auth/cover-password-reset">
                                                         <span className='forget-pass-text'>{t('forget_password')}
                                                         </span></Link>

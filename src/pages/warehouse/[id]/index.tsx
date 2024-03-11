@@ -193,7 +193,7 @@ const ShelfPage = ({ ...props }: Props) => {
                             </div>
                             <div className="mb-5">
                                 <label htmlFor="description" > {t('description')} </label >
-                                <Field name="description" type="text" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
+                                <Field name="description" as="textarea" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
                                 {errors.description ? (
                                     <div className="text-danger mt-1"> {errors.description} </div>
                                 ) : null}

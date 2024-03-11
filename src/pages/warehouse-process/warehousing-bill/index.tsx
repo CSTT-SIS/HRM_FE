@@ -148,7 +148,7 @@ const WarehousingPage = ({ ...props }: Props) => {
                 {
                     proposal !== null ? "Xuất mìn" :
                         order !== null ? "Mua hàng" :
-                            repairRequest !== null ? "{t('edit')} chữa" : ""
+                            repairRequest !== null ? "Sửa chữa" : ""
                 }
             </span>,
         },

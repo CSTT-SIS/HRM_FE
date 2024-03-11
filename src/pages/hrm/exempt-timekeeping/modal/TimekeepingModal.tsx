@@ -6,82 +6,183 @@ import { Dialog, Transition } from '@headlessui/react';
 import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
 import Swal from 'sweetalert2';
-import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
+import { useDispatch } from 'react-redux';
+import { setPageTitle } from '../../../../store/themeConfigSlice';
+// Third party libs
+import { DataTable, DataTableSortStatus } from 'mantine-datatable';
+// API
+// constants
+import { PAGE_SIZES, PAGE_SIZES_DEFAULT, PAGE_NUMBER_DEFAULT } from '@/utils/constants';
+// helper
+import { capitalize, formatDate, showMessage } from '@/@core/utils';
+// icons
+import { IconLoading } from '@/components/Icon/IconLoading';
+import IconPlus from '@/components/Icon/IconPlus';
+
+import { useRouter } from 'next/router';
+
+// json
+import IconFolderMinus from '@/components/Icon/IconFolderMinus';
+import IconDownload from '@/components/Icon/IconDownload';
+import IconCalendar from '@/components/Icon/IconCalendar';
+
+import PersonnelList from "../personnel_list.json";
 
 interface Props {
     [key: string]: any;
 }
 
 const TimekeepingModal = ({ ...props }: Props) => {
+	const dispatch = useDispatch();
+	const { t } = useTranslation();
+	useEffect(() => {
+		dispatch(setPageTitle(`${t('staff')}`));
+	});
 
-    const { t } = useTranslation();
-    const [disabled, setDisabled] = useState(false);
+	const router = useRouter();
+	const [display, setDisplay] = useState('tree')
+	const [showLoader, setShowLoader] = useState(true);
+	const [page, setPage] = useState<any>(PAGE_NUMBER_DEFAULT);
+	const [pageSize, setPageSize] = useState(PAGE_SIZES_DEFAULT);
+	const [recordsData, setRecordsData] = useState<any>();
+	const [total, setTotal] = useState(0);
+	const [getStorge, setGetStorge] = useState<any>();
+	const [data, setData] = useState<any>();
 
-    const SubmittedForm = Yup.object().shape({
-        name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_timekeeping')}`),
-        code: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_timekeepingCode')}`),
-    });
+	const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
-    const handleDepartment = (value: any) => {
-        if (props?.data) {
-            const reNew = props.totalData.filter((item: any) => item.id !== props.data.id);
-            reNew.push({
-                id: props.data.id,
-                name: value.name,
-                code: value.code,
-            });
-            localStorage.setItem('timekeepingList', JSON.stringify(reNew));
-            props.setGetStorge(reNew);
-            props.setOpenModal(false);
-            props.setData(undefined);
-            showMessage(`${t('edit_timekeeping_success')}`, 'success');
+	const [openModal, setOpenModal] = useState(false);
+	const [codeArr, setCodeArr] = useState<string[]>([]);
+
+	const toggleCode = (name: string) => {
+		if (codeArr.includes(name)) {
+			setCodeArr((value) => value.filter((d) => d !== name));
+		} else {
+			setCodeArr([...codeArr, name]);
+		}
+	};
+	const [treeview1, setTreeview1] = useState<string[]>(['images']);
+	const [pagesSubMenu, setPagesSubMenu] = useState(false);
+    const [listSelected, setListSelected] = useState<any>([]);
+	const toggleTreeview1 = (name: any) => {
+		if (treeview1.includes(name)) {
+			setTreeview1((value) => value.filter((d) => d !== name));
+		} else {
+			setTreeview1([...treeview1, name]);
+		}
+	};
+
+	const [treeview2, setTreeview2] = useState<string[]>(['parent']);
+	const toggleTreeview2 = (name: any) => {
+		if (treeview2.includes(name)) {
+			setTreeview2((value) => value.filter((d) => d !== name));
+		} else {
+			setTreeview2([...treeview2, name]);
+		}
+	};
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			const data = localStorage.getItem('staffList');
+			if (data) {
+				setGetStorge(JSON.parse(data));
+			} else {
+				localStorage.setItem('staffList', JSON.stringify(PersonnelList));
+			}
+		}
+	}, []);
+
+	useEffect(() => {
+		setTotal(getStorge?.length);
+		setPageSize(PAGE_SIZES_DEFAULT);
+		setRecordsData(
+			getStorge?.filter((item: any, index: any) => {
+				return index <= 9 && page === 1 ? item : index >= 10 && index <= page * 9 ? item : null;
+			}),
+		);
+	}, [getStorge, getStorge?.length, page]);
+
+	useEffect(() => {
+		setShowLoader(false);
+	}, [recordsData]);
+
+	const handleEdit = (data: any) => {
+		setOpenModal(true);
+		setData(data);
+	};
+
+	const handleDelete = (data: any) => {
+		const swalDeletes = Swal.mixin({
+			customClass: {
+				confirmButton: 'btn btn-secondary',
+				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+				popup: 'sweet-alerts',
+			},
+			buttonsStyling: false,
+		});
+		swalDeletes
+			.fire({
+				title: `${t('delete_staff')}`,
+				html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.name}?`,
+				padding: '2em',
+				showCancelButton: true,
+                cancelButtonText: `${t('cancel')}`,
+                confirmButtonText: `${t('confirm')}`,
+				reverseButtons: true,
+			})
+			.then((result) => {
+				if (result.value) {
+					const value = getStorge.filter((item: any) => {
+						return item.id !== data.id;
+					});
+					localStorage.setItem('staffList', JSON.stringify(value));
+					setGetStorge(value);
+					showMessage(`${t('delete_department_success')}`, 'success');
+				}
+			});
+	};
+
+	const handleSearch = (e: any) => {
+		if (e.target.value === '') {
+			setRecordsData(getStorge);
+		} else {
+			setRecordsData(
+				getStorge.filter((item: any) => {
+					return item.name.toLowerCase().includes(e.target.value.toLowerCase());
+				}),
+			);
+		}
+	};
+
+    const handleChangeSelect = (isSelected: any, record: any) => {
+        if (isSelected) {
+            setListSelected([...listSelected, record]);
         } else {
-            const reNew = props.totalData;
-            reNew.push({
-                id: Number(props?.totalData[props?.totalData?.length - 1].id) + 1,
-                name: value.name,
-                code: value.code,
-                status: value.status
-            })
-            localStorage.setItem('timekeepingList', JSON.stringify(reNew));
-            props.setGetStorge(props.totalData);
-            props.setOpenModal(false);
-            props.setData(undefined);
-            showMessage(`${t('add_timekeeping_success')}`, 'success')
-        }
-    }
+            setListSelected(listSelected?.filter((item: any) => item.id!== record.id));
+        };
+    };
+
+	const columns = [
+        { accessor: 'check', title: 'Chọn', sortable: false, render: (records: any) => <input type="checkbox" onChange={(e) => handleChangeSelect(e.target.checked, records)} className='form-checkbox'/>},
+		{
+			accessor: 'id',
+			title: '#',
+			render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
+		},
+
+		{ accessor: 'name', title: 'Tên nhân viên', sortable: false },
+		{ accessor: 'code', title: 'Mã nhân viên', sortable: false },
+        { accessor: 'department', title: 'Phòng ban', sortable: false },
+        { accessor: 'duty', title: 'Chức vụ', sortable: false },
+
+	];
 
     const handleCancel = () => {
         props.setOpenModal(false);
         props.setData(undefined);
+        setListSelected([])
     };
 
-    const handleDelete = () => {
-        const swalDeletes = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-secondary',
-				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-				popup: 'confirm-delete',
-			},
-            imageUrl: '/assets/images/delete_popup.png',
-			buttonsStyling: false,
-		});
-        swalDeletes
-            .fire({
-                title: `${t('delete_timekeeping')}`,
-                padding: '2em',
-                showCancelButton: true,
-                cancelButtonText: `${t('cancel')}`,
-                confirmButtonText: `${t('confirm')}`,
-				reverseButtons: true,
-            })
-            .then((result) => {
-                if (result.value) {
-
-                }
-            });
-    };
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
             <Dialog as="div" open={props.openModal} onClose={() => props.setOpenModal(false)} className="relative z-50">
@@ -108,7 +209,7 @@ const TimekeepingModal = ({ ...props }: Props) => {
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <Dialog.Panel className="panel w-full max-w-lg overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark">
+                            <Dialog.Panel className="panel w-full max-w-4xl overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark">
                                 <button
                                     type="button"
                                     onClick={() => handleCancel()}
@@ -117,82 +218,50 @@ const TimekeepingModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data !== undefined ? `${t('edit_timekeeping')} ngày` : `${t('add_timekeeping')} ngày`}
+                                    {`${t('add_exempt_timekeeping')}`}
                                 </div>
-                                <div className="p-5">
-                                    <Formik
-                                        initialValues={
-                                            {
-                                                name: props?.data ? `${props?.data?.name}` : "",
-                                                code: props?.data ? `${props?.data?.code}` : "",
-                                            }
-                                        }
-                                        validationSchema={SubmittedForm}
-                                        onSubmit={values => {
-                                            handleDepartment(values);
-                                        }}
-                                    >
+                                <div className="">
+			{showLoader && (
+				<div className="screen_loader animate__animated fixed inset-0 z-[60] grid place-content-center bg-[#fafafa] dark:bg-[#060818]">
+					<IconLoading />
+				</div>
+			)}
+			<div className="panel mt-6">
+                <div className="mb-4.5 flex flex-col justify-between gap-5 md:flex-row md:items-center">
+					<div className="flex flex-wrap items-center">
+                    {
+                            listSelected?.length > 0 &&
+                             <button type="button" className="btn btn-primary btn-sm m-1  custom-button">
+							<IconPlus className="ltr:mr-2 rtl:ml-2" />
+							Thêm vào danh sách
+						</button>
+                        }
+					</div>
+					<div className='display-style'>
+						<input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+					</div>
+				</div>
+				<div className="datatables">
+							<DataTable
+								highlightOnHover
+								className="table-hover whitespace-nowrap custom_table"
+								records={PersonnelList}
+								columns={columns}
+								totalRecords={total}
+								recordsPerPage={pageSize}
+								page={page}
+								onPageChange={(p) => setPage(p)}
+								recordsPerPageOptions={PAGE_SIZES}
+								onRecordsPerPageChange={setPageSize}
+								sortStatus={sortStatus}
+								onSortStatusChange={setSortStatus}
+								minHeight={200}
+								paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
+							/>
+						</div>
+			</div>
+		</div>
 
-                                        {({ errors, touched }) => (
-                                            <Form className="space-y-5" >
-                                                <div className="mb-5">
-                                                    <label htmlFor="name">Số công hưởng lương <span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="name" type="number" id="name" placeholder="Nhập số công hưởng lương" className="form-input" />
-                                                    {errors.name ? (
-                                                        <div className="text-danger mt-1"> {errors.name} </div>
-                                                    ) : null}
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="code" >Số công đi làm thực tế < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="" type="number" id="code" placeholder="Nhập số công đi làm thực tế" className="form-input" />
-                                                    {errors.code ? (
-                                                        <div className="text-danger mt-1"> {errors.code} </div>
-                                                    ) : null}
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="code" >Giờ vào < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="code" type="time" id="code" placeholder={`${t('enter_code_timekeeping')}`} className="form-input" />
-                                                    {errors.code ? (
-                                                        <div className="text-danger mt-1"> {errors.code} </div>
-                                                    ) : null}
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="code" >Giờ ra < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="code" type="time" id="code" placeholder={`${t('enter_code_timekeeping')}`} className="form-input" />
-                                                    {errors.code ? (
-                                                        <div className="text-danger mt-1"> {errors.code} </div>
-                                                    ) : null}
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="code" >Đi muộn (phút) < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="" type="number" id="code" placeholder="" className="form-input" />
-                                                    {errors.code ? (
-                                                        <div className="text-danger mt-1"> {errors.code} </div>
-                                                    ) : null}
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="code" >Đi sớm (phút) < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="" type="number" id="code" placeholder="" className="form-input" />
-                                                    {errors.code ? (
-                                                        <div className="text-danger mt-1"> {errors.code} </div>
-                                                    ) : null}
-                                                </div>
-                                                <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
-                                                    {props.data === undefined ?  <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
-                                                        {t('cancel')}
-                                                    </button> :  <button type="button" className="btn btn-outline-danger" onClick={() => handleDelete()}>
-                                                        {t('delete')}
-                                                    </button>}
-                                                    <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4" disabled={disabled}>
-                                                        {props.data !== undefined ? `${t('update')}` : `${t('add')}`}
-                                                    </button>
-                                                </div>
-
-                                            </Form>
-                                        )}
-                                    </Formik>
-
-                                </div>
                             </Dialog.Panel>
                         </Transition.Child>
                     </div>
