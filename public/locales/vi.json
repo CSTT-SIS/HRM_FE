@@ -345,7 +345,7 @@
 	"please_fill_export": "Vui lòng nhập thông tin xuất",
 	"create_export_success": "Tạo thành công xuất khẩu",
 	"edit_export_success": "Chỉnh sửa xuất thành công",
-	"approve": "Duyệt",
+	"approve": "Phê duyệt",
 	"unapprove": "Không chấp thuận",
 	"organization_structure": "Sơ đồ cơ cấu tổ chức",
 	"timekeeping_manage": "Quản lý chấm công",
@@ -761,5 +761,8 @@
     "please_choose_name_checker": "Vui lòng chọn người phê duyệt",
     "checker_name": "Người phê duyệt",
     "not_approve": "Không phê duyệt",
-    "add_exempt_timekeeping": "Thêm danh sách miễn chấm công"
+    "add_exempt_timekeeping": "Thêm danh sách miễn chấm công",
+    "detail_overtime_form": "Chi tiết đơn xin làm thêm giờ",
+    "detail_forget_form": "Chi tiết đơn quên chấm công",
+    "choose_checker": "Chọn người phê duyệt"
 }

@@ -19,6 +19,7 @@ import shift from '../../shift/shift.json';
 import { Vietnamese } from "flatpickr/dist/l10n/vn.js"
 import DropdownTreeSelect from "react-dropdown-tree-select";
 import "react-dropdown-tree-select/dist/styles.css";
+import { getCurrentFormattedTime } from '@/utils/commons';
 
 
 interface TreeNode {
@@ -104,6 +105,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 	const SubmittedForm = Yup.object().shape({
 		name: Yup.object()
 			.typeError(`${t('please_choose_name_staff')}`),
+        checker: Yup.object()
+			.typeError(`${t('please_choose_name_checker')}`),
         position: Yup.object()
             .typeError(`${t('please_choose_duty')}`),
         department: Yup.object()
@@ -175,7 +178,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 		<div className="p-5">
             <div className='flex justify-between header-page-bottom pb-4 mb-4'>
                 <h1 className='page-title'>{t('update_overtime_form')}</h1>
-                <Link href="/hrm/late-early-form">
+                <Link href="/hrm/overtime-form">
                         <button type="button" className="btn btn-primary btn-sm m-1 back-button" >
                                     <IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                                                     <span>
@@ -190,11 +193,12 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 											code: detail ? `${detail?.code}` : '',
                                             position: detail ? `${detail?.position}` : '',
                                             department: detail ? `${detail?.department}` : '',
-                                            submitday: detail ? `${detail?.submitday}` : '',
+                                            submitday: detail ? `${detail?.submitday}` : getCurrentFormattedTime(),
                                             fromdate: detail ? `${detail?.fromdate}` : '',
                                             enddate: detail ? `${detail?.enddate}` : '',
                                             shift: detail ? `${detail?.shift}` : '',
-                                            overtime_time: 0
+                                            overtime_time: 0,
+                                            checker: detail ? `${detail?.checker}` : ''
 										}}
 										validationSchema={SubmittedForm}
 										onSubmit={(values) => {
@@ -282,18 +286,18 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                             <div className="mb-5 w-1/2">
                                                 <label htmlFor="fromdate" className='label'>
                                                     {' '}
-                                                    {t('from_date')} <span style={{ color: 'red' }}>* </span>
+                                                    {t('from_time')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field id="fromdate" type="datetime-local" name="fromdate" className="form-input" placeholder={`${t('choose_from_day')}`} />
+                                                <Field id="fromdate" type="time" name="fromdate" className="form-input" placeholder={`${t('choose_from_date')}`} />
 
                                                     {submitCount ? errors.fromdate ? <div className="mt-1 text-danger"> {errors.fromdate} </div> : null : ''}
                                             </div>
                                             <div className="mb-5 w-1/2">
                                                 <label htmlFor="enddate" className='label'>
                                                     {' '}
-                                                    {t('end_date')} <span style={{ color: 'red' }}>* </span>
+                                                    {t('end_time')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field id="enddate" type="datetime-local" name="enddate" className="form-input" placeholder={`${t('choose_end_day')}`} />
+                                                <Field id="enddate" type="time" name="enddate" className="form-input" placeholder={`${t('choose_end_time')}`} />
 
                                                     {submitCount ? errors.enddate ? <div className="mt-1 text-danger"> {errors.enddate} </div> : null : ''}
                                             </div>
@@ -325,6 +329,36 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                 <Field name="overtime_time" type="number" id="overtime_time" placeholder={`${t('fill_overtime_time')}`} className="form-input" />
                                                 {submitCount ? errors.overtime_time ? <div className="mt-1 text-danger"> {errors.overtime_time} </div> : null : ''}
                                             </div>
+                                            </div>
+                                            <div className='flex justify-between gap-5'>
+                                            <div className="mb-5 w-1/2">
+                                                <label htmlFor="checker" className='label'>
+                                                    {' '}
+                                                    {t('checker_name')} <span style={{ color: 'red' }}>* </span>
+                                                </label>
+                                                <Field
+                                                className="form-input"
+                                                        name="checker"
+                                                        render={({ field }: any) => (
+                                                            <>
+                                                                <Select
+                                                                    // {...field}
+                                                                    options={listPersonnel}
+                                                                    isSearchable
+                                                                    placeholder={t('choose_checker')}
+                                                                    maxMenuHeight={150}
+                                                                    onChange={(item) => {
+                                                                        setFieldValue('checker', item)
+                                                                    }}
+                                                                />
+                                                            </>
+                                                        )}
+                                                    />
+                                               {submitCount ? (
+    errors.checker ? <div className="mt-1 text-danger">{errors.checker}</div> : null
+  ) : null}
+                                            </div>
+
                                             </div>
                                             <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">
                                                 <button type="button" className="btn btn-outline-dark cancel-button" onClick={() => handleCancel()}>

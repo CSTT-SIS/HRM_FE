@@ -37,6 +37,7 @@ import IconNewCheck from '@/components/Icon/IconNewCheck';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
 import DropdownTreeSelect from "react-dropdown-tree-select";
 import "react-dropdown-tree-select/dist/styles.css";
+import IconNewEye from '@/components/Icon/IconNewEye';
 
 interface Props {
     [key: string]: any;
@@ -111,10 +112,7 @@ const ForgetForm = ({ ...props }: Props) => {
         router.push(`/hrm/forget-form/${data.id}`)
 
     };
-    const handleDetail = (data: any) => {
-        setOpenDetail(true);
-        setData(data);
-    };
+
     const handleDelete = (data: any) => {
         const swalDeletes = Swal.mixin({
 			customClass: {
@@ -184,6 +182,11 @@ const ForgetForm = ({ ...props }: Props) => {
             )
         }
     }
+
+    const handleDetail = (e: any) => {
+        router.push(`/hrm/forget-form/detail/${e.id}`)
+    }
+
     const columns = [
         {
             accessor: 'id',
@@ -220,16 +223,21 @@ const ForgetForm = ({ ...props }: Props) => {
         titleClassName: '!text-center',
         render: (records: any) => (
             <div className="flex items-center w-max mx-auto gap-2">
+                <button type="button"  className='button-detail' onClick={() => handleDetail(records)}>
+                    <IconNewEye /><span>
+                            {t('detail')}
+                                </span>
+                    </button>
                     <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
                     <IconNewEdit /><span>
                             {t('edit')}
                                 </span>
                     </button>
-                    <button type="button" className="button-check" onClick={() => handleCheck(records)}>
+                    {/* <button type="button" className="button-check" onClick={() => handleCheck(records)}>
                     <IconNewCheck /> <span>
                         {t('approve')}
                         </span>
-                    </button>
+                    </button> */}
                     <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
                     <IconNewTrash />
                             <span>

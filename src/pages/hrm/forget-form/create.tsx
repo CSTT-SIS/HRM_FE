@@ -76,6 +76,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 	const SubmittedForm = Yup.object().shape({
 		name: Yup.object()
 			.typeError(`${t('please_choose_name_staff')}`),
+        checker: Yup.object()
+			.typeError(`${t('please_choose_name_checker')}`),
         position: Yup.object()
             .typeError(`${t('please_choose_duty')}`),
         department: Yup.object()
@@ -166,7 +168,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                             fromdate: null,
                                             enddate: null,
                                             shift: null,
-                                            reason: ''
+                                            reason: '',
+                                            checker: null
 										}}
 										validationSchema={SubmittedForm}
 										onSubmit={(values) => {
@@ -269,7 +272,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                                 placeholder={`${t('choose_submit_day')}`}
                                                                 options={{
                                                                     enableTime: true,
-                                                                    dateFormat: 'Y-m-d H:i',
+                                                                    defaultDate: new Date(),
+                                                                    dateFormat: 'd-m-Y',
                                                                     locale: {
                                                                         ...Vietnamese
                                                                     },
@@ -288,17 +292,18 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                             <div className="mb-5 w-1/2">
                                                 <label htmlFor="fromdate" className='label'>
                                                     {' '}
-                                                    {t('from_date')} <span style={{ color: 'red' }}>* </span>
+                                                    {t('from_time')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
                                                 <Field
                                                         name="from_date"
                                                         render={({ field }: any) => (
                                                             <Flatpickr
                                                                 data-enable-time
-                                                                placeholder={`${t('choose_from_day')}`}
+                                                                placeholder={`${t('choose_from_time')}`}
                                                                 options={{
                                                                     enableTime: true,
-                                                                    dateFormat: 'Y-m-d H:i',
+                                                                    noCalendar: true,
+                                                                    dateFormat: 'H:i',
                                                                     locale: {
                                                                         ...Vietnamese
                                                                     }
@@ -315,17 +320,18 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                             <div className="mb-5 w-1/2">
                                                 <label htmlFor="enddate" className='label'>
                                                     {' '}
-                                                    {t('end_date')} <span style={{ color: 'red' }}>* </span>
+                                                    {t('end_time')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
                                                 <Field
                                                         name="end_date"
                                                         render={({ field }: any) => (
                                                             <Flatpickr
                                                                 data-enable-time
-                                                                placeholder={`${t('choose_end_day')}`}
+                                                                placeholder={`${t('choose_end_time')}`}
                                                                 options={{
                                                                     enableTime: true,
-                                                                    dateFormat: 'Y-m-d H:i',
+                                                                    noCalendar: true,
+                                                                    dateFormat: 'H:i',
                                                                     locale: {
                                                                         ...Vietnamese
                                                                     }
@@ -364,6 +370,36 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     />
                                                     {submitCount ? errors.shift ? <div className="mt-1 text-danger"> {errors.shift} </div> : null : ''}
                                             </div>
+                                            <div className="mb-5 w-1/2">
+                                                <label htmlFor="name" className='label'>
+                                                    {' '}
+                                                    {t('checker_name')} <span style={{ color: 'red' }}>* </span>
+                                                </label>
+                                                <Field
+                                                className="form-input"
+                                                        name="name"
+                                                        render={({ field }: any) => (
+                                                            <>
+                                                                <Select
+                                                                    // {...field}
+                                                                    options={listPersonnel}
+                                                                    isSearchable
+                                                                    placeholder={t('choose_name')}
+                                                                    maxMenuHeight={150}
+                                                                    onChange={(item) => {
+                                                                        setFieldValue('checker', item)
+                                                                    }}
+                                                                />
+                                                            </>
+                                                        )}
+                                                    />
+                                               {submitCount ? (
+    errors.checker ? <div className="mt-1 text-danger">{errors.checker}</div> : null
+  ) : null}
+                                            </div>
+
+                                            </div>
+                                            <div className="flex justify-between gap-5">
                                             <div className="mb-5 w-1/2">
                                                 <label htmlFor="reason" className='label'>
                                                     {' '}

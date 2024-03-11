@@ -19,6 +19,7 @@ import shift from '../shift/shift.json';
 import { Vietnamese } from "flatpickr/dist/l10n/vn.js"
 import DropdownTreeSelect from "react-dropdown-tree-select";
 import "react-dropdown-tree-select/dist/styles.css";
+import { getCurrentFormattedTime } from '@/utils/commons';
 
 
 interface TreeNode {
@@ -164,7 +165,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 											code: null,
                                             position: null,
                                             department: null,
-                                            submitday: Date.now(),
+                                            submitday: getCurrentFormattedTime(),
                                             fromdate: null,
                                             enddate: null,
                                             shift: null,
@@ -259,7 +260,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('register_from_date')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field id="fromdate" type="datetime-local" name="fromdate" className="form-input" placeholder={`${t('choose_register_from_date')}`} />
+                                                <Field id="fromdate" type="time" name="fromdate" className="form-input" placeholder={`${t('choose_register_from_date')}`} />
 
                                                     {submitCount ? errors.fromdate ? <div className="mt-1 text-danger"> {errors.fromdate} </div> : null : ''}
                                             </div>
@@ -268,7 +269,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('register_end_date')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field id="enddate" type="datetime-local" name="enddate" className="form-input" placeholder={`${t('choose_register_end_date')}`} />
+                                                <Field id="enddate" type="time" name="enddate" className="form-input" placeholder={`${t('choose_register_end_date')}`} />
 
                                                     {submitCount ? errors.enddate ? <div className="mt-1 text-danger"> {errors.enddate} </div> : null : ''}
                                             </div>

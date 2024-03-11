@@ -12,10 +12,10 @@ import 'flatpickr/dist/flatpickr.css';
 import Select from 'react-select';
 import Link from 'next/link';
 import IconBack from '@/components/Icon/IconBack';
-import duty_list from '../../duty/duty_list.json';
-import late_Early_form from '../../late-early-form/late_early_form.json';
-import personnel_list from '../../personnel/personnel_list.json';
-import shift from '../../shift/shift.json';
+import duty_list from '../../../duty/duty_list.json';
+import overtime_form from '../../overtime_form.json';
+import personnel_list from '../../../personnel/personnel_list.json';
+import shift from '../../../shift/shift.json';
 import { Vietnamese } from "flatpickr/dist/l10n/vn.js"
 import DropdownTreeSelect from "react-dropdown-tree-select";
 import "react-dropdown-tree-select/dist/styles.css";
@@ -78,7 +78,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 
     useEffect(() => {
         if (Number(router.query.id)) {
-            const detailData = late_Early_form?.find(d => d.id === Number(router.query.id));
+            const detailData = overtime_form?.find(d => d.id === Number(router.query.id));
             setDetail(detailData);
             setTreeDataState((tree: TreeNode[]) => {
                 const newTree = tree;
@@ -105,8 +105,6 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 	const SubmittedForm = Yup.object().shape({
 		name: Yup.object()
 			.typeError(`${t('please_choose_name_staff')}`),
-            checker: Yup.object()
-			.typeError(`${t('please_choose_name_staff')}`),
         position: Yup.object()
             .typeError(`${t('please_choose_duty')}`),
         department: Yup.object()
@@ -114,7 +112,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
         submitday: Yup.date().typeError(`${t('please_choose_submit_day')}`),
         fromdate: Yup.date().typeError(`${t('please_choose_from_day')}`),
         enddate: Yup.date().typeError(`${t('please_choose_end_day')}`),
-        reason: Yup.string().required(`${t('please_fill_reason')}`)
+        shift: Yup.date().typeError(`${t('please_choose_shift')}`),
+        overtime_time: Yup.number().required(`${t('please_fill_overtime_time')}`)
 	});
 
 	const handleDepartment = (value: any) => {
@@ -147,6 +146,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 	};
 
 	const handleCancel = () => {
+		props.setOpenModal(false);
 		props.setData(undefined);
 	};
 
@@ -175,8 +175,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 
 		<div className="p-5">
             <div className='flex justify-between header-page-bottom pb-4 mb-4'>
-                <h1 className='page-title'>{t('update_late_early_form')}</h1>
-                <Link href="/hrm/late-early-form">
+                <h1 className='page-title'>{t('detail_overtime_form')}</h1>
+                <Link href="/hrm/overtime-form">
                         <button type="button" className="btn btn-primary btn-sm m-1 back-button" >
                                     <IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                                                     <span>
@@ -188,14 +188,15 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
             <Formik
 				initialValues={{
 											name: detail ? `${detail?.name}` : '',
-                                            checker: detail ? `${detail?.name}` : '',
 											code: detail ? `${detail?.code}` : '',
                                             position: detail ? `${detail?.position}` : '',
                                             department: detail ? `${detail?.department}` : '',
                                             submitday: detail ? `${detail?.submitday}` : getCurrentFormattedTime(),
                                             fromdate: detail ? `${detail?.fromdate}` : '',
                                             enddate: detail ? `${detail?.enddate}` : '',
-                                            reason: detail ? `${detail?.reason}` : ''
+                                            shift: detail ? `${detail?.shift}` : '',
+                                            overtime_time: 0,
+                                            checker: detail ? `${detail?.checker}` : ''
 										}}
 										validationSchema={SubmittedForm}
 										onSubmit={(values) => {
@@ -203,7 +204,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 										}}
                                         enableReinitialize
 									>
-											{({ errors, touched, submitCount, setFieldValue }) => (
+										{({ errors, touched, submitCount, setFieldValue }) => (
 											<Form className="space-y-5">
                                             <div className='flex justify-between gap-5'>
                                             <div className="mb-5 w-1/2">
@@ -211,7 +212,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('name_staff')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field as="select" name="name" id="name" className="form-input">
+                                                <Field disabled as="select" name="name" id="name" className="form-input">
                                                     { listPersonnel?.map((person: any) => {
                                                         return (
                                                             <option key={person.value} value={person.value}>
@@ -230,7 +231,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('duty')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field as="select" name="position" id="position" className="form-input">
+                                                <Field disabled as="select" name="position" id="position" className="form-input">
                                                     { listDuty?.map((duty: any) => {
                                                         return (
                                                             <option key={duty.value} value={duty.value}>
@@ -249,21 +250,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('department')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field
-                                                disabled
-                                                            name="department"
-                                                            render={({ field }: any) => (
-                                                                <DropdownTreeSelect
-                                                                className="dropdown-tree"
-                                                                  data={treeDataState}
-                                                                  texts={{ placeholder: `${t('choose_department')}`}}
-                                                                  showPartiallySelected={true}
-                                                                  inlineSearchInput={true}
-                                                                  mode='radioSelect'
-
-                                                                />
-                                                                )}
-        />
+                                                <Field disabled id="department" name="department" type="text" className="form-input"/>
 
                                                     {submitCount ? errors.department ? <div className="mt-1 text-danger"> {errors.department} </div> : null : ''}
                                             </div>
@@ -272,9 +259,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('submitday')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field  id="submitday" type="datetime-local" name="submitday" className="form-input"
-                                                defaultValue={new Date()}
-                                                placeholder={`${t('choose_submit_day')}`} />
+                                                <Field id="submitday" type="datetime-local" name="submitday" className="form-input" placeholder={`${t('choose_submit_day')}`} />
                                                     {submitCount ? errors.submitday ? <div className="mt-1 text-danger"> {errors.submitday} </div> : null : ''}
                                             </div>
                                             </div>
@@ -282,59 +267,65 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                             <div className="mb-5 w-1/2">
                                                 <label htmlFor="fromdate" className='label'>
                                                     {' '}
-                                                    {t('register_from_date')} <span style={{ color: 'red' }}>* </span>
+                                                    {t('from_time')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field  id="fromdate" type="time" name="fromdate" className="form-input" placeholder={`${t('choose_register_from_date')}`} />
+                                                <Field disabled id="fromdate" type="time" name="fromdate" className="form-input" placeholder={`${t('choose_from_time')}`} />
 
                                                     {submitCount ? errors.fromdate ? <div className="mt-1 text-danger"> {errors.fromdate} </div> : null : ''}
                                             </div>
                                             <div className="mb-5 w-1/2">
                                                 <label htmlFor="enddate" className='label'>
                                                     {' '}
-                                                    {t('register_end_date')} <span style={{ color: 'red' }}>* </span>
+                                                    {t('end_time')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field  id="enddate" type="time" name="enddate"
-                                                onChange={(e:any) => console.log(e.target.value)}
-                                                className="form-input" placeholder={`${t('choose_register_end_date')}`} />
+                                                <Field disabled id="enddate" type="time" name="enddate" className="form-input" placeholder={`${t('choose_end_time')}`} />
 
                                                     {submitCount ? errors.enddate ? <div className="mt-1 text-danger"> {errors.enddate} </div> : null : ''}
                                             </div>
                                             </div>
-                                              <div className='flex justify-between gap-5'>
+                                            <div className='flex justify-between gap-5'>
                                             <div className="mb-5 w-1/2">
-                                                <label htmlFor="checker" className='label'>
+                                                <label htmlFor="shift" className='label'>
                                                     {' '}
-                                                    {t('checker_name')} <span style={{ color: 'red' }}>* </span>
+                                                    {t('shift')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field  as="select" name="checker" id="checker" className="form-input">
-                                                    { listPersonnel?.map((person: any) => {
+                                                <Field disabled as="select" name="shift" id="shift" className="form-input">
+                                                    { listShift?.map((shift: any) => {
                                                         return (
-                                                            <option key={person.value} value={person.value}>
-                                                                {person.label}
+                                                            <option key={shift.value} value={shift.value}>
+                                                                {shift.label}
                                                             </option>
                                                         );
                                                     })}
 
                                 </Field>
-                                               {submitCount ? (
-    errors.checker ? <div className="mt-1 text-danger">{errors.checker}</div> : null
-  ) : null}
+
+                                                    {submitCount ? errors.shift ? <div className="mt-1 text-danger"> {errors.shift} </div> : null : ''}
                                             </div>
                                             <div className="mb-5 w-1/2">
-                                                <label htmlFor="reason" className='label'>
+                                                <label htmlFor="overtime_time" className='label'>
                                                     {' '}
-                                                    {t('reason')} <span style={{ color: 'red' }}>* </span>
+                                                    {t('overtime_time')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field  as="textarea" name="reason" id="reason" className="form-input" />
-                                                    {submitCount ? errors.reason ? <div className="mt-1 text-danger"> {errors.reason} </div> : null : ''}
+                                                <Field name="overtime_time" type="number" id="overtime_time" placeholder={`${t('fill_overtime_time')}`} className="form-input" />
+                                                {submitCount ? errors.overtime_time ? <div className="mt-1 text-danger"> {errors.overtime_time} </div> : null : ''}
                                             </div>
                                             </div>
+                                            <div className='flex justify-between gap-5'>
+                                            <div className="mb-5 w-1/2">
+                                                <label htmlFor="checker" className='label'>
+                                                    {' '}
+                                                    {t('checker_name')} <span style={{ color: 'red' }}>* </span>
+                                                </label>
+                                                <Field disabled id="checker" name="checker" type="text" className="form-input"/>
+                                                </div>
+                                                </div>
                                             <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">
                                                 <button type="button" className="btn btn-outline-dark cancel-button" onClick={() => handleCancel()}>
-                                                    {t('cancel')}
+                                                    {t('not_approve')}
                                                 </button>
                                                 <button type="submit" className="btn :ml-4 rtl:mr-4 add-button" disabled={disabled}>
-                                                    {t('update')}
+                                                    {t('approve')}
                                                 </button>
                                             </div>
 

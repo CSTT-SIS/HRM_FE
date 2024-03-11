@@ -37,6 +37,7 @@ import "flatpickr/dist/plugins/monthSelect/style.css"
 import monthSelectPlugin, { Config } from "flatpickr/dist/plugins/monthSelect"
 import DropdownTreeSelect from "react-dropdown-tree-select";
 import "react-dropdown-tree-select/dist/styles.css";
+import IconNewEye from '@/components/Icon/IconNewEye';
 interface Props {
     [key: string]: any;
 }
@@ -109,8 +110,7 @@ const OvertimeForm = ({ ...props }: Props) => {
         router.push(`/hrm/overtime-form/${data.id}`)
     };
     const handleDetail = (data: any) => {
-        setOpenDetail(true);
-        setData(data);
+        router.push(`/hrm/overtime-form/detail/${data.id}`);
     };
     const handleDelete = (data: any) => {
         const swalDeletes = Swal.mixin({
@@ -221,16 +221,21 @@ const OvertimeForm = ({ ...props }: Props) => {
         titleClassName: '!text-center',
         render: (records: any) => (
             <div className="flex items-center w-max mx-auto gap-2">
+                <button type="button"  className='button-detail' onClick={() => handleDetail(records)}>
+                <IconNewEye /><span>
+                        {t('detail')}
+                            </span>
+                </button>
                 <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
                 <IconNewEdit /><span>
                         {t('edit')}
                             </span>
                 </button>
-                <button type="button" className="button-check" onClick={() => handleCheck(records)}>
+                {/* <button type="button" className="button-check" onClick={() => handleCheck(records)}>
                     <IconNewCheck /> <span>
                     {t('approve')}
                     </span>
-                </button>
+                </button> */}
                 <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
                 <IconNewTrash />
                         <span>
