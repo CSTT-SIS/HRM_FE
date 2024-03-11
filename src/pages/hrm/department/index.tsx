@@ -35,6 +35,8 @@ import TableTree, { Cell, Header, Headers, Row, Rows } from '@atlaskit/table-tre
 import IconCaretDown from '@/components/Icon/IconCaretDown';
 import IconNewEdit from '@/components/Icon/IconNewEdit';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
+import IconDisplaylist from '@/components/Icon/IconDisplaylist';
+import IconDisplayTree from '@/components/Icon/IconDisplayTree';
 interface Props {
     [key: string]: any;
 }
@@ -94,14 +96,14 @@ const Department = ({ ...props }: Props) => {
 
     const handleDelete = (data: any) => {
         const swalDeletes = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-secondary',
-				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-				popup: 'confirm-delete',
-			},
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'confirm-delete',
+            },
             imageUrl: '/assets/images/delete_popup.png',
-			buttonsStyling: false,
-		});
+            buttonsStyling: false,
+        });
         swalDeletes
             .fire({
                 title: `${t('delete_department')}`,
@@ -110,7 +112,7 @@ const Department = ({ ...props }: Props) => {
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
                 confirmButtonText: `${t('confirm')}`,
-				reverseButtons: true,
+                reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -134,7 +136,7 @@ const Department = ({ ...props }: Props) => {
             )
         }
     }
-    type Content = { id: number; name: string; code: string; status: string };
+    type Content = { id: number; name: string; code: string; status: string; abbreviated: string };
 
     type Item = {
         id: number;
@@ -148,18 +150,21 @@ const Department = ({ ...props }: Props) => {
     );
     const Action = (props: Content) => (
         <div className="flex items-center w-max mx-auto gap-2">
-						<button type="button" className='button-edit' onClick={() => handleEdit(props)}>
-                        <IconNewEdit /><span>
-                            {t('edit')}
-                                </span>
-						</button>
-
-						<button type="button" className='button-delete' onClick={() => handleDelete(props)}>
-                        <IconNewTrash />
-                            <span>
-                            {t('delete')}
-                                </span>
-						</button>
+            <Tippy content={`${t('edit')}`}>
+                <button type="button" className='button-edit' onClick={() => handleEdit(props)}>
+                    <IconNewEdit /><span>
+                        {t('edit')}
+                    </span>
+                </button>
+            </Tippy>
+            <Tippy content={`${t('delete')}`}>
+                <button type="button" className='button-delete' onClick={() => handleDelete(props)}>
+                    <IconNewTrash />
+                    <span>
+                        {t('delete')}
+                    </span>
+                </button>
+            </Tippy>
         </div>
     );
     const items: Item[] = [
@@ -169,6 +174,7 @@ const Department = ({ ...props }: Props) => {
                 id: 1,
                 name: "Phòng hành chính",
                 code: "PB01",
+                abbreviated: "PHC",
                 status: "active"
             },
             hasChildren: true,
@@ -179,7 +185,9 @@ const Department = ({ ...props }: Props) => {
                         id: 2,
                         name: "Ban 1.1",
                         code: "B1.1",
-                        status: "active"
+                        status: "active",
+                        abbreviated: "PHCB1",
+
                     },
                     hasChildren: false,
 
@@ -193,6 +201,7 @@ const Department = ({ ...props }: Props) => {
                 id: 3,
                 name: "Phòng kĩ thuật",
                 code: "PB02",
+                abbreviated: "PHKT",
                 status: "active"
             },
             hasChildren: true,
@@ -203,6 +212,7 @@ const Department = ({ ...props }: Props) => {
                         id: 4,
                         name: "Ban 2.1",
                         code: "B2.1",
+                        abbreviated: "PHKTB1",
                         status: "active"
                     },
                     hasChildren: false,
@@ -214,6 +224,7 @@ const Department = ({ ...props }: Props) => {
                         id: 5,
                         name: "Ban 2.2",
                         code: "B2.2",
+                        abbreviated: "PHKTB2",
                         status: "active"
                     },
                     hasChildren: false,
@@ -224,13 +235,10 @@ const Department = ({ ...props }: Props) => {
         },
     ];
     const columns = [
-        {
-            accessor: 'id',
-            title: '#',
-            render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
-        },
+
         { accessor: 'name', title: 'Tên phòng ban', sortable: false },
         { accessor: 'code', title: 'Mã phòng ban', sortable: false },
+        { accessor: 'abbreviated', title: 'Tên viết tắt', sortable: false },
 
         {
             accessor: 'action',
@@ -278,11 +286,12 @@ const Department = ({ ...props }: Props) => {
                     </div>
                     <div className='display-style'>
                         Cách hiển thị
-                        <button type="button" className="btn btn-primary btn-sm m-1  custom-button-display" style={{ backgroundColor: display === 'flat' ? '#E9EBD5' : '#FAFBFC' }} onClick={() => setDisplay('flat')}>
-                            <img src="/assets/images/display-flat.svg" alt="img" />
+                        <button type="button" className="btn btn-primary btn-sm m-1  custom-button-display" style={{ backgroundColor: display === 'flat' ? '#E9EBD5' : '#FAFBFC', color: 'black' }} onClick={() => setDisplay('flat')}>
+                            <IconDisplaylist fill={display === 'flat' ? '#959E5E' : '#BABABA'}></IconDisplaylist>
                         </button>
                         <button type="button" className="btn btn-primary btn-sm m-1  custom-button-display" style={{ backgroundColor: display === 'tree' ? '#E9EBD5' : '#FAFBFC' }} onClick={() => setDisplay('tree')}>
-                            <img src="/assets/images/display-tree.png" alt="img" />
+                            <IconDisplayTree fill={display === 'tree' ? '#959E5E' : '#BABABA'}></IconDisplayTree>
+
                         </button>
                         <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
 
@@ -293,8 +302,9 @@ const Department = ({ ...props }: Props) => {
                         <div className="mb-5">
                             <TableTree>
                                 <Headers>
-                                    <Header width={600}>Tên phòng ban</Header>
-                                    <Header width={300}>Mã phòng ban</Header>
+                                    <Header width={300}>Tên PB</Header>
+                                    <Header width={150}>Mã PB</Header>
+                                    <Header width={150}>Tên viết tắt</Header>
                                     <Header width={100}>Thao tác</Header>
                                 </Headers>
                                 <Rows
@@ -308,16 +318,19 @@ const Department = ({ ...props }: Props) => {
                                         >
                                             <Cell singleLine>{content.name}</Cell>
                                             <Cell>{content.code}</Cell>
+                                            <Cell>{content.abbreviated}</Cell>
+
                                             <Cell> <div className="flex items-center w-max mx-auto gap-2">
                                                     <button type="button" className='button-edit' onClick={() => handleEdit(content)}>
-                                                        <IconNewEdit /> <span>
+                                                        <IconNewEdit /><span>
                                                             {t('edit')}
-                                                            </span>
+                                                        </span>
                                                     </button>
                                                     <button type="button" className='button-delete' onClick={() => handleDelete(content)}>
-                                                        <IconNewTrash /> <span>
+                                                        <IconNewTrash />
+                                                        <span>
                                                             {t('delete')}
-                                                            </span>
+                                                        </span>
                                                     </button>
                                             </div></Cell>
                                         </Row>
