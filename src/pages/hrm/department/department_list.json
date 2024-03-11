@@ -3,30 +3,39 @@
         "id": 1,
         "name": "Phòng hành chính",
         "code": "PB01",
-        "status": "active"
+        "status": "active",
+        "abbreviated": "PHC"
     },
     {
         "id": 2,
         "name": "Ban 1.1",
         "code": "B1.1",
-        "status": "active"
+        "status": "active",
+        "abbreviated": "PHCB1"
+
     },
     {
         "id": 3,
         "name": "Phòng kĩ thuật",
         "code": "PB02",
-        "status": "active"
+        "status": "active",
+        "abbreviated": "PHKT"
+
     },
     {
         "id": 4,
         "name": "Ban 2.1",
         "code": "B2.1",
-        "status": "active"
+        "status": "active",
+        "abbreviated": "PHKTB1"
+
     },
     {
         "id": 5,
         "name": "Ban 2.2",
         "code": "B2.2",
-        "status": "active"
+        "status": "active",
+        "abbreviated": "PHKTB2"
+
     }
 ]

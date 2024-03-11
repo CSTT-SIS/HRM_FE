@@ -127,19 +127,19 @@ const Department = ({ ...props }: Props) => {
 				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
 				popup: 'confirm-delete',
 			},
-            imageUrl: '/assets/images/delete_popup.png',
+			imageUrl: '/assets/images/delete_popup.png',
 			buttonsStyling: false,
 		});
 		swalDeletes
-        .fire({
-            title: `${t('delete_asset')}`,
-            html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.name}?`,
-            padding: '2em',
-            showCancelButton: true,
-            cancelButtonText: `${t('cancel')}`,
-            confirmButtonText: `${t('confirm')}`,
-            reverseButtons: true,
-        })
+			.fire({
+				title: `${t('delete_asset')}`,
+				html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.name}?`,
+				padding: '2em',
+				showCancelButton: true,
+				cancelButtonText: `${t('cancel')}`,
+				confirmButtonText: `${t('confirm')}`,
+				reverseButtons: true,
+			})
 			.then((result) => {
 				if (result.value) {
 					const value = getStorge.filter((item: any) => {
@@ -185,32 +185,32 @@ const Department = ({ ...props }: Props) => {
 		<>
 			{
 				props.type !== 'PB' ?
-                <div className="flex items-center w-max mx-auto gap-2">
-                <Tippy content={`${t('edit')}`}>
-                    <button type="button"  className='button-edit' onClick={() => handleEdit(props)}>
-                    <IconNewEdit /><span>
-                            {t('edit')}
-                                </span>
-                    </button>
-                </Tippy>
+					<div className="flex items-center w-max mx-auto gap-2">
+						<Tippy content={`${t('edit')}`}>
+							<button type="button" className='button-edit' onClick={() => handleEdit(props)}>
+								<IconNewEdit /><span>
+									{t('edit')}
+								</span>
+							</button>
+						</Tippy>
 
-                <Tippy content={`${t('delete')}`}>
-                    <button type="button" className='button-delete' onClick={() => handleDelete(props)}>
-                    <IconNewTrash />
-                            <span>
-                            {t('delete')}
-                                </span>
-                    </button>
-                </Tippy>
-                <Tippy content={`${t('work_schedule')}`}>
-						<Link href="/hrm/calendar" className="group">
-							<IconNewCalendar />
-                            <span>
-                            {t('work_schedule')}
-                                </span>
-						</Link>
-					</Tippy>
-            </div> : <></>
+						<Tippy content={`${t('delete')}`}>
+							<button type="button" className='button-delete' onClick={() => handleDelete(props)}>
+								<IconNewTrash />
+								<span>
+									{t('delete')}
+								</span>
+							</button>
+						</Tippy>
+						<Tippy content={`${t('work_schedule')}`}>
+							<Link href="/hrm/calendar" className="group">
+								<IconNewCalendar />
+								<span>
+									{t('work_schedule')}
+								</span>
+							</Link>
+						</Tippy>
+					</div> : <></>
 			}
 		</>
 
@@ -349,8 +349,8 @@ const Department = ({ ...props }: Props) => {
 				<div className="mb-5">
 					<TableTree>
 						<Headers>
-							<Header width={300}>Tên nhân viên</Header>
-							<Header width={300}>Mã nhân viên</Header>
+							<Header width={200}>Tên nhân viên</Header>
+							<Header width={100}>Mã nv</Header>
 							<Header width={200}>Chức vụ</Header>
 							<Header width={200}>Phòng ban</Header>
 							<Header width={100}>Thao tác</Header>
@@ -374,12 +374,17 @@ const Department = ({ ...props }: Props) => {
 												<div className="flex items-center w-max mx-auto gap-2">
 													<Tippy content={`${t('edit')}`}>
 														<button type="button" className='button-edit' onClick={() => handleEdit(content)}>
-															<IconPencil /> Sửa
+															<IconNewEdit /><span>
+																{t('edit')}
+															</span>
 														</button>
 													</Tippy>
 													<Tippy content={`${t('delete')}`}>
 														<button type="button" className='button-delete' onClick={() => handleDelete(content)}>
-															<IconTrashLines /> Xóa
+															<IconNewTrash />
+															<span>
+																{t('delete')}
+															</span>
 														</button>
 													</Tippy> </div> : <></>
 										}
