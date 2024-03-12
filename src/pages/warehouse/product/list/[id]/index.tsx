@@ -152,7 +152,8 @@ const ProductModal = ({ ...props }: Props) => {
                             }
                             : '',
                         minQuantity: data ? `${data?.minQuantity}` : '',
-                        maxQuantity: data ? `${data?.maxQuantity}` : ''
+                        maxQuantity: data ? `${data?.maxQuantity}` : '',
+                        barCode: data?.barCode ? `${data?.barCode}` : ''
                     }}
                     validationSchema={SubmittedForm}
                     onSubmit={(values) => {
@@ -236,6 +237,26 @@ const ProductModal = ({ ...props }: Props) => {
                                     {errors.maxQuantity ? (
                                         <div className="text-danger mt-1"> {errors.maxQuantity} </div>
                                     ) : null}
+                                </div>
+                            </div>
+                            <div className="flex justify-between gap-5">
+                                <div className="w-1/2">
+                                    <label htmlFor="barCode">
+                                        {' '}
+                                        {t('Barcode')}{' '}
+                                    </label>
+                                    <Field name="barCode" type="text" id="barCode" placeholder={`${t('')}`} className="form-input" />
+                                    {submitCount && errors.barCode ? <div className="mt-1 text-danger"> {errors.barCode} </div> : null}
+                                </div>
+                                <div className='w-1/2'>
+                                    <div className="mt-6 flex items-center justify-start gap-2">
+                                        <button type="submit" className="btn btn-primary add-button w-[200px]" disabled={disabled}>
+                                            {t('Tạo mã barcode')}
+                                        </button>
+                                        <button type="submit" className="btn btn-primary add-button w-[150px]" disabled={disabled}>
+                                            {t('In mã barcode')}
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <div className="">
