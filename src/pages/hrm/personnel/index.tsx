@@ -1,4 +1,4 @@
-import { useEffect, Fragment, useState, useCallback } from 'react';
+import { useEffect, Fragment, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { setPageTitle } from '../../../store/themeConfigSlice';
 import { lazy } from 'react';
@@ -44,6 +44,8 @@ interface Props {
 }
 
 const Department = ({ ...props }: Props) => {
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
 	const dispatch = useDispatch();
 	const { t } = useTranslation();
 	useEffect(() => {
@@ -341,10 +343,12 @@ const Department = ({ ...props }: Props) => {
 								{t('add')}
 							</button>
 						</Link>
-						<button type="button" className="btn btn-primary btn-sm m-1  custom-button">
-							<IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
-							Nhập file
-						</button>
+						<input type="file" ref={fileInputRef} style={{ display: "none" }} />
+                        
+						<button type="button" className="btn btn-primary btn-sm m-1 custom-button" onClick={() => fileInputRef.current?.click()}>
+                            <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
+                            Nhập file
+                        </button>
 						<button type="button" className="btn btn-primary btn-sm m-1  custom-button">
 							<IconDownload className="ltr:mr-2 rtl:ml-2" />
 							Xuất file excel
