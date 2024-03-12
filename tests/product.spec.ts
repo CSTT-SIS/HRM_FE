@@ -8,10 +8,12 @@ const fillProductForm = async (page: Page, text: string) => {
 
 	await page.locator('#unitId').click();
 	await page.keyboard.type('g');
+	await page.waitForLoadState('networkidle');
 	await page.keyboard.press('Enter');
 
 	await page.locator('#categoryId').click();
 	await page.keyboard.type('Vật tư hàng hoá');
+	await page.waitForLoadState('networkidle');
 	await page.keyboard.press('Enter');
 
 	await page.locator('#minQuantity').fill('1');

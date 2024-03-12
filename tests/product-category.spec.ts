@@ -2,10 +2,11 @@ import { test, expect, Page } from '@playwright/test';
 import { makeRamdomText } from '@/utils/commons';
 
 const fillForm = async (page: Page, text: string) => {
-	await page.locator('#name').fill(text)
+	await page.locator('#name').fill(text);
 
 	await page.locator('#warehouseId').click();
-	await page.keyboard.type('hành chính');
+	await page.keyboard.type('hanh');
+	await page.waitForLoadState('networkidle');
 	await page.keyboard.press('Enter');
 };
 
