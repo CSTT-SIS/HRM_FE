@@ -24,6 +24,7 @@ import IconCircleCheck from '@/components/Icon/IconCircleCheck';
 import IconXCircle from '@/components/Icon/IconXCircle';
 import IconEye from '@/components/Icon/IconEye';
 import IconChecks from '@/components/Icon/IconChecks';
+import { IconFilter } from '@/components/Icon/IconFilter';
 
 interface Props {
     [key: string]: any;
@@ -34,6 +35,7 @@ const ProposalPage = ({ ...props }: Props) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const router = useRouter();
+    const [active, setActive] = useState<any>([1]);
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
@@ -129,18 +131,21 @@ const ProposalPage = ({ ...props }: Props) => {
         { accessor: 'name', title: 'Tên yêu cầu', sortable: false },
         // { accessor: 'type', title: 'Loại yêu cầu', sortable: false },
         { accessor: 'content', title: 'Nội dung', sortable: false },
-        { accessor: 'status', title: 'Trạng thái', sortable: false },
+        {
+            accessor: 'status',
+            title: 'Trạng thái',
+            render: ({ status }: any) => <span>{status === "APPROVED" ? "Đã duyệt" : "Chưa duyệt"}</span>,
+            sortable: false
+        },
         {
             accessor: 'action',
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    {/* <Tippy content={`${t('detail')}`}> */}
-                    <button className='bg-[#F2E080] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/proposal-supply/${records.id}?status=${true}`)}>
+                    <button className='bg-[#F2E080] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/proposal-supply/${records.id}?status=${true}&&type=approve`)}>
                         <IconEye /> <span>{`${t('detail')}`}</span>
                     </button>
-                    {/* </Tippy> */}
                     {
                         records.status === "DRAFT" &&
                         <button className='bg-[#9CD3EB] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleDetail(records)}>
@@ -153,12 +158,12 @@ const ProposalPage = ({ ...props }: Props) => {
                             <IconTrashLines /> <span>{`${t('delete')}`}</span>
                         </button>
                     }
-                    {
+                    {/* {
                         records.status === "PENDING" &&
                         <button className='bg-[#C5E7AF] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/proposal-supply/${records.id}?status=${true}&&type=approve`)}>
-                            <IconChecks/> <span>{`${t('approve')}`}</span>
+                            <IconChecks /> <span>{`${t('approve')}`}</span>
                         </button>
-                    }
+                    } */}
                     {/* <Tippy content={`${t('reject')}`}>
                         <button type="button" onClick={() => handleReject(records)}>
                             <IconXCircle />
@@ -168,6 +173,11 @@ const ProposalPage = ({ ...props }: Props) => {
             ),
         },
     ]
+
+    const handleActive = (value: any) => {
+        setActive([value]);
+        localStorage.setItem('defaultFilterProposalOrder', value);
+    };
 
     return (
         <div>
@@ -187,6 +197,17 @@ const ProposalPage = ({ ...props }: Props) => {
                     </div>
 
                     <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
+                </div>
+                <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
+                    <div className="flex items-center flex-wrap gap-1">
+                        <IconFilter />
+                        <span>Lọc nhanh :</span>
+                        <div className='flex items-center flex-wrap gap-2'>
+                            <div className={active.includes(1) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(1)}>Chưa duyệt</div>
+                            <div className={active.includes(2) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(2)}>Đã duyệt</div>
+                            <div className={active.includes(3) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(3)}>Không duyệt</div>
+                        </div>
+                    </div>
                 </div>
                 <div className="datatables">
                     <DataTable

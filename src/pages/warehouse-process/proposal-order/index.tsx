@@ -24,6 +24,9 @@ import IconCircleCheck from '@/components/Icon/IconCircleCheck';
 import IconXCircle from '@/components/Icon/IconXCircle';
 import IconEye from '@/components/Icon/IconEye';
 import IconChecks from '@/components/Icon/IconChecks';
+import { IconFilter } from '@/components/Icon/IconFilter';
+import { DropdownWarehouses } from '@/services/swr/dropdown.twr';
+import Select, { components } from 'react-select';
 
 interface Props {
     [key: string]: any;
@@ -34,11 +37,14 @@ const ProposalPage = ({ ...props }: Props) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const router = useRouter();
+    const [active, setActive] = useState<any>([1]);
+    const [select, setSelect] = useState<any>();
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
     // get data
     const { data: proposal, pagination, mutate, isLoading } = Proposals({ sortBy: 'id.ASC', ...router.query, type: "PURCHASE" });
+    const { data: warehouseDropdown, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({});
 
     useEffect(() => {
         dispatch(setPageTitle(`${t('proposal')}`));
@@ -129,13 +135,24 @@ const ProposalPage = ({ ...props }: Props) => {
         },
         { accessor: 'name', title: 'Tên yêu cầu', sortable: false },
         {
+            accessor: 'warehouse',
+            title: 'Kho',
+            render: ({ warehouse }: any) => <span>{warehouse?.name}</span>,
+            sortable: false
+        },
+        {
             accessor: 'department',
             title: 'Phòng ban',
             render: ({ department }: any) => <span>{department?.name}</span>,
             sortable: false
         },
         // { accessor: 'content', title: 'Nội dung', sortable: false },
-        { accessor: 'status', title: 'Trạng thái', sortable: false },
+        {
+            accessor: 'status',
+            title: 'Trạng thái',
+            render: ({ status }: any) => <span>{status === "COMPLETED" ? "Đã duyệt" : "Chưa duyệt"}</span>,
+            sortable: false
+        },
         {
             accessor: 'action',
             title: 'Thao tác',
@@ -143,7 +160,7 @@ const ProposalPage = ({ ...props }: Props) => {
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
                     {/* <Tippy content={`${t('detail')}`}> */}
-                    <button className='bg-[#F2E080] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/proposal-order/${records.id}?status=${true}`)}>
+                    <button className='bg-[#F2E080] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/proposal-order/${records.id}?status=${true}&&type=approve`)}>
                         <IconEye /> <span>{`${t('detail')}`}</span>
                     </button>
                     {/* </Tippy> */}
@@ -159,13 +176,8 @@ const ProposalPage = ({ ...props }: Props) => {
                             <IconTrashLines /> <span>{`${t('delete')}`}</span>
                         </button>
                     }
-                    {
+                    {/* {
                         records.status === "PENDING" &&
-                        // <Tippy content={`${t('approve')}`}>
-                        //     <button type="button" onClick={() => router.push(`/warehouse-process/proposal-order/${records.id}?status=${true}&&type=approve`)}>
-                        //         <IconCircleCheck size={20} />
-                        //     </button>
-                        // </Tippy>
                         <button className='bg-[#C5E7AF] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/proposal-order/${records.id}?status=${true}&&type=approve`)}>
                             <IconChecks /> <span>{`${t('approve')}`}</span>
                         </button>
@@ -175,21 +187,29 @@ const ProposalPage = ({ ...props }: Props) => {
                         <button className='bg-[#C5E7AF] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/proposal-order/${records.id}?status=${true}&&type=managerApprove`)}>
                             <IconChecks /> <span>{`${t('approve')}`}</span>
                         </button>
-                    }
-                    {/* <Tippy content={`${t('reject')}`}>
-                        <button type="button" onClick={() => handleReject(records)}>
-                            <IconXCircle />
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('manager_reject')}`}>
-                        <button type="button" onClick={() => handleManagementReject(records)}>
-                            <IconXCircle />
-                        </button>
-                    </Tippy> */}
+                    } */}
                 </div>
             ),
         },
     ]
+    const handleChangeSelect = (e: any) => {
+        setSelect(e);
+        localStorage.setItem('defaultSelectProposalOrder', JSON.stringify(e))
+    };
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            setActive([Number(localStorage.getItem('defaultFilterProposalOrder'))])
+            if (localStorage.getItem("defaultSelectProposalOrder") !== null) {
+                setSelect(JSON.parse(localStorage.getItem("defaultSelectProposalOrder") || ""))
+            }
+        }
+    }, [router]);
+
+    const handleActive = (value: any) => {
+        setActive([value]);
+        localStorage.setItem('defaultFilterProposalOrder', value);
+    };
 
     return (
         <div>
@@ -209,6 +229,27 @@ const ProposalPage = ({ ...props }: Props) => {
                     </div>
 
                     <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
+                </div>
+                <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
+                    <div className="flex items-center flex-wrap gap-1">
+                        <IconFilter />
+                        <span>Lọc nhanh :</span>
+                        <div className='flex items-center flex-wrap gap-2'>
+                            <div className={active.includes(1) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(1)}>Chưa duyệt</div>
+                            <div className={active.includes(2) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(2)}>Đã duyệt</div>
+                            <div className={active.includes(3) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(3)}>Không duyệt</div>
+                        </div>
+                        <span className='ml-9'>Lọc kho :</span>
+                        <div className='w-52'>
+                            <Select
+                                options={warehouseDropdown?.data}
+                                maxMenuHeight={160}
+                                className='z-10'
+                                value={select || ''}
+                                onChange={e => handleChangeSelect(e)}
+                            />
+                        </div>
+                    </div>
                 </div>
                 <div className="datatables">
                     <DataTable

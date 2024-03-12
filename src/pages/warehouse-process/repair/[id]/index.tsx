@@ -12,7 +12,6 @@ import Tippy from '@tippyjs/react';
 import { DataTableSortStatus, DataTable } from 'mantine-datatable';
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
-import HandleDetailModal from '../modal/DetailModal';
 import { RepairDetails } from '@/services/swr/repair.twr';
 import { AddRepairDetail, AddRepairDetails, CreateRepair, DeleteRepairDetail, EditRepair, GetRepair, RepairApprove, RepairInprogress, RepairReject } from '@/services/apis/repair.api';
 import { Field, Form, Formik } from 'formik';
@@ -24,6 +23,10 @@ import IconBackward from '@/components/Icon/IconBackward';
 import * as Yup from 'yup';
 import Select, { components } from 'react-select';
 import IconBack from '@/components/Icon/IconBack';
+import HandleDetailForm from '../form/DetailModal';
+import Flatpickr from 'react-flatpickr';
+import 'flatpickr/dist/flatpickr.css';
+import moment from 'moment';
 
 interface Props {
     [key: string]: any;
@@ -204,6 +207,7 @@ const DetailPage = ({ ...props }: Props) => {
             } : "",
             description: data ? `${data?.description}` : "",
             damageLevel: data ? `${data?.damageLevel}` : "",
+            personRequest: JSON.parse(localStorage.getItem('profile') || "").fullName
         })
     }, [data]);
 
@@ -304,6 +308,9 @@ const DetailPage = ({ ...props }: Props) => {
         });
     }
 
+    const handleImage = (e: any) => {
+    }
+
     return (
         <div>
             {isLoading && (
@@ -323,33 +330,72 @@ const DetailPage = ({ ...props }: Props) => {
                 </Link>
             </div>
             <div className="mb-5">
-                <Formik
-                    initialValues={initialValue}
-                    validationSchema={SubmittedForm}
-                    onSubmit={values => {
-                        handleRepair(values);
-                    }}
-                    enableReinitialize
-                >
+                <div className="font-semibold">
+                    <div className="rounded">
+                        <button
+                            type="button"
+                            className={`flex w-full items-center p-4 text-white-dark dark:bg-[#1b2e4b] custom-accordion uppercase`}
+                            onClick={() => handleActive(1)}
+                        >
+                            {t('repair_infomation')}
+                            <div className={`ltr:ml-auto rtl:mr-auto ${active.includes(1) ? 'rotate-180' : ''}`}>
+                                <IconCaretDown />
+                            </div>
+                        </button>
+                        <div className={`mb-2 ${active.includes(1) ? 'custom-content-accordion' : ''}`}>
+                            <AnimateHeight duration={300} height={active.includes(1) ? 'auto' : 0}>
+                                <Formik
+                                    initialValues={initialValue}
+                                    validationSchema={SubmittedForm}
+                                    onSubmit={values => {
+                                        handleRepair(values);
+                                    }}
+                                    enableReinitialize
+                                >
 
-                    {({ errors, values, submitCount, setFieldValue }) => (
-                        <Form className="space-y-5" >
-                            <div className="font-semibold">
-                                <div className="rounded">
-                                    <button
-                                        type="button"
-                                        className={`flex w-full items-center p-4 text-white-dark dark:bg-[#1b2e4b] custom-accordion uppercase`}
-                                        onClick={() => handleActive(1)}
-                                    >
-                                        {t('repair_infomation')}
-                                        <div className={`ltr:ml-auto rtl:mr-auto ${active.includes(1) ? 'rotate-180' : ''}`}>
-                                            <IconCaretDown />
-                                        </div>
-                                    </button>
-                                    <div className={`mb-2 ${active.includes(1) ? 'custom-content-accordion' : ''}`}>
-                                        <AnimateHeight duration={300} height={active.includes(1) ? 'auto' : 0}>
+                                    {({ errors, values, submitCount, setFieldValue }) => (
+                                        <Form className="space-y-5" >
                                             <div className='p-4'>
-                                                <div className='flex justify-between gap-5'>
+                                                <div className='flex justify-between gap-5 mt-5 mb-5'>
+                                                    <div className="w-1/2">
+                                                        <label htmlFor="personRequest" className='label'> {t('person_request')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <Field
+                                                            name="personRequest"
+                                                            type="text"
+                                                            id="personRequest"
+                                                            placeholder={`${t('enter_code')}`}
+                                                            className={true ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                            disabled={true}
+                                                        />
+                                                        {submitCount && errors.personRequest ? (
+                                                            <div className="text-danger mt-1"> {`${errors.personRequest}`} </div>
+                                                        ) : null}
+                                                    </div>
+                                                    <div className="w-1/2">
+                                                        <label htmlFor="timeRequest" className='label'> {t('time_request')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <Field
+                                                            name="timeRequest"
+                                                            render={({ field }: any) => (
+                                                                <Flatpickr
+                                                                    data-enable-time
+                                                                    // placeholder={`${t('choose_break_end_time')}`}
+                                                                    options={{
+                                                                        enableTime: true,
+                                                                        dateFormat: 'Y-m-d H:i'
+                                                                    }}
+                                                                    value={moment().format("DD/MM/YYYY hh:mm")}
+                                                                    onChange={e => setFieldValue("estimatedDeliveryDate", moment(e[0]).format("YYYY-MM-DD hh:mm"))}
+                                                                    className={true ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                                    disabled={true}
+                                                                />
+                                                            )}
+                                                        />
+                                                        {submitCount && errors.estimatedDeliveryDate ? (
+                                                            <div className="text-danger mt-1"> {`${errors.estimatedDeliveryDate}`} </div>
+                                                        ) : null}
+                                                    </div>
+                                                </div>
+                                                <div className='flex justify-between gap-5 mt-5'>
                                                     <div className="w-1/2">
                                                         <label htmlFor="repairById" className='label' > {t('repair_by_id')} < span style={{ color: 'red' }}>* </span></label >
                                                         <Select
@@ -413,94 +459,91 @@ const DetailPage = ({ ...props }: Props) => {
                                                         <div className="text-danger mt-1"> {`${errors.damageLevel}`} </div>
                                                     ) : null}
                                                 </div>
-                                            </div>
-                                        </AnimateHeight>
-                                    </div>
-                                </div>
-                                <div className="rounded">
-                                    <button
-                                        type="button"
-                                        className={`flex w-full items-center p-4 text-white-dark dark:bg-[#1b2e4b] custom-accordion uppercase`}
-                                        onClick={() => handleActive(2)}
-                                    >
-                                        {t('repair_detail')}
-                                        <div className={`ltr:ml-auto rtl:mr-auto ${active.includes(2) ? 'rotate-180' : ''}`}>
-                                            <IconCaretDown />
-                                        </div>
-                                    </button>
-                                    <div className={`${active.includes(2) ? 'custom-content-accordion' : ''}`}>
-                                        <AnimateHeight duration={300} height={active.includes(2) ? 'auto' : 0}>
-                                            <div className='p-4'>
-                                                <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
-                                                    <div className="flex items-center flex-wrap">
-                                                        {
-                                                            !disable &&
-                                                            <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
-                                                                <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                                                                {t('add_detail')}
-                                                            </button>
-                                                        }
-                                                    </div>
-
-                                                    {/* <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
-                                                </div>
-                                                <div className="datatables">
-                                                    <DataTable
-                                                        highlightOnHover
-                                                        className="whitespace-nowrap table-hover"
-                                                        records={listDataDetail}
-                                                        columns={columns}
-                                                        // recordsPerPageOptions={PAGE_SIZES}
-                                                        // onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
-                                                        sortStatus={sortStatus}
-                                                        onSortStatusChange={setSortStatus}
-                                                        minHeight={200}
+                                                <div className='mt-5'>
+                                                    <label htmlFor="attachedImage" className='label'> {t('attached_image')} </label >
+                                                    <Field
+                                                        name="attachedImage"
+                                                        type="file"
+                                                        id="attachedImage"
+                                                        className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                        disabled={disable}
                                                     />
+                                                    {submitCount && errors.attachedImage ? (
+                                                        <div className="text-danger mt-1"> {`${errors.attachedImage}`} </div>
+                                                    ) : null}
                                                 </div>
                                             </div>
-                                        </AnimateHeight>
+                                            {
+                                                <RenturnError errors={errors} submitCount={submitCount} />
+                                            }
+                                        </Form>
+                                    )}
+                                </Formik >
+                            </AnimateHeight>
+                        </div>
+                    </div>
+                    <div className="rounded">
+                        <button
+                            type="button"
+                            className={`flex w-full items-center p-4 text-white-dark dark:bg-[#1b2e4b] custom-accordion uppercase`}
+                            onClick={() => handleActive(2)}
+                        >
+                            {t('repair_detail')}
+                            <div className={`ltr:ml-auto rtl:mr-auto ${active.includes(2) ? 'rotate-180' : ''}`}>
+                                <IconCaretDown />
+                            </div>
+                        </button>
+                        <div className={`${active.includes(2) ? 'custom-content-accordion' : ''}`}>
+                            <AnimateHeight duration={300} height={active.includes(2) ? 'auto' : 0}>
+                                <div className='p-4'>
+                                    <HandleDetailForm
+                                        data={dataDetail}
+                                        setData={setDataDetail}
+                                        orderDetailMutate={mutate}
+                                        listData={listDataDetail}
+                                        setListData={setListDataDetail}
+                                    />
+                                    <div className="datatables">
+                                        <DataTable
+                                            highlightOnHover
+                                            className="whitespace-nowrap table-hover"
+                                            records={listDataDetail}
+                                            columns={columns}
+                                            // recordsPerPageOptions={PAGE_SIZES}
+                                            // onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
+                                            sortStatus={sortStatus}
+                                            onSortStatusChange={setSortStatus}
+                                            minHeight={200}
+                                        />
                                     </div>
                                 </div>
-                                {
-                                    !disable &&
-                                    <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
-                                        <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
-                                            {t('cancel')}
-                                        </button>
-                                        <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
-                                            {router.query.id !== "create" ? t('update') : t('add')}
-                                        </button>
-                                    </div>
-                                }
-                                {
-                                    router.query.type === "approve" &&
-                                    <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
-                                        <button type="button" className="btn btn-outline-danger cancel-button w-28" onClick={() => handleReject()}>
-                                            {t('reject')}
-                                        </button>
-                                        <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleApprove()}>
-                                            {t('approve')}
-                                        </button>
-                                    </div>
-                                }
-                            </div>
-                            {
-                                <RenturnError errors={errors} submitCount={submitCount} />
-                            }
-                        </Form>
-                    )
+                            </AnimateHeight>
+                        </div>
+                    </div>
+                    {
+                        !disable &&
+                        <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
+                            <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
+                                {t('cancel')}
+                            </button>
+                            <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+                                {router.query.id !== "create" ? t('update') : t('save')}
+                            </button>
+                        </div>
                     }
-                </Formik >
+                    {
+                        router.query.type === "approve" &&
+                        <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
+                            <button type="button" className="btn btn-outline-danger cancel-button w-28" onClick={() => handleReject()}>
+                                {t('reject')}
+                            </button>
+                            <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleApprove()}>
+                                {t('approve')}
+                            </button>
+                        </div>
+                    }
+                </div>
             </div >
-            <HandleDetailModal
-                openModal={openModal}
-                setOpenModal={setOpenModal}
-                data={dataDetail}
-                setData={setDataDetail}
-                orderDetailMutate={mutate}
-                listData={listDataDetail}
-                setListData={setListDataDetail}
-            />
         </div >
     );
 };
