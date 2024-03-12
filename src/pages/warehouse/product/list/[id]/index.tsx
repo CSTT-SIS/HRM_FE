@@ -226,6 +226,7 @@ const ProductModal = ({ ...props }: Props) => {
 							<div className="flex justify-between gap-5">
 								<div className="w-1/2">
 									<label htmlFor="minQuantity" data-testid={'minQuantity'}>
+										{' '}
 										{t('min_quantity')} <span style={{ color: 'red' }}>* </span>
 									</label>
 									<Field name="minQuantity" type="number" id="minQuantity" placeholder={`${t('enter_min_quantity')}`} className="form-input" />
@@ -233,6 +234,7 @@ const ProductModal = ({ ...props }: Props) => {
 								</div>
 								<div className="w-1/2">
 									<label htmlFor="maxQuantity" data-testid={'maxQuantity'}>
+										{' '}
 										{t('max_quantity')} <span style={{ color: 'red' }}>* </span>
 									</label>
 									<Field name="maxQuantity" type="number" id="maxQuantity" placeholder={`${t('enter_max_quantity')}`} className="form-input" />
@@ -246,31 +248,31 @@ const ProductModal = ({ ...props }: Props) => {
 									{submitCount && errors.barCode ? <div className="mt-1 text-danger"> {errors.barCode} </div> : null}
 								</div>
 								<div className="w-1/2">
-									<div className="mt-6 flex items-center justify-start gap-2">
-										<button type="submit" className="btn btn-primary add-button w-[200px]" disabled={disabled}>
-											{t('Tạo mã barcode')}
-										</button>
-										<button type="submit" className="btn btn-primary add-button w-[150px]" disabled={disabled}>
-											{t('In mã barcode')}
-										</button>
-									</div>
+									<label htmlFor="description" data-testid={'description'}>
+										{' '}
+										{t('description')}{' '}
+									</label>
+									<Field name="description" as="textarea" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
+									{submitCount && errors.description ? <div className="mt-1 text-danger"> {errors.description} </div> : null}
 								</div>
 							</div>
-							<div className="">
-								<label htmlFor="description" data-testid={'description'}>
-									{' '}
-									{t('description')}{' '}
-								</label>
-								<Field name="description" type="text" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
-								{submitCount && errors.description ? <div className="mt-1 text-danger"> {errors.description} </div> : null}
-							</div>
-							<div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
-								<button data-testid={'cancel-btn'} type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
-									{t('cancel')}
-								</button>
-								<button data-testid={'submit-btn'} type="submit" className="btn btn-primary add-button ltr:ml-4 rtl:mr-4" disabled={disabled}>
-									{data !== undefined ? t('update') : t('add')}
-								</button>
+							<div className="mt-8 flex items-center justify-end gap-4 divide-x">
+								<div className="flex gap-4">
+									<button type="submit" className="btn btn-primary add-button w-[200px]" disabled={disabled}>
+										{t('Tạo mã barcode')}
+									</button>
+									<button type="submit" className="btn btn-primary add-button w-[150px]" disabled={disabled}>
+										{t('In mã barcode')}
+									</button>
+								</div>
+								<div className="flex gap-4">
+									<button data-testid={'cancel-btn'} type="button" className="btn btn-outline-danger cancel-button ml-4" onClick={() => handleCancel()}>
+										{t('cancel')}
+									</button>
+									<button data-testid={'submit-btn'} type="submit" className="btn btn-primary add-button" disabled={disabled}>
+										{data !== undefined ? t('update') : t('add')}
+									</button>
+								</div>
 							</div>
 						</Form>
 					)}
