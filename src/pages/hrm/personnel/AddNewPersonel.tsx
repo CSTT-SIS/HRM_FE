@@ -190,7 +190,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                                     <div className="upload__image-wrapper">
 
                                                                         <div className="custom-uploadfile" style={{ cursor: 'pointer' }} onClick={onImageUpload}>
-                                                                            <div className='upfile_content' style={{marginTop: imageList.length !== 0 ? '-1px' : '20px'}}>
+                                                                            <div className='upfile_content' style={{ marginTop: imageList.length !== 0 ? '-1px' : '20px' }}>
                                                                                 {
                                                                                     imageList.length === 0 ? <>
                                                                                         <img src='/assets/images/uploadfile.png' className='icon_upload'></img>
@@ -221,14 +221,6 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
-                                                        <label htmlFor="name" className='label'>
-                                                            {' '}
-                                                            {t('name_staff')} <span style={{ color: 'red' }}>* </span>
-                                                        </label>
-                                                        <Field name="name" type="text" id="name" placeholder={`${t('enter_name_staff')}`} className="form-input" />
-                                                        {submitCount ? errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null : ''}
-                                                    </div>
-                                                    <div className="mb-5 w-1/2">
                                                         <label htmlFor="surname" className='label'>
                                                             {' '}
                                                             {t('surname_middle')} <span style={{ color: 'red' }}>* </span>
@@ -236,7 +228,14 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                         <Field name="surname" type="text" id="surname" placeholder={t('enter_surname_middle')} className="form-input" />
                                                         {submitCount ? errors.surname ? <div className="mt-1 text-danger"> {errors.surname} </div> : null : ''}
                                                     </div>
-
+                                                    <div className="mb-5 w-1/2">
+                                                        <label htmlFor="name" className='label'>
+                                                            {' '}
+                                                            {t('name_staff')} <span style={{ color: 'red' }}>* </span>
+                                                        </label>
+                                                        <Field name="name" type="text" id="name" placeholder={`${t('enter_name_staff')}`} className="form-input" />
+                                                        {submitCount ? errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null : ''}
+                                                    </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
@@ -256,14 +255,6 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                         {submitCount ? errors.phone ? <div className="mt-1 text-danger"> {errors.phone} </div> : null : ''}
                                                     </div>
 
-                                                </div>
-                                                <div className="mb-5 w-1/2">
-                                                    <label htmlFor="userName" className='label'>
-                                                        {' '}
-                                                        {t('username')}<span style={{ color: 'red' }}>* </span>
-                                                    </label>
-                                                    <Field name="userName" type="text" id="userName" placeholder={t('enter_user_name')} className="form-input" />
-                                                    {submitCount ? errors.userName ? <div className="mt-1 text-danger"> {errors.userName} </div> : null : ''}
                                                 </div>
                                             </div>
                                             {/* <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>

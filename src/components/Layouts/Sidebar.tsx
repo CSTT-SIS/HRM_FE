@@ -166,7 +166,7 @@ const Sidebar = () => {
                         <ul className="relative space-y-0.5 p-4 py-0 font-semibold">
                             <li className="menu nav-item">
                                 <button type="button" className={`${currentMenu === 'dashboard' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('dashboard')}>
-                                    <Link href="/hrm/dashboard" className="group" style={{width: "100%", height: "100%", display: "flex", alignItems: "center"}}>
+                                    <Link href="/hrm/dashboard" className="group" style={{ width: "100%", height: "100%", display: "flex", alignItems: "center" }}>
                                         <div className="flex items-center">
                                             <IconMenuHome className="shrink-0 group-hover:!text-primary icon-menu icon-menu-1" />
                                             <span className="menu1-text ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('dashboard')}</span>
@@ -505,34 +505,18 @@ const Sidebar = () => {
                                                             </Link>
                                                         </li>
                                                         <li className="nav-item">
-                                                            <Link href="/warehouse-process/warehousing-bill" className="group final-level-menu">
+                                                            <Link href="/warehouse-process/warehousing-bill/import" className="group final-level-menu">
                                                                 <div className="flex items-center">
                                                                     <IconMenuDocumentation className="shrink-0 group-hover:!text-primary" />
-                                                                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('warehousing_bill')}</span>
+                                                                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('warehousing_bill_import')}</span>
                                                                 </div>
                                                             </Link>
                                                         </li>
                                                         <li className="nav-item">
-                                                            <Link href="/warehouse-process/list-proposal" className="group final-level-menu">
+                                                            <Link href="/warehouse-process/warehousing-bill/export" className="group final-level-menu">
                                                                 <div className="flex items-center">
                                                                     <IconMenuDocumentation className="shrink-0 group-hover:!text-primary" />
-                                                                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('proposal_list')}</span>
-                                                                </div>
-                                                            </Link>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                                <div className='divide'></div>
-                                                <li className="menu menu1 nav-item">
-                                                    <div className="flex items-start group-menu-name">
-                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color h-7">{t('order_product')}</span>
-                                                    </div>
-                                                    <ul className="text-gray-500">
-                                                        <li className="nav-item">
-                                                            <Link href="/warehouse-process/proposal-order" className="group final-level-menu">
-                                                                <div className="flex items-center">
-                                                                    <IconMenuProposal className="shrink-0 group-hover:!text-primary" />
-                                                                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('proposal')}</span>
+                                                                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('warehousing_bill_export')}</span>
                                                                 </div>
                                                             </Link>
                                                         </li>
@@ -541,6 +525,22 @@ const Sidebar = () => {
                                                                 <div className="flex items-center">
                                                                     <IconMenuPurchase className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('order_product')}</span>
+                                                                </div>
+                                                            </Link>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <div className='divide'></div>
+                                                <li className="menu menu1 nav-item">
+                                                    <div className="flex items-start group-menu-name">
+                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color h-7">{t('order_management')}</span>
+                                                    </div>
+                                                    <ul className="text-gray-500">
+                                                        <li className="nav-item">
+                                                            <Link href="/warehouse-process/proposal-order" className="group final-level-menu">
+                                                                <div className="flex items-center">
+                                                                    <IconMenuProposal className="shrink-0 group-hover:!text-primary" />
+                                                                    <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('order_management')}</span>
                                                                 </div>
                                                             </Link>
                                                         </li>
