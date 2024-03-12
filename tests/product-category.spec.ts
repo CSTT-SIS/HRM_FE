@@ -9,7 +9,7 @@ const fillForm = async (page: Page, text: string) => {
 	await page.keyboard.press('Enter');
 };
 
-test.skip('Product Category CRUD', () => {
+test.describe.serial('Product Category CRUD', () => {
 	const text = makeRamdomText(5);
 	const editText = text + 'edit';
 	test('01. Create', async ({ page }) => {

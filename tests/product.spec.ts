@@ -19,7 +19,7 @@ const fillProductForm = async (page: Page, text: string) => {
 	await page.locator('#maxQuantity').fill('100');
 };
 
-test.skip('Product CRUD', () => {
+test.describe.serial('Product CRUD', () => {
 	const text = makeRamdomText(5);
 	const editText = text + 'edit';
 	test('01. Create', async ({ page }) => {
