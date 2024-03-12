@@ -30,7 +30,7 @@ const fillProductForm = async (page: Page, text: string) => {
 test.describe('Product CRUD', () => {
 	const text = makeRamdomText(5);
 	const editText = text + '-edit';
-	test('Create', async ({ page }) => {
+	test('01. Create', async ({ page }) => {
 		await page.goto('/warehouse/product/list');
 
 		await page.getByTestId('add-product').click();
@@ -49,11 +49,11 @@ test.describe('Product CRUD', () => {
 		await page.getByTestId('search-product-input').fill(text);
 		await page.waitForLoadState('networkidle');
 
-		await page.getByTestId('edit-product-btn').first().waitFor();
+		await page.waitForTimeout(1000);
 		await expect(await page.getByTestId('edit-product-btn').count()).toBe(1);
 	});
 
-	test('Edit', async ({ page }) => {
+	test('02. Edit', async ({ page }) => {
 		await page.goto('/warehouse/product/list');
 
 		await page.getByTestId('search-product-input').fill(text);
@@ -63,7 +63,7 @@ test.describe('Product CRUD', () => {
 
 		await page.waitForLoadState('networkidle');
 
-		await fillProductForm(page, editText);``
+		await fillProductForm(page, editText);
 
 		await page.getByTestId('submit-btn').click();
 
@@ -74,11 +74,11 @@ test.describe('Product CRUD', () => {
 		await page.getByTestId('search-product-input').fill(editText);
 		await page.waitForLoadState('networkidle');
 
-		await page.getByTestId('delete-product-btn').first().waitFor();
+		await page.waitForTimeout(1000);
 		await expect(await page.getByTestId('edit-product-btn').count()).toBe(1);
 	});
 
-	test('Delete', async ({ page }) => {
+	test('03. Delete', async ({ page }) => {
 		await page.goto('/warehouse/product/list');
 
 		await page.getByTestId('search-product-input').fill(editText);
