@@ -553,3 +553,7 @@ li.menu>button:hover svg.icon-menu {
  .form-checkbox:checked {
     background-color: #046738!important;
  }
+
+.zIndex-10{
+    z-index: 10!important;
+}

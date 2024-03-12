@@ -147,8 +147,8 @@ const TaskModal = ({ ...props }: Props) => {
 													</label>
 													<Field as="select" name="creator" id="creator" className="form-input">
 														<option value="">Chọn người tạo</option>
-														<option value="Người tạo 1">Người tạo 1</option>
-														<option value="Người tạo 2">Người tạo 2</option>
+														<option value="Nguyễn Văn A">Nguyễn Văn A</option>
+														<option value="Trần Văn B">Trần Văn B</option>
 													</Field>
 													{errors.creator ? <div className="mt-1 text-danger"> {errors.creator} </div> : null}
 												</div>
@@ -161,7 +161,7 @@ const TaskModal = ({ ...props }: Props) => {
 													</label>
 													<Field as="select" name="executor" id="executor" className="form-input">
 														<option value="">Chọn người thực hiện</option>
-														<option value="Người thực hiện 1">Người thực hiện 1</option>
+														<option value="Lê Văn D">Lê Văn D</option>
 														<option value="Người thực hiện 2">Người thực hiện 2</option>
 													</Field>
 													{errors.executor ? <div className="mt-1 text-danger"> {errors.executor} </div> : null}

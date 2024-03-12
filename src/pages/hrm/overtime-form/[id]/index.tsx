@@ -214,7 +214,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('name_staff')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field as="select" name="name" id="name" className="form-input">
+                                                <Field disabled as="select" name="name" id="name" className="form-input">
                                                     { listPersonnel?.map((person: any) => {
                                                         return (
                                                             <option key={person.value} value={person.value}>
@@ -233,7 +233,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('duty')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field as="select" name="position" id="position" className="form-input">
+                                                <Field disabled as="select" name="position" id="position" className="form-input">
                                                     { listDuty?.map((duty: any) => {
                                                         return (
                                                             <option key={duty.value} value={duty.value}>
@@ -253,23 +253,12 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {t('department')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
                                                 <Field
+                                                disabled
                                                             name="department"
-                                                            render={({ field }: any) => (
-                                                                <DropdownTreeSelect
-                                                                className="dropdown-tree"
-                                                                  data={treeDataState}
-                                                                  texts={{ placeholder: `${t('choose_department')}`}}
-                                                                  showPartiallySelected={true}
-                                                                  inlineSearchInput={true}
-                                                                  mode='radioSelect'
-                                                                  onChange={(currentNode, selectedNodes) => {
-                                                                    console.log(selectedNodes[0]?.value)
-                                                                    setFieldValue('department', selectedNodes[0]);
-                                                                    handleChangeTreeData(selectedNodes)
-                                                                  }}
-                                                                />
-                                                                )}
-        />
+                                                            id="department"
+                                                            type="text"
+                                                            className="form-input"
+                                                            />
 
                                                     {submitCount ? errors.department ? <div className="mt-1 text-danger"> {errors.department} </div> : null : ''}
                                             </div>
@@ -344,6 +333,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                                 <Select
                                                                     // {...field}
                                                                     options={listPersonnel}
+                                                                    value={{value: "NV01", label: "Trần Văn B"}}
                                                                     isSearchable
                                                                     placeholder={t('choose_checker')}
                                                                     maxMenuHeight={150}

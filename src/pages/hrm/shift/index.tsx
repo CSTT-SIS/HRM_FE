@@ -20,6 +20,7 @@ import IconPencil from '../../../components/Icon/IconPencil';
 import IconTrashLines from '../../../components/Icon/IconTrashLines';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
+import Select from 'react-select';
 
 import { useRouter } from 'next/router';
 import ShiftModal from './modal/ShiftModal';
@@ -57,7 +58,20 @@ const Duty = ({ ...props }: Props) => {
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
     const [openModal, setOpenModal] = useState(false);
-
+    const list_type = [
+        {
+            value: 'all',
+            label: `${t('all')}`
+        },
+        {
+            value: 'active',
+            label: `${t('shift_base_time')}`
+        },
+        {
+            value: 'inactive',
+            label: `${t('shift_base_total_time')}`
+        }
+    ]
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const data = localStorage.getItem('shiftList');
@@ -231,12 +245,17 @@ const Duty = ({ ...props }: Props) => {
                     </div>
                     <div className='flex gap-2'>
                         <div className='flex gap-1'>
-                        <div className="flex items-center w-auto">Hiển thị</div>
-                            <select className="form-select w-auto">
-                                <option>Tất cả</option>
-                                <option>Ca theo thời gian</option>
-                                <option>Ca theo tổng số giờ</option>
-                            </select>
+                        <div className="flex items-center w-[80px]">Hiển thị</div>
+                        <Select
+                        className='w-[95%] zIndex-10'
+                                    id='unidepartmentparentIdtId'
+                                    name='departmentparentId'
+                                    // defaultValue='all'
+                                    placeholder={t('choose_type_shift')}
+                                    // onInputChange={e => handleSearch(e)}
+                                    options={list_type}
+                                    maxMenuHeight={160}
+                                />
                         </div>
                     <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
                         </div>

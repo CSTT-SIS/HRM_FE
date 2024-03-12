@@ -50,7 +50,7 @@ export function getCurrentFormattedTime() {
 
     const minute = now.getMinutes().toString().padStart(2, '0');
 
-    const formattedTime = `${year}-${month}-${day}T${hour}:${minute}`;
+    const formattedTime = `${year}-${month}-${day}`;
 
     return formattedTime;
 }
