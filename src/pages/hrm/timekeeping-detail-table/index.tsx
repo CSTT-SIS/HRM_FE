@@ -88,14 +88,14 @@ const Department = ({ ...props }: Props) => {
 
     const handleDelete = (data: any) => {
         const swalDeletes = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-secondary',
-				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-				popup: 'confirm-delete',
-			},
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'confirm-delete',
+            },
             imageUrl: '/assets/images/delete_popup.png',
-			buttonsStyling: false,
-		});
+            buttonsStyling: false,
+        });
         swalDeletes
             .fire({
                 title: `${t('delete_department')}`,
@@ -104,7 +104,7 @@ const Department = ({ ...props }: Props) => {
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
                 confirmButtonText: `${t('confirm')}`,
-				reverseButtons: true,
+                reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -132,7 +132,7 @@ const Department = ({ ...props }: Props) => {
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
                 confirmButtonText: `${t('confirm')}`,
-				reverseButtons: true,
+                reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -177,28 +177,28 @@ const Department = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                     <Tippy content={`${t('detail')}`}>
-                        <button type="button" onClick={() => handleEdit(records)}>
-                            <IconNewEye/><span>
+                    <Tippy content={`${t('detail')}`}>
+                        <button type="button" className="button-detail" onClick={() => handleEdit(records)}>
+                            <IconNewEye /><span>
                                 {t('detail')}
                             </span>
                         </button>
                     </Tippy>
                     <Tippy content={`${t('check')}`}>
-                    <button type="button" className="button-check" onClick={() => handleCheck(records)}>
-                        <IconNewCheck /> <span>
-                        {t('approve')}
-                        </span>
-                    </button>
-                </Tippy>
-                <Tippy content={`${t('delete')}`}>
-                    <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
-                    <IconNewTrash />
+                        <button type="button" className="button-check" onClick={() => handleCheck(records)}>
+                            <IconNewCheck /> <span>
+                                {t('approve')}
+                            </span>
+                        </button>
+                    </Tippy>
+                    <Tippy content={`${t('delete')}`}>
+                        <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                            <IconNewTrash />
                             <span>
-                            {t('delete')}
-                                </span>
-                    </button>
-                </Tippy>
+                                {t('delete')}
+                            </span>
+                        </button>
+                    </Tippy>
                 </div>
             ),
         },
@@ -212,7 +212,7 @@ const Department = ({ ...props }: Props) => {
                 </div>
             )}
             <div className="panel mt-6">
-            <h1>{t('timekeeping_table_detail')}</h1>
+                <h1>{t('timekeeping_table_detail')}</h1>
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
                         {/* <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 " >

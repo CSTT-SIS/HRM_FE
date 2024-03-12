@@ -1,4 +1,4 @@
-import { useEffect, Fragment, useState, useCallback } from 'react';
+import { useEffect, Fragment, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { setPageTitle } from '../../../store/themeConfigSlice';
 import { lazy } from 'react';
@@ -35,14 +35,22 @@ import IconNewTrash from '@/components/Icon/IconNewTrash';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import { toDateStringMonth } from '@/utils/commons';
+import monthSelectPlugin, { Config } from "flatpickr/dist/plugins/monthSelect"
+import "flatpickr/dist/plugins/monthSelect/style.css"
 
+
+const monthSelectConfig: Partial<Config> = {
+    shorthand: true, //defaults to false
+    dateFormat: "F Y", //defaults to "F Y"
+    theme: "light" // defaults to "light"
+};
 
 interface Props {
     [key: string]: any;
 }
 
 const Department = ({ ...props }: Props) => {
-
+    const fileInputRef=useRef();
     const dispatch = useDispatch();
     const { t } = useTranslation();
     useEffect(() => {
@@ -76,7 +84,7 @@ const Department = ({ ...props }: Props) => {
     }
     const [currentTime, setCurrentTime] = useState<any>(getCurrentMonth())
 
-    
+
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -252,40 +260,8 @@ const Department = ({ ...props }: Props) => {
         },
         { accessor: 'code', title: 'Mã nhân viên', sortable: false },
         { accessor: 'name', title: 'Tên nhân viên', sortable: false },
-        ...getDaysInMonthWithWeekdays(parseInt(currentTime.split('-')[1], 10), parseInt(currentTime.split('-')[0], 10)),
+        ...getDaysInMonthWithWeekdays(parseInt(currentTime.split('-')[1], 10), parseInt(currentTime.split('-')[0], 10))
 
-        {
-            accessor: 'action',
-            title: 'Thao tác',
-            titleClassName: '!text-center',
-            render: (records: any) => (
-                <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('detail')}`}>
-                        <Link href="/hrm/timekeeping-detail-table" className="button-detail">
-                            <IconNewEye /><span>
-                                {t('detail')}
-                            </span>
-                        </Link>
-
-                    </Tippy>
-                    <Tippy content={`${t('check')}`}>
-                        <button type="button" className="button-check" onClick={() => handleCheck(records)}>
-                            <IconNewCheck /> <span>
-                                {t('approve')}
-                            </span>
-                        </button>
-                    </Tippy>
-                    <Tippy content={`${t('delete')}`}>
-                        <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
-                            <IconNewTrash />
-                            <span>
-                                {t('delete')}
-                            </span>
-                        </button>
-                    </Tippy>
-                </div>
-            ),
-        },
     ])
     useEffect(() => {
         setColumn([
@@ -296,39 +272,8 @@ const Department = ({ ...props }: Props) => {
             },
             { accessor: 'code', title: 'Mã nhân viên', sortable: false },
             { accessor: 'name', title: 'Tên nhân viên', sortable: false },
-            ...getDaysInMonthWithWeekdays(parseInt(currentTime.split('-')[1], 10), parseInt(currentTime.split('-')[0], 10)),
-            {
-                accessor: 'action',
-                title: 'Thao tác',
-                titleClassName: '!text-center',
-                render: (records: any) => (
-                    <div className="flex items-center w-max mx-auto gap-2">
-                        <Tippy content={`${t('detail')}`}>
-                            <Link href="/hrm/timekeeping-detail-table" className="button-detail">
-                                <IconNewEye /><span>
-                                    {t('detail')}
-                                </span>
-                            </Link>
+            ...getDaysInMonthWithWeekdays(parseInt(currentTime.split('-')[1], 10), parseInt(currentTime.split('-')[0], 10))
 
-                        </Tippy>
-                        <Tippy content={`${t('check')}`}>
-                            <button type="button" className="button-check" onClick={() => handleCheck(records)}>
-                                <IconNewCheck /> <span>
-                                    {t('approve')}
-                                </span>
-                            </button>
-                        </Tippy>
-                        <Tippy content={`${t('delete')}`}>
-                            <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
-                                <IconNewTrash />
-                                <span>
-                                    {t('delete')}
-                                </span>
-                            </button>
-                        </Tippy>
-                    </div>
-                ),
-            },
         ])
     }, [currentTime])
     return (
@@ -347,20 +292,27 @@ const Department = ({ ...props }: Props) => {
                                                     {t('add')}
                                     </button>
                         </Link> */}
-
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                        <input type="file" ref={fileInputRef}  style={{ display: "none" }} />
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" onClick={()=>fileInputRef.current?.click()}>
                             <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
                             Nhập file
                         </button>
                     </div>
                     <div className="flex items-center">
+                        <span style={{ display: 'block', width: '100px' }}>{t('choose_month')}</span>
+
                         <Flatpickr
                             options={{
-                                dateFormat: 'm-Y',
+                                // dateFormat: 'd/m/y',
+                                defaultDate: new Date(),
+                                plugins: [
+                                    monthSelectPlugin(monthSelectConfig) // Sử dụng plugin với cấu hình
+                                ]
                             }}
+
                             value={currentTime}
                             onChange={(date) => setCurrentTime(toDateStringMonth(date[0]))}
-                            style={{ marginRight: '10px' }}
+                            style={{ marginRight: '10px', width: '150px' }}
                             className="form-input"
                         />
                         <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
