@@ -2,13 +2,9 @@ import { test, expect, Page } from '@playwright/test';
 import { makeRamdomText } from '@/utils/commons';
 
 const fillProductForm = async (page: Page, text: string) => {
-	await page.getByTestId('name').click();
-	await page.keyboard.press('Control+A');
-	await page.keyboard.type(text);
+	await page.locator('#name').fill(text);
 
-	await page.getByTestId('code').click();
-	await page.keyboard.press('Control+A');
-	await page.keyboard.type(text);
+	await page.locator('#code').fill(text);
 
 	await page.locator('#unitId').click();
 	await page.keyboard.type('g');
@@ -18,13 +14,9 @@ const fillProductForm = async (page: Page, text: string) => {
 	await page.keyboard.type('Vật tư hàng hoá');
 	await page.keyboard.press('Enter');
 
-	await page.getByTestId('minQuantity').click();
-	await page.keyboard.press('Control+A');
-	await page.keyboard.type('1');
+	await page.locator('#minQuantity').fill('1');
 
-	await page.getByTestId('maxQuantity').click();
-	await page.keyboard.press('Control+A');
-	await page.keyboard.type('10');
+	await page.locator('#maxQuantity').fill('100');
 };
 
 test.describe('Product CRUD', () => {
