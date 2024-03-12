@@ -438,7 +438,7 @@ const DetailPage = ({ ...props }: Props) => {
                                 {t('cancel')}
                             </button>
                             <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
-                                {router.query.id !== "create" ? t('update') : t('add')}
+                                {router.query.id !== "create" ? t('update') : t('save')}
                             </button>
                         </div>
                     }
