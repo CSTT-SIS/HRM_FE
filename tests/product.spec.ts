@@ -39,7 +39,6 @@ test.describe('Product CRUD', () => {
 		await expect(page).toHaveURL('/warehouse/product/list/create');
 
 		await fillProductForm(page, text);
-
 		await page.getByTestId('submit-btn').click();
 
 		await page.waitForLoadState('networkidle');
@@ -49,8 +48,9 @@ test.describe('Product CRUD', () => {
 		await page.getByTestId('search-product-input').fill(text);
 		await page.waitForLoadState('networkidle');
 
+		await page.getByTestId('edit-product-btn').first().waitFor({ state: 'visible' });
 		await page.waitForTimeout(1000);
-		await expect(await page.getByTestId('edit-product-btn').count()).toBe(1);
+		await expect(page.getByTestId('edit-product-btn')).toBeVisible();
 	});
 
 	test('02. Edit', async ({ page }) => {
@@ -60,22 +60,20 @@ test.describe('Product CRUD', () => {
 		await page.waitForLoadState('networkidle');
 
 		await page.getByTestId('edit-product-btn').first().click();
-
 		await page.waitForLoadState('networkidle');
 
 		await fillProductForm(page, editText);
-
 		await page.getByTestId('submit-btn').click();
 
 		await page.waitForLoadState('networkidle');
-
 		await expect(page).toHaveURL('/warehouse/product/list');
 
 		await page.getByTestId('search-product-input').fill(editText);
 		await page.waitForLoadState('networkidle');
 
+		await page.getByTestId('edit-product-btn').first().waitFor({ state: 'visible' });
 		await page.waitForTimeout(1000);
-		await expect(await page.getByTestId('edit-product-btn').count()).toBe(1);
+		await expect(page.getByTestId('edit-product-btn')).toBeVisible();
 	});
 
 	test('03. Delete', async ({ page }) => {
