@@ -1,4 +1,4 @@
-import { useEffect, Fragment, useState, useCallback } from 'react';
+import { useEffect, Fragment, useState, useCallback, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { setPageTitle } from '../../../store/themeConfigSlice';
 import { lazy } from 'react';
@@ -48,20 +48,21 @@ const monthSelectConfig: Partial<Config> = {
 };
 const treeData = [
     {
-      label: 'Phòng Tài chính',
-      value: '0-0',
-      children: [
-        { label: 'Phòng 1', value: '0-0-1' },
-        { label: 'Phòng 2', value: '0-0-2' },
-      ],
+        label: 'Phòng Tài chính',
+        value: '0-0',
+        children: [
+            { label: 'Phòng 1', value: '0-0-1' },
+            { label: 'Phòng 2', value: '0-0-2' },
+        ],
     },
     {
-      label: 'Phòng Nhân sự',
-      value: '0-1',
+        label: 'Phòng Nhân sự',
+        value: '0-1',
     },
-  ];
+];
 const OvertimeForm = ({ ...props }: Props) => {
     const [treeDataState, setTreeDataState] = useState<any>(treeData)
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -114,23 +115,23 @@ const OvertimeForm = ({ ...props }: Props) => {
     };
     const handleDelete = (data: any) => {
         const swalDeletes = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-secondary',
-				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-				popup: 'confirm-delete',
-			},
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'confirm-delete',
+            },
             imageUrl: '/assets/images/delete_popup.png',
-			buttonsStyling: false,
-		});
+            buttonsStyling: false,
+        });
         swalDeletes
             .fire({
                 title: `${t('delete_form')}`,
-				html: `<span class='confirm-span'>${t('delete_form')}</span> ${data.name}?`,
+                html: `<span class='confirm-span'>${t('delete_form')}</span> ${data.name}?`,
                 padding: '2em',
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
                 confirmButtonText: `${t('confirm')}`,
-				reverseButtons: true,
+                reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -144,23 +145,23 @@ const OvertimeForm = ({ ...props }: Props) => {
 
     const handleCheck = (data: any) => {
         const swalDeletes = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-secondary',
-				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-				popup: 'confirm-delete',
-			},
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'confirm-delete',
+            },
             imageUrl: '/assets/images/delete_popup.png',
-			buttonsStyling: false,
-		});
+            buttonsStyling: false,
+        });
         swalDeletes
             .fire({
                 title: `${t('check_form')}`,
-				html: `<span class='confirm-span'>${t('check')}</span> ${data.name}?`,
+                html: `<span class='confirm-span'>${t('check')}</span> ${data.name}?`,
                 padding: '2em',
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
                 confirmButtonText: `${t('confirm')}`,
-				reverseButtons: true,
+                reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -187,64 +188,74 @@ const OvertimeForm = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{(page - 1) * pageSize + index + 1}</span>,
         },
-        { accessor: 'code', title: `${t('personel_code')}`, sortable: false,
-        render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.code}</span>
-    },
-        { accessor: 'name', title: `${t('personel_name')}`, sortable: false,
-        render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.name}</span>
-    },
-        { accessor: 'position', title: `${t('personel_position')}`, sortable: false,
-        render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.position}</span>
-    },
-        { accessor: 'department', title: `${t('personel_department')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.department}</span>
-    },
-        { accessor: 'submitday', title: `${t('submitday')}`, sortable: false,         render: (records: any, index: any) => <span onClick={(records) => handleDetail(records)}>{records?.submitday}</span>
-    },
-        { accessor: 'fromdate', title: `${t('fromdate')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.fromdate}</span>
-    },
-        { accessor: 'enddate', title: `${t('enddate')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.enddate}</span>
-    },
+        {
+            accessor: 'code', title: `${t('personel_code')}`, sortable: false,
+            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.code}</span>
+        },
+        {
+            accessor: 'name', title: `${t('personel_name')}`, sortable: false,
+            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.name}</span>
+        },
+        {
+            accessor: 'position', title: `${t('personel_position')}`, sortable: false,
+            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.position}</span>
+        },
+        {
+            accessor: 'department', title: `${t('personel_department')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.department}</span>
+        },
+        {
+            accessor: 'submitday', title: `${t('submitday')}`, sortable: false, render: (records: any, index: any) => <span onClick={(records) => handleDetail(records)}>{records?.submitday}</span>
+        },
+        {
+            accessor: 'fromdate', title: `${t('fromdate')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.fromdate}</span>
+        },
+        {
+            accessor: 'enddate', title: `${t('enddate')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.enddate}</span>
+        },
         { accessor: 'shift', title: `${t('late_early_shift')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.shift}</span> },
-        { accessor: 'late_second', title: `${t('late_second')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.late_second}</span>
-    },
-        { accessor: 'early_second', title: `${t('early_second')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.early_second}</span>
-    },
+        {
+            accessor: 'late_second', title: `${t('late_second')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.late_second}</span>
+        },
+        {
+            accessor: 'early_second', title: `${t('early_second')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.early_second}</span>
+        },
         { accessor: 'checker', title: `${t('checker')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.checker}</span> },
-        { accessor: 'isCheck',
-         title: `${t('isCheck')}`,
-          sortable: false,
-          render: (records: any, index: any) => <span className={`badge badge-outline-${records?.isCheck ? "success" : "danger"} `} onClick={() => handleDetail(records)}>{records?.isCheck ? `${t('isCheckTrue')}` : `${t('isCheckFalse')}`}</span>
-    },
-    {
-        accessor: 'action',
-        title: 'Thao tác',
-        titleClassName: '!text-center',
-        render: (records: any) => (
-            <div className="flex items-center w-max mx-auto gap-2">
-                <button type="button"  className='button-detail' onClick={() => handleDetail(records)}>
-                <IconNewEye /><span>
-                        {t('detail')}
-                            </span>
-                </button>
-                <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
-                <IconNewEdit /><span>
-                        {t('edit')}
-                            </span>
-                </button>
-                {/* <button type="button" className="button-check" onClick={() => handleCheck(records)}>
+        {
+            accessor: 'isCheck',
+            title: `${t('isCheck')}`,
+            sortable: false,
+            render: (records: any, index: any) => <span className={`badge badge-outline-${records?.isCheck ? "success" : "danger"} `} onClick={() => handleDetail(records)}>{records?.isCheck ? `${t('isCheckTrue')}` : `${t('isCheckFalse')}`}</span>
+        },
+        {
+            accessor: 'action',
+            title: 'Thao tác',
+            titleClassName: '!text-center',
+            render: (records: any) => (
+                <div className="flex items-center w-max mx-auto gap-2">
+                    <button type="button" className='button-detail' onClick={() => handleDetail(records)}>
+                        <IconNewEye /><span>
+                            {t('detail')}
+                        </span>
+                    </button>
+                    <button type="button" className='button-edit' onClick={() => handleEdit(records)}>
+                        <IconNewEdit /><span>
+                            {t('edit')}
+                        </span>
+                    </button>
+                    {/* <button type="button" className="button-check" onClick={() => handleCheck(records)}>
                     <IconNewCheck /> <span>
                     {t('approve')}
                     </span>
                 </button> */}
-                <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
-                <IconNewTrash />
+                    <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                        <IconNewTrash />
                         <span>
-                        {t('delete')}
-                            </span>
-                </button>
-        </div>
-        )
-    },
+                            {t('delete')}
+                        </span>
+                    </button>
+                </div>
+            )
+        },
     ]
 
     return (
@@ -258,13 +269,14 @@ const OvertimeForm = ({ ...props }: Props) => {
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
                         <Link href="/hrm/overtime-form/create">
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
-                                    <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                                                    {t('add')}
-                                    </button>
+                            <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                                <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                {t('add')}
+                            </button>
                         </Link>
 
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                        <input type="file" ref={fileInputRef} style={{ display: "none" }} />
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" onClick={() => fileInputRef.current?.click()}>
                             <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
                             Nhập file
                         </button>
@@ -275,37 +287,37 @@ const OvertimeForm = ({ ...props }: Props) => {
                     </div>
                     <div className='flex flex-row gap-2'>
                         <div className='flex flex-1 gap-1'>
-                        <div className="flex items-center min-w-[80px]">{t('choose_department')}</div>
-                        <DropdownTreeSelect
+                            <div className="flex items-center min-w-[80px]">{t('choose_department')}</div>
+                            <DropdownTreeSelect
                                 className="dropdown-tree flex-1 for-search"
-                                                                  data={treeDataState}
-                                                                  texts={{ placeholder: `${t('choose_department')}`}}
-                                                                  showPartiallySelected={true}
-                                                                  inlineSearchInput={true}
-                                                                  mode='radioSelect'
-                                                                />
+                                data={treeDataState}
+                                texts={{ placeholder: `${t('choose_department')}` }}
+                                showPartiallySelected={true}
+                                inlineSearchInput={true}
+                                mode='radioSelect'
+                            />
                         </div>
                         <div className='flex flex-1 gap-1 justify-end'>
-                        <div className="flex items-center min-w-[80px]">{t('choose_month')}</div>
-                        <Flatpickr
-                            className='form-input flex-[20%]'
-                            options = {{
-                            // dateFormat: 'd/m/y',
-                            defaultDate: new Date(),
-                            locale: {
-                                ...Vietnamese
-                            },
-                                plugins: [
-                                    monthSelectPlugin(monthSelectConfig) // Sử dụng plugin với cấu hình
-                                ]
-                            }}
-                            onChange={(selectedDates, dateStr, instance) => {
-                                // Xử lý sự kiện thay đổi ngày tháng ở đây
-                            }}
-                         />
+                            <div className="flex items-center min-w-[80px]">{t('choose_month')}</div>
+                            <Flatpickr
+                                className='form-input flex-[20%]'
+                                options={{
+                                    // dateFormat: 'd/m/y',
+                                    defaultDate: new Date(),
+                                    locale: {
+                                        ...Vietnamese
+                                    },
+                                    plugins: [
+                                        monthSelectPlugin(monthSelectConfig) // Sử dụng plugin với cấu hình
+                                    ]
+                                }}
+                                onChange={(selectedDates, dateStr, instance) => {
+                                    // Xử lý sự kiện thay đổi ngày tháng ở đây
+                                }}
+                            />
                         </div>
                         <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
-                        </div>
+                    </div>
                 </div>
                 <div className="datatables">
                     <DataTable
@@ -334,7 +346,7 @@ const OvertimeForm = ({ ...props }: Props) => {
                 setData={setData}
                 setGetStorge={setGetStorge}
             />
-             <DetailModal
+            <DetailModal
                 openModal={openDetail}
                 setOpenModal={setOpenDetail}
                 data={data}

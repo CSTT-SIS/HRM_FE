@@ -1,4 +1,4 @@
-import { useEffect, Fragment, useState, useCallback } from 'react';
+import { useEffect, Fragment, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { setPageTitle } from '../../../store/themeConfigSlice';
 import { lazy } from 'react';
@@ -64,6 +64,7 @@ const treeData = [
 
 const ForgetForm = ({ ...props }: Props) => {
     const [treeDataState, setTreeDataState] = useState<any>(treeData)
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -266,7 +267,8 @@ const ForgetForm = ({ ...props }: Props) => {
                                 {t('add')}
                             </button>
                         </Link>
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                        <input type="file" ref={fileInputRef} style={{ display: "none" }} />
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" onClick={() => fileInputRef.current?.click()}>
                             <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
                             Nhập file
                         </button>
