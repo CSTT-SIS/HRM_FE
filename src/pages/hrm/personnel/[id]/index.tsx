@@ -19,6 +19,7 @@ import AnimateHeight from 'react-animate-height';
 import IconCaretDown from '@/components/Icon/IconCaretDown';
 import IconBack from '@/components/Icon/IconBack';
 import personnel_list from '../personnel_list.json';
+import ImageUploading, { ImageListType } from 'react-images-uploading';
 
 interface Props {
     [key: string]: any;
@@ -27,7 +28,11 @@ interface Props {
 const EditPersonel = ({ ...props }: Props) => {
     const router = useRouter();
     const [detail, setDetail] = useState<any>();
-
+    const [images, setImages] = useState<any>([]);
+    const onChange = (imageList: ImageListType, addUpdateIndex: number[] | undefined) => {
+        setImages(imageList as never[]);
+    };
+    const maxNumber = 69;
     const { t } = useTranslation();
     const [disabled, setDisabled] = useState(false);
     const [query, setQuery] = useState<any>();
@@ -157,6 +162,7 @@ const EditPersonel = ({ ...props }: Props) => {
                 {({ errors, touched, values, setFieldValue, submitCount }) => (
                     <Form className="space-y-5">
                         <div className="mb-5">
+
                             <div className="space-y-2 font-semibold">
                                 <div className="rounded">
                                     <button
@@ -168,10 +174,40 @@ const EditPersonel = ({ ...props }: Props) => {
                                             <IconCaretDown />
                                         </div>
                                     </button>
-                                    <div className={`${active === '1' ? 'custom-content-accordion' : ''}`}>
-                                        <AnimateHeight duration={300} height={active === '1' ? 'auto' : 0}>
+                                    <div className={`custom-content-accordion`}>
+
+                                        <AnimateHeight duration={300} height={'auto'}>
                                             <div className="space-y-2 border-[#d3d3d3] p-4 text-[13px] text-white-dark dark:border-[#1b2e4b]">
                                                 <div className='flex justify-between gap-5'>
+                                                    <div className="mb-5 w-1/2">
+                                                        <div className="custom-file-container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} data-upload-id="myFirstImage">
+                                                            <div className="label-container" style={{ marginBottom: '0', marginRight: '20px' }}>
+                                                                <label style={{ color: '#476704', fontSize: '14px', marginBottom: '0' }}> {t('update_avatar')} </label>
+                                                            </div>
+                                                            <ImageUploading value={images} onChange={onChange} maxNumber={maxNumber}>
+                                                                {({ imageList, onImageUpload, onImageRemoveAll, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
+                                                                    <div className="upload__image-wrapper">
+
+                                                                        <div className="custom-uploadfile" style={{ cursor: 'pointer' }} onClick={onImageUpload}>
+                                                                            <div className='upfile_content' style={{ marginTop: imageList.length !== 0 ? '-1px' : '20px' }}>
+                                                                                {
+                                                                                    imageList.length === 0 ? <>
+                                                                                        <img src='/assets/images/uploadfile.png' className='icon_upload'></img>
+                                                                                        Tải lên</> : <></>
+                                                                                }
+
+                                                                                {imageList.map((image, index) => (
+                                                                                    <img src={image.dataURL} alt="img" className="m-auto" style={{ width: '80px', height: '80px', borderRadius: '50px' }} />
+                                                                                ))}
+                                                                            </div>
+                                                                        </div>
+                                                                        &nbsp;
+                                                                    </div>
+                                                                )}
+                                                            </ImageUploading>
+                                                        </div>
+
+                                                    </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="code" className='label'>
                                                             {' '}
@@ -179,6 +215,17 @@ const EditPersonel = ({ ...props }: Props) => {
                                                         </label>
                                                         <Field name="code" type="text" id="code" placeholder={`${t('enter_code_staff')}`} className="form-input" />
                                                         {submitCount ? errors.code ? <div className="mt-1 text-danger"> {errors.code} </div> : null : ''}
+                                                    </div>
+
+                                                </div>
+                                                <div className='flex justify-between gap-5'>
+                                                    <div className="mb-5 w-1/2">
+                                                        <label htmlFor="surname" className='label'>
+                                                            {' '}
+                                                            {t('surname_middle')} <span style={{ color: 'red' }}>* </span>
+                                                        </label>
+                                                        <Field name="surname" type="text" id="surname" placeholder={t('enter_surname_middle')} className="form-input" />
+                                                        {submitCount ? errors.surname ? <div className="mt-1 text-danger"> {errors.surname} </div> : null : ''}
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="name" className='label'>
@@ -191,14 +238,6 @@ const EditPersonel = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
-                                                        <label htmlFor="surname" className='label'>
-                                                            {' '}
-                                                            {t('surname_middle')} <span style={{ color: 'red' }}>* </span>
-                                                        </label>
-                                                        <Field name="surname" type="text" id="surname" placeholder={t('enter_surname_middle')} className="form-input" />
-                                                        {submitCount ? errors.surname ? <div className="mt-1 text-danger"> {errors.surname} </div> : null : ''}
-                                                    </div>
-                                                    <div className="mb-5 w-1/2">
                                                         <label htmlFor="email" className='label'>
                                                             {' '}
                                                             Email <span style={{ color: 'red' }}>* </span>
@@ -206,8 +245,6 @@ const EditPersonel = ({ ...props }: Props) => {
                                                         <Field name="email" type="text" id="email" placeholder={t('enter_email')} className="form-input" />
                                                         {submitCount ? errors.email ? <div className="mt-1 text-danger"> {errors.email} </div> : null : ''}
                                                     </div>
-                                                </div>
-                                                <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="phone" className='label'>
                                                             {' '}
@@ -216,19 +253,12 @@ const EditPersonel = ({ ...props }: Props) => {
                                                         <Field name="phone" type="text" id="phone" placeholder={t('enter_phone_number')} className="form-input" />
                                                         {submitCount ? errors.phone ? <div className="mt-1 text-danger"> {errors.phone} </div> : null : ''}
                                                     </div>
-                                                    <div className="mb-5 w-1/2">
-                                                        <label htmlFor="userName" className='label'>
-                                                            {' '}
-                                                            {t('username')}<span style={{ color: 'red' }}>* </span>
-                                                        </label>
-                                                        <Field name="userName" type="text" id="userName" placeholder={t('enter_user_name')} className="form-input" />
-                                                        {submitCount ? errors.userName ? <div className="mt-1 text-danger"> {errors.userName} </div> : null : ''}
-                                                    </div>
+
                                                 </div>
                                             </div>
                                             {/* <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
-																		{t('reset_password')}
-																	</button> */}
+                                                                   {t('reset_password')}
+                                                               </button> */}
                                         </AnimateHeight>
                                     </div>
                                 </div>
@@ -243,22 +273,22 @@ const EditPersonel = ({ ...props }: Props) => {
                                             <IconCaretDown />
                                         </div>
                                     </button>
-                                    <div className={`${active === '2' ? 'custom-content-accordion' : ''}`}>
-                                        <AnimateHeight duration={300} height={active === '2' ? 'auto' : 0}>
+                                    <div className={`custom-content-accordion`}>
+
+                                        <AnimateHeight duration={300} height={'auto'}>
                                             <div className="space-y-2 border-t border-[#d3d3d3] p-4 text-[13px] text-white-dark dark:border-[#1b2e4b]">
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="othername" className='label'>
                                                             {' '}
-                                                            {t('other_name')}<span style={{ color: 'red' }}>* </span>
+                                                            {t('other_name')}
                                                         </label>
                                                         <Field name="othername" type="text" id="othername" placeholder={t('enter_other_name')} className="form-input" />
-                                                        {submitCount ? errors.othername ? <div className="mt-1 text-danger"> {errors.othername} </div> : null : ''}
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="dateofbirth" className='label'>
                                                             {' '}
-                                                            {t('date_of_birth')} <span style={{ color: 'red' }}>* </span>
+                                                            {t('date_of_birth')}
                                                         </label>
                                                         <Flatpickr
                                                             options={{
@@ -268,35 +298,42 @@ const EditPersonel = ({ ...props }: Props) => {
                                                             className="form-input"
                                                             placeholder={`${t('enter_date_of_birth')}`}
                                                         />
-                                                        {submitCount ? errors.dateofbirth ? <div className="mt-1 text-danger"> {errors.dateofbirth} </div> : null : ''}
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="sex" className='label'>
                                                             {' '}
-                                                            {t('gender')} <span style={{ color: 'red' }}>* </span>
+                                                            {t('gender')}
                                                         </label>
-                                                        <select className="form-select w-100">
-                                                            <option>{t('male')}</option>
-                                                            <option>{t('female')}</option>
-                                                        </select>
-                                                        {submitCount ? errors.sex ? <div className="mt-1 text-danger"> {errors.sex} </div> : null : ''}
+                                                        <Select
+                                                            id='sex'
+                                                            name='sex'
+                                                            options={[{
+                                                                label: 'Nam'
+                                                            }, {
+                                                                label: 'Nữ'
+                                                            }]}
+                                                            placeholder={'Chọn giới tính'}
+                                                            maxMenuHeight={160}
+                                                            onChange={e => {
+                                                                setFieldValue('sex', e)
+                                                            }}
+                                                        />
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="IDnumber" className='label'>
                                                             {' '}
-                                                            {t('id_number')} <span style={{ color: 'red' }}>* </span>
+                                                            {t('id_number')}
                                                         </label>
                                                         <Field name="IDnumber" type="text" id="IDnumber" placeholder={t('enter_id_number')} className="form-input" />
-                                                        {submitCount ? errors.IDnumber ? <div className="mt-1 text-danger"> {errors.IDnumber} </div> : null : ''}
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="dateissue" className='label'>
                                                             {' '}
-                                                            {t('date_of_issue')}<span style={{ color: 'red' }}>* </span>
+                                                            {t('date_of_issue')}
                                                         </label>
                                                         <Flatpickr
                                                             options={{
@@ -306,16 +343,99 @@ const EditPersonel = ({ ...props }: Props) => {
                                                             className="form-input"
                                                             placeholder={`${t('enter_date_of_issue')}`}
                                                         />
-                                                        {submitCount ? errors.dateissue ? <div className="mt-1 text-danger"> {errors.dateissue} </div> : null : ''}
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="IDnumber" className='label'>
                                                             {' '}
-                                                            {t('address_issue')}<span style={{ color: 'red' }}>* </span>
+                                                            {t('address_issue')}
                                                         </label>
                                                         <Field name="IDnumber" type="text" id="IDnumber" placeholder={t('enter_address_issue')} className="form-input" />
-                                                        {submitCount ? errors.IDnumber ? <div className="mt-1 text-danger"> {errors.IDnumber} </div> : null : ''}
                                                     </div>
+                                                </div>
+                                                <div className='flex justify-between gap-5'>
+                                                    <div className="mb-5 w-1/2">
+                                                        <label htmlFor="id_passport" className='label'>
+                                                            {' '}
+                                                            {t('id_passport')}
+                                                        </label>
+                                                        <Field name="id_passport" type="text" id="id_passport" placeholder={t('enter_id_passport')} className="form-input" />
+                                                    </div>
+                                                    <div className="mb-5 w-1/2">
+                                                        <label htmlFor="dateissuepassport" className='label'>
+                                                            {' '}
+                                                            {t('date_of_issue_passport')}
+                                                        </label>
+                                                        <Flatpickr
+                                                            options={{
+                                                                dateFormat: 'Y-m-d',
+                                                                position: 'auto left',
+                                                            }}
+                                                            className="form-input"
+                                                            placeholder={`${t('enter_date_of_issue_passport')}`}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className='flex justify-between gap-5'>
+                                                    <div className="mb-5 w-1/2">
+                                                        <label htmlFor="issuepassport" className='label'>
+                                                            {' '}
+                                                            {t('address_issue_passport')}
+                                                        </label>
+                                                        <Field name="issuepassport" type="text" id="issuepassport" placeholder={t('enter_address_issue_passport')} className="form-input" />
+                                                    </div>
+                                                    <div className="mb-5 w-1/2">
+                                                        <label htmlFor="dateendpassport" className='label'>
+                                                            {' '}
+                                                            {t('date_end_passport')}
+                                                        </label>
+                                                        <Flatpickr
+                                                            options={{
+                                                                dateFormat: 'Y-m-d',
+                                                                position: 'auto left',
+                                                            }}
+                                                            className="form-input"
+                                                            placeholder={`${t('enter_date_end_passport')}`}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className='flex justify-between gap-5'>
+                                                    <div className="mb-5 w-1/2">
+                                                        <label htmlFor="place_of_birth" className='label'>
+                                                            {' '}
+                                                            {t('place_of_birth')}
+                                                        </label>
+                                                        <Field name="place_of_birth" type="text" id="place_of_birth" placeholder={t('enter_place_of_birth')} className="form-input" />
+                                                    </div>
+                                                    <div className="mb-5 w-1/2">
+                                                        <label htmlFor="nation" className='label'>
+                                                            {' '}
+                                                            {t('nation')}
+                                                        </label>
+                                                        <Field name="nation" type="text" id="nation" placeholder={t('enter_nation')} className="form-input" />
+                                                    </div>
+                                                </div>
+                                                <div className='flex justify-between gap-5'>
+                                                    <div className="mb-5 w-1/2">
+                                                        <label htmlFor="province" className='label'>
+                                                            {' '}
+                                                            {t('province')}
+                                                        </label>
+                                                        <Field name="province" type="text" id="province" placeholder={t('enter_province')} className="form-input" />
+                                                    </div>
+                                                    <div className="mb-5 w-1/2">
+                                                        <label htmlFor="religion" className='label'>
+                                                            {' '}
+                                                            {t('religion')}
+                                                        </label>
+                                                        <Field name="religion" type="text" id="religion" placeholder={t('enter_religion')} className="form-input" />
+                                                    </div>
+                                                </div>
+                                                <div className="mb-5 w-1/2">
+                                                    <label htmlFor="marital_status" className='label'>
+                                                        {' '}
+                                                        {t('marital_status')}
+                                                    </label>
+                                                    <Field name="marital_status" type="text" id="marital_status" placeholder={t('enter_marital_status')} className="form-input" />
                                                 </div>
                                             </div>
                                         </AnimateHeight>
@@ -332,12 +452,12 @@ const EditPersonel = ({ ...props }: Props) => {
                                             <IconCaretDown />
                                         </div>
                                     </button>
-                                    <div className={`${active === '3' ? 'custom-content-accordion' : ''}`}>
-                                        <AnimateHeight duration={300} height={active === '3' ? 'auto' : 0}>
+                                    <div className={`custom-content-accordion`}>
+                                        <AnimateHeight duration={300} height={'auto'}>
                                             <div className="space-y-2 border-t border-[#d3d3d3] p-4 text-[13px] text-white-dark dark:border-[#1b2e4b]">
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
-                                                        <label htmlFor="departmentparentId" className='label'> {t('Department_Parent')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <label htmlFor="departmentparentId" className='label'> {t('Department_Parent')}</label >
                                                         <Select
                                                             id='unidepartmentparentIdtId'
                                                             name='departmentparentId'
@@ -350,12 +470,10 @@ const EditPersonel = ({ ...props }: Props) => {
                                                                 setFieldValue('departmentparentId', e)
                                                             }}
                                                         />
-                                                        {submitCount ? errors.departmentparentId ? (
-                                                            <div className="text-danger mt-1"> {errors.departmentparentId} </div>
-                                                        ) : null : ''}
+
                                                     </div>
                                                     <div className="mb-5 w-1/2">
-                                                        <label htmlFor="manageId" className='label'> {t('duty')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <label htmlFor="manageId" className='label'> {t('duty')}</label >
                                                         <Select
                                                             id='manageId'
                                                             name='manageId'
@@ -369,14 +487,12 @@ const EditPersonel = ({ ...props }: Props) => {
                                                                 setFieldValue('manageId', e)
                                                             }}
                                                         />
-                                                        {submitCount ? errors.manageId ? (
-                                                            <div className="text-danger mt-1"> {errors.manageId} </div>
-                                                        ) : null : ''}
+
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
-                                                        <label htmlFor="manageId" className='label'> {t('Manager')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <label htmlFor="manageId" className='label'> {t('Manager')} </label >
                                                         <Select
                                                             id='manageId'
                                                             name='manageId'
@@ -389,12 +505,10 @@ const EditPersonel = ({ ...props }: Props) => {
                                                                 setFieldValue('manageId', e)
                                                             }}
                                                         />
-                                                        {submitCount ? errors.manageId ? (
-                                                            <div className="text-danger mt-1"> {errors.manageId} </div>
-                                                        ) : null : ''}
+
                                                     </div>
                                                     <div className="mb-5 w-1/2">
-                                                        <label htmlFor="manageId" className='label'> {t('Manager_2')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <label htmlFor="manageId" className='label'> {t('Manager_2')} </label >
                                                         <Select
                                                             id='manageId'
                                                             name='manageId'
@@ -407,9 +521,7 @@ const EditPersonel = ({ ...props }: Props) => {
                                                                 setFieldValue('manageId', e)
                                                             }}
                                                         />
-                                                        {submitCount ? errors.manageId ? (
-                                                            <div className="text-danger mt-1"> {errors.manageId} </div>
-                                                        ) : null : ''}
+
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -483,7 +595,7 @@ const EditPersonel = ({ ...props }: Props) => {
                                     handleWarehouse(values);
                                 }
                             }}>
-                                {t('update')}
+                                {props.data !== undefined ? t('update') : t('add')}
                             </button>
                         </div>
                     </Form>

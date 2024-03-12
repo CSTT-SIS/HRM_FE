@@ -124,13 +124,13 @@ const EditDepartment = ({ ...props }: Props) => {
                     name: detail ? `${detail?.name}` : '',
                     code: detail ? `${detail?.code}` : '',
                     abbreviated: detail ? `${detail?.abbreviated}` : '',
-                    manageId: detail ? {
-                        value: `${detail?.manage?.id}`,
-                        label: `${detail?.manage?.name}`
+                    manageId: props?.data ? {
+                        value: `${props?.data?.manage.id}`,
+                        label: `${props?.data?.manage.name}`
                     } : "",
-                    departmentparentId: detail ? {
-                        value: `${detail?.departmentparent?.id}`,
-                        label: `${detail?.departmentparent?.name}`
+                    departmentparentId: props?.data ? {
+                        value: `${props?.data?.departmentparent.id}`,
+                        label: `${props?.data?.departmentparent.name}`
                     } : "",
                 }}
                 validationSchema={SubmittedForm}
