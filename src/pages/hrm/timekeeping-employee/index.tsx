@@ -50,7 +50,7 @@ interface Day {
 
 const monthSelectConfig: Partial<Config> = {
     shorthand: true, //defaults to false
-    dateFormat: "F Y", //defaults to "F Y"
+    dateFormat: "m/Y", //defaults to "F Y"
     theme: "light" // defaults to "light"
 };
 
@@ -181,9 +181,11 @@ const Department = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
         },
-        { accessor: 'code', title: 'Mã chấm công', sortable: false
+        { accessor: 'code',
+         title: 'Mã chấm công', sortable: false
     },
-        { accessor: 'name', title: 'Tên nhân viên', sortable: false,
+        { accessor: 'name',
+         title: 'Tên nhân viên', sortable: false,
     }
     ]
 
@@ -191,7 +193,7 @@ const Department = ({ ...props }: Props) => {
         columns.push(
             {
                 accessor: '',
-                title: `${item.dayWeek}, ${item.dayMonth}`,
+                title: `${item.dayMonth}`,
                 render: (records: any, index: any) =>                     <span onClick={() => handleEdit(records)} style={{cursor: "pointer"}}>1</span>
                 ,
             }
@@ -215,10 +217,10 @@ const Department = ({ ...props }: Props) => {
                                     </button>
                         </Link> */}
 
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                        {/* <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
                             Nhập file
-                        </button>
+                        </button> */}
                         <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconDownload className="ltr:mr-2 rtl:ml-2" />
                             Xuất file excel
@@ -226,7 +228,7 @@ const Department = ({ ...props }: Props) => {
                     </div>
                     <div className='flex gap-2'>
                         <div className='flex gap-1'>
-                        <div className="flex items-center w-auto">{t('choose_month')}</div>
+                        <div className="flex items-center min-w-[80px]">{t('choose_month')}</div>
                         <Flatpickr
                             className='form-input'
                             options = {{

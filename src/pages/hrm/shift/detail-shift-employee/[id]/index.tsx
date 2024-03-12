@@ -1,6 +1,6 @@
 import { useEffect, Fragment, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { setPageTitle } from '@/store/themeConfigSlice';
+import { setPageTitle } from '../../../../../store/themeConfigSlice';
 import { lazy } from 'react';
 // Third party libs
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
@@ -9,14 +9,16 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
-import { deleteDepartment, detailDepartment, listAllDepartment } from '../../../../../services/apis/department.api';
 // constants
 import { PAGE_SIZES, PAGE_SIZES_DEFAULT, PAGE_NUMBER_DEFAULT } from '@/utils/constants';
 // helper
 import { capitalize, formatDate, showMessage } from '@/@core/utils';
 // icons
+import IconPencil from '@/components/Icon/IconPencil';
+import IconTrashLines from '@/components/Icon/IconTrashLines';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
+import IconCaretDown from '@/components/Icon/IconCaretDown';
 
 import { useRouter } from 'next/router';
 
@@ -26,6 +28,12 @@ import IconFolderMinus from '@/components/Icon/IconFolderMinus';
 import IconDownload from '@/components/Icon/IconDownload';
 import IconCalendar from '@/components/Icon/IconCalendar';
 import Link from 'next/link';
+
+import { Box } from '@atlaskit/primitives';
+import personnel_list from './personnel_list.json';
+import IconNewEdit from '@/components/Icon/IconNewEdit';
+import IconNewTrash from '@/components/Icon/IconNewTrash';
+import IconNewCalendar from '@/components/Icon/IconNewCalendar';
 
 interface Props {
 	[key: string]: any;
@@ -39,7 +47,7 @@ const Department = ({ ...props }: Props) => {
 	});
 
 	const router = useRouter();
-
+	const [display, setDisplay] = useState('tree')
 	const [showLoader, setShowLoader] = useState(true);
 	const [page, setPage] = useState<any>(PAGE_NUMBER_DEFAULT);
 	const [pageSize, setPageSize] = useState(PAGE_SIZES_DEFAULT);
@@ -51,7 +59,34 @@ const Department = ({ ...props }: Props) => {
 	const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
 	const [openModal, setOpenModal] = useState(false);
+	const [codeArr, setCodeArr] = useState<string[]>([]);
 
+	const toggleCode = (name: string) => {
+		if (codeArr.includes(name)) {
+			setCodeArr((value) => value.filter((d) => d !== name));
+		} else {
+			setCodeArr([...codeArr, name]);
+		}
+	};
+	const [treeview1, setTreeview1] = useState<string[]>(['images']);
+	const [pagesSubMenu, setPagesSubMenu] = useState(false);
+    const [listSelected, setListSelected] = useState<any>([]);
+	const toggleTreeview1 = (name: any) => {
+		if (treeview1.includes(name)) {
+			setTreeview1((value) => value.filter((d) => d !== name));
+		} else {
+			setTreeview1([...treeview1, name]);
+		}
+	};
+
+	const [treeview2, setTreeview2] = useState<string[]>(['parent']);
+	const toggleTreeview2 = (name: any) => {
+		if (treeview2.includes(name)) {
+			setTreeview2((value) => value.filter((d) => d !== name));
+		} else {
+			setTreeview2([...treeview2, name]);
+		}
+	};
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
 			const data = localStorage.getItem('staffList');
@@ -124,26 +159,104 @@ const Department = ({ ...props }: Props) => {
 			);
 		}
 	};
+	type Content = { title: string; description: string };
+
+	type Item = {
+		id: string;
+		content: Content;
+		hasChildren: boolean;
+		children?: Item[];
+	};
+    const CheckBox = (props: Content) => <input type='checkbox' className='form-checkbox' />;
+	const Title = (props: Content) => <Box as="span">{props.title}</Box>;
+	const Description = (props: Content) => (
+		<Box as="span">{props.description}</Box>
+	);
+	const Action = (props: Content) => (
+		<div className="flex items-center w-max mx-auto gap-2">
+				<button type="button" className='button-edit' >
+					<IconNewEdit /><span> {t('edit')}
+                        </span>
+				</button>
+				<button type="button" className='button-delete' >
+					<IconNewTrash /> <span>{t('delete')}</span>
+				</button>
+		</div>
+	);
+	const items: Item[] = [
+		{
+			id: 'item1',
+			content: {
+				title: 'Nguyễn Văn A',
+				description: 'NV1',
+			},
+			hasChildren: false,
+			children: [],
+		},
+		{
+			id: 'item2',
+			content: {
+				title: 'Trần Văn B',
+				description: 'NV2',
+			},
+			hasChildren: true,
+			children: [
+				{
+					id: 'item3',
+					content: {
+						title: 'Vũ Văn C',
+						description: 'NV3',
+					},
+					hasChildren: false,
+				},
+			],
+		},
+	];
+    const handleChangeSelect = (isSelected: any, record: any) => {
+        if (isSelected) {
+            setListSelected([...listSelected, record]);
+        } else {
+            setListSelected(listSelected?.filter((item: any) => item.id!== record.id));
+        };
+    };
+
 	const columns = [
+        { accessor: 'check', title: 'Chọn', sortable: false, render: (records: any) => <input type="checkbox" onChange={(e) => handleChangeSelect(e.target.checked, records)} className='form-checkbox'/>},
 		{
 			accessor: 'id',
 			title: '#',
 			render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
 		},
+
 		{ accessor: 'name', title: 'Tên nhân viên', sortable: false },
 		{ accessor: 'code', title: 'Mã nhân viên', sortable: false },
-
 		{
 			accessor: 'action',
 			title: 'Thao tác',
 			titleClassName: '!text-center',
 			render: (records: any) => (
 				<div className="mx-auto flex w-max items-center gap-2">
-					<Tippy content={`${t('work_schedule')}`}>
+						<button type="button" className='button-edit' onClick={() => handleEdit(records)}>
+							<IconNewEdit />
+                            <span>
+                                {t('edit')}
+                            </span>
+						</button>
+						<button className='button-delete' type="button" onClick={() => handleDelete(records)}>
+							<IconNewTrash />
+                            <span>
+                                {t('delete')}
+                            </span>
+						</button>
 						<Link href="/hrm/calendar" className="group">
-							<IconCalendar />
+                            <button className='button-calendar' type='button'>
+                            <IconNewCalendar />
+                            <span>
+                                {t('work_schedule')}
+                            </span>
+                            </button>
+
 						</Link>
-					</Tippy>
 				</div>
 			),
 		},
@@ -160,39 +273,46 @@ const Department = ({ ...props }: Props) => {
 			<div className="panel mt-6">
 				<div className="mb-4.5 flex flex-col justify-between gap-5 md:flex-row md:items-center">
 					<div className="flex flex-wrap items-center">
-						<button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 ">
-							<IconPlus className="h-5 w-5 ltr:mr-2 rtl:ml-2" />
-							{t('add')}
-						</button>
-						<button type="button" className="btn btn-primary btn-sm m-1">
+						<button type="button" className="btn btn-primary btn-sm m-1  custom-button">
 							<IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
 							Nhập file
 						</button>
-						<button type="button" className="btn btn-primary btn-sm m-1">
+						<button type="button" className="btn btn-primary btn-sm m-1  custom-button">
 							<IconDownload className="ltr:mr-2 rtl:ml-2" />
 							Xuất file excel
 						</button>
+                        {
+                            listSelected?.length > 0 &&
+                             <button type="button" className="btn btn-primary btn-sm m-1  custom-button">
+							<IconPlus className="ltr:mr-2 rtl:ml-2" />
+							Thêm vào danh sách
+						</button>
+                        }
+
 					</div>
-					<input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+					<div className='display-style'>
+						<input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+
+					</div>
 				</div>
 				<div className="datatables">
-					<DataTable
-						highlightOnHover
-						className="table-hover whitespace-nowrap"
-						records={recordsData}
-						columns={columns}
-						totalRecords={total}
-						recordsPerPage={pageSize}
-						page={page}
-						onPageChange={(p) => setPage(p)}
-						recordsPerPageOptions={PAGE_SIZES}
-						onRecordsPerPageChange={setPageSize}
-						sortStatus={sortStatus}
-						onSortStatusChange={setSortStatus}
-						minHeight={200}
-						paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
-					/>
-				</div>
+							<DataTable
+								highlightOnHover
+								className="table-hover whitespace-nowrap custom_table"
+								records={personnel_list}
+								columns={columns}
+								totalRecords={total}
+								recordsPerPage={pageSize}
+								page={page}
+								onPageChange={(p) => setPage(p)}
+								recordsPerPageOptions={PAGE_SIZES}
+								onRecordsPerPageChange={setPageSize}
+								sortStatus={sortStatus}
+								onSortStatusChange={setSortStatus}
+								minHeight={200}
+								paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
+							/>
+						</div>
 			</div>
 		</div>
 	);

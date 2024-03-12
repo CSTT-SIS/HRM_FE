@@ -40,7 +40,7 @@
     color: #ffffff !important;
 
 }
-.button-edit, .button-delete, .button-detail, .button-check {
+.button-edit, .button-delete, .button-detail, .button-check, .button-calendar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -64,7 +64,12 @@
     color: white !important;
 }
 
-.button-delete span, .button-detail span, .button-check span {
+.button-calendar {
+    background: #D8C5EF!important;
+
+}
+
+.button-delete span, .button-detail span, .button-check span, .button-calendar span {
     font-size: 12px;
     margin-left: 8px;
 }

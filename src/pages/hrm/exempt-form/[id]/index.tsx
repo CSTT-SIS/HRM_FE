@@ -322,7 +322,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('reason')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field name="reason" type="text" id="reason" placeholder={`${t('fill_reason')}`} className="form-input" />
+                                                <Field name="reason" as="textarea" id="reason" placeholder={`${t('fill_reason')}`} className="form-input" />
                                                 {submitCount ? errors.reason ? <div className="mt-1 text-danger"> {errors.reason} </div> : null : ''}
                                             </div>
                                             </div>

@@ -19,6 +19,7 @@ import shift from '../shift/shift.json';
 import { Vietnamese } from "flatpickr/dist/l10n/vn.js"
 import DropdownTreeSelect from "react-dropdown-tree-select";
 import "react-dropdown-tree-select/dist/styles.css";
+import { getCurrentFormattedTime } from '@/utils/commons';
 
 
 interface TreeNode {
@@ -76,6 +77,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 	const SubmittedForm = Yup.object().shape({
 		name: Yup.object()
 			.typeError(`${t('please_choose_name_staff')}`),
+        checker: Yup.object()
+			.typeError(`${t('please_choose_name_staff')}`),
         position: Yup.object()
             .typeError(`${t('please_choose_duty')}`),
         department: Yup.object()
@@ -84,8 +87,6 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
         fromdate: Yup.date().typeError(`${t('please_choose_from_day')}`),
         enddate: Yup.date().typeError(`${t('please_choose_end_day')}`),
         shift: Yup.date().typeError(`${t('please_choose_shift')}`),
-        late_second: Yup.number().typeError(`${t('please_fill_late_second')}`),
-        early_second: Yup.number().typeError(`${t('please_fill_early_second')}`),
         reason: Yup.string().required(`${t('please_fill_reason')}`)
 	});
 
@@ -164,12 +165,11 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 											code: null,
                                             position: null,
                                             department: null,
-                                            submitday: null,
+                                            submitday: getCurrentFormattedTime(),
                                             fromdate: null,
                                             enddate: null,
                                             shift: null,
-                                            late_second: null,
-                                            early_second: null,
+                                            checker: null,
                                             reason: ''
 										}}
 										validationSchema={SubmittedForm}
@@ -177,7 +177,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 											handleDepartment(values);
 										}}
 									>
-										{({ errors, touched, submitCount, setFieldValue }) => (
+											{({ errors, touched, submitCount, setFieldValue }) => (
 											<Form className="space-y-5">
                                             <div className='flex justify-between gap-5'>
                                             <div className="mb-5 w-1/2">
@@ -185,24 +185,16 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('name_staff')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field
-                                                className="form-input"
-                                                        name="name"
-                                                        render={({ field }: any) => (
-                                                            <>
-                                                                <Select
-                                                                    // {...field}
-                                                                    options={listPersonnel}
-                                                                    isSearchable
-                                                                    placeholder={t('choose_name')}
-                                                                    maxMenuHeight={150}
-                                                                    onChange={(item) => {
-                                                                        setFieldValue('name', item)
-                                                                    }}
-                                                                />
-                                                            </>
-                                                        )}
-                                                    />
+                                                <Field as="select" name="name" id="name" className="form-input">
+                                                    { listPersonnel?.map((person: any) => {
+                                                        return (
+                                                            <option key={person.value} value={person.value}>
+                                                                {person.label}
+                                                            </option>
+                                                        );
+                                                    })}
+
+                                </Field>
                                                {submitCount ? (
     errors.name ? <div className="mt-1 text-danger">{errors.name}</div> : null
   ) : null}
@@ -212,24 +204,16 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('duty')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field
-                                                className="form-input"
-                                                        name="position"
-                                                        render={({ field }: any) => (
-                                                            <>
-                                                                <Select
-                                                                    // {...field}
-                                                                    options={listDuty}
-                                                                    isSearchable
-                                                                    placeholder={t('choose_duty')}
-                                                                    maxMenuHeight={150}
-                                                                    onChange={(item) => {
-                                                                        setFieldValue('position', item)
-                                                                    }}
-                                                                />
-                                                            </>
-                                                        )}
-                                                    />
+                                                <Field as="select" name="position" id="position" className="form-input">
+                                                    { listDuty?.map((duty: any) => {
+                                                        return (
+                                                            <option key={duty.value} value={duty.value}>
+                                                                {duty.label}
+                                                            </option>
+                                                        );
+                                                    })}
+
+                                </Field>
                                                     {submitCount ? errors.position ? <div className="mt-1 text-danger"> {errors.position} </div> : null : ''}
                                             </div>
                                             </div>
@@ -265,26 +249,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('submitday')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field
-                                                        name="submitday"
-                                                        render={({ field }: any) => (
-                                                            <Flatpickr
-                                                                data-enable-time
-                                                                placeholder={`${t('choose_submit_day')}`}
-                                                                options={{
-                                                                    enableTime: true,
-                                                                    dateFormat: 'Y-m-d H:i',
-                                                                    locale: {
-                                                                        ...Vietnamese
-                                                                    },
-                                                                }}
-                                                                className="form-input"
-                                                                onChange={(item) => {
-                                                                    setFieldValue('submitday', item)
-                                                                }}
-                                                            />
-                                                        )}
-                                                    />
+                                                <Field id="submitday" type="datetime-local" name="submitday"
+                                                className="form-input" placeholder={`${t('choose_submit_day')}`} />
                                                     {submitCount ? errors.submitday ? <div className="mt-1 text-danger"> {errors.submitday} </div> : null : ''}
                                             </div>
                                             </div>
@@ -292,80 +258,39 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                             <div className="mb-5 w-1/2">
                                                 <label htmlFor="fromdate" className='label'>
                                                     {' '}
-                                                    {t('from_date')} <span style={{ color: 'red' }}>* </span>
+                                                    {t('register_from_date')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field
-                                                        name="from_date"
-                                                        render={({ field }: any) => (
-                                                            <Flatpickr
-                                                                data-enable-time
-                                                                placeholder={`${t('choose_from_day')}`}
-                                                                options={{
-                                                                    enableTime: true,
-                                                                    dateFormat: 'Y-m-d H:i',
-                                                                    locale: {
-                                                                        ...Vietnamese
-                                                                    }
-                                                                }}
-                                                                className="form-input"
-                                                                onChange={(item) => {
-                                                                    setFieldValue('fromdate', item)
-                                                                }}
-                                                            />
-                                                        )}
-                                                    />
+                                                <Field id="fromdate" type="time" name="fromdate" className="form-input" placeholder={`${t('choose_register_from_date')}`} />
+
                                                     {submitCount ? errors.fromdate ? <div className="mt-1 text-danger"> {errors.fromdate} </div> : null : ''}
                                             </div>
                                             <div className="mb-5 w-1/2">
                                                 <label htmlFor="enddate" className='label'>
                                                     {' '}
-                                                    {t('end_date')} <span style={{ color: 'red' }}>* </span>
+                                                    {t('register_end_date')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field
-                                                        name="end_date"
-                                                        render={({ field }: any) => (
-                                                            <Flatpickr
-                                                                data-enable-time
-                                                                placeholder={`${t('choose_end_day')}`}
-                                                                options={{
-                                                                    enableTime: true,
-                                                                    dateFormat: 'Y-m-d H:i',
-                                                                    locale: {
-                                                                        ...Vietnamese
-                                                                    }
-                                                                }}
-                                                                className="form-input"
-                                                                onChange={(item) => {
-                                                                    setFieldValue('end_date', item)
-                                                                }}
-                                                            />
-                                                        )}
-                                                    />
+                                                <Field id="enddate" type="time" name="enddate" className="form-input" placeholder={`${t('choose_register_end_date')}`} />
+
                                                     {submitCount ? errors.enddate ? <div className="mt-1 text-danger"> {errors.enddate} </div> : null : ''}
                                             </div>
                                             </div>
-                                            <div className='flex justify-between gap-5'>
+                                            {/* <div className='flex justify-between gap-5'>
                                             <div className="mb-5 w-1/2">
                                                 <label htmlFor="shift" className='label'>
                                                     {' '}
                                                     {t('shift')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field
-                                                    name="shift"
-                                                    render={({ field }: any) => (
-                                                        <>
-                                                            <Select
-                                                                options={listShift}
-                                                                isSearchable
-                                                                placeholder={`${t('choose_shift')}`}
-                                                                onChange={(item) => {
-                                                                    setFieldValue('shift', item)
-                                                                }}
-                                                                />
+                                                <Field as="select" name="shift" id="shift" className="form-input">
+                                                    { listShift?.map((shift: any) => {
+                                                        return (
+                                                            <option key={shift.value} value={shift.value}>
+                                                                {shift.label}
+                                                            </option>
+                                                        );
+                                                    })}
 
-                                                            </>
-                                                        )}
-                                                    />
+                                </Field>
+
                                                     {submitCount ? errors.shift ? <div className="mt-1 text-danger"> {errors.shift} </div> : null : ''}
                                             </div>
                                             <div className="mb-5 w-1/2">
@@ -376,23 +301,34 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                 <Field name="late_second" type="number" id="late_second" placeholder={`${t('fill_late_second')}`} className="form-input" />
                                                 {submitCount ? errors.late_second ? <div className="mt-1 text-danger"> {errors.late_second} </div> : null : ''}
                                             </div>
-                                            </div>
-                                            <div className='flex justify-between gap-5'>
+                                            </div> */}
+                                              <div className='flex justify-between gap-5'>
                                             <div className="mb-5 w-1/2">
-                                                <label htmlFor="early_second" className='label'>
+                                                <label htmlFor="checker" className='label'>
                                                     {' '}
-                                                    {t('early_second')} <span style={{ color: 'red' }}>* </span>
+                                                    {t('checker_name')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field name="early_second" type="number" id="early_second" placeholder={`${t('fill_early_second')}`} className="form-input" />
-                                                {submitCount ? errors.early_second ? <div className="mt-1 text-danger"> {errors.early_second} </div> : null : ''}
+                                                <Field as="select" name="checker" id="checker" className="form-input">
+                                                    { listPersonnel?.map((person: any) => {
+                                                        return (
+                                                            <option key={person.value} value={person.value}>
+                                                                {person.label}
+                                                            </option>
+                                                        );
+                                                    })}
+
+                                </Field>
+                                               {submitCount ? (
+    errors.checker ? <div className="mt-1 text-danger">{errors.checker}</div> : null
+  ) : null}
                                             </div>
                                             <div className="mb-5 w-1/2">
                                                 <label htmlFor="reason" className='label'>
                                                     {' '}
                                                     {t('reason')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field name="reason" type="text" id="reason" placeholder={`${t('fill_reason')}`} className="form-input" />
-                                                {submitCount ? errors.reason ? <div className="mt-1 text-danger"> {errors.reason} </div> : null : ''}
+                                                <Field as="textarea" name="reason" id="reason" className="form-input" />
+                                                    {submitCount ? errors.reason ? <div className="mt-1 text-danger"> {errors.reason} </div> : null : ''}
                                             </div>
                                             </div>
                                             <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">

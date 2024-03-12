@@ -12,3 +12,7 @@ export const signUp = (email: string, password: string) => {
 	return callApi(endpoint, 'POST', { email, password });
 };
 
+export const Profile = () => {
+	const endpoint = '/profile';
+	return callApi(endpoint, 'GET', null);
+};

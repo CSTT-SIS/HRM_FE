@@ -25,6 +25,7 @@ import { IconCartCheck } from '@/components/Icon/IconCartCheck';
 import { IconShipping } from '@/components/Icon/IconShipping';
 import moment from 'moment';
 import IconEye from '@/components/Icon/IconEye';
+import { IconFilter } from '@/components/Icon/IconFilter';
 
 interface Props {
     [key: string]: any;
@@ -35,6 +36,7 @@ const OrderForm = ({ ...props }: Props) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const router = useRouter();
+    const [active, setActive] = useState<any>([1]);
 
     const [showLoader, setShowLoader] = useState(true);
 
@@ -163,7 +165,13 @@ const OrderForm = ({ ...props }: Props) => {
             title: 'Nhận hàng dự kiến',
             render: ({ estimatedDeliveryDate }: any) => <span>{moment(estimatedDeliveryDate).format("DD/MM/YYYY")}</span>,
         },
-        { accessor: 'status', title: 'Trạng thái', sortable: false },
+        {
+            accessor: 'status',
+            title: 'Trạng thái',
+            sortable: false,
+            render: ({ status }: any) => <span>{status === "COMPLETED" ? "Đã duyệt" : "Chưa duyệt"}</span>,
+
+        },
         {
             accessor: 'action',
             title: 'Thao tác',
@@ -185,7 +193,7 @@ const OrderForm = ({ ...props }: Props) => {
                             <IconTrashLines /> <span>{`${t('delete')}`}</span>
                         </button>
                     }
-                    {
+                    {/* {
                         (records.status === "PENDING" || records.status === "PLACED") &&
                         <>
                             <button className='bg-[#C5E7AF] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleShipping(records)}>
@@ -201,11 +209,22 @@ const OrderForm = ({ ...props }: Props) => {
                         <button className='bg-[#C5E7AF] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleReceive(records)}>
                             <IconCartCheck /> <span>{`${t('receive')}`}</span>
                         </button>
-                    }
+                    } */}
                 </div>
             ),
         },
     ]
+
+    const handleActive = (value: any) => {
+        setActive([value]);
+        localStorage.setItem('defaultFilterOrder', value);
+    };
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            setActive([Number(localStorage.getItem('defaultFilterOrder'))])
+        }
+    }, [router])
 
     return (
         <div>
@@ -225,6 +244,17 @@ const OrderForm = ({ ...props }: Props) => {
                     </div>
 
                     <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
+                </div>
+                <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
+                    <div className="flex items-center flex-wrap gap-1">
+                        <IconFilter />
+                        <span>lọc nhanh :</span>
+                        <div className='flex items-center flex-wrap gap-2'>
+                            <div className={active.includes(1) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(1)}>Chưa duyệt</div>
+                            <div className={active.includes(2) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(2)}>Đã duyệt</div>
+                            <div className={active.includes(3) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(3)}>Không duyệt</div>
+                        </div>
+                    </div>
                 </div>
                 <div className="datatables">
                     <DataTable

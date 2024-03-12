@@ -69,7 +69,7 @@ const DetailPage = ({ ...props }: Props) => {
                 showMessage(`${t('create_success')}`, 'success');
                 props.mutate();
                 router.push({
-                    pathname: `/warehouse-process/warehousing-bill/${res.data.id}`,
+                    pathname: `/warehouse-process/warehousing-bill/export/${res.data.id}`,
                     query: {
                         status: res.data.status
                     }
@@ -82,7 +82,7 @@ const DetailPage = ({ ...props }: Props) => {
 
     const handleCancel = () => {
         setProposalQuery({ ...proposalQuery, type: "" });
-        router.push("/warehouse-process/warehousing-bill");
+        router.push("/warehouse-process/warehousing-bill/export");
     };
 
     useEffect(() => {
@@ -162,7 +162,7 @@ const DetailPage = ({ ...props }: Props) => {
         GetWarehousingBill({ id: router.query.id }).then((res) => {
             setData(res.data);
             router.push({
-                pathname: `/warehouse-process/warehousing-bill/${res.data.id}`,
+                pathname: `/warehouse-process/warehousing-bill/export/${res.data.id}`,
                 query: {
                     status: res.data.status
                 }
@@ -194,7 +194,7 @@ const DetailPage = ({ ...props }: Props) => {
         <div className="p-5">
             <div className='flex justify-between header-page-bottom pb-4 mb-4'>
                 <h1 className='page-title'>{t('warehousing_bill')}</h1>
-                <Link href="/warehouse-process/warehousing-bill">
+                <Link href="/warehouse-process/warehousing-bill/export">
                     <div className="btn btn-primary btn-sm m-1 back-button h-9" >
                         <IconBack />
                         <span>

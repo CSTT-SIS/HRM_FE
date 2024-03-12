@@ -142,7 +142,7 @@ const DutyModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="description" > {t('duty_description')}</label >
-                                                    <Field name="duty_description" type="text" id="duty_description" placeholder={`${t('enter_description')}`} className="form-input" />
+                                                    <Field name="duty_description" as="textarea" id="duty_description" placeholder={`${t('enter_description')}`} className="form-input" />
                                                     {errors.description ? (
                                                         <div className="text-danger mt-1"> {errors.description} </div>
                                                     ) : null}

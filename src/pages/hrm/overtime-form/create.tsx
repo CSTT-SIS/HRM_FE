@@ -19,6 +19,7 @@ import shift from '../shift/shift.json';
 import { Vietnamese } from "flatpickr/dist/l10n/vn.js"
 import DropdownTreeSelect from "react-dropdown-tree-select";
 import "react-dropdown-tree-select/dist/styles.css";
+import { getCurrentFormattedTime } from '@/utils/commons';
 
 
 interface TreeNode {
@@ -76,6 +77,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 	const SubmittedForm = Yup.object().shape({
 		name: Yup.object()
 			.typeError(`${t('please_choose_name_staff')}`),
+        checker: Yup.object()
+			.typeError(`${t('please_choose_name_checker')}`),
         position: Yup.object()
             .typeError(`${t('please_choose_duty')}`),
         department: Yup.object()
@@ -166,7 +169,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                             fromdate: null,
                                             enddate: null,
                                             shift: null,
-                                            overtime_time: 0
+                                            overtime_time: 0,
+                                            checker: null
 										}}
 										validationSchema={SubmittedForm}
 										onSubmit={(values) => {
@@ -268,8 +272,9 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                                 data-enable-time
                                                                 placeholder={`${t('choose_submit_day')}`}
                                                                 options={{
-                                                                    enableTime: true,
-                                                                    dateFormat: 'Y-m-d H:i',
+                                                                    enableTime: false,
+                                                                    defaultDate: new Date(),
+                                                                    dateFormat: 'd-m-Y',
                                                                     locale: {
                                                                         ...Vietnamese
                                                                     },
@@ -288,17 +293,18 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                             <div className="mb-5 w-1/2">
                                                 <label htmlFor="fromdate" className='label'>
                                                     {' '}
-                                                    {t('from_date')} <span style={{ color: 'red' }}>* </span>
+                                                    {t('from_time')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
                                                 <Field
-                                                        name="from_date"
+                                                        name="from_time"
                                                         render={({ field }: any) => (
                                                             <Flatpickr
                                                                 data-enable-time
-                                                                placeholder={`${t('choose_from_day')}`}
+                                                                placeholder={`${t('choose_from_time')}`}
                                                                 options={{
                                                                     enableTime: true,
-                                                                    dateFormat: 'Y-m-d H:i',
+                                                                    noCalendar: true,
+                                                                    dateFormat: 'H:i',
                                                                     locale: {
                                                                         ...Vietnamese
                                                                     }
@@ -315,17 +321,18 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                             <div className="mb-5 w-1/2">
                                                 <label htmlFor="enddate" className='label'>
                                                     {' '}
-                                                    {t('end_date')} <span style={{ color: 'red' }}>* </span>
+                                                    {t('end_time')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
                                                 <Field
                                                         name="end_date"
                                                         render={({ field }: any) => (
                                                             <Flatpickr
                                                                 data-enable-time
-                                                                placeholder={`${t('choose_end_day')}`}
+                                                                placeholder={`${t('choose_end_time')}`}
                                                                 options={{
                                                                     enableTime: true,
-                                                                    dateFormat: 'Y-m-d H:i',
+                                                                    noCalendar: true,
+                                                                    dateFormat: 'H:i',
                                                                     locale: {
                                                                         ...Vietnamese
                                                                     }
@@ -372,6 +379,36 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                 <Field name="overtime_time" type="number" id="overtime_time" placeholder={`${t('fill_overtime_time')}`} className="form-input" />
                                                 {submitCount ? errors.overtime_time ? <div className="mt-1 text-danger"> {errors.overtime_time} </div> : null : ''}
                                             </div>
+                                            </div>
+                                            <div className='flex justify-between gap-5'>
+                                            <div className="mb-5 w-1/2">
+                                                <label htmlFor="checker" className='label'>
+                                                    {' '}
+                                                    {t('checker_name')} <span style={{ color: 'red' }}>* </span>
+                                                </label>
+                                                <Field
+                                                className="form-input"
+                                                        name="checker"
+                                                        render={({ field }: any) => (
+                                                            <>
+                                                                <Select
+                                                                    // {...field}
+                                                                    options={listPersonnel}
+                                                                    isSearchable
+                                                                    placeholder={t('choose_checker')}
+                                                                    maxMenuHeight={150}
+                                                                    onChange={(item) => {
+                                                                        setFieldValue('checker', item)
+                                                                    }}
+                                                                />
+                                                            </>
+                                                        )}
+                                                    />
+                                               {submitCount ? (
+    errors.checker ? <div className="mt-1 text-danger">{errors.checker}</div> : null
+  ) : null}
+                                            </div>
+
                                             </div>
                                             <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">
                                                 <button type="button" className="btn btn-outline-dark cancel-button" onClick={() => handleCancel()}>
