@@ -111,6 +111,8 @@ const AddNewDepartment = ({ ...props }: Props) => {
                 initialValues={{
                     name: props?.data ? `${props?.data?.name}` : '',
                     code: props?.data ? `${props?.data?.code}` : '',
+                    description: props?.data ? `${props?.data?.description}` : '',
+
                     abbreviated: props?.data ? `${props?.data?.abbreviated}` : '',
                     manageId: props?.data ? {
                         value: `${props?.data?.manage.id}`,
@@ -198,11 +200,11 @@ const AddNewDepartment = ({ ...props }: Props) => {
 
                         </div>
                         <div className="mb-5">
-                            <label htmlFor="name" className='label'>
+                            <label htmlFor="description" className='label'>
                                 {' '}
                                 {t('description')}
                             </label>
-                            <Field name="name"  as="textarea" id="name" placeholder={`${t('enter_description')}`} className="form-input" />
+                            <Field name="description"  as="textarea" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
                         </div>
                         <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">
                             <button type="button" className="btn btn-outline-dark cancel-button" onClick={() => handleCancel()}>

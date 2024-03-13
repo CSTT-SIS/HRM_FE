@@ -57,18 +57,6 @@ const AddNewPersonel = ({ ...props }: Props) => {
         code: Yup.string()
             .min(2, 'Too Short!')
             .required(`${t('please_fill_staff_code')}`),
-        surname: Yup.string()
-            .min(2, 'Too Short!')
-            .required(`${t('please_fill_surname_name')}`),
-        email: Yup.string()
-            .min(2, 'Too Short!')
-            .required(`${t('please_fill_email')}`),
-        phone: Yup.string()
-            .min(2, 'Too Short!')
-            .required(`${t('please_fill_phone')}`),
-        userName: Yup.string()
-            .min(2, 'Too Short!')
-            .required(`${t('please_fill_username')}`),
     });
     const handleSearch = (param: any) => {
         setQuery({ search: param });
@@ -223,10 +211,9 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="surname" className='label'>
                                                             {' '}
-                                                            {t('surname_middle')} <span style={{ color: 'red' }}>* </span>
+                                                            {t('surname_middle')} 
                                                         </label>
                                                         <Field name="surname" type="text" id="surname" placeholder={t('enter_surname_middle')} className="form-input" />
-                                                        {submitCount ? errors.surname ? <div className="mt-1 text-danger"> {errors.surname} </div> : null : ''}
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="name" className='label'>
@@ -241,18 +228,16 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="email" className='label'>
                                                             {' '}
-                                                            Email <span style={{ color: 'red' }}>* </span>
+                                                            Email
                                                         </label>
                                                         <Field name="email" type="text" id="email" placeholder={t('enter_email')} className="form-input" />
-                                                        {submitCount ? errors.email ? <div className="mt-1 text-danger"> {errors.email} </div> : null : ''}
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="phone" className='label'>
                                                             {' '}
-                                                            {t('phone_number')} <span style={{ color: 'red' }}>* </span>
+                                                            {t('phone_number')}
                                                         </label>
                                                         <Field name="phone" type="text" id="phone" placeholder={t('enter_phone_number')} className="form-input" />
-                                                        {submitCount ? errors.phone ? <div className="mt-1 text-danger"> {errors.phone} </div> : null : ''}
                                                     </div>
 
                                                 </div>
@@ -291,14 +276,8 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('date_of_birth')}
                                                         </label>
-                                                        <Flatpickr
-                                                            options={{
-                                                                dateFormat: 'Y-m-d',
-                                                                position: 'auto left',
-                                                            }}
-                                                            className="form-input"
-                                                            placeholder={`${t('enter_date_of_birth')}`}
-                                                        />
+                                                        <Field id="dateofbirth" type="date" name="dateofbirth" className="form-input"/>
+
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -336,14 +315,8 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('date_of_issue')}
                                                         </label>
-                                                        <Flatpickr
-                                                            options={{
-                                                                dateFormat: 'Y-m-d',
-                                                                position: 'auto left',
-                                                            }}
-                                                            className="form-input"
-                                                            placeholder={`${t('enter_date_of_issue')}`}
-                                                        />
+                                                        <Field id="dateissue" type="date" name="dateissue" className="form-input"/>
+
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="IDnumber" className='label'>
@@ -366,14 +339,8 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('date_of_issue_passport')}
                                                         </label>
-                                                        <Flatpickr
-                                                            options={{
-                                                                dateFormat: 'Y-m-d',
-                                                                position: 'auto left',
-                                                            }}
-                                                            className="form-input"
-                                                            placeholder={`${t('enter_date_of_issue_passport')}`}
-                                                        />
+                                                        <Field id="dateissuepassport" type="date" name="dateissuepassport" className="form-input"/>
+
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -389,14 +356,8 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('date_end_passport')}
                                                         </label>
-                                                        <Flatpickr
-                                                            options={{
-                                                                dateFormat: 'Y-m-d',
-                                                                position: 'auto left',
-                                                            }}
-                                                            className="form-input"
-                                                            placeholder={`${t('enter_date_end_passport')}`}
-                                                        />
+                                                        <Field id="dateendpassport" type="date" name="dateendpassport" className="form-input"/>
+
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -531,19 +492,20 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('approver')}
                                                         </label>
-                                                        <Field name="approver" type="text" id="approver" placeholder={t('enter_approver')} className="form-input" />
+                                                        <Field name="approver" type="text" id="approver" placeholder={t('enter_approver')} className="form-input " />
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="date_join" className='label'>
                                                             {' '}
                                                             {t('date_join')}
                                                         </label>
+
                                                         <Flatpickr
                                                             options={{
                                                                 dateFormat: 'Y-m-d',
                                                                 position: 'auto left',
                                                             }}
-                                                            className="form-input"
+                                                            className="form-input calender-input"
                                                             placeholder={`${t('enter_date_join')}`}
                                                         />
                                                     </div>
