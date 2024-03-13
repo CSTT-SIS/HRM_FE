@@ -80,13 +80,9 @@ const Department = ({ ...props }: Props) => {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const data = localStorage.getItem('employeeList');
-            if (data) {
-                setGetStorge(JSON.parse(data));
-            } else {
+                setGetStorge(EmployeeList);
                 localStorage.setItem('employeeList', JSON.stringify(EmployeeList));
-            }
-        }
+                    }
     }, [])
 
     useEffect(() => {
