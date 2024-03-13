@@ -343,31 +343,31 @@ const DetailModal = ({ ...props }: Props) => {
                     </Link>
                 </div>
                 <div className="mb-5">
-                    <Formik
-                        initialValues={initialValue}
-                        validationSchema={SubmittedForm}
-                        onSubmit={values => {
-                            handleWarehousing(values);
-                        }}
-                        enableReinitialize
-                    >
+                    <div className="font-semibold">
+                        <div className="rounded">
+                            <button
+                                type="button"
+                                className={`flex w-full items-center p-4 text-white-dark dark:bg-[#1b2e4b] custom-accordion uppercase`}
+                                onClick={() => handleActive(1)}
+                            >
+                                {t('warehousing_bill_export_info')}
+                                <div className={`ltr:ml-auto rtl:mr-auto ${active.includes(1) ? 'rotate-180' : ''}`}>
+                                    <IconCaretDown />
+                                </div>
+                            </button>
+                            <div className={`mb-2 ${active.includes(1) ? 'custom-content-accordion' : ''}`}>
+                                <AnimateHeight duration={300} height={active.includes(1) ? 'auto' : 0}>
+                                    <Formik
+                                        initialValues={initialValue}
+                                        validationSchema={SubmittedForm}
+                                        onSubmit={values => {
+                                            handleWarehousing(values);
+                                        }}
+                                        enableReinitialize
+                                    >
 
-                        {({ errors, values, submitCount, setFieldValue }) => (
-                            <Form className="space-y-5" >
-                                <div className="font-semibold">
-                                    <div className="rounded">
-                                        <button
-                                            type="button"
-                                            className={`flex w-full items-center p-4 text-white-dark dark:bg-[#1b2e4b] custom-accordion uppercase`}
-                                            onClick={() => handleActive(1)}
-                                        >
-                                            {t('warehousing_bill_export_info')}
-                                            <div className={`ltr:ml-auto rtl:mr-auto ${active.includes(1) ? 'rotate-180' : ''}`}>
-                                                <IconCaretDown />
-                                            </div>
-                                        </button>
-                                        <div className={`mb-2 ${active.includes(1) ? 'custom-content-accordion' : ''}`}>
-                                            <AnimateHeight duration={300} height={active.includes(1) ? 'auto' : 0}>
+                                        {({ errors, values, submitCount, setFieldValue }) => (
+                                            <Form className="space-y-5" >
                                                 <div className='p-4'>
                                                     <div className='flex justify-between gap-5 mt-5 mb-5'>
                                                         <div className="w-1/2">
@@ -530,69 +530,69 @@ const DetailModal = ({ ...props }: Props) => {
                                                         ) : null}
                                                     </div>
                                                 </div>
-                                            </AnimateHeight>
-                                        </div>
-                                    </div>
-                                    <div className="rounded">
-                                        <button
-                                            type="button"
-                                            className={`flex w-full items-center p-4 text-white-dark dark:bg-[#1b2e4b] custom-accordion uppercase`}
-                                            onClick={() => handleActive(2)}
-                                        >
-                                            {t('warehousing_detail')}
-                                            <div className={`ltr:ml-auto rtl:mr-auto ${active.includes(2) ? 'rotate-180' : ''}`}>
-                                                <IconCaretDown />
-                                            </div>
-                                        </button>
-                                        <div className={`${active.includes(2) ? 'custom-content-accordion' : ''}`}>
-                                            <AnimateHeight duration={300} height={active.includes(2) ? 'auto' : 0}>
-                                                <div className='p-4'>
-                                                    <HandleDetailForm
-                                                        data={dataDetail}
-                                                        setData={setDataDetail}
-                                                        listData={listDataDetail}
-                                                        setListData={setListDataDetail}
-                                                        orderDetailMutate={mutate}
-                                                    />
-                                                    <div className="datatables">
-                                                        <DataTable
-                                                            highlightOnHover
-                                                            className="whitespace-nowrap table-hover"
-                                                            records={listDataDetail}
-                                                            columns={columns}
-                                                            sortStatus={sortStatus}
-                                                            onSortStatusChange={setSortStatus}
-                                                            minHeight={200}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </AnimateHeight>
-                                        </div>
-                                    </div>
-                                    <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
-                                        {
-                                            !disable &&
-                                            <>
-                                                <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
-                                                    {t('cancel')}
-                                                </button>
-                                                <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
-                                                    {router.query.id !== "create" ? t('update') : t('save')}
-                                                </button>
-                                            </>
+                                            </Form>
+                                        )
                                         }
-                                        {
-                                            router.query.id !== "create" && !disable &&
-                                            <button type="button" onClick={e => handleChangeComplete()} className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
-                                                {t('complete')}
-                                            </button>
-                                        }
-                                    </div>
+                                    </Formik >
+                                </AnimateHeight>
+                            </div>
+                        </div>
+                        <div className="rounded">
+                            <button
+                                type="button"
+                                className={`flex w-full items-center p-4 text-white-dark dark:bg-[#1b2e4b] custom-accordion uppercase`}
+                                onClick={() => handleActive(2)}
+                            >
+                                {t('warehousing_detail')}
+                                <div className={`ltr:ml-auto rtl:mr-auto ${active.includes(2) ? 'rotate-180' : ''}`}>
+                                    <IconCaretDown />
                                 </div>
-                            </Form>
-                        )
-                        }
-                    </Formik >
+                            </button>
+                            <div className={`${active.includes(2) ? 'custom-content-accordion' : ''}`}>
+                                <AnimateHeight duration={300} height={active.includes(2) ? 'auto' : 0}>
+                                    <div className='p-4'>
+                                        <HandleDetailForm
+                                            data={dataDetail}
+                                            setData={setDataDetail}
+                                            listData={listDataDetail}
+                                            setListData={setListDataDetail}
+                                            orderDetailMutate={mutate}
+                                        />
+                                        <div className="datatables">
+                                            <DataTable
+                                                highlightOnHover
+                                                className="whitespace-nowrap table-hover"
+                                                records={listDataDetail}
+                                                columns={columns}
+                                                sortStatus={sortStatus}
+                                                onSortStatusChange={setSortStatus}
+                                                minHeight={200}
+                                            />
+                                        </div>
+                                    </div>
+                                </AnimateHeight>
+                            </div>
+                        </div>
+                        <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
+                            {
+                                !disable &&
+                                <>
+                                    <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
+                                        {t('cancel')}
+                                    </button>
+                                    <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+                                        {router.query.id !== "create" ? t('update') : t('save')}
+                                    </button>
+                                </>
+                            }
+                            {
+                                router.query.id !== "create" && !disable &&
+                                <button type="button" onClick={e => handleChangeComplete()} className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+                                    {t('complete')}
+                                </button>
+                            }
+                        </div>
+                    </div>
                 </div >
             </div >
         </>
