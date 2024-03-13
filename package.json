@@ -39,7 +39,7 @@
 		"mantine-datatable": "1.7.35",
 		"moment": "^2.29.4",
 		"moment-timezone": "^0.5.43",
-		"next": "13.1.2",
+		"next": "^13.1.2",
 		"ni18n": "^1.0.5",
 		"rc-tree-select": "^5.18.0",
 		"react": "18.2.0",
