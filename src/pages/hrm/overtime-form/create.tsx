@@ -87,7 +87,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
         fromdate: Yup.date().typeError(`${t('please_choose_from_day')}`),
         enddate: Yup.date().typeError(`${t('please_choose_end_day')}`),
         shift: Yup.date().typeError(`${t('please_choose_shift')}`),
-        overtime_time: Yup.number().required(`${t('please_fill_reason')}`)
+        overtime_time: Yup.number().required(`${t('please_fill_overtime_time')}`),
 	});
 
 	const handleDepartment = (value: any) => {

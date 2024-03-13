@@ -393,7 +393,7 @@
 	"edit_task": "Chỉnh sửa nhiệm vụ",
 	"add_task": "Tạo mới nhiệm vụ mới",
 	"name_task": "Tên nhiệm vụ",
-	"enter_name_task": "Nhập tên chức vụ",
+	"enter_name_task": "Nhập tên nhiệm vụ",
 	"creator_task": "Người tạo",
 	"enter_creator_task": "Chọn người tạo",
 	"executor_task": "Người thực hiện",
@@ -798,5 +798,6 @@
 	"warehousing_bill_export": "Quản lí xuất kho",
     "attached_image": "Hình ảnh đính kèm",
     "proposal_supply": "Yêu cầu cấp mìn",
-    "supply_infomation": "Thông tin cấp mìn"
+    "supply_infomation": "Thông tin cấp mìn",
+    "detail_task": "Chi tiết nhiệm vụ"
 }

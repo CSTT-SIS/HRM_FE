@@ -89,12 +89,9 @@ const ForgetForm = ({ ...props }: Props) => {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const data = localStorage.getItem('lateEarlyFormList');
-            if (data) {
-                setGetStorge(JSON.parse(data));
-            } else {
+                setGetStorge(ForgetFormList);
                 localStorage.setItem('lateEarlyFormList', JSON.stringify(ForgetFormList));
-            }
+
 
         }
     }, [])

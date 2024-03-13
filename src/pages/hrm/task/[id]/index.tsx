@@ -18,6 +18,8 @@ import IconBack from '@/components/Icon/IconBack';
 import IconCaretDown from '@/components/Icon/IconCaretDown';
 import IconCalendar from '@/components/Icon/IconCalendar';
 import task_list from '../task_list.json';
+import { getCurrentFormattedTime } from '@/utils/commons';
+import personel_list from '../../personnel/personnel_list.json';
 interface Props {
     [key: string]: any;
 }
@@ -27,7 +29,7 @@ const AddNewTask = ({ ...props }: Props) => {
     const [disabled, setDisabled] = useState(false);
     const [query, setQuery] = useState<any>();
     const router = useRouter()
-
+    const [listPersonnel, setListPersonnel] = useState<any>();
     const [typeShift, setTypeShift] = useState("0"); // 0: time, 1: total hours
     const { data: departmentparents } = ProductCategorys(query);
     const { data: manages } = Providers(query);
@@ -66,6 +68,12 @@ const AddNewTask = ({ ...props }: Props) => {
     const handleSearch = (param: any) => {
         setQuery({ search: param });
     }
+    useEffect(() => {
+        const list_per = personel_list?.map((e: any) => {
+            return { label: e.name, value: e.code }
+        })
+        setListPersonnel(list_per)
+    }, [])
     const handleTask = (values: any) => {
         let updatedTasks = [...props.totalData];
 
@@ -147,6 +155,7 @@ const AddNewTask = ({ ...props }: Props) => {
                     color: detail ? `${detail?.color}` : 'info',
                     status: detail ? `${detail?.status}` : 'ĐANG THỰC HIỆN',
                     attachment: detail ? `${detail?.attachment}` : '',
+                    date_create: detail ? `${detail?.date_create}` : getCurrentFormattedTime()
                 }}
                 enableReinitialize
                 validationSchema={SubmittedForm}
@@ -184,11 +193,7 @@ const AddNewTask = ({ ...props }: Props) => {
                                 <Select
                                     id='collaborator'
                                     name='collaborator'
-                                    options={[{
-                                        label: 'Lê Văn D'
-                                    }, {
-                                        label: 'Người thực hiện 2'
-                                    }]}
+                                    options={listPersonnel}
                                     placeholder={'Chọn người thực hiện'}
                                     maxMenuHeight={160}
                                     onChange={e => {
@@ -204,11 +209,7 @@ const AddNewTask = ({ ...props }: Props) => {
                                 <Select
                                     id='collaborator'
                                     name='collaborator'
-                                    options={[{
-                                        label: 'Người phối hợp 1'
-                                    }, {
-                                        label: 'Người phối hợp 2'
-                                    }]}
+                                    options={listPersonnel}
                                     placeholder={'Chọn người phối hợp'}
                                     maxMenuHeight={160}
                                     onChange={e => {
@@ -224,18 +225,8 @@ const AddNewTask = ({ ...props }: Props) => {
                                     {' '}
                                     {t('date_create')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <div className="flex">
-                                    <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
-                                        <IconCalendar></IconCalendar>
-                                    </div>
-                                    <Flatpickr
-                                        options={{
-                                            dateFormat: 'Y-m-d',
-                                            position: 'auto left',
-                                        }}
-                                        className="form-input ltr:rounded-l-none rtl:rounded-r-none"
-                                    />
-                                </div>
+                                <Field type="date" name="date_create" id="date_create" className="form-input">
+                                </Field>
                             </div>
 
                             <div className="mb-3 w-1/2">
@@ -243,19 +234,9 @@ const AddNewTask = ({ ...props }: Props) => {
                                     {t('deadline_task')} <span style={{ color: 'red' }}>* </span>
 
                                 </label>
-                                <div className="flex">
-                                    <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
-                                        <IconCalendar></IconCalendar>
-                                    </div>
-                                    <Flatpickr
-                                        options={{
-                                            dateFormat: 'Y-m-d',
-                                            position: 'auto left',
-                                        }}
-                                        className="form-input ltr:rounded-l-none rtl:rounded-r-none"
-                                        placeholder={`${t('enter_deadline_task')}`}
-                                    />
-                                </div>
+                                <Field type="datetime-local" name="deadline_task"
+                                placeholder={`${t('enter_deadline_task')}`}id="deadline_task" className="form-input">
+                                </Field>
 
                                 {submitCount ? errors.deadline ? <div className="mt-1 text-danger"> {errors.deadline} </div> : null : ''}
                             </div>
