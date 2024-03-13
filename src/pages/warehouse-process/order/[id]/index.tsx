@@ -24,7 +24,8 @@ import Select, { components } from 'react-select';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import { GetProposalDetail } from '@/services/apis/proposal.api';
-import DetailForm from '../form/DetailForm';
+import DetailModal from '../form/DetailModal';
+import IconPlus from '@/components/Icon/IconPlus';
 
 interface Props {
     [key: string]: any;
@@ -526,18 +527,18 @@ const DetailPage = ({ ...props }: Props) => {
                             <div className={`${active.includes(2) ? 'custom-content-accordion' : ''}`}>
                                 <AnimateHeight duration={300} height={active.includes(2) ? 'auto' : 0}>
                                     <div className='p-4'>
-                                        {
-                                            !disable &&
-                                            <DetailForm
-                                                // openModal={openModal}
-                                                // setOpenModal={setOpenModal}
-                                                data={dataDetail}
-                                                setData={setDataDetail}
-                                                listData={listDataDetail}
-                                                setListData={setListDataDetail}
-                                                orderDetailMutate={mutate}
-                                            />
-                                        }
+                                        <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
+                                            <div className="flex items-center flex-wrap">
+                                                {
+                                                    !disable &&
+                                                    <button type="button" onClick={e => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
+                                                        <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                                        {t('add_product_list')}
+                                                    </button>
+                                                }
+                                            </div>
+                                            {/* <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
+                                        </div>
                                         <div className="datatables">
                                             <DataTable
                                                 highlightOnHover
@@ -550,6 +551,15 @@ const DetailPage = ({ ...props }: Props) => {
                                             />
                                         </div>
                                     </div>
+                                    <DetailModal
+                                        openModal={openModal}
+                                        setOpenModal={setOpenModal}
+                                        data={dataDetail}
+                                        setData={setDataDetail}
+                                        listData={listDataDetail}
+                                        setListData={setListDataDetail}
+                                        orderDetailMutate={mutate}
+                                    />
                                 </AnimateHeight>
                             </div>
                         </div>

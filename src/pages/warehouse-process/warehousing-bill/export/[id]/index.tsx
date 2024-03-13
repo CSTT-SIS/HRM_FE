@@ -19,19 +19,20 @@ import { DropdownOrder, DropdownProposals, DropdownRepair, DropdownWarehouses } 
 import IconBackward from '@/components/Icon/IconBackward';
 import Link from 'next/link';
 import IconCaretDown from '@/components/Icon/IconCaretDown';
-import { GetProposal, GetProposalDetail } from '@/services/apis/proposal.api';
-import { GetRepair, GetRepairDetail } from '@/services/apis/repair.api';
-import { GetOrder, GetOrderDetail } from '@/services/apis/order.api';
+import { GetProposal } from '@/services/apis/proposal.api';
+import { GetRepair } from '@/services/apis/repair.api';
+import { GetOrder } from '@/services/apis/order.api';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import moment from 'moment';
-import HandleDetailForm from '../form/HandleDetailForm';
+import IconPlus from '@/components/Icon/IconPlus';
+import DetailModal from '../form/DetailModal';
 
 interface Props {
     [key: string]: any;
 }
 
-const DetailModal = ({ ...props }: Props) => {
+const ExportPage = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -551,13 +552,19 @@ const DetailModal = ({ ...props }: Props) => {
                             <div className={`${active.includes(2) ? 'custom-content-accordion' : ''}`}>
                                 <AnimateHeight duration={300} height={active.includes(2) ? 'auto' : 0}>
                                     <div className='p-4'>
-                                        <HandleDetailForm
-                                            data={dataDetail}
-                                            setData={setDataDetail}
-                                            listData={listDataDetail}
-                                            setListData={setListDataDetail}
-                                            orderDetailMutate={mutate}
-                                        />
+                                        <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
+                                            <div className="flex items-center flex-wrap">
+                                                {
+                                                    !disable &&
+                                                    <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
+                                                        <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                                        {t('add_product_list')}
+                                                    </button>
+                                                }
+                                            </div>
+
+                                            {/* <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
+                                        </div>
                                         <div className="datatables">
                                             <DataTable
                                                 highlightOnHover
@@ -570,6 +577,15 @@ const DetailModal = ({ ...props }: Props) => {
                                             />
                                         </div>
                                     </div>
+                                    <DetailModal
+                                        openModal={openModal}
+                                        setOpenModal={setOpenModal}
+                                        data={dataDetail}
+                                        setData={setDataDetail}
+                                        orderDetailMutate={mutate}
+                                        listData={listDataDetail}
+                                        setListData={setListDataDetail}
+                                    />
                                 </AnimateHeight>
                             </div>
                         </div>
@@ -598,4 +614,4 @@ const DetailModal = ({ ...props }: Props) => {
         </>
     );
 };
-export default DetailModal;
+export default ExportPage;

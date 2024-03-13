@@ -8,7 +8,6 @@ import IconPencil from '@/components/Icon/IconPencil';
 import { setPageTitle } from '@/store/themeConfigSlice';
 import { DataTableSortStatus, DataTable } from 'mantine-datatable';
 import { useDispatch } from 'react-redux';
-import HandleDetailForm from '../form/HandleDetailForm';
 import { WarehousingBillDetail, WarehousingBillListRequest } from '@/services/swr/warehousing-bill.twr';
 import { CreateWarehousingBill, EditWarehousingBill, GetWarehousingBill, WarehousingBillFinish } from '@/services/apis/warehousing-bill.api';
 import { Field, Form, Formik } from 'formik';
@@ -25,12 +24,14 @@ import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
 import Swal from 'sweetalert2';
+import DetailModal from '../form/DetailModal';
+import IconPlus from '@/components/Icon/IconPlus';
 
 interface Props {
     [key: string]: any;
 }
 
-const DetailModal = ({ ...props }: Props) => {
+const ExportPage = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -487,13 +488,19 @@ const DetailModal = ({ ...props }: Props) => {
                             <div className={`${active.includes(2) ? 'custom-content-accordion' : ''}`}>
                                 <AnimateHeight duration={300} height={active.includes(2) ? 'auto' : 0}>
                                     <div className='p-4'>
-                                        <HandleDetailForm
-                                            data={dataDetail}
-                                            setData={setDataDetail}
-                                            listData={listDataDetail}
-                                            setListData={setListDataDetail}
-                                            orderDetailMutate={mutate}
-                                        />
+                                        <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
+                                            <div className="flex items-center flex-wrap">
+                                                {
+                                                    !disable &&
+                                                    <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
+                                                        <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                                        {t('add_product_list')}
+                                                    </button>
+                                                }
+                                            </div>
+
+                                            {/* <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
+                                        </div>
                                         <div className="datatables">
                                             <DataTable
                                                 highlightOnHover
@@ -506,6 +513,15 @@ const DetailModal = ({ ...props }: Props) => {
                                             />
                                         </div>
                                     </div>
+                                    <DetailModal
+                                        openModal={openModal}
+                                        setOpenModal={setOpenModal}
+                                        data={dataDetail}
+                                        setData={setDataDetail}
+                                        orderDetailMutate={mutate}
+                                        listData={listDataDetail}
+                                        setListData={setListDataDetail}
+                                    />
                                 </AnimateHeight>
                             </div>
                         </div>
@@ -535,4 +551,4 @@ const DetailModal = ({ ...props }: Props) => {
         </>
     );
 };
-export default DetailModal;
+export default ExportPage;
