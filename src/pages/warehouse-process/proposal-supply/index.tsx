@@ -142,7 +142,7 @@ const ProposalPage = ({ ...props }: Props) => {
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
-                <div className="flex items-center w-max mx-auto gap-2">
+                <div className="flex w-max mx-auto gap-2">
                     <button className='bg-[#F2E080] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/proposal-supply/${records.id}?status=${true}&&type=approve`)}>
                         <IconEye /> <span>{`${t('detail')}`}</span>
                     </button>
