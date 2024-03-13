@@ -267,7 +267,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('submitday')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field id="submitday" type="datetime-local" name="submitday" className="form-input" placeholder={`${t('choose_submit_day')}`} />
+                                                <Field id="submitday" type="datetime" name="submitday" className="form-input" placeholder={`${t('choose_submit_day')}`} />
                                                     {submitCount ? errors.submitday ? <div className="mt-1 text-danger"> {errors.submitday} </div> : null : ''}
                                             </div>
                                             </div>
@@ -310,16 +310,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 
                                                     {submitCount ? errors.shift ? <div className="mt-1 text-danger"> {errors.shift} </div> : null : ''}
                                             </div>
-                                            <div className="mb-5 w-1/2">
-                                                <label htmlFor="overtime_time" className='label'>
-                                                    {' '}
-                                                    {t('overtime_time')} <span style={{ color: 'red' }}>* </span>
-                                                </label>
-                                                <Field name="overtime_time" type="number" id="overtime_time" placeholder={`${t('fill_overtime_time')}`} className="form-input" />
-                                                {submitCount ? errors.overtime_time ? <div className="mt-1 text-danger"> {errors.overtime_time} </div> : null : ''}
-                                            </div>
-                                            </div>
-                                            <div className='flex justify-between gap-5'>
+
                                             <div className="mb-5 w-1/2">
                                                 <label htmlFor="checker" className='label'>
                                                     {' '}

@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
 import IconBack from '@/components/Icon/IconBack';
 import Link from 'next/link';
-
+import Select from "react-select";
 interface Props {
 	[key: string]: any;
 }
@@ -23,7 +23,7 @@ const getEmployeeOptions = () => {
 	return [
 		{
 			id: 1,
-			user: 'Staff_A',
+			user: 'Nguyễn Văn A',
 			title: 'Tết dương',
 			start: now.getFullYear() + '-' + getMonth(now) + '-01T14:30:00',
 			end: now.getFullYear() + '-' + getMonth(now) + '-01T15:30:00',
@@ -32,7 +32,7 @@ const getEmployeeOptions = () => {
 		},
 		{
 			id: 2,
-			user: 'Staff_B',
+			user: 'Trần Văn B',
 			title: 'Tết nguyên đán',
 			start: now.getFullYear() + '-' + getMonth(now) + '-07T19:30:00',
 			end: now.getFullYear() + '-' + getMonth(now) + '-08T14:30:00',
@@ -41,7 +41,7 @@ const getEmployeeOptions = () => {
 		},
 		{
 			id: 3,
-			user: 'Staff_C',
+			user: 'Nguyễn Văn C',
 			title: 'Giỗ tổ',
 			start: now.getFullYear() + '-' + getMonth(now) + '-17T14:30:00',
 			end: now.getFullYear() + '-' + getMonth(now) + '-18T14:30:00',
@@ -50,7 +50,7 @@ const getEmployeeOptions = () => {
 		},
 		{
 			id: 4,
-			user: 'Staff_D',
+			user: 'Lê Văn D',
 			title: 'Quốc khánh',
 			start: now.getFullYear() + '-' + getMonth(now) + '-12T10:30:00',
 			end: now.getFullYear() + '-' + getMonth(now) + '-13T10:30:00',
@@ -59,7 +59,7 @@ const getEmployeeOptions = () => {
 		},
 		{
 			id: 5,
-			user: 'Staff_E',
+			user: 'Đặng Văn E',
 			title: 'Lễ 5',
 			start: now.getFullYear() + '-' + getMonth(now) + '-12T15:00:00',
 			end: now.getFullYear() + '-' + getMonth(now) + '-13T15:00:00',
@@ -68,7 +68,7 @@ const getEmployeeOptions = () => {
 		},
 		{
 			id: 6,
-			user: 'Staff_F',
+			user: 'Nguyễn Văn F',
 			title: 'Lễ 6',
 			start: now.getFullYear() + '-' + getMonth(now) + '-12T21:30:00',
 			end: now.getFullYear() + '-' + getMonth(now) + '-13T21:30:00',
@@ -77,7 +77,7 @@ const getEmployeeOptions = () => {
 		},
 		{
 			id: 7,
-			user: 'Staff_G',
+			user: 'Lê Văn G',
 			title: 'Lễ 7',
 			start: now.getFullYear() + '-' + getMonth(now) + '-12T05:30:00',
 			end: now.getFullYear() + '-' + getMonth(now) + '-13T05:30:00',
@@ -86,7 +86,7 @@ const getEmployeeOptions = () => {
 		},
 		{
 			id: 8,
-			user: 'Staff_H',
+			user: 'Trần Văn H',
 			title: 'Lễ 8',
 			start: now.getFullYear() + '-' + getMonth(now) + '-12T20:00:00',
 			end: now.getFullYear() + '-' + getMonth(now) + '-13T20:00:00',
@@ -95,7 +95,7 @@ const getEmployeeOptions = () => {
 		},
 		{
 			id: 9,
-			user: 'Staff_I',
+			user: 'Lê Văn I',
 			title: 'Lễ 9',
 			start: now.getFullYear() + '-' + getMonth(now) + '-27T20:00:00',
 			end: now.getFullYear() + '-' + getMonth(now) + '-28T20:00:00',
@@ -104,7 +104,7 @@ const getEmployeeOptions = () => {
 		},
 		{
 			id: 10,
-			user: 'Staff_K',
+			user: 'Trần Văn K',
 			title: 'Lễ 10',
 			start: now.getFullYear() + '-' + getMonth(now, 1) + '-24T08:12:14',
 			end: now.getFullYear() + '-' + getMonth(now, 1) + '-27T22:20:20',
@@ -113,7 +113,7 @@ const getEmployeeOptions = () => {
 		},
 		{
 			id: 11,
-			user: 'Staff_L',
+			user: 'Phan Văn L',
 			title: 'Lễ 11',
 			start: now.getFullYear() + '-' + getMonth(now, -1) + '-13T08:12:14',
 			end: now.getFullYear() + '-' + getMonth(now, -1) + '-16T22:20:20',
@@ -122,7 +122,7 @@ const getEmployeeOptions = () => {
 		},
 		{
 			id: 13,
-			user: 'Staff_M',
+			user: 'Phan Văn M',
 			title: 'Lễ 13',
 			start: now.getFullYear() + '-' + getMonth(now, 1) + '-15T08:12:14',
 			end: now.getFullYear() + '-' + getMonth(now, 1) + '-18T22:20:20',
@@ -173,9 +173,11 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 											saveWorkSchedule(values);
 										}}
 									>
-										{({ errors, touched, submitCount }) => (
+										{({ errors, touched, submitCount, setFieldValue }) => (
 											<Form className="space-y-5">
-                                                <div className="mb-3">
+                                                												<div className="mb-3 flex gap-2">
+
+                                                <div className="flex-1">
 													<label htmlFor="title">
 														{t('holiday_title')}
 														<span style={{ color: 'red' }}> *</span>
@@ -183,22 +185,32 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 													<Field name="title" type="text" id="title" placeholder={t('fill_holiday_title')} className="form-input" />
 													{submitCount? errors.title ? <div className="mt-1 text-danger"> {errors.title} </div> : null : ''}
 												</div>
-												<div className="mb-3">
+												<div className="flex-1">
 													<label htmlFor="user">
 														{t('participants')}
 														<span style={{ color: 'red' }}> *</span>
 													</label>
-													<Field as="select" name="user" id="user" className="form-input" placeholder="test">
-														{/* <option value="">Chọn nhân viên</option> */}
-														{getEmployeeOptions().map((employee) => (
-															<option key={employee.value} value={employee.value}>
-																{employee.label}
-															</option>
-														))}
-													</Field>
+													<Field
+                                                        name="user"
+                                                        render={({ field }: any) => (
+                                                            <>
+                                                                <Select
+                                                                    {...field}
+                                                                    options={getEmployeeOptions()}
+                                                                    isMulti
+                                                                    isSearchable
+                                                                    placeholder={`${t('choose_participants')}`}
+                                                                    onChange={e => {
+                                                                        setFieldValue('user', e)
+                                                                    }}
+                                                                    />
+
+                                                                </>
+                                                            )}
+                                                        />
 													{submitCount ? errors.user ? <div className="mt-1 text-danger"> {errors.user} </div> : null : ''}
 												</div>
-
+</div>
 												<div className="mb-3 flex gap-2">
                                                     <div className='flex-1'>
                                                     <label htmlFor="dateStart">

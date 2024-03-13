@@ -56,7 +56,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
             .required(`${t('please_fill_name_staff')}`),
         code: Yup.string()
             .min(2, 'Too Short!')
-            .required(`${t('please_fill_staff_code')}`),
+            .required(`${t('please_fill_Nguyễn Văn Code')}`),
         surname: Yup.string()
             .min(2, 'Too Short!')
             .required(`${t('please_fill_surname_name')}`),
