@@ -188,37 +188,25 @@ const OvertimeForm = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{(page - 1) * pageSize + index + 1}</span>,
         },
-        {
-            accessor: 'code', title: `${t('personel_code')}`, sortable: false,
-            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.code}</span>
-        },
-        {
-            accessor: 'name', title: `${t('personel_name')}`, sortable: false,
-            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.name}</span>
-        },
-        {
-            accessor: 'position', title: `${t('personel_position')}`, sortable: false,
-            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.position}</span>
-        },
-        {
-            accessor: 'department', title: `${t('personel_department')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.department}</span>
-        },
-        {
-            accessor: 'submitday', title: `${t('submitday')}`, sortable: false, render: (records: any, index: any) => <span onClick={(records) => handleDetail(records)}>{records?.submitday}</span>
-        },
-        {
-            accessor: 'fromdate', title: `${t('fromdate')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.fromdate}</span>
-        },
-        {
-            accessor: 'enddate', title: `${t('enddate')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.enddate}</span>
-        },
-        { accessor: 'shift', title: `${t('late_early_shift')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.shift}</span> },
-        {
-            accessor: 'late_second', title: `${t('late_second')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.late_second}</span>
-        },
-        {
-            accessor: 'early_second', title: `${t('early_second')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.early_second}</span>
-        },
+        { accessor: 'code', title: `${t('personel_code')}`, sortable: false,
+        render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.code}</span>
+    },
+        { accessor: 'name', title: `${t('personel_name')}`, sortable: false,
+        render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.name}</span>
+    },
+        { accessor: 'position', title: `${t('personel_position')}`, sortable: false,
+        render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.position}</span>
+    },
+        { accessor: 'department', title: `${t('personel_department')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.department}</span>
+    },
+        { accessor: 'submitday', title: `${t('submitday')}`, sortable: false,         render: (records: any, index: any) => <span onClick={(records) => handleDetail(records)}>{records?.submitday}</span>
+    },
+        { accessor: 'fromdate', title: `${t('fromdate')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.fromdate}</span>
+    },
+        { accessor: 'enddate', title: `${t('enddate')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.enddate}</span>
+    },
+        { accessor: 'shift', title: `${t('shift')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.shift}</span> }
+    ,
         { accessor: 'checker', title: `${t('checker')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.checker}</span> },
         {
             accessor: 'isCheck',

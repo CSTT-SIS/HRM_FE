@@ -211,7 +211,7 @@ const LateEarlyForm = ({ ...props }: Props) => {
     },
         { accessor: 'checker', title: `${t('checker')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.checker}</span> },
         { accessor: 'isCheck',
-         title: `${t('isCheck')}`,
+         title: `${t('status')}`,
           sortable: false,
           render: (records: any, index: any) => <span className={`badge badge-outline-${records?.isCheck ? "success" : "danger"} `} onClick={() => handleDetail(records)}>{records?.isCheck ? `${t('isCheckTrue')}` : `${t('isCheckFalse')}`}</span>
     },

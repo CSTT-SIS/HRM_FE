@@ -254,21 +254,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                 </label>
                                                 <Field disabled
                                                             name="department"
-                                                            render={({ field }: any) => (
-                                                                <DropdownTreeSelect
-                                                                className="dropdown-tree"
-                                                                  data={treeDataState}
-                                                                  texts={{ placeholder: `${t('choose_department')}`}}
-                                                                  showPartiallySelected={true}
-                                                                  inlineSearchInput={true}
-                                                                  mode='radioSelect'
-                                                                  onChange={(currentNode, selectedNodes) => {
-                                                                    console.log(selectedNodes[0]?.value)
-                                                                    setFieldValue('department', selectedNodes[0]);
-                                                                    handleChangeTreeData(selectedNodes)
-                                                                  }}
-                                                                />
-                                                                )}
+                                                            type="text"
+                                                            className="form-input"
         />
 
                                                     {submitCount ? errors.department ? <div className="mt-1 text-danger"> {errors.department} </div> : null : ''}
@@ -278,7 +265,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('submitday')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field disabled id="submitday" type="datetime-local" name="submitday" className="form-input" placeholder={`${t('choose_submit_day')}`} />
+                                                <Field disabled id="submitday" type="date" name="submitday" className="form-input" placeholder={`${t('choose_submit_day')}`} />
                                                     {submitCount ? errors.submitday ? <div className="mt-1 text-danger"> {errors.submitday} </div> : null : ''}
                                             </div>
                                             </div>
@@ -334,6 +321,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                                 <Select
                                                                     // {...field}
                                                                     options={listPersonnel}
+                                                                    value={{value: "NV001", label: "Trần Văn B"}}
                                                                     isSearchable
                                                                     placeholder={t('choose_name')}
                                                                     maxMenuHeight={150}
@@ -359,6 +347,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                 <Field disabled name="reason" as="textarea" id="reason" placeholder={`${t('fill_reason')}`} className="form-input" />
                                                 {submitCount ? errors.reason ? <div className="mt-1 text-danger"> {errors.reason} </div> : null : ''}
                                             </div>
+                                            <div className="mb-5 w-1/2">
+</div>
                                             </div>
                                             <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">
                                                 <button type="button" className="btn btn-outline-dark cancel-button" onClick={() => handleCancel()}>

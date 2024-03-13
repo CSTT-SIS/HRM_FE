@@ -64,3 +64,9 @@ div.dropdown-content i {
     width: 100%;
     z-index: 5;
 }
+
+.react-dropdown-tree-select button {
+    font-size: 14px;
+    padding-left: 5px;
+    padding-right: 5px;
+}

@@ -139,7 +139,7 @@ const Duty = ({ ...props }: Props) => {
             accessor: 'status',
             title: 'Trạng thái',
             sortable: false,
-            render: ({ status }: any) => <span className={`badge badge-outline-${status === "active" ? "success" : "danger"} `}>{status}</span>,
+            render: ({ status }: any) => <span className={`badge badge-outline-${status === "active" ? "success" : "danger"} `}>{t(`${status}`)}</span>,
         },
         {
             accessor: 'action',

@@ -6,13 +6,13 @@
         "status": "active",
         "position": "Kế toán",
         "department": "Phòng 1",
-        "submitday": "2024-01-01T14:30",
+        "submitday": "2024-01-01",
         "fromdate": "04:30",
         "enddate": "14:30",
         "day": "Thứ 2, thứ 3",
-        "shift": "Ca hành chính, Ca sáng",
+        "shift": "Ca hành chính",
         "overtime_time": 20,
-        "checker": "Nguyễn Văn A",
+        "checker": "Trần Văn B",
         "isCheck": true
     },
     {
@@ -22,13 +22,13 @@
         "status": "active",
         "position": "Kế toán",
         "department": "Phòng 1",
-        "submitday": "2024-01-01T14:30",
+        "submitday": "2024-01-01",
         "fromdate": "04:30",
         "enddate": "14:30",
         "day": "Thứ 2, thứ 3",
-        "shift": "Ca hành chính, Ca sáng",
+        "shift": "Ca hành chính",
         "overtime_time": 20,
-        "checker": "Nguyễn Văn A",
+        "checker": "Trần Văn B",
         "isCheck": true
     },
     {
@@ -38,13 +38,13 @@
         "status": "active",
         "position": "Kế toán",
         "department": "Phòng 1",
-        "submitday": "2024-01-01T14:30",
+        "submitday": "2024-01-01",
         "fromdate": "04:30",
         "enddate": "14:30",
         "day": "Thứ 2, thứ 3",
-        "shift": "Ca hành chính, Ca sáng",
+        "shift": "Ca hành chính",
         "overtime_time": 20,
-        "checker": "Nguyễn Văn A",
+        "checker": "Trần Văn B",
         "isCheck": true
     },
     {
@@ -54,13 +54,13 @@
         "status": "active",
         "position": "Kế toán",
         "department": "Phòng 1",
-        "submitday": "2024-01-01T14:30",
+        "submitday": "2024-01-01",
         "fromdate": "04:30",
         "enddate": "14:30",
         "day": "Thứ 2, thứ 3",
-        "shift": "Ca hành chính, Ca sáng",
+        "shift": "Ca hành chính",
         "overtime_time": 20,
-        "checker": "Nguyễn Văn A",
+        "checker": "Trần Văn B",
         "isCheck": true
     }
 ]

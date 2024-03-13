@@ -2,7 +2,7 @@ import { useEffect, Fragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Dialog, Transition } from '@headlessui/react';
-
+import { useRouter } from 'next/router';
 import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
 import Swal from 'sweetalert2';
@@ -15,7 +15,8 @@ import Link from 'next/link';
 import IconArrowBackward from '@/components/Icon/IconArrowBackward';
 import { ProductCategorys, Providers } from '@/services/swr/product.twr';
 import IconBack from '@/components/Icon/IconBack';
-import { useRouter } from 'next/router';
+import IconCaretDown from '@/components/Icon/IconCaretDown';
+import IconCalendar from '@/components/Icon/IconCalendar';
 import task_list from '../task_list.json';
 interface Props {
     [key: string]: any;
@@ -23,14 +24,15 @@ interface Props {
 
 const AddNewTask = ({ ...props }: Props) => {
     const { t } = useTranslation();
-    const router = useRouter()
     const [disabled, setDisabled] = useState(false);
     const [query, setQuery] = useState<any>();
-    const [detail, setDetail] = useState<any>();
-    const id = Number(router.query.id);
+    const router = useRouter()
+
     const [typeShift, setTypeShift] = useState("0"); // 0: time, 1: total hours
     const { data: departmentparents } = ProductCategorys(query);
     const { data: manages } = Providers(query);
+    const [detail, setDetail] = useState<any>();
+
     const departmentparent = departmentparents?.data.filter((item: any) => {
         return (
             item.value = item.id,
@@ -38,7 +40,12 @@ const AddNewTask = ({ ...props }: Props) => {
             delete item.createdAt
         )
     })
-
+    useEffect(() => {
+        if (Number(router.query.id)) {
+            const detailData = task_list?.find(d => d.id === Number(router.query.id));
+            setDetail(detailData);
+        }
+    }, [router])
     const manage = manages?.data.filter((item: any) => {
         return (
             item.value = item.id,
@@ -59,13 +66,6 @@ const AddNewTask = ({ ...props }: Props) => {
     const handleSearch = (param: any) => {
         setQuery({ search: param });
     }
-    useEffect(() => {
-        if (Number(router.query.id)) {
-            const detailData = task_list?.find(d => d.id === Number(router.query.id));
-            setDetail(detailData);
-        }
-    }, [router])
-
     const handleTask = (values: any) => {
         let updatedTasks = [...props.totalData];
 
@@ -88,7 +88,7 @@ const AddNewTask = ({ ...props }: Props) => {
                 color = 'info'; // Default color if status is undefined or different
         }
 
-        if (detail) {
+        if (props?.data) {
             // Editing existing task
             updatedTasks = updatedTasks.map((task) => {
                 if (task.id === props.data.id) {
@@ -148,34 +148,31 @@ const AddNewTask = ({ ...props }: Props) => {
                     status: detail ? `${detail?.status}` : 'ĐANG THỰC HIỆN',
                     attachment: detail ? `${detail?.attachment}` : '',
                 }}
+                enableReinitialize
                 validationSchema={SubmittedForm}
                 onSubmit={(values) => {
                     handleTask(values);
                 }}
-                enableReinitialize
             >
                 {({ errors, values, setFieldValue, submitCount }) => (
                     <Form className="space-y-5">
-                        <div className='flex justify-between gap-5'>
-                            <div className="mb-3 w-1/2">
-                                <label htmlFor="name">
-                                    {' '}
-                                    {t('name_task')} <span style={{ color: 'red' }}>* </span>
-                                </label>
-                                <Field name="name" type="text" id="name" placeholder={`${t('enter_name_task')}`} className="form-input" />
-                                {submitCount ? errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null  : ''}
+                        <div className="flex justify-between gap-5">
+                        <div className="mb-3 w-1/2">
+                            <label htmlFor="name">
+                                {' '}
+                                {t('name_task')} <span style={{ color: 'red' }}>* </span>
+                            </label>
+                            <Field name="name" type="text" id="name" placeholder={`${t('enter_name_task')}`} className="form-input" />
+                            {submitCount ? errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null : ''}
                             </div>
                             <div className="mb-3 w-1/2">
                                 <label htmlFor="creator">
                                     {' '}
                                     {t('creator_task')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field as="select" name="creator" id="creator" className="form-input">
-                                    <option value="">Chọn người tạo</option>
-                                    <option value="Người tạo 1">Người tạo 1</option>
-                                    <option value="Người tạo 2">Người tạo 2</option>
+                                <Field type="text" name="creator" id="creator" className="form-input" disabled style={{ color: 'gray' }}>
                                 </Field>
-                                {submitCount ? errors.creator ? <div className="mt-1 text-danger"> {errors.creator} </div> : null  : ''}
+                                {submitCount ? errors.creator ? <div className="mt-1 text-danger"> {errors.creator} </div> : null : ''}
                             </div>
                         </div>
                         <div className='flex justify-between gap-5'>
@@ -184,36 +181,102 @@ const AddNewTask = ({ ...props }: Props) => {
                                     {' '}
                                     {t('executor_task')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field as="select" name="executor" id="executor" className="form-input">
-                                    <option value="">Chọn người thực hiện</option>
-                                    <option value="Người thực hiện 1">Người thực hiện 1</option>
-                                    <option value="Người thực hiện 2">Người thực hiện 2</option>
-                                </Field>
-                                {submitCount ? errors.executor ? <div className="mt-1 text-danger"> {errors.executor} </div> : null  : ''}
+                                <Select
+                                    id='collaborator'
+                                    name='collaborator'
+                                    options={[{
+                                        label: 'Lê Văn D'
+                                    }, {
+                                        label: 'Người thực hiện 2'
+                                    }]}
+                                    placeholder={'Chọn người thực hiện'}
+                                    maxMenuHeight={160}
+                                    onChange={e => {
+                                        setFieldValue('gender', e)
+                                    }}
+                                />
+
+                                {submitCount ? errors.executor ? <div className="mt-1 text-danger"> {errors.executor} </div> : null : ''}
                             </div>
                             <div className="mb-3 w-1/2">
                                 <label htmlFor="collaborator"> {t('collaborator_task')}</label>
 
-                                <Field as="select" name="collaborator" id="collaborator" className="form-input">
-                                    <option value="">Chọn người phối hợp</option>
-                                    <option value="Người người phối hợp 1">Người phối hợp 1</option>
-                                    <option value="Người người phối hợp 2">Người phối hợp 2</option>
-                                </Field>
+                                <Select
+                                    id='collaborator'
+                                    name='collaborator'
+                                    options={[{
+                                        label: 'Người phối hợp 1'
+                                    }, {
+                                        label: 'Người phối hợp 2'
+                                    }]}
+                                    placeholder={'Chọn người phối hợp'}
+                                    maxMenuHeight={160}
+                                    onChange={e => {
+                                        setFieldValue('gender', e)
+                                    }}
+                                />
                             </div>
                         </div>
-                        <div className="mb-3">
-                            <label htmlFor="deadline">
-                                {t('deadline_task')} <span style={{ color: 'red' }}>* </span>
-                            </label>
-                            <Field id="deadline" type="datetime-local" name="deadline" className="form-input" placeholder={`${t('enter_deadline_task')}`} />
-                            {submitCount ? errors.deadline ? <div className="mt-1 text-danger"> {errors.deadline} </div> : null  : ''}
+                        <div className='flex justify-between gap-5'>
+
+                            <div className="mb-3 w-1/2">
+                                <label htmlFor="date_create">
+                                    {' '}
+                                    {t('date_create')} <span style={{ color: 'red' }}>* </span>
+                                </label>
+                                <div className="flex">
+                                    <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
+                                        <IconCalendar></IconCalendar>
+                                    </div>
+                                    <Flatpickr
+                                        options={{
+                                            dateFormat: 'Y-m-d',
+                                            position: 'auto left',
+                                        }}
+                                        className="form-input ltr:rounded-l-none rtl:rounded-r-none"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="mb-3 w-1/2">
+                                <label htmlFor="deadline">
+                                    {t('deadline_task')} <span style={{ color: 'red' }}>* </span>
+
+                                </label>
+                                <div className="flex">
+                                    <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
+                                        <IconCalendar></IconCalendar>
+                                    </div>
+                                    <Flatpickr
+                                        options={{
+                                            dateFormat: 'Y-m-d',
+                                            position: 'auto left',
+                                        }}
+                                        className="form-input ltr:rounded-l-none rtl:rounded-r-none"
+                                        placeholder={`${t('enter_deadline_task')}`}
+                                    />
+                                </div>
+
+                                {submitCount ? errors.deadline ? <div className="mt-1 text-danger"> {errors.deadline} </div> : null : ''}
+                            </div>
+
                         </div>
-                        <div className="mb-3">
+
+                        <div className='flex justify-between gap-5'>
+                        <div className="mb-3 w-1/2">
+                                <label htmlFor="file">
+                                    {' '}
+                                    {t('File')} <span style={{ color: 'red' }}>* </span>
+                                </label>
+                                <Field name="file" type="file" rows="2" id="file" style={{ height: '37.6px' }} placeholder={`${t('enter_description_task')}`} className="form-input" />
+                            </div>
+                            <div className="mb-3 w-1/2">
                             <label htmlFor="description">
                                 {' '}
                                 {t('description_task')} <span style={{ color: 'red' }}>* </span>
                             </label>
                             <Field name="description" as="textarea" rows="2" id="description" placeholder={`${t('enter_description_task')}`} className="form-input" />
+                        </div>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="directive"> {t('directive_task')}</label>
