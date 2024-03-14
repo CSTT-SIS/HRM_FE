@@ -13,9 +13,22 @@ import IconArrowLeft from '@/components/Icon/IconArrowLeft';
 import IconArrowBackward from '@/components/Icon/IconArrowBackward';
 import IconBack from '@/components/Icon/IconBack';
 import duty_list from '../duty_list.json';
+import Select from "react-select";
+import { C } from '@fullcalendar/core/internal-common';
 interface Props {
     [key: string]: any;
 }
+
+const list_duty_type = [
+    {
+        value: '1',
+        label: 'Quản lý'
+    },
+    {
+        value: '2',
+        label: 'Nhân viên'
+    }
+]
 
 const DetailDuty = ({ ...props }: Props) => {
     const router = useRouter();
@@ -72,6 +85,7 @@ const DetailDuty = ({ ...props }: Props) => {
         props.setData(undefined);
     };
 
+    console.log(list_duty_type?.find((e: any) => e.label === detail?.duty_group))
     return (
         <div className="p-5">
             <div className='flex justify-between header-page-bottom pb-4 mb-4'>
@@ -91,7 +105,10 @@ const DetailDuty = ({ ...props }: Props) => {
                         name: detail ? `${detail?.name}` : "",
                         code: detail ? `${detail?.code}` : "",
                         status: detail ? `${detail?.status}` : "",
-                        duty_group: detail ? `${detail?.duty_group}` : "",
+                        duty_group: detail ? {
+                            value: detail?.duty_group,
+                            label: list_duty_type?.find((e: any) => e.label === detail?.duty_group)?.label
+                        } : null,
                         description: detail ? `${detail?.description}` : ""
                     }
                 }
@@ -101,7 +118,7 @@ const DetailDuty = ({ ...props }: Props) => {
                 }}
                 enableReinitialize
             >
-                {({ errors, touched, submitCount }) => (
+                {({ errors, touched, submitCount, values, setFieldValue }) => (
                     <Form className="space-y-5" >
                         <div className="flex justify-between gap-5">
                             <div className="mb-5 w-1/2">
@@ -122,11 +139,19 @@ const DetailDuty = ({ ...props }: Props) => {
                         <div className="flex justify-between gap-5">
                             <div className="mb-5 w-1/2">
                                 <label htmlFor="duty_group" className='label'> {t('duty_group')} < span style={{ color: 'red' }}>* </span></label >
-                                <Field as="select" name="duty_group" id="duty_group" className="form-input">
-                                    <option value="active">Quản lý</option>
-                                    <option value="inActive">Nhân viên</option>
-                                </Field>
-                                {submitCount ? errors.duty_group ? (
+
+                                                                <Select
+                                                                id='duty_group'
+                                                                name='duty_group'
+                                                                    value={values?.duty_group}
+                                                                    options={list_duty_type}
+                                                                    placeholder={`${t('choose_group_duty')}`}
+                                                                    onChange={e => {
+                                                                        setFieldValue('duty_group', e)
+                                                                    }}
+                                                                    />
+
+                                                        {submitCount ? errors.duty_group ? (
                                     <div className="text-danger mt-1"> {errors.duty_group} </div>
                                 ) : null : ''}
                             </div>

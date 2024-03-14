@@ -56,7 +56,19 @@ const AddNewPersonel = ({ ...props }: Props) => {
             .required(`${t('please_fill_name_staff')}`),
         code: Yup.string()
             .min(2, 'Too Short!')
-            .required(`${t('please_fill_staff_code')}`),
+            .required(`${t('please_fill_Nguyễn Văn Code')}`),
+        surname: Yup.string()
+            .min(2, 'Too Short!')
+            .required(`${t('please_fill_surname_name')}`),
+        email: Yup.string()
+            .min(2, 'Too Short!')
+            .required(`${t('please_fill_email')}`),
+        phone: Yup.string()
+            .min(2, 'Too Short!')
+            .required(`${t('please_fill_phone')}`),
+        userName: Yup.string()
+            .min(2, 'Too Short!')
+            .required(`${t('please_fill_username')}`),
     });
     const handleSearch = (param: any) => {
         setQuery({ search: param });
@@ -211,7 +223,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="surname" className='label'>
                                                             {' '}
-                                                            {t('surname_middle')} 
+                                                            {t('surname_middle')}
                                                         </label>
                                                         <Field name="surname" type="text" id="surname" placeholder={t('enter_surname_middle')} className="form-input" />
                                                     </div>

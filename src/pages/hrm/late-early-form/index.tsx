@@ -90,11 +90,8 @@ const LateEarlyForm = ({ ...props }: Props) => {
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const data = localStorage.getItem('lateEarlyFormList');
-            if (data) {
-                setGetStorge(JSON.parse(data));
-            } else {
+                setGetStorge(LateEarlyFormList);
                 localStorage.setItem('lateEarlyFormList', JSON.stringify(LateEarlyFormList));
-            }
 
         }
     }, [])

@@ -185,14 +185,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('name_staff')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field disabled as="select" name="name" id="name" className="form-input">
-                                                    { listPersonnel?.map((person: any) => {
-                                                        return (
-                                                            <option key={person.value} value={person.value}>
-                                                                {person.label}
-                                                            </option>
-                                                        );
-                                                    })}
+                                                <Field disabled type="text" name="name" id="name" className="form-input">
+
 
                                 </Field>
                                                {submitCount ? (
@@ -204,14 +198,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('duty')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field disabled as="select" name="position" id="position" className="form-input">
-                                                    { listDuty?.map((duty: any) => {
-                                                        return (
-                                                            <option key={duty.value} value={duty.value}>
-                                                                {duty.label}
-                                                            </option>
-                                                        );
-                                                    })}
+                                                <Field disabled type="text" name="position" id="position" className="form-input">
+                                                   
 
                                 </Field>
                                                     {submitCount ? errors.position ? <div className="mt-1 text-danger"> {errors.position} </div> : null : ''}
@@ -332,7 +320,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('reason')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field as="textarea" name="reason" id="reason" className="form-input" />
+                                                <Field as="textarea" name="reason" id="reason"
+                                                placeholder={`${t('fill_reason')}`}className="form-input" />
                                                     {submitCount ? errors.reason ? <div className="mt-1 text-danger"> {errors.reason} </div> : null : ''}
                                             </div>
                                             </div>

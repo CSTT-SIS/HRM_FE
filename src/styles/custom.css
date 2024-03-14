@@ -612,3 +612,7 @@ li.menu>button:hover svg.icon-menu {
     background: url("/assets/images/calendar_icon.png") no-repeat right;
     background-size: 20px;
 }
+
+:disabled {
+    color: #837d7d!important;
+}
