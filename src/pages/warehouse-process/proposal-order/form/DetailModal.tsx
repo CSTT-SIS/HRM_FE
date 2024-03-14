@@ -95,7 +95,7 @@ const DetailModal = ({ ...props }: Props) => {
                 label: `${props?.data?.product?.name}`
             } : "",
             note: props?.data ? `${props?.data?.note}` : "",
-            price: props?.data ? props?.data.price : ""
+            // price: props?.data ? props?.data.price : ""
         })
     }, [props?.data]);
 
@@ -151,7 +151,7 @@ const DetailModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data === undefined ? t('add_detail') : t('edit_detail')}
+                                    {props.data === undefined ? t('add_product_list') : t('edit_product_list')}
                                 </div>
                                 <div>
                                     <div className="p-5">
@@ -200,13 +200,13 @@ const DetailModal = ({ ...props }: Props) => {
                                                             <div className="text-danger mt-1"> {`${errors.quantity}`} </div>
                                                         ) : null}
                                                     </div>
-                                                    <div className="mb-5">
+                                                    {/* <div className="mb-5">
                                                         <label htmlFor="price" > {t('price')} </label >
                                                         <Field name="price" type="number" id="price" placeholder={`${t('enter_price')}`} className="form-input" />
                                                         {submitCount && errors.price ? (
                                                             <div className="text-danger mt-1"> {`${errors.price}`} </div>
                                                         ) : null}
-                                                    </div>
+                                                    </div> */}
                                                     <div className="mb-5">
                                                         <label htmlFor="note" > {t('description')} </label >
                                                         <Field
@@ -225,7 +225,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                             {t('cancel')}
                                                         </button>
                                                         <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
-                                                            {props.data !== undefined ? t('update') : t('add')}
+                                                            {props.data !== undefined ? t('update') : t('add_new')}
                                                         </button>
                                                     </div>
                                                 </Form>

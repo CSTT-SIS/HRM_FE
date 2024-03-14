@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
 import { AddProposalDetail, EditProposalDetail } from '@/services/apis/proposal.api';
 import { DropdownProducts } from '@/services/swr/dropdown.twr';
+import { WarehousingBillAddDetail, WarehousingBillEditDetail } from '@/services/apis/warehousing-bill.api';
 
 interface Props {
     [key: string]: any;
@@ -25,7 +26,7 @@ const DetailModal = ({ ...props }: Props) => {
 
     const SubmittedForm = Yup.object().shape({
         productId: new Yup.ObjectSchema().required(`${t('please_fill_product')}`),
-        quantity: Yup.string().required(`${t('please_fill_quantity')}`),
+        proposalQuantity: Yup.string().required(`${t('please_fill_quantity')}`),
     });
 
     const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ page: page });
@@ -34,19 +35,19 @@ const DetailModal = ({ ...props }: Props) => {
         if (Number(router.query.id)) {
             const query = {
                 productId: Number(param.productId.value),
-                quantity: Number(param.quantity),
+                proposalQuantity: Number(param.proposalQuantity),
                 note: param.note,
                 // price: param?.price ? param?.price : 0
             };
             if (props?.data) {
-                EditProposalDetail({ id: router.query.id, detailId: props?.data?.id, ...query }).then(() => {
+                WarehousingBillEditDetail({ id: router.query.id, detailId: props?.data?.id, ...query }).then(() => {
                     handleCancel();
                     showMessage(`${t('edit_success')}`, 'success');
                 }).catch((err) => {
                     showMessage(`${err?.response?.data?.message}`, 'error');
                 });
             } else {
-                AddProposalDetail({ id: router.query.id, ...query }).then(() => {
+                WarehousingBillAddDetail({ id: router.query.id, ...query }).then(() => {
                     handleCancel();
                     showMessage(`${t('create_success')}`, 'success');
                 }).catch((err) => {
@@ -61,7 +62,7 @@ const DetailModal = ({ ...props }: Props) => {
                     id: param.productId.value
                 },
                 productId: Number(param.productId.value),
-                quantity: Number(param.quantity),
+                proposalQuantity: Number(param.proposalQuantity),
                 note: param.note,
                 // price: param?.price ? param?.price : 0
             };
@@ -83,13 +84,13 @@ const DetailModal = ({ ...props }: Props) => {
     const handleCancel = () => {
         props.setOpenModal(false);
         // props.setData();
-        props.proposalDetailMutate();
+        props.orderDetailMutate();
         setInitialValue({});
     };
 
     useEffect(() => {
         setInitialValue({
-            quantity: props?.data ? `${props?.data?.quantity}` : "",
+            proposalQuantity: props?.data ? `${props?.data?.proposalQuantity}` : "",
             productId: props?.data ? {
                 value: `${props?.data?.product?.id}`,
                 label: `${props?.data?.product?.name}`
@@ -188,16 +189,16 @@ const DetailModal = ({ ...props }: Props) => {
                                                         </div>
                                                     </div>
                                                     <div className="mb-5">
-                                                        <label htmlFor="quantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <label htmlFor="proposalQuantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
                                                         <Field
-                                                            name="quantity"
+                                                            name="proposalQuantity"
                                                             type="number"
-                                                            id="quantity"
+                                                            id="proposalQuantity"
                                                             placeholder={`${t('enter_quantity')}`}
                                                             className="form-input"
                                                         />
-                                                        {submitCount && errors.quantity ? (
-                                                            <div className="text-danger mt-1"> {`${errors.quantity}`} </div>
+                                                        {submitCount && errors.proposalQuantity ? (
+                                                            <div className="text-danger mt-1"> {`${errors.proposalQuantity}`} </div>
                                                         ) : null}
                                                     </div>
                                                     {/* <div className="mb-5">
@@ -225,7 +226,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                             {t('cancel')}
                                                         </button>
                                                         <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
-                                                            {props.data !== undefined ? t('update') : t('add')}
+                                                            {props.data !== undefined ? t('update') : t('add_new')}
                                                         </button>
                                                     </div>
                                                 </Form>

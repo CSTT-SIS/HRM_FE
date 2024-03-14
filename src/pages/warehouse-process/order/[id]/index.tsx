@@ -10,7 +10,7 @@ import { setPageTitle } from '@/store/themeConfigSlice';
 import { DataTableSortStatus, DataTable } from 'mantine-datatable';
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
-import { AddOrderDetails, CreateOrder, DeleteOrderDetail, EditOrder, GetOrder, OrderPlace } from '@/services/apis/order.api';
+import { AddOrderDetails, CreateOrder, DeleteOrderDetail, EditOrder, GetOrder, OrderHeadApprove, OrderHeadReject, OrderManagerApprove, OrderManagerReject, OrderPlace } from '@/services/apis/order.api';
 import { OrderDetails } from '@/services/swr/order.twr';
 import Link from 'next/link';
 import IconBackward from '@/components/Icon/IconBackward';
@@ -52,7 +52,7 @@ const DetailPage = ({ ...props }: Props) => {
         name: Yup.string().required(`${t('please_fill_name')}`),
         code: Yup.string().required(`${t('please_fill_code')}`),
         proposalIds: new Yup.ArraySchema().required(`${t('please_fill_proposal')}`),
-        provider: Yup.string().required(`${t('please_fill_provider')}`),
+        // provider: Yup.string().required(`${t('please_fill_provider')}`),
         estimatedDeliveryDate: Yup.string().required(`${t('please_fill_date')}`),
     });
 
@@ -255,6 +255,7 @@ const DetailPage = ({ ...props }: Props) => {
                 });
             }
         }
+        handleCancel();
     }
 
     const handleDetail = (id: any) => {
@@ -320,6 +321,42 @@ const DetailPage = ({ ...props }: Props) => {
         if (formRef.current) {
             formRef.current.handleSubmit()
         }
+    }
+
+    const handleApprove = () => {
+        OrderHeadApprove({ id: router.query.id }).then(() => {
+            handleCancel();
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
+    const handleManagerApprove = () => {
+        OrderManagerApprove({ id: router.query.id }).then(() => {
+            handleCancel();
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
+    const handleReject = () => {
+        OrderHeadReject({ id: router.query.id }).then(() => {
+            handleCancel();
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
+    const handleManagerReject = () => {
+        OrderManagerReject({ id: router.query.id }).then(() => {
+            handleCancel();
+            showMessage(`${t('update_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
     }
 
     return (
@@ -571,6 +608,28 @@ const DetailPage = ({ ...props }: Props) => {
                                 </button>
                                 <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleSubmit()}>
                                     {router.query.id !== "create" ? t('update') : t('save')}
+                                </button>
+                            </div>
+                        }
+                        {
+                            (router.query.type !== "HEAD_APPROVED" && router.query.type !== "HEAD_REJECTED" && disable) &&
+                            <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
+                                <button type="button" className="btn btn-outline-danger cancel-button w-28" onClick={() => handleReject()}>
+                                    {t('reject')}
+                                </button>
+                                <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleApprove()}>
+                                    {t('approve')}
+                                </button>
+                            </div>
+                        }
+                        {
+                            (router.query.type === "HEAD_APPROVED" || router.query.type === "HEAD_REJECTED" && disable) &&
+                            <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
+                                <button type="button" className="btn btn-outline-danger cancel-button w-28" onClick={() => handleManagerReject()}>
+                                    {t('reject')}
+                                </button>
+                                <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleManagerApprove()}>
+                                    {t('approve')}
                                 </button>
                             </div>
                         }

@@ -1,4 +1,4 @@
-import { useEffect, Fragment, useState, SetStateAction } from 'react';
+import { useEffect, Fragment, useState, SetStateAction, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { showMessage } from '@/@core/utils';
@@ -9,7 +9,7 @@ import { setPageTitle } from '@/store/themeConfigSlice';
 import { DataTableSortStatus, DataTable } from 'mantine-datatable';
 import { useDispatch } from 'react-redux';
 import { WarehousingBillDetail, WarehousingBillListRequest } from '@/services/swr/warehousing-bill.twr';
-import { CreateWarehousingBill, EditWarehousingBill, GetWarehousingBill, WarehousingBillFinish } from '@/services/apis/warehousing-bill.api';
+import { CreateWarehousingBill, EditWarehousingBill, GetWarehousingBill, WarehousingBillAddDetails, WarehousingBillFinish } from '@/services/apis/warehousing-bill.api';
 import { Field, Form, Formik } from 'formik';
 import AnimateHeight from 'react-animate-height';
 import Select from 'react-select';
@@ -18,7 +18,7 @@ import { DropdownOrder, DropdownWarehouses } from '@/services/swr/dropdown.twr';
 import IconBackward from '@/components/Icon/IconBackward';
 import Link from 'next/link';
 import IconCaretDown from '@/components/Icon/IconCaretDown';
-import { GetOrder } from '@/services/apis/order.api';
+import { GetOrder, GetOrderDetail } from '@/services/apis/order.api';
 import moment from 'moment';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
@@ -133,7 +133,7 @@ const ExportPage = ({ ...props }: Props) => {
             render: ({ product }: any) => <span>{product?.name}</span>,
             sortable: false
         },
-        { accessor: 'quantity', title: 'số lượng', sortable: false },
+        { accessor: 'proposalQuantity', title: 'số lượng', sortable: false },
         { accessor: 'note', title: 'Ghi chú', sortable: false },
         {
             accessor: 'action',
@@ -142,7 +142,7 @@ const ExportPage = ({ ...props }: Props) => {
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
                     {
-                        router.query.id !== "create" && !disable &&
+                        router.query.type === "PENDING" && disable &&
                         <button className='bg-[#C5E7AF] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleEdit(records)}>
                             <IconPencil /> <span>{`${t('enter_quantity')}`}</span>
                         </button>
@@ -181,15 +181,16 @@ const ExportPage = ({ ...props }: Props) => {
     const [dataOrderDropdown, setDataOrderDropdown] = useState<any>([]);
     const [dataWarehouseDropdown, setDataWarehouseDropdown] = useState<any>([]);
     const [active, setActive] = useState<any>([1, 2]);
+    const formRef = useRef<any>();
 
     const SubmittedForm = Yup.object().shape({
         // name: Yup.string().required(`${t('please_fill_name')}`),
-        type: new Yup.ObjectSchema().required(`${t('please_fill_type')}`),
+        // type: new Yup.ObjectSchema().required(`${t('please_fill_type')}`),
         // proposalId: new Yup.ObjectSchema().required(`${t('please_fill_proposal')}`),
         warehouseId: new Yup.ObjectSchema().required(`${t('please_fill_warehouse')}`),
     });
 
-    const { data: orders, pagination: orderPagination, isLoading: orderLoading } = DropdownOrder({ page: pageOder, status: "RECEIVED" });
+    const { data: orders, pagination: orderPagination, isLoading: orderLoading } = DropdownOrder({ page: pageOder });
     const { data: warehouses, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({ page: pageWarehouse });
     const { data: listRequest } = WarehousingBillListRequest({ id: router.query.proposalId });
 
@@ -203,7 +204,7 @@ const ExportPage = ({ ...props }: Props) => {
     const handleWarehousing = (param: any) => {
         const query: any = {
             warehouseId: Number(param.warehouseId.value),
-            type: param.type.value,
+            type: "IMPORT",
             note: param.note,
             // name: param.name
         };
@@ -221,11 +222,22 @@ const ExportPage = ({ ...props }: Props) => {
         } else {
             CreateWarehousingBill(query).then((res) => {
                 showMessage(`${t('create_success')}`, 'success');
+                handleDetail(res.data.id)
             }).catch((err) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
         }
+        handleCancel();
     }
+    const handleDetail = (id: any) => {
+        WarehousingBillAddDetails({ id: id, details: listDataDetail }).then(() => {
+            // handleChangeComplete({ id: id });
+            handleCancel();
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
     useEffect(() => {
         setInitialValue({
             orderId: data ? {
@@ -300,12 +312,22 @@ const ExportPage = ({ ...props }: Props) => {
     }
 
     const getValueDetail = (param: any) => {
+        GetOrderDetail({ id: param.value }).then((res) => {
+            setListDataDetail(res.data);
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
         GetOrder({ id: param.value }).then((res) => {
-            setListDataDetail(res.data.details);
             param.setFieldValue("createdBy", res.data.createdBy.fullName)
         }).catch((err) => {
             showMessage(`${err?.response?.data?.message}`, 'error');
         });
+    }
+
+    const handleSubmit = () => {
+        if (formRef.current) {
+            formRef.current.handleSubmit()
+        }
     }
 
     return (
@@ -349,6 +371,7 @@ const ExportPage = ({ ...props }: Props) => {
                                             handleWarehousing(values);
                                         }}
                                         enableReinitialize
+                                        innerRef={formRef}
                                     >
 
                                         {({ errors, values, submitCount, setFieldValue }) => (
@@ -532,13 +555,13 @@ const ExportPage = ({ ...props }: Props) => {
                                     <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
                                         {t('cancel')}
                                     </button>
-                                    <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+                                    <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleSubmit()}>
                                         {router.query.id !== "create" ? t('update') : t('save')}
                                     </button>
                                 </>
                             }
                             {
-                                router.query.id !== "create" && !disable &&
+                                router.query.type === "PENDING" &&
                                 <button type="button" onClick={e => handleChangeComplete()} className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
                                     {t('complete')}
                                 </button>

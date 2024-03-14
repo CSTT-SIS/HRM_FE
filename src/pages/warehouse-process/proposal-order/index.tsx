@@ -150,7 +150,7 @@ const ProposalPage = ({ ...props }: Props) => {
         {
             accessor: 'status',
             title: 'Trạng thái',
-            render: ({ status }: any) => <span>{status === "COMPLETED" ? "Đã duyệt" : "Chưa duyệt"}</span>,
+            render: ({ status }: any) => <span>{status === "HEAD_APPROVED" ? "Đã duyệt" : status === "HEAD_REJECTED" ? "Không duyệt" : "Chưa duyệt"}</span>,
             sortable: false
         },
         {
@@ -158,20 +158,18 @@ const ProposalPage = ({ ...props }: Props) => {
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
-                <div className="flex w-max mx-auto gap-2">
-                    {/* <Tippy content={`${t('detail')}`}> */}
-                    <button className='bg-[#F2E080] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/proposal-order/${records.id}?status=${true}&&type=approve`)}>
+                <div className="flex justify-start gap-2">
+                    <button className='bg-[#F2E080] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/proposal-order/${records.id}?status=${true}&&type=${records.status}`)}>
                         <IconEye /> <span>{`${t('detail')}`}</span>
                     </button>
-                    {/* </Tippy> */}
                     {
-                        records.status === "DRAFT" &&
+                        records.status !== "HEAD_APPROVED" &&
                         <button className='bg-[#9CD3EB] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleDetail(records)}>
                             <IconPencil /> <span>{`${t('edit')}`}</span>
                         </button>
                     }
                     {
-                        (records.status === "DRAFT" || records.status === "HEAD_REJECTED" || records.status === "MANAGER_REJECTED") &&
+                        (records.status === "DRAFT" || records.status === "HEAD_REJECTED") &&
                         <button className='bg-[#E43940] flex justify-between gap-1 p-1 rounded text-[#F5F5F5]' type="button" onClick={() => handleDelete(records)}>
                             <IconTrashLines /> <span>{`${t('delete')}`}</span>
                         </button>
