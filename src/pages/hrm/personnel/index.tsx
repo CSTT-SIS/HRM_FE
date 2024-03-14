@@ -387,7 +387,7 @@ const Department = ({ ...props }: Props) => {
 					<TableTree>
 						<Headers>
 							<Header width={200}>Tên nhân viên</Header>
-							<Header width={100}>Mã nv</Header>
+							<Header width={100}>Mã nhân viên</Header>
 							<Header width={200}>Chức vụ</Header>
 							<Header width={200}>Phòng ban</Header>
 							<Header width={100}>Thao tác</Header>

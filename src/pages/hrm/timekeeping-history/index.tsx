@@ -35,6 +35,7 @@ import IconChecks from '@/components/Icon/IconChecks';
 import { getDaysOfMonth } from '@/utils/commons';
 
 import TimekeepingList from './timekeeping_fake.json';
+import IconFolderMinus from '@/components/Icon/IconFolderMinus';
 
 interface Props {
     [key: string]: any;
@@ -77,9 +78,9 @@ const TimekeepingHistory = ({ ...props }: Props) => {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-                setGetStorge(TimekeepingList);
-                localStorage.setItem('employeeList', JSON.stringify(TimekeepingList));
-                    }
+            setGetStorge(TimekeepingList);
+            localStorage.setItem('employeeList', JSON.stringify(TimekeepingList));
+        }
     }, [])
 
     useEffect(() => {
@@ -108,14 +109,14 @@ const TimekeepingHistory = ({ ...props }: Props) => {
     }
     const handleDelete = (data: any) => {
         const swalDeletes = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-secondary',
-				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-				popup: 'confirm-delete',
-			},
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'confirm-delete',
+            },
             imageUrl: '/assets/images/delete_popup.png',
-			buttonsStyling: false,
-		});
+            buttonsStyling: false,
+        });
         swalDeletes
             .fire({
                 title: `${t('delete_department')}`,
@@ -124,7 +125,7 @@ const TimekeepingHistory = ({ ...props }: Props) => {
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
                 confirmButtonText: `${t('confirm')}`,
-				reverseButtons: true,
+                reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -152,7 +153,7 @@ const TimekeepingHistory = ({ ...props }: Props) => {
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
                 confirmButtonText: `${t('confirm')}`,
-				reverseButtons: true,
+                reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -180,23 +181,38 @@ const TimekeepingHistory = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
         },
-        { accessor: 'code',
-         title: 'Mã chấm công', sortable: false
-    },
-        { accessor: 'name',
-         title: 'Tên nhân viên', sortable: false,
-    }
+       
+        {
+            accessor: 'name',
+            title: 'Tên nhân viên', sortable: false,
+        },
+        {
+            accessor: 'code',
+            title: 'Mã nhân viên', sortable: false
+        },
+        {
+            accessor: 'faceid',
+            title: 'Face PersonId', sortable: false
+        },
+        {
+            accessor: 'phone',
+            title: 'Số điện thoại', sortable: false
+        },
+        {
+            accessor: 'time',
+            title: 'Thời gian checkin', sortable: false
+        },
+        {
+            accessor: 'temp',
+            title: 'Nhiệt độ', sortable: false
+        },
+        {
+            accessor: 'device',
+            title: 'Thiết bị', sortable: false
+        },
+
     ]
 
-    listDay?.map((item: string, columIndex: number) => {
-        columns.push(
-            {
-                accessor: `${item}`,
-                title: `${item}`,
-                sortable: false
-            }
-        )
-    })
 
     return (
         <div>
@@ -215,37 +231,37 @@ const TimekeepingHistory = ({ ...props }: Props) => {
                                     </button>
                         </Link> */}
 
-                        {/* <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
                             Nhập file
-                        </button> */}
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                        </button>
+                        {/* <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconDownload className="ltr:mr-2 rtl:ml-2" />
                             Xuất file excel
-                        </button>
+                        </button> */}
                     </div>
                     <div className='flex gap-2'>
                         <div className='flex gap-1'>
-                        <div className="flex items-center min-w-[80px]">{t('choose_month')}</div>
-                        <Flatpickr
-                            className='form-input'
-                            options = {{
-                            // dateFormat: 'd/m/y',
-                            defaultDate: new Date(),
-                            locale: {
-                                ...Vietnamese
-                            },
-                                plugins: [
-                                    monthSelectPlugin(monthSelectConfig) // Sử dụng plugin với cấu hình
-                                ]
-                            }}
-                            onChange={(selectedDates, dateStr, instance) => {
-                                handleChangeMonth(selectedDates, dateStr)
-                            }}
-                         />
+                            <div className="flex items-center min-w-[80px]">{t('choose_month')}</div>
+                            <Flatpickr
+                                className='form-input'
+                                options={{
+                                    // dateFormat: 'd/m/y',
+                                    defaultDate: new Date(),
+                                    locale: {
+                                        ...Vietnamese
+                                    },
+                                    plugins: [
+                                        monthSelectPlugin(monthSelectConfig) // Sử dụng plugin với cấu hình
+                                    ]
+                                }}
+                                onChange={(selectedDates, dateStr, instance) => {
+                                    handleChangeMonth(selectedDates, dateStr)
+                                }}
+                            />
                         </div>
                         <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
-                        </div>
+                    </div>
                 </div>
                 <div className="datatables">
                     <DataTable
