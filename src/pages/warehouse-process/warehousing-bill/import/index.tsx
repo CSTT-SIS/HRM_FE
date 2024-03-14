@@ -47,7 +47,7 @@ const WarehousingPage = ({ ...props }: Props) => {
 
 
     // get data
-    const { data: warehousing, pagination, mutate } = WarehousingBill({ ...router.query });
+    const { data: warehousing, pagination, mutate } = WarehousingBill({ ...router.query, type: "IMPORT", warehouseId: active.includes(0) ? "" : active });
     const { data: warehouses, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({ page: pageWarehouse });
 
 
@@ -183,8 +183,8 @@ const WarehousingPage = ({ ...props }: Props) => {
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
-                <div className="flex items-center w-max mx-auto gap-2">
-                    <button className='bg-[#F2E080] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/warehousing-bill/import/${records.id}?status=${true}`)}>
+                <div className="flex w-max mx-auto gap-2">
+                    <button className='bg-[#F2E080] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/warehousing-bill/import/${records.id}?status=${true}&&type=${records.status}`)}>
                         <IconEye /> <span>{`${t('detail')}`}</span>
                     </button>
                     {
@@ -203,39 +203,26 @@ const WarehousingPage = ({ ...props }: Props) => {
         },
     ]
 
-    const handleActive = (value: any) => {
-        setActive([value]);
-        localStorage.setItem('defaultFilterImport', value);
-    };
-
-    const [dataWarehouseDropdown, setDataWarehouseDropdown] = useState<any>([]);
-
-    useEffect(() => {
-        if (warehousePagination?.page === undefined) return;
-        if (warehousePagination?.page === 1) {
-            setDataWarehouseDropdown(warehouses?.data)
+    const handleActive = (item: any) => {
+        if (Number(localStorage.getItem('defaultFilterImport')) === item.value) {
+            setActive([0]);
+            localStorage.setItem('defaultFilterImport', "0");
         } else {
-            setDataWarehouseDropdown([...dataWarehouseDropdown, ...warehouses?.data])
+            setActive([item.value]);
+            localStorage.setItem('defaultFilterImport', item.value);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [warehousePagination]);
-
-    const handleMenuScrollToBottomWarehouse = () => {
-        setTimeout(() => {
-            setPageWarehouse(warehousePagination?.page + 1);
-        }, 1000);
-    }
+    };
 
     const handleChangeSelect = (e: any) => {
         setSelect(e);
-        localStorage.setItem('defaultSelectExport', JSON.stringify(e))
+        localStorage.setItem('defaultSelectImport', JSON.stringify(e))
     };
 
     useEffect(() => {
         if (typeof window !== "undefined") {
             setActive([Number(localStorage.getItem('defaultFilterImport'))])
-            if (localStorage.getItem("defaultSelectExport") !== null) {
-                setSelect(JSON.parse(localStorage.getItem("defaultSelectExport") || ""))
+            if (localStorage.getItem("defaultSelectImport") !== null) {
+                setSelect(JSON.parse(localStorage.getItem("defaultSelectImport") || ""))
             }
         }
     }, [router]);
@@ -261,14 +248,18 @@ const WarehousingPage = ({ ...props }: Props) => {
                 </div>
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap gap-1">
-                        <IconFilter />
-                        <span>Lọc nhanh :</span>
+                        {/* <IconFilter /> */}
+                        {/* <span>Lọc nhanh :</span> */}
                         <div className='flex items-center flex-wrap gap-2'>
-                            <div className={active.includes(1) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(1)}>Chưa duyệt</div>
-                            <div className={active.includes(2) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(2)}>Đã duyệt</div>
-                            <div className={active.includes(3) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(3)}>Không duyệt</div>
+                            {
+                                warehouses?.data.map((item: any, index: any) => {
+                                    return (
+                                        <div key={index} className={active.includes(item.value) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(item)}>{item.label}</div>
+                                    );
+                                })
+                            }
                         </div>
-                        <span className='ml-9'>Lọc kho :</span>
+                        {/* <span className='ml-9'>Lọc kho :</span>
                         <div className='w-52'>
                             <Select
                                 options={dataWarehouseDropdown}
@@ -280,7 +271,7 @@ const WarehousingPage = ({ ...props }: Props) => {
                                 value={select || ''}
                                 onChange={e => handleChangeSelect(e)}
                             />
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="datatables">

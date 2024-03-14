@@ -11,11 +11,20 @@ import IconX from '@/components/Icon/IconX';
 import IconArrowLeft from '@/components/Icon/IconArrowLeft';
 import IconArrowBackward from '@/components/Icon/IconArrowBackward';
 import IconBack from '@/components/Icon/IconBack';
-
+import Select from "react-select";
 interface Props {
     [key: string]: any;
 }
-
+const list_duty_type = [
+    {
+        value: '1',
+        label: 'Quản lý'
+    },
+    {
+        value: '2',
+        label: 'Nhân viên'
+    }
+]
 const AddNewDuty = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
@@ -90,7 +99,7 @@ const AddNewDuty = ({ ...props }: Props) => {
                 }}
             >
 
-                {({ errors, touched, submitCount }) => (
+                {({ errors, touched, submitCount, setFieldValue }) => (
                     <Form className="space-y-5" >
                         <div className="flex justify-between gap-5">
                             <div className="mb-5 w-1/2">
@@ -111,10 +120,24 @@ const AddNewDuty = ({ ...props }: Props) => {
                         <div className="flex justify-between gap-5">
                             <div className="mb-5 w-1/2">
                                 <label htmlFor="duty_group" className='label'> {t('duty_group')} < span style={{ color: 'red' }}>* </span></label >
-                                <Field as="select" name="duty_group" id="duty_group" className="form-input">
-                                    <option value="active">Quản lý</option>
-                                    <option value="inActive">Nhân viên</option>
-                                </Field>
+                                <Field
+                                                        name="duty_group"
+                                                        render={({ field }: any) => (
+                                                            <>
+                                                                <Select
+                                                                    {...field}
+                                                                    options={list_duty_type}
+                                                                    isMulti
+                                                                    isSearchable
+                                                                    placeholder={`${t('choose_group_duty')}`}
+                                                                    onChange={e => {
+                                                                        setFieldValue('duty_group', e)
+                                                                    }}
+                                                                    />
+
+                                                                </>
+                                                            )}
+                                                        />
                                 {submitCount ? errors.duty_group ? (
                                     <div className="text-danger mt-1"> {errors.duty_group} </div>
                                 ) : null : ''}

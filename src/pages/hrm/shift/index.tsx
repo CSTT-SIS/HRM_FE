@@ -193,13 +193,11 @@ const Duty = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('detail_shift_employee')}`}>
-                        <Link href={`/hrm/shift/detail-shift-employee/${records?.id}`}>
+                        <Link href={`/hrm/shift/detail/${records?.id}`}>
                             <button type='button' className='button-detail'>
                                 <IconNewEye /> <span>{t('detail')}</span>
                             </button>
                             </Link>
-                    </Tippy>
                     <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
                     <IconNewEdit /><span>
                             {t('edit')}

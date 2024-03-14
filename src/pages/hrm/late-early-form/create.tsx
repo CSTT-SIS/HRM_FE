@@ -27,20 +27,21 @@ interface TreeNode {
     checked: boolean;
     children?: TreeNode[];
   }
-const treeData = [
-  {
-    label: 'Phòng Tài chính',
-    value: '0-0',
-    children: [
-      { label: 'Phòng 1', value: '0-0-1' },
-      { label: 'Phòng 2', value: '0-0-2' },
-    ],
-  },
-  {
-    label: 'Phòng Nhân sự',
-    value: '0-1',
-  },
-];
+  const treeData = [
+    {
+      label: 'Phòng Hành chính',
+      value: '0-0',
+      children: [
+        { label: 'Bộ phận cấp dưỡng', value: '0-0-1' },
+        { label: 'Tổ xe', value: '0-0-2' },
+      ],
+    },
+    {
+      label: 'Phòng Kế toán',
+      value: '0-1',
+    },
+  ];
+
 
 
 interface Props {
@@ -161,10 +162,10 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
             </div>
             <Formik
 				initialValues={{
-											name: "Nguyễn Văn A",
+											name: "Bountafaibounnheuang",
 											code: null,
-                                            position: "Trưởng phòng",
-                                            department: "Phòng Tài chính",
+                                            position: "Phó Phòng",
+                                            department: "Phòng Hành chính",
                                             submitday: getCurrentFormattedTime(),
                                             fromdate: null,
                                             enddate: null,
@@ -185,14 +186,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('name_staff')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field disabled as="select" name="name" id="name" className="form-input">
-                                                    { listPersonnel?.map((person: any) => {
-                                                        return (
-                                                            <option key={person.value} value={person.value}>
-                                                                {person.label}
-                                                            </option>
-                                                        );
-                                                    })}
+                                                <Field disabled type="text" name="name" id="name" className="form-input">
+
 
                                 </Field>
                                                {submitCount ? (
@@ -204,14 +199,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('duty')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field disabled as="select" name="position" id="position" className="form-input">
-                                                    { listDuty?.map((duty: any) => {
-                                                        return (
-                                                            <option key={duty.value} value={duty.value}>
-                                                                {duty.label}
-                                                            </option>
-                                                        );
-                                                    })}
+                                                <Field disabled type="text" name="position" id="position" className="form-input">
+
 
                                 </Field>
                                                     {submitCount ? errors.position ? <div className="mt-1 text-danger"> {errors.position} </div> : null : ''}
@@ -332,7 +321,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('reason')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field as="textarea" name="reason" id="reason" className="form-input" />
+                                                <Field as="textarea" name="reason" id="reason"
+                                                placeholder={`${t('fill_reason')}`}className="form-input" />
                                                     {submitCount ? errors.reason ? <div className="mt-1 text-danger"> {errors.reason} </div> : null : ''}
                                             </div>
                                             </div>

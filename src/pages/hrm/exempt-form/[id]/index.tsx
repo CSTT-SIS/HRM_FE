@@ -29,15 +29,15 @@ interface TreeNode {
 
 const treeData = [
   {
-    label: 'Phòng Tài chính',
+    label: 'Phòng Hành chính',
     value: '0-0',
     children: [
-      { label: 'Phòng 1', value: '0-0-1' },
-      { label: 'Phòng 2', value: '0-0-2' },
+      { label: 'Bộ phận cấp dưỡng', value: '0-0-1' },
+      { label: 'Tổ xe', value: '0-0-2' },
     ],
   },
   {
-    label: 'Phòng Nhân sự',
+    label: 'Phòng Kế toán',
     value: '0-1',
   },
 ];

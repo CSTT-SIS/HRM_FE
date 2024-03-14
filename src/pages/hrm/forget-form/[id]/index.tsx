@@ -29,19 +29,20 @@ interface TreeNode {
 }
 
 const treeData = [
-  {
-    label: 'Phòng Tài chính',
-    value: '0-0',
-    children: [
-      { label: 'Phòng 1', value: '0-0-1' },
-      { label: 'Phòng 2', value: '0-0-2' },
-    ],
-  },
-  {
-    label: 'Phòng Nhân sự',
-    value: '0-1',
-  },
-];
+    {
+      label: 'Phòng Hành chính',
+      value: '0-0',
+      children: [
+        { label: 'Bộ phận cấp dưỡng', value: '0-0-1' },
+        { label: 'Tổ xe', value: '0-0-2' },
+      ],
+    },
+    {
+      label: 'Phòng Kế toán',
+      value: '0-1',
+    },
+  ];
+
 
 
 interface Props {
@@ -214,7 +215,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('name_staff')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field type="text" name="name" id="name" className="form-input" />
+                                                <Field type="text" name="name" id="name" disabled className="form-input" />
 
                                                {submitCount ? (
     errors.name ? <div className="mt-1 text-danger">{errors.name}</div> : null
@@ -305,7 +306,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                                 <Select
                                                                     // {...field}
                                                                     options={listPersonnel}
-                                                                    value={{value: "NV001", label: "Trần Văn B"}}
+                                                                    value={{value: "NV001", label: "Khampa Sirt"}}
                                                                     isSearchable
                                                                     placeholder={t('choose_name')}
                                                                     maxMenuHeight={150}
@@ -323,7 +324,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 
                                             </div>
                                             <div className="flex justify-between gap-5">
-                                            <div className="mb-5 w-1/2">
+                                            <div className="flex-1">
                                                 <label htmlFor="reason" className='label'>
                                                     {' '}
                                                     {t('reason')} <span style={{ color: 'red' }}>* </span>
@@ -331,8 +332,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                 <Field name="reason" as="textarea" id="reason" placeholder={`${t('fill_reason')}`} className="form-input" />
                                                 {submitCount ? errors.reason ? <div className="mt-1 text-danger"> {errors.reason} </div> : null : ''}
                                             </div>
-                                            <div className="mb-5 w-1/2">
-</div>
+
                                             </div>
                                             <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">
                                                 <button type="button" className="btn btn-outline-dark cancel-button" onClick={() => handleCancel()}>

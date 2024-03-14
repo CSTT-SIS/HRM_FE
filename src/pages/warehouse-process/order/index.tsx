@@ -177,8 +177,8 @@ const OrderForm = ({ ...props }: Props) => {
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
-                <div className="flex items-center w-max mx-auto gap-2">
-                    <button className='bg-[#F2E080] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/order/${records.id}?status=${true}`)}>
+                <div className="flex justify-start gap-2">
+                    <button className='bg-[#F2E080] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/order/${records.id}?status=${true}&&type=${records.status}`)}>
                         <IconEye /> <span>{`${t('detail')}`}</span>
                     </button>
                     {
@@ -188,7 +188,7 @@ const OrderForm = ({ ...props }: Props) => {
                         </button>
                     }
                     {
-                        (records.status === "PENDING" || records.status === "CANCELLED") &&
+                        (records.status === "CANCELLED") &&
                         <button className='bg-[#E43940] flex justify-between gap-1 p-1 rounded text-[#F5F5F5]' type="button" onClick={() => handleDelete(records)}>
                             <IconTrashLines /> <span>{`${t('delete')}`}</span>
                         </button>
@@ -247,8 +247,8 @@ const OrderForm = ({ ...props }: Props) => {
                 </div>
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap gap-1">
-                        <IconFilter />
-                        <span>lọc nhanh :</span>
+                        {/* <IconFilter /> */}
+                        {/* <span>lọc nhanh :</span> */}
                         <div className='flex items-center flex-wrap gap-2'>
                             <div className={active.includes(1) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(1)}>Chưa duyệt</div>
                             <div className={active.includes(2) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(2)}>Đã duyệt</div>

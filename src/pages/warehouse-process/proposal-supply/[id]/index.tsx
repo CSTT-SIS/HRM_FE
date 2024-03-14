@@ -1,4 +1,4 @@
-import { useEffect, Fragment, useState } from 'react';
+import { useEffect, Fragment, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { showMessage } from '@/@core/utils';
@@ -9,7 +9,6 @@ import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
 import { ProposalDetails } from '@/services/swr/proposal.twr';
 import { setPageTitle } from '@/store/themeConfigSlice';
-import Tippy from '@tippyjs/react';
 import { DataTableSortStatus, DataTable } from 'mantine-datatable';
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
@@ -17,14 +16,15 @@ import IconPlus from '@/components/Icon/IconPlus';
 import IconCaretDown from '@/components/Icon/IconCaretDown';
 import AnimateHeight from 'react-animate-height';
 import Link from 'next/link';
-import IconBackward from '@/components/Icon/IconBackward';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import Select, { components } from 'react-select';
 import IconBack from '@/components/Icon/IconBack';
 import { DropdownDepartment } from '@/services/swr/dropdown.twr';
-import HandleDetailForm from '../form/DetailForm';
-
+import DetailModal from '../form/DetailModal';
+import moment from 'moment';
+import Flatpickr from 'react-flatpickr';
+import 'flatpickr/dist/flatpickr.css';
 interface Props {
     [key: string]: any;
 }
@@ -45,7 +45,7 @@ const DetailPage = ({ ...props }: Props) => {
     const [data, setData] = useState<any>();
     const [page, setPage] = useState(1);
     const [dataDepartment, setDataDepartment] = useState<any>([]);
-
+    const formRef = useRef<any>();
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
@@ -83,7 +83,9 @@ const DetailPage = ({ ...props }: Props) => {
             departmentId: data?.department ? {
                 value: `${data?.department?.id}`,
                 label: `${data?.department?.name}`
-            } : ""
+            } : "",
+            personRequest: data?.createdBy ? data?.createdBy.fullName : JSON.parse(localStorage.getItem('profile') || "").fullName,
+            timeRequest: data?.createdAt ? data?.createdAt : moment().format("YYYY-MM-DD hh:mm"),
         })
     }, [data, router]);
 
@@ -239,6 +241,7 @@ const DetailPage = ({ ...props }: Props) => {
                 });
             }
         }
+        handleCancel();
     }
     const handleDetail = (id: any) => {
         AddProposalDetails({
@@ -290,6 +293,11 @@ const DetailPage = ({ ...props }: Props) => {
         });
     }
 
+    const handleSubmit = () => {
+        if (formRef.current) {
+            formRef.current.handleSubmit()
+        }
+    }
     return (
         <div>
             {isLoading && (
@@ -330,12 +338,52 @@ const DetailPage = ({ ...props }: Props) => {
                                         handleProposal(values);
                                     }}
                                     enableReinitialize
+                                    innerRef={formRef}
                                 >
 
                                     {({ errors, values, submitCount, setFieldValue }) => (
                                         <Form className="space-y-5" >
                                             <div className='p-4'>
-                                                <div className='flex justify-between gap-5'>
+                                                <div className='flex justify-between gap-5 mt-5 mb-5'>
+                                                    <div className="w-1/2">
+                                                        <label htmlFor="personRequest" className='label'> {t('person_request')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <Field
+                                                            name="personRequest"
+                                                            type="text"
+                                                            id="personRequest"
+                                                            placeholder={`${t('enter_code')}`}
+                                                            className={true ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                            disabled={true}
+                                                        />
+                                                        {submitCount && errors.personRequest ? (
+                                                            <div className="text-danger mt-1"> {`${errors.personRequest}`} </div>
+                                                        ) : null}
+                                                    </div>
+                                                    <div className="w-1/2">
+                                                        <label htmlFor="timeRequest" className='label'> {t('time_request')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <Field
+                                                            name="timeRequest"
+                                                            render={({ field }: any) => (
+                                                                <Flatpickr
+                                                                    data-enable-time
+                                                                    // placeholder={`${t('choose_break_end_time')}`}
+                                                                    options={{
+                                                                        enableTime: true,
+                                                                        dateFormat: 'Y-m-d H:i'
+                                                                    }}
+                                                                    value={moment().format("DD/MM/YYYY hh:mm")}
+                                                                    onChange={e => setFieldValue("estimatedDeliveryDate", moment(e[0]).format("YYYY-MM-DD hh:mm"))}
+                                                                    className={true ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                                    disabled={true}
+                                                                />
+                                                            )}
+                                                        />
+                                                        {submitCount && errors.estimatedDeliveryDate ? (
+                                                            <div className="text-danger mt-1"> {`${errors.estimatedDeliveryDate}`} </div>
+                                                        ) : null}
+                                                    </div>
+                                                </div>
+                                                <div className='flex justify-between gap-5 mt-5'>
                                                     <div className=" w-1/2">
                                                         <label htmlFor="name" className='label'> {t('name_proposal')} < span style={{ color: 'red' }}>* </span></label >
                                                         <Field
@@ -409,13 +457,19 @@ const DetailPage = ({ ...props }: Props) => {
                         <div className={`${active.includes(2) ? 'custom-content-accordion' : ''}`}>
                             <AnimateHeight duration={300} height={active.includes(2) ? 'auto' : 0}>
                                 <div className='p-4'>
-                                    <HandleDetailForm
-                                        data={dataDetail}
-                                        setData={setDataDetail}
-                                        listData={listDataDetail}
-                                        setListData={setListDataDetail}
-                                        proposalDetailMutate={mutate}
-                                    />
+                                    <div className="flex md:items-center justify-between md:flex-row flex-col mb-4 gap-5">
+                                        <div className="flex items-center flex-wrap">
+                                            {
+                                                !disable &&
+                                                <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
+                                                    <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                                    {t('add_product_list')}
+                                                </button>
+                                            }
+                                        </div>
+
+                                        {/* <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
+                                    </div>
                                     <div className="datatables">
                                         <DataTable
                                             highlightOnHover
@@ -428,6 +482,15 @@ const DetailPage = ({ ...props }: Props) => {
                                         />
                                     </div>
                                 </div>
+                                <DetailModal
+                                    openModal={openModal}
+                                    setOpenModal={setOpenModal}
+                                    data={dataDetail}
+                                    setData={setDataDetail}
+                                    listData={listDataDetail}
+                                    setListData={setListDataDetail}
+                                    proposalDetailMutate={mutate}
+                                />
                             </AnimateHeight>
                         </div>
                     </div>
@@ -437,7 +500,7 @@ const DetailPage = ({ ...props }: Props) => {
                             <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
                                 {t('cancel')}
                             </button>
-                            <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+                            <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleSubmit()}>
                                 {router.query.id !== "create" ? t('update') : t('save')}
                             </button>
                         </div>

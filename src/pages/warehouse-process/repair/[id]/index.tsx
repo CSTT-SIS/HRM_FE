@@ -1,4 +1,4 @@
-import { useEffect, Fragment, useState, SetStateAction } from 'react';
+import { useEffect, Fragment, useState, SetStateAction, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { showMessage } from '@/@core/utils';
@@ -27,6 +27,7 @@ import HandleDetailForm from '../form/DetailModal';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import moment from 'moment';
+import DetailModal from '../form/DetailModal';
 
 interface Props {
     [key: string]: any;
@@ -49,7 +50,7 @@ const DetailPage = ({ ...props }: Props) => {
     const [active, setActive] = useState<any>([1, 2]);
     const [listDataDetail, setListDataDetail] = useState<any>();
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
-
+    const formRef = useRef<any>();
 
     // get data
     const { data: repairDetails, pagination, mutate, isLoading } = RepairDetails({ ...query });
@@ -207,7 +208,9 @@ const DetailPage = ({ ...props }: Props) => {
             } : "",
             description: data ? `${data?.description}` : "",
             damageLevel: data ? `${data?.damageLevel}` : "",
-            personRequest: JSON.parse(localStorage.getItem('profile') || "").fullName
+            personRequest: data?.createdBy ? data?.createdBy.fullName : JSON.parse(localStorage.getItem('profile') || "").fullName,
+            timeRequest: data?.createdAt ? data?.createdAt : moment().format("YYYY-MM-DD hh:mm"),
+            customerName: data ? `${data?.customerName}` : ""
         })
     }, [data]);
 
@@ -233,11 +236,13 @@ const DetailPage = ({ ...props }: Props) => {
             vehicleRegistrationNumber: param.vehicleRegistrationNumber,
             repairById: Number(param.repairById.value),
             description: param.description,
-            damageLevel: param.damageLevel
+            damageLevel: param.damageLevel,
+            customerName: param.customerName
         };
         if (data) {
             EditRepair({ id: router.query?.id, ...query }).then((res) => {
                 showMessage(`${t('edit_success')}`, 'success');
+                handleCancel();
             }).catch((err) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
@@ -253,6 +258,7 @@ const DetailPage = ({ ...props }: Props) => {
                 });
             }
         }
+        handleCancel();
     }
 
     const handleDetail = (id: any) => {
@@ -308,7 +314,10 @@ const DetailPage = ({ ...props }: Props) => {
         });
     }
 
-    const handleImage = (e: any) => {
+    const handleSubmit = () => {
+        if (formRef.current) {
+            formRef.current.handleSubmit()
+        }
     }
 
     return (
@@ -351,6 +360,7 @@ const DetailPage = ({ ...props }: Props) => {
                                         handleRepair(values);
                                     }}
                                     enableReinitialize
+                                    innerRef={formRef}
                                 >
 
                                     {({ errors, values, submitCount, setFieldValue }) => (
@@ -431,6 +441,23 @@ const DetailPage = ({ ...props }: Props) => {
                                                         ) : null}
                                                     </div>
                                                 </div>
+                                                <div className='flex justify-between gap-5 mt-5'>
+                                                    <div className="w-1/2">
+                                                        <label htmlFor="customerName" className='label'> {t('name_customer')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <Field
+                                                            name="customerName"
+                                                            type="text"
+                                                            id="customerName"
+                                                            placeholder={`${t('enter_name_customer')}`}
+                                                            className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                            disabled={disable}
+                                                        />
+                                                        {submitCount && errors.customerName ? (
+                                                            <div className="text-danger mt-1"> {`${errors.customerName}`} </div>
+                                                        ) : null}
+                                                    </div>
+                                                    <div className='w-1/2'></div>
+                                                </div>
                                                 <div className='mt-5'>
                                                     <label htmlFor="description" className='label'> {t('description')}</label >
                                                     <Field
@@ -496,13 +523,19 @@ const DetailPage = ({ ...props }: Props) => {
                         <div className={`${active.includes(2) ? 'custom-content-accordion' : ''}`}>
                             <AnimateHeight duration={300} height={active.includes(2) ? 'auto' : 0}>
                                 <div className='p-4'>
-                                    <HandleDetailForm
-                                        data={dataDetail}
-                                        setData={setDataDetail}
-                                        orderDetailMutate={mutate}
-                                        listData={listDataDetail}
-                                        setListData={setListDataDetail}
-                                    />
+                                    <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
+                                        <div className="flex items-center flex-wrap">
+                                            {
+                                                !disable &&
+                                                <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
+                                                    <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                                    {t('add_product_list')}
+                                                </button>
+                                            }
+                                        </div>
+
+                                        {/* <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
+                                    </div>
                                     <div className="datatables">
                                         <DataTable
                                             highlightOnHover
@@ -517,6 +550,15 @@ const DetailPage = ({ ...props }: Props) => {
                                         />
                                     </div>
                                 </div>
+                                <DetailModal
+                                    openModal={openModal}
+                                    setOpenModal={setOpenModal}
+                                    data={dataDetail}
+                                    setData={setDataDetail}
+                                    orderDetailMutate={mutate}
+                                    listData={listDataDetail}
+                                    setListData={setListDataDetail}
+                                />
                             </AnimateHeight>
                         </div>
                     </div>
@@ -526,7 +568,7 @@ const DetailPage = ({ ...props }: Props) => {
                             <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
                                 {t('cancel')}
                             </button>
-                            <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+                            <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleSubmit()}>
                                 {router.query.id !== "create" ? t('update') : t('save')}
                             </button>
                         </div>

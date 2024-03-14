@@ -16,7 +16,8 @@ import Link from 'next/link';
 import IconArrowBackward from '@/components/Icon/IconArrowBackward';
 import { ProductCategorys, Providers } from '@/services/swr/product.twr';
 import IconBack from '@/components/Icon/IconBack';
-import department_list from '../department_list.json';
+import list_departments from '../department_list.json';
+import list_personnels from '../../personnel/personnel_list.json';
 
 interface Props {
     [key: string]: any;
@@ -33,6 +34,24 @@ const EditDepartment = ({ ...props }: Props) => {
     const [typeShift, setTypeShift] = useState("0"); // 0: time, 1: total hours
     const { data: departmentparents } = ProductCategorys(query);
     const { data: manages } = Providers(query);
+    const [listDepartment, setListDepartment] = useState<any>();
+    const [listPersons, setListPersons] = useState<any>();
+    useEffect(() => {
+        const list_temp_department = list_departments?.map((department: any) => {
+            return {
+                value: department.id,
+                label: department.name
+            }
+        })
+        setListDepartment(list_temp_department);
+        const list_temp_person = list_personnels?.map((person: any) => {
+            return {
+                value: person.code,
+                label: person.name
+            }
+        })
+        setListPersons(list_temp_person);
+    }, [])
     const departmentparent = departmentparents?.data.filter((item: any) => {
         return (
             item.value = item.id,
@@ -100,7 +119,7 @@ const EditDepartment = ({ ...props }: Props) => {
     };
     useEffect(() => {
         if (Number(router.query.id)) {
-            const detailData = department_list?.find(d => d.id === Number(router.query.id));
+            const detailData = list_departments?.find(d => d.id === Number(router.query.id));
             setDetail(detailData);
         }
     }, [router])
@@ -178,7 +197,7 @@ const EditDepartment = ({ ...props }: Props) => {
                                     name='departmentparentId'
                                     placeholder={t('select_departmentparent')}
                                     onInputChange={e => handleSearch(e)}
-                                    options={departmentparent}
+                                    options={listDepartment}
                                     maxMenuHeight={160}
                                     value={values.departmentparentId}
                                     onChange={e => {
@@ -196,7 +215,7 @@ const EditDepartment = ({ ...props }: Props) => {
                                     name='manageId'
                                     placeholder={t('select_manager')}
                                     onInputChange={e => handleSearch(e)}
-                                    options={manage}
+                                    options={listPersons}
                                     maxMenuHeight={160}
                                     value={values.manageId}
                                     onChange={e => {

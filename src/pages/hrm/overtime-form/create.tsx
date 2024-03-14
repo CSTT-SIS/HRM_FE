@@ -27,20 +27,20 @@ interface TreeNode {
     checked: boolean;
     children?: TreeNode[];
   }
-const treeData = [
-  {
-    label: 'Phòng Tài chính',
-    value: '0-0',
-    children: [
-      { label: 'Phòng 1', value: '0-0-1' },
-      { label: 'Phòng 2', value: '0-0-2' },
-    ],
-  },
-  {
-    label: 'Phòng Nhân sự',
-    value: '0-1',
-  },
-];
+  const treeData = [
+    {
+      label: 'Phòng Hành chính',
+      value: '0-0',
+      children: [
+        { label: 'Bộ phận cấp dưỡng', value: '0-0-1' },
+        { label: 'Tổ xe', value: '0-0-2' },
+      ],
+    },
+    {
+      label: 'Phòng Kế toán',
+      value: '0-1',
+    },
+  ];
 
 
 interface Props {
@@ -87,7 +87,6 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
         fromdate: Yup.date().typeError(`${t('please_choose_from_day')}`),
         enddate: Yup.date().typeError(`${t('please_choose_end_day')}`),
         shift: Yup.date().typeError(`${t('please_choose_shift')}`),
-        overtime_time: Yup.number().required(`${t('please_fill_reason')}`)
 	});
 
 	const handleDepartment = (value: any) => {
@@ -161,15 +160,14 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
             </div>
             <Formik
 				initialValues={{
-											name: "Nguyễn Văn A",
+											name: "Bountafaibounnheuang",
 											code: null,
-                                            position: "Trưởng phòng",
-                                            department: "Phòng Tài chính",
+                                            position: "Phó phòng",
+                                            department: "Phòng Hành chính",
                                             submitday: getCurrentFormattedTime(),
                                             fromdate: null,
                                             enddate: null,
                                             shift: null,
-                                            overtime_time: 0,
                                             checker: null
 										}}
 										validationSchema={SubmittedForm}
@@ -286,16 +284,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     />
                                                     {submitCount ? errors.shift ? <div className="mt-1 text-danger"> {errors.shift} </div> : null : ''}
                                             </div>
-                                            <div className="mb-5 w-1/2">
-                                                <label htmlFor="overtime_time" className='label'>
-                                                    {' '}
-                                                    {t('overtime_time')} <span style={{ color: 'red' }}>* </span>
-                                                </label>
-                                                <Field name="overtime_time" type="number" id="overtime_time" placeholder={`${t('fill_overtime_time')}`} className="form-input" />
-                                                {submitCount ? errors.overtime_time ? <div className="mt-1 text-danger"> {errors.overtime_time} </div> : null : ''}
-                                            </div>
-                                            </div>
-                                            <div className='flex justify-between gap-5'>
+
                                             <div className="mb-5 w-1/2">
                                                 <label htmlFor="checker" className='label'>
                                                     {' '}
@@ -323,8 +312,6 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
     errors.checker ? <div className="mt-1 text-danger">{errors.checker}</div> : null
   ) : null}
                                             </div>
-                                            <div className="mb-5 w-1/2">
-</div>
 
                                             </div>
                                             <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">

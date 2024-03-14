@@ -1,4 +1,4 @@
-import { useEffect, Fragment, useState } from 'react';
+import { useEffect, Fragment, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { showMessage } from '@/@core/utils';
@@ -9,17 +9,13 @@ import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
 import { ProposalDetails } from '@/services/swr/proposal.twr';
 import { setPageTitle } from '@/store/themeConfigSlice';
-import Tippy from '@tippyjs/react';
 import { DataTableSortStatus, DataTable } from 'mantine-datatable';
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
-import ProposalForm from '../form/ProposalForm';
-import HandleDetailForm from '../form/HandleDetailForm';
 import IconPlus from '@/components/Icon/IconPlus';
 import IconCaretDown from '@/components/Icon/IconCaretDown';
 import AnimateHeight from 'react-animate-height';
 import Link from 'next/link';
-import IconBackward from '@/components/Icon/IconBackward';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import Select, { components } from 'react-select';
@@ -28,6 +24,7 @@ import IconBack from '@/components/Icon/IconBack';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import moment from 'moment';
+import DetailModal from '../form/DetailModal';
 interface Props {
     [key: string]: any;
 }
@@ -48,7 +45,7 @@ const DetailPage = ({ ...props }: Props) => {
     const [data, setData] = useState<any>();
     const [dataDepartment, setDataDepartment] = useState<any>([]);
     const [page, setPage] = useState(1);
-
+    const formRef = useRef<any>();
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
@@ -87,14 +84,14 @@ const DetailPage = ({ ...props }: Props) => {
                 value: `${data?.department?.id}`,
                 label: `${data?.department?.name}`
             } : "",
-            warehouseId: data ? {
-                value: `${data?.warehouse?.id}`,
-                label: `${data?.warehouse?.name}`
+            warehouseIds: data ? {
+                value: `${data?.warehouses[0]?.id}`,
+                label: `${data?.warehouses[0]?.name}`
             } : "",
-            personRequest: JSON.parse(localStorage.getItem('profile') || "").fullName
+            personRequest: data?.createdBy ? data?.createdBy.fullName : JSON.parse(localStorage.getItem('profile') || "").fullName,
+            timeRequest: data?.createdAt ? data?.createdAt : moment().format("YYYY-MM-DD hh:mm")
         })
     }, [data, router]);
-
     useEffect(() => {
         if (Number(router.query.id)) {
             setQuery({ id: router.query.id, ...router.query })
@@ -224,7 +221,8 @@ const DetailPage = ({ ...props }: Props) => {
             name: param.name,
             type: "PURCHASE",
             content: param.content,
-            departmentId: Number(param?.departmentId?.value)
+            departmentId: Number(param?.departmentId?.value),
+            warehouseIds: [Number(param?.warehouseIds?.value)]
         };
 
         if (data) {
@@ -245,6 +243,7 @@ const DetailPage = ({ ...props }: Props) => {
                 });
             }
         }
+        handleCancel();
     }
     const handleDetail = (id: any) => {
         AddProposalDetails({
@@ -314,6 +313,12 @@ const DetailPage = ({ ...props }: Props) => {
         });
     }
 
+    const handleSubmit = () => {
+        if (formRef.current) {
+            formRef.current.handleSubmit()
+        }
+    }
+
     return (
         <div>
             {isLoading && (
@@ -354,6 +359,7 @@ const DetailPage = ({ ...props }: Props) => {
                                         handleProposal(values);
                                     }}
                                     enableReinitialize
+                                    innerRef={formRef}
                                 >
 
                                     {({ errors, values, submitCount, setFieldValue }) => (
@@ -386,8 +392,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                                         enableTime: true,
                                                                         dateFormat: 'Y-m-d H:i'
                                                                     }}
-                                                                    value={moment().format("DD/MM/YYYY hh:mm")}
-                                                                    onChange={e => setFieldValue("estimatedDeliveryDate", moment(e[0]).format("YYYY-MM-DD hh:mm"))}
+                                                                    value={field?.value}
                                                                     className={true ? "form-input bg-[#f2f2f2]" : "form-input"}
                                                                     disabled={true}
                                                                 />
@@ -436,25 +441,26 @@ const DetailPage = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className='flex justify-between gap-5 mt-5'>
                                                     <div className="w-1/2">
-                                                        <label htmlFor="warehouseId" > {t('warehouse')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <label htmlFor="warehouseIds" > {t('warehouse')} < span style={{ color: 'red' }}>* </span></label >
                                                         <Select
-                                                            id='warehouseId'
-                                                            name='warehouseId'
+                                                            id='warehouseIds'
+                                                            name='warehouseIds'
                                                             options={warehouseDropdown?.data}
                                                             maxMenuHeight={160}
-                                                            value={values?.warehouseId}
+                                                            value={values?.warehouseIds}
                                                             onChange={e => {
-                                                                setFieldValue('warehouseId', e)
+                                                                setFieldValue('warehouseIds', e)
                                                             }}
+                                                            isDisabled={disable}
                                                         />
-                                                        {submitCount && errors.warehouseId ? (
-                                                            <div className="text-danger mt-1"> {`${errors.warehouseId}`} </div>
+                                                        {submitCount && errors.warehouseIds ? (
+                                                            <div className="text-danger mt-1"> {`${errors.warehouseIds}`} </div>
                                                         ) : null}
                                                     </div>
                                                     <div className='w-1/2'></div>
                                                 </div>
                                                 <div className=" mt-5">
-                                                    <label htmlFor="type" className='label'> {t('description')}</label >
+                                                    <label htmlFor="type" className='label'> {t('content')} < span style={{ color: 'red' }}>* </span></label >
                                                     <Field
                                                         name="content"
                                                         as="textarea"
@@ -491,13 +497,19 @@ const DetailPage = ({ ...props }: Props) => {
                         <div className={`${active.includes(2) ? 'custom-content-accordion' : ''}`}>
                             <AnimateHeight duration={300} height={active.includes(2) ? 'auto' : 0}>
                                 <div className='p-4'>
-                                    <HandleDetailForm
-                                        data={dataDetail}
-                                        setData={setDataDetail}
-                                        listData={listDataDetail}
-                                        setListData={setListDataDetail}
-                                        proposalDetailMutate={mutate}
-                                    />
+                                    <div className="flex md:items-center justify-between md:flex-row flex-col mb-4 gap-5">
+                                        <div className="flex items-center flex-wrap">
+                                            {
+                                                !disable &&
+                                                <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
+                                                    <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                                    {t('add_product_list')}
+                                                </button>
+                                            }
+                                        </div>
+
+                                        {/* <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
+                                    </div>
                                     <div className="datatables">
                                         <DataTable
                                             highlightOnHover
@@ -510,6 +522,15 @@ const DetailPage = ({ ...props }: Props) => {
                                         />
                                     </div>
                                 </div>
+                                <DetailModal
+                                    openModal={openModal}
+                                    setOpenModal={setOpenModal}
+                                    data={dataDetail}
+                                    setData={setDataDetail}
+                                    listData={listDataDetail}
+                                    setListData={setListDataDetail}
+                                    proposalDetailMutate={mutate}
+                                />
                             </AnimateHeight>
                         </div>
                     </div>
@@ -519,29 +540,18 @@ const DetailPage = ({ ...props }: Props) => {
                             <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
                                 {t('cancel')}
                             </button>
-                            <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+                            <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleSubmit()}>
                                 {router.query.id !== "create" ? t('update') : t('save')}
                             </button>
                         </div>
                     }
                     {
-                        router.query.type === "approve" &&
+                        (router.query.type !== "HEAD_APPROVED" && router.query.type !== "HEAD_REJECTED" && disable) &&
                         <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                             <button type="button" className="btn btn-outline-danger cancel-button w-28" onClick={() => handleReject()}>
                                 {t('reject')}
                             </button>
                             <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleApprove()}>
-                                {t('approve')}
-                            </button>
-                        </div>
-                    }
-                    {
-                        router.query.type === "managerApprove" &&
-                        <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
-                            <button type="button" className="btn btn-outline-danger cancel-button w-28" onClick={() => handleManagerReject()}>
-                                {t('reject')}
-                            </button>
-                            <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleManagerApprove()}>
                                 {t('approve')}
                             </button>
                         </div>
