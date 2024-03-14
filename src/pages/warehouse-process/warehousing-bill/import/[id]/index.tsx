@@ -1,4 +1,4 @@
-import { useEffect, Fragment, useState, SetStateAction } from 'react';
+import { useEffect, Fragment, useState, SetStateAction, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { showMessage } from '@/@core/utils';
@@ -18,7 +18,7 @@ import { DropdownOrder, DropdownWarehouses } from '@/services/swr/dropdown.twr';
 import IconBackward from '@/components/Icon/IconBackward';
 import Link from 'next/link';
 import IconCaretDown from '@/components/Icon/IconCaretDown';
-import { GetOrder } from '@/services/apis/order.api';
+import { GetOrder, GetOrderDetail } from '@/services/apis/order.api';
 import moment from 'moment';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
@@ -181,15 +181,16 @@ const ExportPage = ({ ...props }: Props) => {
     const [dataOrderDropdown, setDataOrderDropdown] = useState<any>([]);
     const [dataWarehouseDropdown, setDataWarehouseDropdown] = useState<any>([]);
     const [active, setActive] = useState<any>([1, 2]);
+    const formRef = useRef<any>();
 
     const SubmittedForm = Yup.object().shape({
         // name: Yup.string().required(`${t('please_fill_name')}`),
-        type: new Yup.ObjectSchema().required(`${t('please_fill_type')}`),
+        // type: new Yup.ObjectSchema().required(`${t('please_fill_type')}`),
         // proposalId: new Yup.ObjectSchema().required(`${t('please_fill_proposal')}`),
         warehouseId: new Yup.ObjectSchema().required(`${t('please_fill_warehouse')}`),
     });
 
-    const { data: orders, pagination: orderPagination, isLoading: orderLoading } = DropdownOrder({ page: pageOder, status: "RECEIVED" });
+    const { data: orders, pagination: orderPagination, isLoading: orderLoading } = DropdownOrder({ page: pageOder });
     const { data: warehouses, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({ page: pageWarehouse });
     const { data: listRequest } = WarehousingBillListRequest({ id: router.query.proposalId });
 
@@ -203,7 +204,7 @@ const ExportPage = ({ ...props }: Props) => {
     const handleWarehousing = (param: any) => {
         const query: any = {
             warehouseId: Number(param.warehouseId.value),
-            type: param.type.value,
+            type: "IMPORT",
             note: param.note,
             // name: param.name
         };
@@ -225,6 +226,7 @@ const ExportPage = ({ ...props }: Props) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
         }
+        handleCancel();
     }
     useEffect(() => {
         setInitialValue({
@@ -300,12 +302,22 @@ const ExportPage = ({ ...props }: Props) => {
     }
 
     const getValueDetail = (param: any) => {
+        GetOrderDetail({ id: param.value }).then((res) => {
+            setListDataDetail(res.data);
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
         GetOrder({ id: param.value }).then((res) => {
-            setListDataDetail(res.data.details);
             param.setFieldValue("createdBy", res.data.createdBy.fullName)
         }).catch((err) => {
             showMessage(`${err?.response?.data?.message}`, 'error');
         });
+    }
+
+    const handleSubmit = () => {
+        if (formRef.current) {
+            formRef.current.handleSubmit()
+        }
     }
 
     return (
@@ -349,6 +361,7 @@ const ExportPage = ({ ...props }: Props) => {
                                             handleWarehousing(values);
                                         }}
                                         enableReinitialize
+                                        innerRef={formRef}
                                     >
 
                                         {({ errors, values, submitCount, setFieldValue }) => (
@@ -532,13 +545,13 @@ const ExportPage = ({ ...props }: Props) => {
                                     <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
                                         {t('cancel')}
                                     </button>
-                                    <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+                                    <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleSubmit()}>
                                         {router.query.id !== "create" ? t('update') : t('save')}
                                     </button>
                                 </>
                             }
                             {
-                                router.query.id !== "create" && !disable &&
+                                router.query.type === "PENDING" &&
                                 <button type="button" onClick={e => handleChangeComplete()} className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
                                     {t('complete')}
                                 </button>

@@ -177,8 +177,8 @@ const OrderForm = ({ ...props }: Props) => {
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
-                <div className="flex items-center w-max mx-auto gap-2">
-                    <button className='bg-[#F2E080] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/order/${records.id}?status=${true}`)}>
+                <div className="flex justify-start gap-2">
+                    <button className='bg-[#F2E080] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/order/${records.id}?status=${true}&&type=${records.status}`)}>
                         <IconEye /> <span>{`${t('detail')}`}</span>
                     </button>
                     {
@@ -188,7 +188,7 @@ const OrderForm = ({ ...props }: Props) => {
                         </button>
                     }
                     {
-                        (records.status === "PENDING" || records.status === "CANCELLED") &&
+                        (records.status === "CANCELLED") &&
                         <button className='bg-[#E43940] flex justify-between gap-1 p-1 rounded text-[#F5F5F5]' type="button" onClick={() => handleDelete(records)}>
                             <IconTrashLines /> <span>{`${t('delete')}`}</span>
                         </button>
