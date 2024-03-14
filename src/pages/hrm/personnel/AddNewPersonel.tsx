@@ -32,7 +32,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
     const [images, setImages] = useState<any>([]);
     const [listDepartment, setListDepartment] = useState<any>();
     const [listPersons, setListPersons] = useState<any>();
-    const [listDuty, setListDuty]= useState<any>([]);
+    const [listDuty, setListDuty] = useState<any>([]);
     useEffect(() => {
         const list_temp_department = list_departments?.map((department: any) => {
             return {
@@ -316,7 +316,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('date_of_birth')}
                                                         </label>
-                                                        <Field id="dateofbirth" type="date" name="dateofbirth" className="form-input"/>
+                                                        <Field id="dateofbirth" type="date" name="dateofbirth" className="form-input" />
 
                                                     </div>
                                                 </div>
@@ -355,7 +355,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('date_of_issue')}
                                                         </label>
-                                                        <Field id="dateissue" type="date" name="dateissue" className="form-input"/>
+                                                        <Field id="dateissue" type="date" name="dateissue" className="form-input" />
 
                                                     </div>
                                                     <div className="mb-5 w-1/2">
@@ -379,7 +379,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('date_of_issue_passport')}
                                                         </label>
-                                                        <Field id="dateissuepassport" type="date" name="dateissuepassport" className="form-input"/>
+                                                        <Field id="dateissuepassport" type="date" name="dateissuepassport" className="form-input" />
 
                                                     </div>
                                                 </div>
@@ -396,7 +396,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('date_end_passport')}
                                                         </label>
-                                                        <Field id="dateendpassport" type="date" name="dateendpassport" className="form-input"/>
+                                                        <Field id="dateendpassport" type="date" name="dateendpassport" className="form-input" />
 
                                                     </div>
                                                 </div>
@@ -422,7 +422,40 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('province')}
                                                         </label>
-                                                        <Field name="province" type="text" id="province" placeholder={t('enter_province')} className="form-input" />
+                                                        <Select
+                                                            id='province'
+                                                            name='province'
+                                                            onInputChange={e => handleSearch(e)}
+                                                            options={[{
+                                                                label: 'Hà Nội'
+                                                            },
+                                                            {
+                                                                label: 'Vĩnh Phúc'
+                                                            },{
+                                                                label: 'Bắc Ninh'
+                                                            },{
+                                                                label: 'Quảng Ninh'
+                                                            },{
+                                                                label: 'Hải Dương'
+                                                            },{
+                                                                label: 'Hải Phòng'
+                                                            },{
+                                                                label: 'Hưng Yên'
+                                                            },{
+                                                                label: 'Thái Bình'
+                                                            },{
+                                                                label: 'Hà Nam'
+                                                            },{
+                                                                label: 'Nam Định'
+                                                            },{
+                                                                label: 'Ninh Bình'
+                                                            }]}
+                                                            placeholder={t('enter_province')}
+                                                            maxMenuHeight={160}
+                                                            onChange={e => {
+                                                                setFieldValue('province', e)
+                                                            }}
+                                                        />
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="religion" className='label'>
