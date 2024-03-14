@@ -188,7 +188,7 @@ const TimekeepingHistory = ({ ...props }: Props) => {
         },
         {
             accessor: 'code',
-            title: 'Mã NV', sortable: false
+            title: 'Mã nhân viên', sortable: false
         },
         {
             accessor: 'faceid',
