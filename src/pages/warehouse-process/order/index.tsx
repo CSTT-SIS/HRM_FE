@@ -247,8 +247,8 @@ const OrderForm = ({ ...props }: Props) => {
                 </div>
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap gap-1">
-                        <IconFilter />
-                        <span>lọc nhanh :</span>
+                        {/* <IconFilter /> */}
+                        {/* <span>lọc nhanh :</span> */}
                         <div className='flex items-center flex-wrap gap-2'>
                             <div className={active.includes(1) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(1)}>Chưa duyệt</div>
                             <div className={active.includes(2) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(2)}>Đã duyệt</div>

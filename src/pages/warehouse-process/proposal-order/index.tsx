@@ -43,7 +43,7 @@ const ProposalPage = ({ ...props }: Props) => {
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
     // get data
-    const { data: proposal, pagination, mutate, isLoading } = Proposals({ sortBy: 'id.ASC', ...router.query, type: "PURCHASE" });
+    const { data: proposal, pagination, mutate, isLoading } = Proposals({ sortBy: 'id.ASC', ...router.query, type: "PURCHASE", warehouseId: active.includes(0) ? "" : active });
     const { data: warehouseDropdown, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({});
 
     useEffect(() => {
@@ -135,9 +135,9 @@ const ProposalPage = ({ ...props }: Props) => {
         },
         { accessor: 'name', title: 'Tên yêu cầu', sortable: false },
         {
-            accessor: 'warehouse',
+            accessor: 'warehouses',
             title: 'Kho',
-            render: ({ warehouse }: any) => <span>{warehouse?.name}</span>,
+            render: ({ warehouses }: any) => <span>{warehouses[0]?.name}</span>,
             sortable: false
         },
         {
@@ -204,9 +204,14 @@ const ProposalPage = ({ ...props }: Props) => {
         }
     }, [router]);
 
-    const handleActive = (value: any) => {
-        setActive([value]);
-        localStorage.setItem('defaultFilterProposalOrder', value);
+    const handleActive = (item: any) => {
+        if (Number(localStorage.getItem('defaultFilterExport')) === item.value) {
+            setActive([0]);
+            localStorage.setItem('defaultFilterExport', "0");
+        } else {
+            setActive([item.value]);
+            localStorage.setItem('defaultFilterExport', item.value);
+        }
     };
 
     return (
@@ -230,14 +235,17 @@ const ProposalPage = ({ ...props }: Props) => {
                 </div>
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap gap-1">
-                        <IconFilter />
-                        <span>Lọc nhanh :</span>
+                        {/* <IconFilter /> */}
                         <div className='flex items-center flex-wrap gap-2'>
-                            <div className={active.includes(1) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(1)}>Chưa duyệt</div>
-                            <div className={active.includes(2) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(2)}>Đã duyệt</div>
-                            <div className={active.includes(3) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(3)}>Không duyệt</div>
+                            {
+                                warehouseDropdown?.data.map((item: any, index: any) => {
+                                    return (
+                                        <div key={index} className={active.includes(item.value) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(item)}>{item.label}</div>
+                                    );
+                                })
+                            }
                         </div>
-                        <span className='ml-9'>Lọc kho :</span>
+                        {/* <span className='ml-9'>Lọc kho :</span>
                         <div className='w-52'>
                             <Select
                                 options={warehouseDropdown?.data}
@@ -246,7 +254,7 @@ const ProposalPage = ({ ...props }: Props) => {
                                 value={select || ''}
                                 onChange={e => handleChangeSelect(e)}
                             />
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="datatables">
