@@ -1,25 +1,22 @@
 import { test, expect, Page } from '@playwright/test';
 import { makeRamdomText } from '@/utils/commons';
+import input from './elements/input';
+import select from './elements/select';
 
 const fillProductForm = async (page: Page, text: string) => {
-	await page.locator('#name').fill(text);
+	await page.waitForTimeout(1000);
 
-	await page.locator('#code').fill(text);
+	await input(page).locator('#name').fill(text);
+	await input(page).locator('#code').fill(text);
 
-	await page.locator('#unitId').click();
-	await page.keyboard.type('g');
-	await page.keyboard.press('Enter');
+	await select(page).locator('#unitId').fill('g');
+	await select(page).locator('#categoryId').fill('Vật tư hàng hoá');
 
-	await page.locator('#categoryId').click();
-	await page.keyboard.type('Vật tư hàng hoá');
-	await page.keyboard.press('Enter');
-
-	await page.locator('#minQuantity').fill('1');
-
-	await page.locator('#maxQuantity').fill('100');
+	await input(page).locator('#minQuantity').fill('1');
+	await input(page).locator('#maxQuantity').fill('10');
 };
 
-test.skip('Product CRUD', () => {
+test.describe.serial('Product CRUD', () => {
 	const text = makeRamdomText(5);
 	const editText = text + 'edit';
 	test('01. Create', async ({ page }) => {
