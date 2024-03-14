@@ -1,14 +1,14 @@
 [
     {
         "id": 1,
-        "name": "Phòng hành chính",
-        "code": "PB01",
+        "name": "Phòng Hành chính",
+        "code": "HC",
         "status": "active",
         "abbreviated": "PHC"
     },
     {
         "id": 2,
-        "name": "Ban 1.1",
+        "name": "Phòng Kế toán",
         "code": "B1.1",
         "status": "active",
         "abbreviated": "PHCB1"
@@ -16,7 +16,7 @@
     },
     {
         "id": 3,
-        "name": "Phòng kĩ thuật",
+        "name": "Phòng Kỹ thuật",
         "code": "PB02",
         "status": "active",
         "abbreviated": "PHKT"
@@ -24,7 +24,7 @@
     },
     {
         "id": 4,
-        "name": "Ban 2.1",
+        "name": "Bộ phận bảo trì",
         "code": "B2.1",
         "status": "active",
         "abbreviated": "PHKTB1"
@@ -32,10 +32,17 @@
     },
     {
         "id": 5,
-        "name": "Ban 2.2",
+        "name": "Bộ phận gara",
         "code": "B2.2",
         "status": "active",
         "abbreviated": "PHKTB2"
 
+    },
+    {
+        "id": 6,
+        "name": "Bộ phận lái xe",
+        "code": "B2.3",
+        "status": "active",
+        "abbreviated": "BPLX"
     }
 ]

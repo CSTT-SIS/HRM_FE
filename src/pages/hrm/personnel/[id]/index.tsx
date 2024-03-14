@@ -20,7 +20,9 @@ import IconCaretDown from '@/components/Icon/IconCaretDown';
 import IconBack from '@/components/Icon/IconBack';
 import personnel_list from '../personnel_list.json';
 import ImageUploading, { ImageListType } from 'react-images-uploading';
-
+import list_departments from '../../department/department_list.json';
+import list_personnels from '../../personnel/personnel_list.json';
+import list_duty from "../../duty/duty_list.json";
 interface Props {
     [key: string]: any;
 }
@@ -32,6 +34,9 @@ const EditPersonel = ({ ...props }: Props) => {
     const onChange = (imageList: ImageListType, addUpdateIndex: number[] | undefined) => {
         setImages(imageList as never[]);
     };
+    const [listDepartment, setListDepartment] = useState<any>();
+    const [listPersons, setListPersons] = useState<any>();
+    const [listDuty, setListDuty]= useState<any>([]);
     const maxNumber = 69;
     const { t } = useTranslation();
     const [disabled, setDisabled] = useState(false);
@@ -40,6 +45,29 @@ const EditPersonel = ({ ...props }: Props) => {
     const [typeShift, setTypeShift] = useState("0"); // 0: time, 1: total hours
     const { data: departmentparents } = ProductCategorys(query);
     const { data: manages } = Providers(query);
+    useEffect(() => {
+        const list_temp_department = list_departments?.map((department: any) => {
+            return {
+                value: department.id,
+                label: department.name
+            }
+        })
+        setListDepartment(list_temp_department);
+        const list_temp_person = list_personnels?.map((person: any) => {
+            return {
+                value: person.code,
+                label: person.name
+            }
+        })
+        setListPersons(list_temp_person);
+        const list_temp_duty = list_duty?.map((person: any) => {
+            return {
+                value: person.code,
+                label: person.name
+            }
+        })
+        setListDuty(list_temp_duty);
+    }, [])
     const departmentparent = departmentparents?.data.filter((item: any) => {
         return (
             item.value = item.id,
@@ -463,7 +491,7 @@ const EditPersonel = ({ ...props }: Props) => {
                                                             name='departmentparentId'
                                                             placeholder={t('select_departmentparent')}
                                                             onInputChange={e => handleSearch(e)}
-                                                            options={departmentparent}
+                                                            options={listDepartment}
                                                             maxMenuHeight={160}
                                                             value={values.departmentparentId}
                                                             onChange={e => {
@@ -480,7 +508,7 @@ const EditPersonel = ({ ...props }: Props) => {
                                                             placeholder={t('select_duty')}
 
                                                             onInputChange={e => handleSearch(e)}
-                                                            options={[]}
+                                                            options={listDuty}
                                                             maxMenuHeight={160}
                                                             value={values.manageId}
                                                             onChange={e => {
@@ -497,7 +525,7 @@ const EditPersonel = ({ ...props }: Props) => {
                                                             id='manageId'
                                                             name='manageId'
                                                             onInputChange={e => handleSearch(e)}
-                                                            options={manage}
+                                                            options={listPersons}
                                                             placeholder={t('select_manager')}
                                                             maxMenuHeight={160}
                                                             value={values.manageId}
@@ -513,7 +541,7 @@ const EditPersonel = ({ ...props }: Props) => {
                                                             id='manageId'
                                                             name='manageId'
                                                             onInputChange={e => handleSearch(e)}
-                                                            options={manage}
+                                                            options={listPersons}
                                                             maxMenuHeight={160}
                                                             value={values.manageId}
                                                             placeholder={t('select_manager_2')}

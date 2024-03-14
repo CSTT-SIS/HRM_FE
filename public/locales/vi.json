@@ -204,9 +204,9 @@
 	"add_staff_success": "Tạo mới nhân viên thành công",
 	"edit_staff_success": "Chỉnh sửa nhân viên thành công",
 	"delete_staff_success": "Xóa nhân viên thành công",
-	"add_Đặng Văn Err": "Tạo mới lỗi nhân viên",
-	"edit_Đặng Văn Err": "Chỉnh sửa lỗi nhân viên",
-	"delete_Đặng Văn Err": "Xóa lỗi phòng ban",
+	"add_staff_err": "Tạo mới lỗi nhân viên",
+	"edit_staff_err": "Chỉnh sửa lỗi nhân viên",
+	"delete_staff_err": "Xóa lỗi phòng ban",
 	"warehouse": "Kho",
 	"warehouse_process": "Quy trình kho bãi",
 	"warehouse_list": "Danh sách kho",
@@ -709,7 +709,7 @@
 	"update_exempt_form": "Sửa đơn miễn chấm công",
 	"add_holiday": "Thêm lịch nghỉ lễ",
 	"update_holiday": "Sửa lịch nghỉ lễ",
-	"please_fill_Nguyễn Văn Code": "Vui lòng nhập mã nhân viên",
+	"please_fill_Xaypayouode": "Vui lòng nhập mã nhân viên",
 	"please_fill_surname_name": "Vui lòng nhập tên đệm",
 	"please_fill_username": "Vui lòng nhập tên người dùng",
 	"download": "Tải xuống",
@@ -805,5 +805,6 @@
     "proposal_supply": "Yêu cầu cấp mìn",
     "supply_infomation": "Thông tin cấp mìn",
     "detail_task": "Chi tiết nhiệm vụ",
-    "detail_shift": "Chi tiết ca làm việc"
+    "detail_shift": "Chi tiết ca làm việc",
+    "file": "File đính kèm"
 }
