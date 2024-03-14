@@ -217,9 +217,9 @@ const Department = ({ ...props }: Props) => {
 
         },
         {
-            id: 4,
+            id: 5,
             content: {
-                id: 4,
+                id: 5,
                 name: "Phòng Kĩ thuật",
                 code: "PB02",
                 abbreviated: "PHKT",
