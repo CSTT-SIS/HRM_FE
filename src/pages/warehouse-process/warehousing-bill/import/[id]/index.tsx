@@ -9,7 +9,7 @@ import { setPageTitle } from '@/store/themeConfigSlice';
 import { DataTableSortStatus, DataTable } from 'mantine-datatable';
 import { useDispatch } from 'react-redux';
 import { WarehousingBillDetail, WarehousingBillListRequest } from '@/services/swr/warehousing-bill.twr';
-import { CreateWarehousingBill, EditWarehousingBill, GetWarehousingBill, WarehousingBillFinish } from '@/services/apis/warehousing-bill.api';
+import { CreateWarehousingBill, EditWarehousingBill, GetWarehousingBill, WarehousingBillAddDetails, WarehousingBillFinish } from '@/services/apis/warehousing-bill.api';
 import { Field, Form, Formik } from 'formik';
 import AnimateHeight from 'react-animate-height';
 import Select from 'react-select';
@@ -133,7 +133,7 @@ const ExportPage = ({ ...props }: Props) => {
             render: ({ product }: any) => <span>{product?.name}</span>,
             sortable: false
         },
-        { accessor: 'quantity', title: 'số lượng', sortable: false },
+        { accessor: 'proposalQuantity', title: 'số lượng', sortable: false },
         { accessor: 'note', title: 'Ghi chú', sortable: false },
         {
             accessor: 'action',
@@ -142,7 +142,7 @@ const ExportPage = ({ ...props }: Props) => {
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
                     {
-                        router.query.id !== "create" && !disable &&
+                        router.query.type === "PENDING" && disable &&
                         <button className='bg-[#C5E7AF] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleEdit(records)}>
                             <IconPencil /> <span>{`${t('enter_quantity')}`}</span>
                         </button>
@@ -222,12 +222,22 @@ const ExportPage = ({ ...props }: Props) => {
         } else {
             CreateWarehousingBill(query).then((res) => {
                 showMessage(`${t('create_success')}`, 'success');
+                handleDetail(res.data.id)
             }).catch((err) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
         }
         handleCancel();
     }
+    const handleDetail = (id: any) => {
+        WarehousingBillAddDetails({ id: id, details: listDataDetail }).then(() => {
+            // handleChangeComplete({ id: id });
+            handleCancel();
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
     useEffect(() => {
         setInitialValue({
             orderId: data ? {
