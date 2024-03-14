@@ -83,7 +83,7 @@ const DetailModal = ({ ...props }: Props) => {
     const handleCancel = () => {
         props.setOpenModal(false);
         // props.setData();
-        props.proposalDetailMutate();
+        props.orderDetailMutate();
         setInitialValue({});
     };
 
