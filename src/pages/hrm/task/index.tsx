@@ -53,12 +53,8 @@ const Task = ({ ...props }: Props) => {
 
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
-			const data = localStorage.getItem('taskList');
-			if (data) {
-				setGetStorge(JSON.parse(data));
-			} else {
+				setGetStorge(TaskList);
 				localStorage.setItem('taskList', JSON.stringify(TaskList));
-			}
 		}
 	}, []);
 

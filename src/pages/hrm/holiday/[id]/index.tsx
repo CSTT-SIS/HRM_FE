@@ -4,9 +4,11 @@ import React, { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
+import Select from "react-select";
 import Link from 'next/link';
 import IconBack from '@/components/Icon/IconBack';
 import holiday from "../holiday.json";
+import personnel_list from "../../personnel/personnel_list.json";
 interface Props {
 	[key: string]: any;
 }
@@ -138,6 +140,8 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 	const { t } = useTranslation();
     const router = useRouter();
     const [detail, setDetail] = useState<any>();
+    const [listPerson, setListPerson] = useState<any>();
+
     useEffect(() => {
         if (Number(router.query.id)) {
             const detailData = holiday?.find(d => d.id === Number(router.query.id));
@@ -145,6 +149,12 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
             setDetail(detailData);
         }
     }, [router]);
+    useEffect(() => {
+        const list_per = personnel_list?.map((e: any) => {
+            return { label: e.name, value: e.code}
+        })
+        setListPerson(list_per);
+    }, [])
 	const SubmittedForm = Yup.object().shape({
 		user: Yup.string().required(`${t('please_select_the_staff')}`),
 		title: Yup.string().required(`${t('please_fill_title_holiday_schedule')}`),
@@ -169,7 +179,7 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 									<Formik
 										initialValues={{
 											id: detail ? `${detail?.id}` : '',
-											user: detail ? `${detail?.user}` : '',
+											user: detail ? listPerson?.filter((e: any) => e.label === detail?.user) : [],
 											title: detail ? `${detail?.title}` : '',
 											start: detail ? `${detail?.start}` : '',
 											end: detail ? `${detail?.end}` : '',
@@ -181,31 +191,39 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 											saveHolidaySchedule(values);
 										}}
 									>
-										{({ errors, touched, submitCount }) => (
+										{({ errors, touched, submitCount, values, setFieldValue }) => (
 												<Form className="space-y-5">
-                                                <div className="mb-3">
+                                                <div className="mb-3 flex gap-2">
+                                                    <div className="flex-1">
+
 													<label htmlFor="title">
 														{t('holiday_title')}
 														<span style={{ color: 'red' }}> *</span>
 													</label>
 													<Field name="title" type="text" id="title" placeholder={t('fill_holiday_title')} className="form-input" />
 													{submitCount? errors.title ? <div className="mt-1 text-danger"> {errors.title} </div> : null : ''}
-												</div>
-												<div className="mb-3">
+                                                    </div>
+                                                    <div className="flex-1">
 													<label htmlFor="user">
 														{t('participants')}
 														<span style={{ color: 'red' }}> *</span>
 													</label>
-													<Field as="select" name="user" id="user" className="form-input" placeholder="test">
-														{/* <option value="">Chọn nhân viên</option> */}
-														{getEmployeeOptions().map((employee) => (
-															<option key={employee.value} value={employee.value}>
-																{employee.label}
-															</option>
-														))}
-													</Field>
-													{submitCount ? errors.user ? <div className="mt-1 text-danger"> {errors.user} </div> : null : ''}
+                                                    <Select
+                                                                name="user"
+                                                                id="user"
+                                                                    options={listPerson}
+                                                                    isMulti
+                                                                    isSearchable
+                                                                    placeholder={`${t('choose_participants')}`}
+                                                                    value={values?.user}
+                                                                    onChange={e => {
+                                                                        setFieldValue('user', e)
+                                                                    }}
+                                                                    />
+													{submitCount ? errors.user ? <div className="mt-1 text-danger"> {`${errors.user}`} </div> : null : ''}
 												</div>
+												</div>
+
 
 												<div className="mb-3 flex gap-2">
                                                     <div className='flex-1'>

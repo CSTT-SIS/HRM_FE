@@ -9,6 +9,7 @@ import Link from 'next/link';
 import IconBack from '@/components/Icon/IconBack';
 import workSchedules from '../workSchedules.json'
 import Select from "react-select";
+import personnel_list from "../../personnel/personnel_list.json"
 
 interface Props {
 	[key: string]: any;
@@ -143,13 +144,19 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 	const { t } = useTranslation();
     const router = useRouter();
     const [detail, setDetail] = useState<any>();
+    const [listPerson, setListPerson] = useState<any>();
     useEffect(() => {
         if (Number(router.query.id)) {
             const detailData = workSchedules?.find(d => d.id === Number(router.query.id));
-            console.log(detailData)
             setDetail(detailData);
         }
     }, [router]);
+    useEffect(() => {
+        const list_per = personnel_list?.map((e: any) => {
+            return { label: e.name, value: e.code}
+        })
+        setListPerson(list_per);
+    }, [])
 
 	const SubmittedForm = Yup.object().shape({
 		user: Yup.string().required(`${t('please_select_the_staff')}`),
@@ -175,7 +182,7 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 									<Formik
 										initialValues={{
 											id: detail ? `${detail?.id}` : '',
-											user: detail ? `${detail?.user}` : '',
+											user: detail ? listPerson?.filter((e: any) => e.label === detail?.user) : [],
 											title: detail ? `${detail?.title}` : '',
 											start: detail ? `${detail?.start}` : '',
 											end: detail ? `${detail?.end}` : '',
@@ -188,7 +195,7 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 										}}
                                         enableReinitialize
 									>
-										{({ errors, touched, submitCount, setFieldValue}) => (
+										{({ errors, touched, submitCount, setFieldValue, values}) => (
 												<Form className="space-y-5">
                                                <div className="mb-3 flex gap-2">
                                                 <div className="flex-1">
@@ -205,26 +212,22 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 														{t('participants')}
 														<span style={{ color: 'red' }}> *</span>
 													</label>
-                                                    <Field
-                                                        name="user"
-                                                        render={({ field }: any) => (
-                                                            <>
+
                                                                 <Select
-                                                                    {...field}
-                                                                    options={getEmployeeOptions()}
+                                                                name="user"
+                                                                id="user"
+                                                                    options={listPerson}
                                                                     isMulti
                                                                     isSearchable
                                                                     placeholder={`${t('choose_participants')}`}
-                                                                    defaultValue={{label: `${detail?.user}`, value: "NV01"}}
+                                                                    value={values?.user}
                                                                     onChange={e => {
                                                                         setFieldValue('user', e)
                                                                     }}
                                                                     />
 
-                                                                </>
-                                                            )}
-                                                        />
-													{submitCount ? errors.user ? <div className="mt-1 text-danger"> {errors.user} </div> : null : ''}
+
+													{submitCount ? errors.user ? <div className="mt-1 text-danger"> {`${errors.user}`} </div> : null : ''}
 												</div>
                                                 </div>
 

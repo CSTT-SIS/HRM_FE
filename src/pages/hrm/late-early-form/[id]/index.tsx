@@ -204,7 +204,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 										}}
                                         enableReinitialize
 									>
-											{({ errors, touched, submitCount, setFieldValue }) => (
+											{({ errors, touched, submitCount, setFieldValue, values }) => (
 											<Form className="space-y-5">
                                             <div className='flex justify-between gap-5'>
                                             <div className="mb-5 w-1/2">
@@ -292,21 +292,16 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('checker_name')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field
-                                                        name="checker"
-                                                        render={({ field }: any) => (
-                                                            <>
+
                                                                 <Select
                                                                    options={listPersonnel}
-                                                                   defaultValue={{value: "NV01", label: "Trần Văn B"}}
-
+                                                                   value={values?.checker}
                                                                     isSearchable
                                                                     placeholder={`${t('choose_checker')}`}
+                                                                    onChange={(e) => setFieldValue("checker", e.target.value)}
                                                                     />
 
-                                                                </>
-                                                            )}
-                                                        />
+
                                                {submitCount ? (
     errors.checker ? <div className="mt-1 text-danger">{`${errors.checker}`}</div> : null
   ) : null}

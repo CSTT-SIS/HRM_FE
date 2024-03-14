@@ -147,8 +147,8 @@ const AddNewTask = ({ ...props }: Props) => {
                 initialValues={{
                     name: detail ? `${detail?.name}` : '',
                     creator: detail ? `${detail?.creator}` : '',
-                    executor: detail ? `${detail?.executor}` : '',
-                    collaborator: detail ? `${detail?.collaborator}` : '',
+                    executor: detail ? listPersonnel?.find((e: any) => e.label === detail?.executor) : {},
+                    collaborator: detail ? listPersonnel?.filter((e: any) => e.label === detail?.collaborator) : [],
                     description: detail ? `${detail?.description}` : '',
                     deadline: detail ? `${detail?.deadline}` : '',
                     directive: detail ? `${detail?.directive}` : '',
@@ -191,17 +191,18 @@ const AddNewTask = ({ ...props }: Props) => {
                                     {t('executor_task')} <span style={{ color: 'red' }}>* </span>
                                 </label>
                                 <Select
-                                    id='collaborator'
-                                    name='collaborator'
+                                    id='executor'
+                                    name='executor'
                                     options={listPersonnel}
                                     placeholder={'Chọn người thực hiện'}
                                     maxMenuHeight={160}
+                                    value={values?.executor}
                                     onChange={e => {
-                                        setFieldValue('gender', e)
+                                        setFieldValue('executor', e)
                                     }}
                                 />
 
-                                {submitCount ? errors.executor ? <div className="mt-1 text-danger"> {errors.executor} </div> : null : ''}
+                                {submitCount ? errors.executor ? <div className="mt-1 text-danger"> {`${errors.executor}`} </div> : null : ''}
                             </div>
                             <div className="mb-3 w-1/2">
                                 <label htmlFor="collaborator"> {t('collaborator_task')}</label>
@@ -210,10 +211,12 @@ const AddNewTask = ({ ...props }: Props) => {
                                     id='collaborator'
                                     name='collaborator'
                                     options={listPersonnel}
+                                    isMulti={true}
+                                    value={values?.collaborator}
                                     placeholder={'Chọn người phối hợp'}
                                     maxMenuHeight={160}
                                     onChange={e => {
-                                        setFieldValue('gender', e)
+                                        setFieldValue('collaborator', e)
                                     }}
                                 />
                             </div>
