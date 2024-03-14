@@ -74,7 +74,7 @@ const OrganizationChart: React.FC<{}> = () => {
 						],
 					},
 					{
-						name: 'Phòng Tài chính kế toán',
+						name: 'Phòng Hành chính kế toán',
                         className: 'level-2',
 						children: [
 							{

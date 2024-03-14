@@ -137,7 +137,7 @@ const AddNewTask = ({ ...props }: Props) => {
             <Formik
                 initialValues={{
                     name: props?.data ? `${props?.data?.name}` : '',
-                    creator: 'Nguyễn Văn A',
+                    creator: 'Bountafaibounnheuang',
                     executor: props?.data ? `${props?.data?.executor}` : '',
                     collaborator: props?.data ? `${props?.data?.collaborator}` : '',
                     description: props?.data ? `${props?.data?.description}` : '',

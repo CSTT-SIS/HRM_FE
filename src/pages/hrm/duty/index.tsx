@@ -58,13 +58,8 @@ const Duty = ({ ...props }: Props) => {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const data = localStorage.getItem('duty_list');
-            if (data) {
-                setGetStorge(JSON.parse(data));
-            } else {
+                setGetStorge(duty_list);
                 localStorage.setItem('duty_list', JSON.stringify(duty_list));
-            }
-
         }
     }, [])
 

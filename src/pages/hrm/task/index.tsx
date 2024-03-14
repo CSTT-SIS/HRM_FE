@@ -8,6 +8,7 @@ import { showMessage } from '@/@core/utils';
 import { PAGE_NUMBER_DEFAULT, PAGE_SIZES, PAGE_SIZES_DEFAULT } from '@/utils/constants';
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
 import Link from 'next/link';
+import dayjs from 'dayjs';
 
 import TaskList from './task_list.json';
 import Swal from 'sweetalert2';
@@ -137,14 +138,14 @@ const Task = ({ ...props }: Props) => {
         },
 		{
 			accessor: 'department',
-			title: 'Phòng',
+			title: 'Phòng ban',
 			filter: (
 				<MultiSelect
 					label="Departments"
 					description="Show all employees working at the selected departments"
 					data={[
 						{
-							name: 'Phòng 1',
+							name: 'Phòng Hành chính',
 							value: '1'
 						}
 					]}
@@ -160,7 +161,9 @@ const Task = ({ ...props }: Props) => {
 		{ accessor: 'executor', title: 'Người thực hiện', sortable: false },
 		// { accessor: 'collaborator', title: 'Người phối hợp thực hiện', sortable: false },
 		// { accessor: 'description', title: 'Mô tả nhiệm vụ', sortable: false },
-		{ accessor: 'deadline', title: 'Thời hạn', sortable: false },
+		{ accessor: 'deadline', title: 'Thời hạn', sortable: false,
+        render: (records: any, index: any) => <span>{`${dayjs(records?.deadline).format("H:m DD/MM/YYYY")}`}</span>
+     },
 		{
 			accessor: 'status',
 			title: 'Trạng thái',

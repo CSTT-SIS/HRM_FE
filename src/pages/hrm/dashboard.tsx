@@ -137,7 +137,7 @@ const DashBoard = () => {
                 },
             },
             xaxis: {
-                categories: ['Phòng nhân sự', 'Phòng kế toán', 'Phòng IT', 'Phòng Marketing'],
+                categories: ['Phòng Hành chính', 'Phòng Kế toán', 'Phòng Kỹ thuật', 'Bộ phận bảo trì'],
                 axisBorder: {
                     color: isDark ? '#191e3a' : '#e0e6ed',
                 },

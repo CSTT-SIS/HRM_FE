@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "name": "Phó Trưởng Phòng",
+        "name": "Phó Trưởng phòng",
         "code": "PTP",
         "duty_group": "Quản lý",
         "description": "",
@@ -17,7 +17,7 @@
     },
     {
         "id": 3,
-        "name": "Trưởng Ban",
+        "name": "Trưởng ban",
         "code": "TB",
         "duty_group": "Quản lý",
         "description": "",
@@ -31,17 +31,10 @@
         "description": "",
         "status": "active"
     },
-    {
-        "id": 5,
-        "name": "Trạm Trưởng",
-        "code": "TT",
-        "duty_group": "Quản lý",
-        "description": "",
-        "status": "active"
-    },
+
     {
         "id": 6,
-        "name": "Nhân viên Hành chính",
+        "name": "Nhân viên hành chính",
         "code": "NV-HC",
         "duty_group": "Nhân viên",
         "description": "",
@@ -49,7 +42,7 @@
     },
     {
         "id": 7,
-        "name": "Nhân viên sửa chữa",
+        "name": "Nhân viên bảo trì",
         "code": "NV-SC",
         "duty_group": "Nhân viên",
         "description": "",
@@ -57,8 +50,16 @@
     },
     {
         "id": 8,
-        "name": "Nhân viên Thống kê",
+        "name": "Lái xe",
         "code": "NV-TK",
+        "duty_group": "Nhân viên",
+        "description": "",
+        "status": "active"
+    },
+    {
+        "id": 5,
+        "name": "Lái máy",
+        "code": "TT",
         "duty_group": "Nhân viên",
         "description": "",
         "status": "active"

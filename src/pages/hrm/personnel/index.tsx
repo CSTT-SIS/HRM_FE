@@ -222,7 +222,7 @@ const Department = ({ ...props }: Props) => {
 			id: 1,
 			content: {
 				id: 1,
-				name: "Phòng hành chính",
+				name: "Phòng Hành chính",
 				code: "PB01",
 				type: 'PB'
 			},
@@ -232,11 +232,11 @@ const Department = ({ ...props }: Props) => {
 					id: 2,
 					content: {
 						id: 1,
-						name: "Nguyễn Văn A",
+						name: "Bountafaibounnheuang",
 						code: "NV1",
 						type: 'NV',
-						department: 'Phòng hành chính',
-						duty: 'Trưởng phòng'
+						department: 'Phòng Hành chính',
+						duty: 'Phó phòng'
 					},
 					hasChildren: false,
 
@@ -248,7 +248,7 @@ const Department = ({ ...props }: Props) => {
 			id: 2,
 			content: {
 				id: 2,
-				name: "Phòng kĩ thuật",
+				name: "Phòng Kỹ thuật",
 				code: "PB02",
 				type: 'PB'
 			},
@@ -258,11 +258,11 @@ const Department = ({ ...props }: Props) => {
 					id: 4,
 					content: {
 						id: 2,
-						name: "Trần Văn B",
+						name: "Khampa Sirt",
 						code: "NV02",
 						type: 'NV',
-						department: 'Phòng kĩ thuật',
-						duty: 'Kế toán'
+						department: 'Phòng Kỹ thuật',
+						duty: 'Nhân viên'
 					},
 					hasChildren: false,
 
@@ -271,10 +271,10 @@ const Department = ({ ...props }: Props) => {
 					id: 5,
 					content: {
 						id: 3,
-						name: "Nguyễn Thị C",
+						name: "Phu thone",
 						code: "NV03",
 						type: 'NV',
-						department: 'Phòng kĩ thuật',
+						department: 'Phòng Kỹ thuật',
 						duty: 'Trợ lý'
 					},
 					hasChildren: false,
@@ -344,7 +344,7 @@ const Department = ({ ...props }: Props) => {
 							</button>
 						</Link>
 						<input type="file" ref={fileInputRef} style={{ display: "none" }} />
-                        
+
 						<button type="button" className="btn btn-primary btn-sm m-1 custom-button" onClick={() => fileInputRef.current?.click()}>
                             <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
                             Nhập file
