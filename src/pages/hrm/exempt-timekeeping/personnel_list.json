@@ -1,34 +1,34 @@
 [
     {
         "id": 1,
-        "name": "Nguyễn Văn A",
+        "name": "Bountafaibounnheuang",
         "code": "NV01",
         "status": "active",
-        "department": "Phòng Nhân sự",
-        "duty": "Nhân viên"
+        "department": "Phòng Hành chính",
+        "duty": "Phó phòng"
     },
     {
         "id": 2,
-        "name": "Trần Văn B",
+        "name": "Khampa Sirt",
         "code": "NV02",
         "status": "active",
-        "department": "Phòng Nhân sự",
+        "department": "Phòng Kỹ thuật",
         "duty": "Nhân viên"
     },
     {
         "id": 3,
-        "name": "Nguyễn Thị C",
+        "name": "Phu thone",
         "code": "NV03",
         "status": "active",
-        "department": "Phòng Nhân sự",
+        "department": "Phòng Kỹ thuật",
         "duty": "Nhân viên"
     },
     {
         "id": 4,
-        "name": "Vũ Văn D",
+        "name": "Sun khăm",
         "code": "NV04",
         "status": "active",
-        "department": "Phòng Nhân sự",
-        "duty": "Nhân viên"
+        "department": "Bộ phận lái xe",
+        "duty": "Lái xe"
     }
 ]

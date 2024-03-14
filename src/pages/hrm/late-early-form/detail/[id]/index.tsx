@@ -29,19 +29,19 @@ interface TreeNode {
 }
 
 const treeData = [
-  {
-    label: 'Phòng Tài chính',
-    value: '0-0',
-    children: [
-      { label: 'Phòng 1', value: '0-0-1' },
-      { label: 'Phòng 2', value: '0-0-2' },
-    ],
-  },
-  {
-    label: 'Phòng Nhân sự',
-    value: '0-1',
-  },
-];
+    {
+      label: 'Phòng Hành chính',
+      value: '0-0',
+      children: [
+        { label: 'Bộ phận cấp dưỡng', value: '0-0-1' },
+        { label: 'Tổ xe', value: '0-0-2' },
+      ],
+    },
+    {
+      label: 'Phòng Kế toán',
+      value: '0-1',
+    },
+  ];
 
 
 interface Props {
@@ -198,7 +198,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                             fromdate: detail ? `${detail?.fromdate}` : '',
                                             enddate: detail ? `${detail?.enddate}` : '',
                                             // shift: detail ? `${detail?.shift}` : '',
-                                            checker: detail? `${detail?.checker}` : '',
+                                            checker: detail ? `${detail?.checker}` : '',
                                             reason: detail ? `${detail?.reason}` : ''
 										}}
 										validationSchema={SubmittedForm}
@@ -207,7 +207,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 										}}
                                         enableReinitialize
 									>
-										{({ errors, touched, submitCount, setFieldValue }) => (
+										{({ errors, touched, submitCount, setFieldValue, values }) => (
 											<Form className="space-y-5">
                                             <div className='flex justify-between gap-5'>
                                             <div className="mb-5 w-1/2">
@@ -256,17 +256,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                 <Field
                                                 disabled
                                                             name="department"
-                                                            render={({ field }: any) => (
-                                                                <DropdownTreeSelect
-                                                                className="dropdown-tree"
-                                                                  data={treeDataState}
-                                                                  texts={{ placeholder: `${t('choose_department')}`}}
-                                                                  showPartiallySelected={true}
-                                                                  inlineSearchInput={true}
-                                                                  mode='radioSelect'
-
-                                                                />
-                                                                )}
+                                                            type="text"
+                                                            className="form-input"
         />
 
                                                     {submitCount ? errors.department ? <div className="mt-1 text-danger"> {errors.department} </div> : null : ''}
@@ -276,7 +267,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('submitday')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field disabled id="submitday" type="datetime-local" name="submitday" className="form-input" placeholder={`${t('choose_submit_day')}`} />
+                                                <Field disabled id="submitday" type="date" name="submitday" className="form-input" placeholder={`${t('choose_submit_day')}`} />
                                                     {submitCount ? errors.submitday ? <div className="mt-1 text-danger"> {errors.submitday} </div> : null : ''}
                                             </div>
                                             </div>
@@ -306,18 +297,10 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('checker_name')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field disabled as="select" name="checker" id="checker" className="form-input">
-                                                    { listPersonnel?.map((person: any) => {
-                                                        return (
-                                                            <option key={person.value} value={person.value}>
-                                                                {person.label}
-                                                            </option>
-                                                        );
-                                                    })}
+                                                <Field id="checker" disabled name="checker" type="text" className="form-input"/>
 
-                                </Field>
                                                {submitCount ? (
-    errors.checker ? <div className="mt-1 text-danger">{errors.checker}</div> : null
+    errors.checker ? <div className="mt-1 text-danger">{`${errors.checker}`}</div> : null
   ) : null}
                                             </div>
                                             <div className="mb-5 w-1/2">
@@ -325,7 +308,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('reason')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field disabled as="textarea" name="reason" id="reason" className="form-input" />
+                                                <Field disabled as="textarea" name="reason" id="reason"
+                                                placeholder={`${t('fill_reason')}`}className="form-input" />
                                                     {submitCount ? errors.reason ? <div className="mt-1 text-danger"> {errors.reason} </div> : null : ''}
                                             </div>
                                             </div>

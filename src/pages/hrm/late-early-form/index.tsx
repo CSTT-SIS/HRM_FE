@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
+import dayjs from "dayjs";
 // API
 // constants
 import { PAGE_SIZES, PAGE_SIZES_DEFAULT, PAGE_NUMBER_DEFAULT } from '@/utils/constants';
@@ -51,15 +52,15 @@ interface TreeNode {
 
 const treeData = [
     {
-      label: 'Phòng Tài chính',
+      label: 'Phòng Hành chính',
       value: '0-0',
       children: [
-        { label: 'Phòng 1', value: '0-0-1' },
-        { label: 'Phòng 2', value: '0-0-2' },
+        { label: 'Bộ phận cấp dưỡng', value: '0-0-1' },
+        { label: 'Tổ xe', value: '0-0-2' },
       ],
     },
     {
-      label: 'Phòng Nhân sự',
+      label: 'Phòng Kế toán',
       value: '0-1',
     },
   ];
@@ -90,11 +91,8 @@ const LateEarlyForm = ({ ...props }: Props) => {
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const data = localStorage.getItem('lateEarlyFormList');
-            if (data) {
-                setGetStorge(JSON.parse(data));
-            } else {
+                setGetStorge(LateEarlyFormList);
                 localStorage.setItem('lateEarlyFormList', JSON.stringify(LateEarlyFormList));
-            }
 
         }
     }, [])
@@ -203,7 +201,7 @@ const LateEarlyForm = ({ ...props }: Props) => {
     },
         { accessor: 'department', title: `${t('personel_department')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.department}</span>
     },
-        { accessor: 'submitday', title: `${t('submitday')}`, sortable: false,         render: (records: any, index: any) => <span onClick={(records) => handleDetail(records)}>{records?.submitday}</span>
+        { accessor: 'submitday', title: `${t('submitday')}`, sortable: false,         render: (records: any, index: any) => <span onClick={(records) => handleDetail(records)}>{`${dayjs(records?.submitday).format("DD/MM/YYYY")}`}</span>
     },
         { accessor: 'fromdate', title: `${t('fromdate')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.fromdate}</span>
     },
@@ -211,7 +209,7 @@ const LateEarlyForm = ({ ...props }: Props) => {
     },
         { accessor: 'checker', title: `${t('checker')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.checker}</span> },
         { accessor: 'isCheck',
-         title: `${t('isCheck')}`,
+         title: `${t('status')}`,
           sortable: false,
           render: (records: any, index: any) => <span className={`badge badge-outline-${records?.isCheck ? "success" : "danger"} `} onClick={() => handleDetail(records)}>{records?.isCheck ? `${t('isCheckTrue')}` : `${t('isCheckFalse')}`}</span>
     },

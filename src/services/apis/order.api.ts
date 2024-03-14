@@ -66,3 +66,23 @@ export const OrderCancel = (body: any) => {
 	const endpoint = `/order/${body.id}/cancel`;
 	return callApi(endpoint, 'PATCH', body);
 };
+
+export const OrderHeadApprove = (body: any) => {
+	const endpoint = `/order/${body.id}/head-approve`;
+	return callApi(endpoint, 'PATCH', body);
+};
+
+export const OrderManagerApprove = (body: any) => {
+	const endpoint = `/order/${body.id}/manager-approve`;
+	return callApi(endpoint, 'PATCH', body);
+};
+
+export const OrderHeadReject = (body: any) => {
+	const endpoint = `/order/${body.id}/head-reject`;
+	return callApi(endpoint, 'PATCH', body);
+};
+
+export const OrderManagerReject = (body: any) => {
+	const endpoint = `/order/${body.id}/manager-reject`;
+	return callApi(endpoint, 'PATCH', body);
+};

@@ -29,19 +29,19 @@ interface TreeNode {
 }
 
 const treeData = [
-  {
-    label: 'Phòng Tài chính',
-    value: '0-0',
-    children: [
-      { label: 'Phòng 1', value: '0-0-1' },
-      { label: 'Phòng 2', value: '0-0-2' },
-    ],
-  },
-  {
-    label: 'Phòng Nhân sự',
-    value: '0-1',
-  },
-];
+    {
+      label: 'Phòng Hành chính',
+      value: '0-0',
+      children: [
+        { label: 'Bộ phận cấp dưỡng', value: '0-0-1' },
+        { label: 'Tổ xe', value: '0-0-2' },
+      ],
+    },
+    {
+      label: 'Phòng Kế toán',
+      value: '0-1',
+    },
+  ];
 
 
 interface Props {
@@ -196,7 +196,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                             enddate: detail ? `${detail?.enddate}` : '',
                                             shift: detail ? `${detail?.shift}` : '',
                                             overtime_time: 0,
-                                            checker: detail ? `${detail?.checker}` : ''
+                                            checker: detail ? `${detail?.checker}` : "",
 										}}
 										validationSchema={SubmittedForm}
 										onSubmit={(values) => {
@@ -204,7 +204,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 										}}
                                         enableReinitialize
 									>
-										{({ errors, touched, submitCount, setFieldValue }) => (
+										{({ errors, touched, submitCount, setFieldValue, values }) => (
 											<Form className="space-y-5">
                                             <div className='flex justify-between gap-5'>
                                             <div className="mb-5 w-1/2">
@@ -259,7 +259,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('submitday')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field id="submitday" type="datetime-local" name="submitday" className="form-input" placeholder={`${t('choose_submit_day')}`} />
+                                                <Field id="submitday" type="datetime"
+                                                disabled name="submitday" className="form-input" placeholder={`${t('choose_submit_day')}`} />
                                                     {submitCount ? errors.submitday ? <div className="mt-1 text-danger"> {errors.submitday} </div> : null : ''}
                                             </div>
                                             </div>
@@ -302,22 +303,13 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 
                                                     {submitCount ? errors.shift ? <div className="mt-1 text-danger"> {errors.shift} </div> : null : ''}
                                             </div>
-                                            <div className="mb-5 w-1/2">
-                                                <label htmlFor="overtime_time" className='label'>
-                                                    {' '}
-                                                    {t('overtime_time')} <span style={{ color: 'red' }}>* </span>
-                                                </label>
-                                                <Field name="overtime_time" type="number" id="overtime_time" placeholder={`${t('fill_overtime_time')}`} className="form-input" />
-                                                {submitCount ? errors.overtime_time ? <div className="mt-1 text-danger"> {errors.overtime_time} </div> : null : ''}
-                                            </div>
-                                            </div>
-                                            <div className='flex justify-between gap-5'>
+
                                             <div className="mb-5 w-1/2">
                                                 <label htmlFor="checker" className='label'>
                                                     {' '}
                                                     {t('checker_name')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field disabled id="checker" name="checker" type="text" className="form-input"/>
+                                               <Field id="checker" disabled name="checker" type="text" className="form-input"/>
                                                 </div>
                                                 </div>
                                             <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">

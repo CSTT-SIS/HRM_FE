@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
+import dayjs from "dayjs";
 // API
 // constants
 import { PAGE_SIZES, PAGE_SIZES_DEFAULT, PAGE_NUMBER_DEFAULT } from '@/utils/constants';
@@ -48,18 +49,19 @@ const monthSelectConfig: Partial<Config> = {
 };
 const treeData = [
     {
-        label: 'Phòng Tài chính',
-        value: '0-0',
-        children: [
-            { label: 'Phòng 1', value: '0-0-1' },
-            { label: 'Phòng 2', value: '0-0-2' },
-        ],
+      label: 'Phòng Hành chính',
+      value: '0-0',
+      children: [
+        { label: 'Bộ phận cấp dưỡng', value: '0-0-1' },
+        { label: 'Tổ xe', value: '0-0-2' },
+      ],
     },
     {
-        label: 'Phòng Nhân sự',
-        value: '0-1',
+      label: 'Phòng Kế toán',
+      value: '0-1',
     },
-];
+  ];
+
 const OvertimeForm = ({ ...props }: Props) => {
     const [treeDataState, setTreeDataState] = useState<any>(treeData)
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -87,13 +89,8 @@ const OvertimeForm = ({ ...props }: Props) => {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const data = localStorage.getItem('lateEarlyFormList');
-            if (data) {
-                setGetStorge(JSON.parse(data));
-            } else {
+                setGetStorge(OvertimeFormList);
                 localStorage.setItem('lateEarlyFormList', JSON.stringify(OvertimeFormList));
-            }
-
         }
     }, [])
 
@@ -188,37 +185,25 @@ const OvertimeForm = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{(page - 1) * pageSize + index + 1}</span>,
         },
-        {
-            accessor: 'code', title: `${t('personel_code')}`, sortable: false,
-            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.code}</span>
-        },
-        {
-            accessor: 'name', title: `${t('personel_name')}`, sortable: false,
-            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.name}</span>
-        },
-        {
-            accessor: 'position', title: `${t('personel_position')}`, sortable: false,
-            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.position}</span>
-        },
-        {
-            accessor: 'department', title: `${t('personel_department')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.department}</span>
-        },
-        {
-            accessor: 'submitday', title: `${t('submitday')}`, sortable: false, render: (records: any, index: any) => <span onClick={(records) => handleDetail(records)}>{records?.submitday}</span>
-        },
-        {
-            accessor: 'fromdate', title: `${t('fromdate')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.fromdate}</span>
-        },
-        {
-            accessor: 'enddate', title: `${t('enddate')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.enddate}</span>
-        },
-        { accessor: 'shift', title: `${t('late_early_shift')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.shift}</span> },
-        {
-            accessor: 'late_second', title: `${t('late_second')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.late_second}</span>
-        },
-        {
-            accessor: 'early_second', title: `${t('early_second')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.early_second}</span>
-        },
+        { accessor: 'code', title: `${t('personel_code')}`, sortable: false,
+        render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.code}</span>
+    },
+        { accessor: 'name', title: `${t('personel_name')}`, sortable: false,
+        render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.name}</span>
+    },
+        { accessor: 'position', title: `${t('personel_position')}`, sortable: false,
+        render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.position}</span>
+    },
+        { accessor: 'department', title: `${t('personel_department')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.department}</span>
+    },
+        { accessor: 'submitday', title: `${t('submitday')}`, sortable: false,         render: (records: any, index: any) => <span onClick={(records) => handleDetail(records)}>{`${dayjs(records?.submitday).format("DD/MM/YYYY")}`}</span>
+    },
+        { accessor: 'fromdate', title: `${t('fromdate')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.fromdate}</span>
+    },
+        { accessor: 'enddate', title: `${t('enddate')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.enddate}</span>
+    },
+        { accessor: 'shift', title: `${t('shift')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.shift}</span> }
+    ,
         { accessor: 'checker', title: `${t('checker')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.checker}</span> },
         {
             accessor: 'isCheck',
@@ -276,14 +261,7 @@ const OvertimeForm = ({ ...props }: Props) => {
                         </Link>
 
                         <input type="file" ref={fileInputRef} style={{ display: "none" }} />
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" onClick={() => fileInputRef.current?.click()}>
-                            <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
-                            Nhập file
-                        </button>
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
-                            <IconDownload className="ltr:mr-2 rtl:ml-2" />
-                            Xuất file excel
-                        </button>
+
                     </div>
                     <div className='flex flex-row gap-2'>
                         <div className='flex flex-1 gap-1'>

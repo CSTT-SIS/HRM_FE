@@ -29,19 +29,20 @@ interface TreeNode {
 }
 
 const treeData = [
-  {
-    label: 'Phòng Tài chính',
-    value: '0-0',
-    children: [
-      { label: 'Phòng 1', value: '0-0-1' },
-      { label: 'Phòng 2', value: '0-0-2' },
-    ],
-  },
-  {
-    label: 'Phòng Nhân sự',
-    value: '0-1',
-  },
-];
+    {
+      label: 'Phòng Hành chính',
+      value: '0-0',
+      children: [
+        { label: 'Bộ phận cấp dưỡng', value: '0-0-1' },
+        { label: 'Tổ xe', value: '0-0-2' },
+      ],
+    },
+    {
+      label: 'Phòng Kế toán',
+      value: '0-1',
+    },
+  ];
+
 
 
 interface Props {
@@ -61,7 +62,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 
     useEffect(() => {
         const listPer = personnel_list?.map((item: any) =>  {
-            return {label: item.name, value: item.code}
+            return {value: item.code, label: item.name}
         });
         setListPersonnel(listPer);
 
@@ -105,7 +106,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 	const SubmittedForm = Yup.object().shape({
 		name: Yup.object()
 			.typeError(`${t('please_choose_name_staff')}`),
-            checker: Yup.object()
+        checker: Yup.object()
 			.typeError(`${t('please_choose_name_staff')}`),
         position: Yup.object()
             .typeError(`${t('please_choose_duty')}`),
@@ -171,6 +172,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
           return newTree;
         });
       }
+
 	return (
 
 		<div className="p-5">
@@ -188,7 +190,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
             <Formik
 				initialValues={{
 											name: detail ? `${detail?.name}` : '',
-                                            checker: detail ? `${detail?.name}` : '',
+                                            checker: detail ? listPersonnel?.find((e: any) => e.label === detail.checker) : null,
 											code: detail ? `${detail?.code}` : '',
                                             position: detail ? `${detail?.position}` : '',
                                             department: detail ? `${detail?.department}` : '',
@@ -203,7 +205,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 										}}
                                         enableReinitialize
 									>
-											{({ errors, touched, submitCount, setFieldValue }) => (
+											{({ errors, touched, submitCount, setFieldValue, values }) => (
 											<Form className="space-y-5">
                                             <div className='flex justify-between gap-5'>
                                             <div className="mb-5 w-1/2">
@@ -211,7 +213,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('name_staff')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field as="select" name="name" id="name" className="form-input">
+                                                <Field disabled as="select" name="name" id="name" className="form-input">
                                                     { listPersonnel?.map((person: any) => {
                                                         return (
                                                             <option key={person.value} value={person.value}>
@@ -230,7 +232,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('duty')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field as="select" name="position" id="position" className="form-input">
+                                                <Field disabled as="select" name="position" id="position" className="form-input">
                                                     { listDuty?.map((duty: any) => {
                                                         return (
                                                             <option key={duty.value} value={duty.value}>
@@ -249,22 +251,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('department')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field
-                                                disabled
-                                                            name="department"
-                                                            render={({ field }: any) => (
-                                                                <DropdownTreeSelect
-                                                                className="dropdown-tree"
-                                                                  data={treeDataState}
-                                                                  texts={{ placeholder: `${t('choose_department')}`}}
-                                                                  showPartiallySelected={true}
-                                                                  inlineSearchInput={true}
-                                                                  mode='radioSelect'
-
-                                                                />
-                                                                )}
-        />
-
+                                              <Field disabled type="text" name="department" className="form-input"/>
                                                     {submitCount ? errors.department ? <div className="mt-1 text-danger"> {errors.department} </div> : null : ''}
                                             </div>
                                             <div className="mb-5 w-1/2">
@@ -272,7 +259,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('submitday')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field  id="submitday" type="datetime-local" name="submitday" className="form-input"
+                                                <Field  id="submitday" type="date" name="submitday" className="form-input"
                                                 defaultValue={new Date()}
                                                 placeholder={`${t('choose_submit_day')}`} />
                                                     {submitCount ? errors.submitday ? <div className="mt-1 text-danger"> {errors.submitday} </div> : null : ''}
@@ -306,18 +293,18 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('checker_name')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field  as="select" name="checker" id="checker" className="form-input">
-                                                    { listPersonnel?.map((person: any) => {
-                                                        return (
-                                                            <option key={person.value} value={person.value}>
-                                                                {person.label}
-                                                            </option>
-                                                        );
-                                                    })}
 
-                                </Field>
+                                                                <Select
+                                                                   options={listPersonnel}
+                                                                   value={values?.checker}
+                                                                    isSearchable
+                                                                    placeholder={`${t('choose_checker')}`}
+                                                                    onChange={(e) => setFieldValue("checker", e.target.value)}
+                                                                    />
+
+
                                                {submitCount ? (
-    errors.checker ? <div className="mt-1 text-danger">{errors.checker}</div> : null
+    errors.checker ? <div className="mt-1 text-danger">{`${errors.checker}`}</div> : null
   ) : null}
                                             </div>
                                             <div className="mb-5 w-1/2">
@@ -325,7 +312,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('reason')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field  as="textarea" name="reason" id="reason" className="form-input" />
+                                                <Field  as="textarea" name="reason" id="reason"
+                                                placeholder={`${t('fill_reason')}`} className="form-input" />
                                                     {submitCount ? errors.reason ? <div className="mt-1 text-danger"> {errors.reason} </div> : null : ''}
                                             </div>
                                             </div>

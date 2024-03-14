@@ -17,7 +17,8 @@ import { ProductCategorys, Providers } from '@/services/swr/product.twr';
 import IconBack from '@/components/Icon/IconBack';
 import IconCaretDown from '@/components/Icon/IconCaretDown';
 import IconCalendar from '@/components/Icon/IconCalendar';
-
+import personel_list from '../personnel/personnel_list.json';
+import { getCurrentFormattedTime } from '@/utils/commons';
 interface Props {
     [key: string]: any;
 }
@@ -26,7 +27,7 @@ const AddNewTask = ({ ...props }: Props) => {
     const { t } = useTranslation();
     const [disabled, setDisabled] = useState(false);
     const [query, setQuery] = useState<any>();
-
+    const [listPersonnel, setListPersonnel] = useState<any>();
     const [typeShift, setTypeShift] = useState("0"); // 0: time, 1: total hours
     const { data: departmentparents } = ProductCategorys(query);
     const { data: manages } = Providers(query);
@@ -55,6 +56,12 @@ const AddNewTask = ({ ...props }: Props) => {
         deadline: Yup.date().required(`${t('error_set_deadline')}`),
         directive: Yup.string(),
     });
+    useEffect(() => {
+        const list_per = personel_list?.map((e: any) => {
+            return { label: e.name, value: e.code }
+        })
+        setListPersonnel(list_per)
+    }, [])
     const handleSearch = (param: any) => {
         setQuery({ search: param });
     }
@@ -130,7 +137,7 @@ const AddNewTask = ({ ...props }: Props) => {
             <Formik
                 initialValues={{
                     name: props?.data ? `${props?.data?.name}` : '',
-                    creator: 'Nguyễn Văn A',
+                    creator: 'Bountafaibounnheuang',
                     executor: props?.data ? `${props?.data?.executor}` : '',
                     collaborator: props?.data ? `${props?.data?.collaborator}` : '',
                     description: props?.data ? `${props?.data?.description}` : '',
@@ -139,6 +146,7 @@ const AddNewTask = ({ ...props }: Props) => {
                     color: props?.data ? `${props?.data?.color}` : 'info',
                     status: props?.data ? `${props?.data?.status}` : 'ĐANG THỰC HIỆN',
                     attachment: props?.data ? `${props?.data?.attachment}` : '',
+                    date_create: getCurrentFormattedTime()
                 }}
                 validationSchema={SubmittedForm}
                 onSubmit={(values) => {
@@ -147,16 +155,15 @@ const AddNewTask = ({ ...props }: Props) => {
             >
                 {({ errors, values, setFieldValue, submitCount }) => (
                     <Form className="space-y-5">
-                        <div className="mb-3">
+                        <div className="flex justify-between gap-5">
+                        <div className="mb-3 w-1/2">
                             <label htmlFor="name">
                                 {' '}
                                 {t('name_task')} <span style={{ color: 'red' }}>* </span>
                             </label>
                             <Field name="name" type="text" id="name" placeholder={`${t('enter_name_task')}`} className="form-input" />
                             {submitCount ? errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null : ''}
-                        </div>
-                        <div className='flex justify-between gap-5'>
-
+                            </div>
                             <div className="mb-3 w-1/2">
                                 <label htmlFor="creator">
                                     {' '}
@@ -165,24 +172,6 @@ const AddNewTask = ({ ...props }: Props) => {
                                 <Field type="text" name="creator" id="creator" className="form-input" disabled style={{ color: 'gray' }}>
                                 </Field>
                                 {submitCount ? errors.creator ? <div className="mt-1 text-danger"> {errors.creator} </div> : null : ''}
-                            </div>
-                            <div className="mb-3 w-1/2">
-                                <label htmlFor="date_create">
-                                    {' '}
-                                    {t('date_create')} <span style={{ color: 'red' }}>* </span>
-                                </label>
-                                <div className="flex">
-                                    <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
-                                        <IconCalendar></IconCalendar>
-                                    </div>
-                                    <Flatpickr
-                                        options={{
-                                            dateFormat: 'Y-m-d',
-                                            position: 'auto left',
-                                        }}
-                                        className="form-input ltr:rounded-l-none rtl:rounded-r-none"
-                                    />
-                                </div>
                             </div>
                         </div>
                         <div className='flex justify-between gap-5'>
@@ -194,11 +183,7 @@ const AddNewTask = ({ ...props }: Props) => {
                                 <Select
                                     id='collaborator'
                                     name='collaborator'
-                                    options={[{
-                                        label: 'Người thực hiện 1'
-                                    }, {
-                                        label: 'Người thực hiện 2'
-                                    }]}
+                                    options={listPersonnel}
                                     placeholder={'Chọn người thực hiện'}
                                     maxMenuHeight={160}
                                     onChange={e => {
@@ -214,56 +199,57 @@ const AddNewTask = ({ ...props }: Props) => {
                                 <Select
                                     id='collaborator'
                                     name='collaborator'
-                                    options={[{
-                                        label: 'Người phối hợp 1'
-                                    }, {
-                                        label: 'Người phối hợp 2'
-                                    }]}
+                                    options={listPersonnel}
                                     placeholder={'Chọn người phối hợp'}
                                     maxMenuHeight={160}
                                     onChange={e => {
                                         setFieldValue('gender', e)
                                     }}
+                                    isMulti={true}
                                 />
                             </div>
                         </div>
                         <div className='flex justify-between gap-5'>
+
+                            <div className="mb-3 w-1/2">
+                                <label htmlFor="date_create">
+                                    {' '}
+                                    {t('date_create')} <span style={{ color: 'red' }}>* </span>
+                                </label>
+                                <Field type="date" name="date_create" id="date_create" className="form-input" disabled>
+                                </Field>
+
+                            </div>
+
                             <div className="mb-3 w-1/2">
                                 <label htmlFor="deadline">
                                     {t('deadline_task')} <span style={{ color: 'red' }}>* </span>
 
                                 </label>
-                                <div className="flex">
-                                    <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
-                                        <IconCalendar></IconCalendar>
-                                    </div>
-                                    <Flatpickr
-                                        options={{
-                                            dateFormat: 'Y-m-d',
-                                            position: 'auto left',
-                                        }}
-                                        className="form-input ltr:rounded-l-none rtl:rounded-r-none"
-                                        placeholder={`${t('enter_deadline_task')}`}
-                                    />
-                                </div>
+                                <Field type="datetime-local" name="deadline_task"
+                                placeholder={`${t('enter_deadline_task')}`}id="deadline_task" className="form-input">
+                                </Field>
 
                                 {submitCount ? errors.deadline ? <div className="mt-1 text-danger"> {errors.deadline} </div> : null : ''}
                             </div>
-                            <div className="mb-3 w-1/2">
+
+                        </div>
+
+                        <div className='flex justify-between gap-5'>
+                        <div className="mb-3 w-1/2">
                                 <label htmlFor="file">
                                     {' '}
-                                    {t('File')} <span style={{ color: 'red' }}>* </span>
+                                    {t('file')} <span style={{ color: 'red' }}>* </span>
                                 </label>
                                 <Field name="file" type="file" rows="2" id="file" style={{ height: '37.6px' }} placeholder={`${t('enter_description_task')}`} className="form-input" />
                             </div>
-                        </div>
-
-                        <div className="mb-3">
+                            <div className="mb-3 w-1/2">
                             <label htmlFor="description">
                                 {' '}
                                 {t('description_task')} <span style={{ color: 'red' }}>* </span>
                             </label>
                             <Field name="description" as="textarea" rows="2" id="description" placeholder={`${t('enter_description_task')}`} className="form-input" />
+                        </div>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="directive"> {t('directive_task')}</label>

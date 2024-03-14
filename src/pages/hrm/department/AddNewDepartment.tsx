@@ -15,6 +15,8 @@ import Link from 'next/link';
 import IconArrowBackward from '@/components/Icon/IconArrowBackward';
 import { ProductCategorys, Providers } from '@/services/swr/product.twr';
 import IconBack from '@/components/Icon/IconBack';
+import list_departments from './department_list.json';
+import list_personnels from '../personnel/personnel_list.json';
 
 interface Props {
     [key: string]: any;
@@ -28,13 +30,24 @@ const AddNewDepartment = ({ ...props }: Props) => {
     const [typeShift, setTypeShift] = useState("0"); // 0: time, 1: total hours
     const { data: departmentparents } = ProductCategorys(query);
     const { data: manages } = Providers(query);
-    const departmentparent = departmentparents?.data.filter((item: any) => {
-        return (
-            item.value = item.id,
-            item.label = item.name,
-            delete item.createdAt
-        )
-    })
+    const [listDepartment, setListDepartment] = useState<any>();
+    const [listPersons, setListPersons] = useState<any>();
+    useEffect(() => {
+        const list_temp_department = list_departments?.map((department: any) => {
+            return {
+                value: department.id,
+                label: department.name
+            }
+        })
+        setListDepartment(list_temp_department);
+        const list_temp_person = list_personnels?.map((person: any) => {
+            return {
+                value: person.code,
+                label: person.name
+            }
+        })
+        setListPersons(list_temp_person);
+    }, [])
 
     const manage = manages?.data.filter((item: any) => {
         return (
@@ -111,6 +124,8 @@ const AddNewDepartment = ({ ...props }: Props) => {
                 initialValues={{
                     name: props?.data ? `${props?.data?.name}` : '',
                     code: props?.data ? `${props?.data?.code}` : '',
+                    description: props?.data ? `${props?.data?.description}` : '',
+
                     abbreviated: props?.data ? `${props?.data?.abbreviated}` : '',
                     manageId: props?.data ? {
                         value: `${props?.data?.manage.id}`,
@@ -165,7 +180,7 @@ const AddNewDepartment = ({ ...props }: Props) => {
                                     name='departmentparentId'
                                     placeholder={t('select_departmentparent')}
                                     onInputChange={e => handleSearch(e)}
-                                    options={departmentparent}
+                                    options={listDepartment}
                                     maxMenuHeight={160}
                                     value={values.departmentparentId}
                                     onChange={e => {
@@ -183,7 +198,7 @@ const AddNewDepartment = ({ ...props }: Props) => {
                                     name='manageId'
                                     placeholder={t('select_manager')}
                                     onInputChange={e => handleSearch(e)}
-                                    options={manage}
+                                    options={listPersons}
                                     maxMenuHeight={160}
                                     value={values.manageId}
                                     onChange={e => {
@@ -198,11 +213,11 @@ const AddNewDepartment = ({ ...props }: Props) => {
 
                         </div>
                         <div className="mb-5">
-                            <label htmlFor="name" className='label'>
+                            <label htmlFor="description" className='label'>
                                 {' '}
                                 {t('description')}
                             </label>
-                            <Field name="name"  as="textarea" id="name" placeholder={`${t('enter_description')}`} className="form-input" />
+                            <Field name="description"  as="textarea" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
                         </div>
                         <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">
                             <button type="button" className="btn btn-outline-dark cancel-button" onClick={() => handleCancel()}>

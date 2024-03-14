@@ -1,4 +1,4 @@
-import { useEffect, Fragment, useState, SetStateAction } from 'react';
+import { useEffect, Fragment, useState, SetStateAction, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { showMessage } from '@/@core/utils';
@@ -10,7 +10,7 @@ import Tippy from '@tippyjs/react';
 import { DataTableSortStatus, DataTable } from 'mantine-datatable';
 import { useDispatch } from 'react-redux';
 import { WarehousingBillDetail, WarehousingBillListRequest } from '@/services/swr/warehousing-bill.twr';
-import { CreateWarehousingBill, EditWarehousingBill, GetWarehousingBill, WarehousingBillFinish } from '@/services/apis/warehousing-bill.api';
+import { CreateWarehousingBill, EditWarehousingBill, GetWarehousingBill, WarehousingBillAddDetails, WarehousingBillFinish } from '@/services/apis/warehousing-bill.api';
 import { Field, Form, Formik } from 'formik';
 import AnimateHeight from 'react-animate-height';
 import Select from 'react-select';
@@ -19,19 +19,20 @@ import { DropdownOrder, DropdownProposals, DropdownRepair, DropdownWarehouses } 
 import IconBackward from '@/components/Icon/IconBackward';
 import Link from 'next/link';
 import IconCaretDown from '@/components/Icon/IconCaretDown';
-import { GetProposal, GetProposalDetail } from '@/services/apis/proposal.api';
-import { GetRepair, GetRepairDetail } from '@/services/apis/repair.api';
-import { GetOrder, GetOrderDetail } from '@/services/apis/order.api';
+import { GetProposal } from '@/services/apis/proposal.api';
+import { GetRepair } from '@/services/apis/repair.api';
+import { GetOrder } from '@/services/apis/order.api';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import moment from 'moment';
-import HandleDetailForm from '../form/HandleDetailForm';
+import IconPlus from '@/components/Icon/IconPlus';
+import DetailModal from '../form/DetailModal';
 
 interface Props {
     [key: string]: any;
 }
 
-const DetailModal = ({ ...props }: Props) => {
+const ExportPage = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -44,6 +45,7 @@ const DetailModal = ({ ...props }: Props) => {
     const [openModal, setOpenModal] = useState(false);
     const [query, setQuery] = useState<any>();
     const [createBy, setCreateBy] = useState<any>();
+    const formRef = useRef<any>();
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
@@ -109,10 +111,10 @@ const DetailModal = ({ ...props }: Props) => {
         {
             accessor: 'name',
             title: 'Tên sản phẩm',
-            render: ({ product }: any) => <span>{product?.name}</span>,
+            render: ({ product, replacementPart }: any) => <span>{product?.name || replacementPart?.name}</span>,
             sortable: false
         },
-        { accessor: 'quantity', title: 'số lượng', sortable: false },
+        { accessor: 'proposalQuantity', title: 'số lượng', sortable: false },
         { accessor: 'note', title: 'Ghi chú', sortable: false },
         {
             accessor: 'action',
@@ -121,7 +123,7 @@ const DetailModal = ({ ...props }: Props) => {
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
                     {
-                        router.query.id !== "create" && !disable &&
+                        router.query.type === "PENDING" && disable &&
                         <button className='bg-[#C5E7AF] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleEdit(records)}>
                             <IconPencil /> <span>{`${t('enter_quantity')}`}</span>
                         </button>
@@ -156,7 +158,7 @@ const DetailModal = ({ ...props }: Props) => {
 
     const SubmittedForm = Yup.object().shape({
         // name: Yup.string().required(`${t('please_fill_name')}`),
-        type: new Yup.ObjectSchema().required(`${t('please_fill_type')}`),
+        // type: new Yup.ObjectSchema().required(`${t('please_fill_type')}`),
         // proposalId: new Yup.ObjectSchema().required(`${t('please_fill_proposal')}`),
         warehouseId: new Yup.ObjectSchema().required(`${t('please_fill_warehouse')}`),
     });
@@ -176,7 +178,7 @@ const DetailModal = ({ ...props }: Props) => {
     const handleWarehousing = (param: any) => {
         const query: any = {
             warehouseId: Number(param.warehouseId.value),
-            type: param.type.value,
+            type: "EXPORT",
             note: param.note,
             // name: param.name
         };
@@ -196,11 +198,23 @@ const DetailModal = ({ ...props }: Props) => {
         } else {
             CreateWarehousingBill(query).then((res) => {
                 showMessage(`${t('create_success')}`, 'success');
+                handleDetail(res.data.id)
             }).catch((err) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
         }
+        handleCancel();
     }
+
+    const handleDetail = (id: any) => {
+        WarehousingBillAddDetails({ id: id, details: listDataDetail }).then(() => {
+            // handleChangeComplete({ id: id });
+            handleCancel();
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
     useEffect(() => {
         setInitialValue({
             proposalId: data ? {
@@ -320,7 +334,12 @@ const DetailModal = ({ ...props }: Props) => {
                 });
                 break;
         }
+    }
 
+    const handleSubmit = () => {
+        if (formRef.current) {
+            formRef.current.handleSubmit()
+        }
     }
 
     return (
@@ -364,6 +383,7 @@ const DetailModal = ({ ...props }: Props) => {
                                             handleWarehousing(values);
                                         }}
                                         enableReinitialize
+                                        innerRef={formRef}
                                     >
 
                                         {({ errors, values, submitCount, setFieldValue }) => (
@@ -446,6 +466,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                                 value={values?.warehouseId}
                                                                 onChange={e => {
                                                                     setFieldValue('warehouseId', e)
+                                                                    setEntity(e.label === "Gara" ? "repairRequest" : '');
                                                                 }}
                                                                 isDisabled={disable}
                                                             />
@@ -551,13 +572,19 @@ const DetailModal = ({ ...props }: Props) => {
                             <div className={`${active.includes(2) ? 'custom-content-accordion' : ''}`}>
                                 <AnimateHeight duration={300} height={active.includes(2) ? 'auto' : 0}>
                                     <div className='p-4'>
-                                        <HandleDetailForm
-                                            data={dataDetail}
-                                            setData={setDataDetail}
-                                            listData={listDataDetail}
-                                            setListData={setListDataDetail}
-                                            orderDetailMutate={mutate}
-                                        />
+                                        <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
+                                            <div className="flex items-center flex-wrap">
+                                                {
+                                                    !disable &&
+                                                    <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
+                                                        <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                                        {t('add_product_list')}
+                                                    </button>
+                                                }
+                                            </div>
+
+                                            {/* <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
+                                        </div>
                                         <div className="datatables">
                                             <DataTable
                                                 highlightOnHover
@@ -570,6 +597,15 @@ const DetailModal = ({ ...props }: Props) => {
                                             />
                                         </div>
                                     </div>
+                                    <DetailModal
+                                        openModal={openModal}
+                                        setOpenModal={setOpenModal}
+                                        data={dataDetail}
+                                        setData={setDataDetail}
+                                        orderDetailMutate={mutate}
+                                        listData={listDataDetail}
+                                        setListData={setListDataDetail}
+                                    />
                                 </AnimateHeight>
                             </div>
                         </div>
@@ -580,13 +616,13 @@ const DetailModal = ({ ...props }: Props) => {
                                     <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
                                         {t('cancel')}
                                     </button>
-                                    <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+                                    <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleSubmit()}>
                                         {router.query.id !== "create" ? t('update') : t('save')}
                                     </button>
                                 </>
                             }
                             {
-                                router.query.id !== "create" && !disable &&
+                                router.query.type === "PENDING" &&
                                 <button type="button" onClick={e => handleChangeComplete()} className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
                                     {t('complete')}
                                 </button>
@@ -598,4 +634,4 @@ const DetailModal = ({ ...props }: Props) => {
         </>
     );
 };
-export default DetailModal;
+export default ExportPage;

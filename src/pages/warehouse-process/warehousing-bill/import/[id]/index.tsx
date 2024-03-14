@@ -1,4 +1,4 @@
-import { useEffect, Fragment, useState, SetStateAction } from 'react';
+import { useEffect, Fragment, useState, SetStateAction, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { showMessage } from '@/@core/utils';
@@ -8,9 +8,8 @@ import IconPencil from '@/components/Icon/IconPencil';
 import { setPageTitle } from '@/store/themeConfigSlice';
 import { DataTableSortStatus, DataTable } from 'mantine-datatable';
 import { useDispatch } from 'react-redux';
-import HandleDetailForm from '../form/HandleDetailForm';
 import { WarehousingBillDetail, WarehousingBillListRequest } from '@/services/swr/warehousing-bill.twr';
-import { CreateWarehousingBill, EditWarehousingBill, GetWarehousingBill, WarehousingBillFinish } from '@/services/apis/warehousing-bill.api';
+import { CreateWarehousingBill, EditWarehousingBill, GetWarehousingBill, WarehousingBillAddDetails, WarehousingBillFinish } from '@/services/apis/warehousing-bill.api';
 import { Field, Form, Formik } from 'formik';
 import AnimateHeight from 'react-animate-height';
 import Select from 'react-select';
@@ -19,18 +18,20 @@ import { DropdownOrder, DropdownWarehouses } from '@/services/swr/dropdown.twr';
 import IconBackward from '@/components/Icon/IconBackward';
 import Link from 'next/link';
 import IconCaretDown from '@/components/Icon/IconCaretDown';
-import { GetOrder } from '@/services/apis/order.api';
+import { GetOrder, GetOrderDetail } from '@/services/apis/order.api';
 import moment from 'moment';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
 import Swal from 'sweetalert2';
+import DetailModal from '../form/DetailModal';
+import IconPlus from '@/components/Icon/IconPlus';
 
 interface Props {
     [key: string]: any;
 }
 
-const DetailModal = ({ ...props }: Props) => {
+const ExportPage = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -132,7 +133,7 @@ const DetailModal = ({ ...props }: Props) => {
             render: ({ product }: any) => <span>{product?.name}</span>,
             sortable: false
         },
-        { accessor: 'quantity', title: 'số lượng', sortable: false },
+        { accessor: 'proposalQuantity', title: 'số lượng', sortable: false },
         { accessor: 'note', title: 'Ghi chú', sortable: false },
         {
             accessor: 'action',
@@ -141,7 +142,7 @@ const DetailModal = ({ ...props }: Props) => {
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
                     {
-                        router.query.id !== "create" && !disable &&
+                        router.query.type === "PENDING" && disable &&
                         <button className='bg-[#C5E7AF] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleEdit(records)}>
                             <IconPencil /> <span>{`${t('enter_quantity')}`}</span>
                         </button>
@@ -180,15 +181,16 @@ const DetailModal = ({ ...props }: Props) => {
     const [dataOrderDropdown, setDataOrderDropdown] = useState<any>([]);
     const [dataWarehouseDropdown, setDataWarehouseDropdown] = useState<any>([]);
     const [active, setActive] = useState<any>([1, 2]);
+    const formRef = useRef<any>();
 
     const SubmittedForm = Yup.object().shape({
         // name: Yup.string().required(`${t('please_fill_name')}`),
-        type: new Yup.ObjectSchema().required(`${t('please_fill_type')}`),
+        // type: new Yup.ObjectSchema().required(`${t('please_fill_type')}`),
         // proposalId: new Yup.ObjectSchema().required(`${t('please_fill_proposal')}`),
         warehouseId: new Yup.ObjectSchema().required(`${t('please_fill_warehouse')}`),
     });
 
-    const { data: orders, pagination: orderPagination, isLoading: orderLoading } = DropdownOrder({ page: pageOder, status: "RECEIVED" });
+    const { data: orders, pagination: orderPagination, isLoading: orderLoading } = DropdownOrder({ page: pageOder });
     const { data: warehouses, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({ page: pageWarehouse });
     const { data: listRequest } = WarehousingBillListRequest({ id: router.query.proposalId });
 
@@ -202,7 +204,7 @@ const DetailModal = ({ ...props }: Props) => {
     const handleWarehousing = (param: any) => {
         const query: any = {
             warehouseId: Number(param.warehouseId.value),
-            type: param.type.value,
+            type: "IMPORT",
             note: param.note,
             // name: param.name
         };
@@ -220,11 +222,22 @@ const DetailModal = ({ ...props }: Props) => {
         } else {
             CreateWarehousingBill(query).then((res) => {
                 showMessage(`${t('create_success')}`, 'success');
+                handleDetail(res.data.id)
             }).catch((err) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
         }
+        handleCancel();
     }
+    const handleDetail = (id: any) => {
+        WarehousingBillAddDetails({ id: id, details: listDataDetail }).then(() => {
+            // handleChangeComplete({ id: id });
+            handleCancel();
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
+
     useEffect(() => {
         setInitialValue({
             orderId: data ? {
@@ -299,12 +312,22 @@ const DetailModal = ({ ...props }: Props) => {
     }
 
     const getValueDetail = (param: any) => {
+        GetOrderDetail({ id: param.value }).then((res) => {
+            setListDataDetail(res.data);
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
         GetOrder({ id: param.value }).then((res) => {
-            setListDataDetail(res.data.details);
             param.setFieldValue("createdBy", res.data.createdBy.fullName)
         }).catch((err) => {
             showMessage(`${err?.response?.data?.message}`, 'error');
         });
+    }
+
+    const handleSubmit = () => {
+        if (formRef.current) {
+            formRef.current.handleSubmit()
+        }
     }
 
     return (
@@ -348,6 +371,7 @@ const DetailModal = ({ ...props }: Props) => {
                                             handleWarehousing(values);
                                         }}
                                         enableReinitialize
+                                        innerRef={formRef}
                                     >
 
                                         {({ errors, values, submitCount, setFieldValue }) => (
@@ -487,13 +511,19 @@ const DetailModal = ({ ...props }: Props) => {
                             <div className={`${active.includes(2) ? 'custom-content-accordion' : ''}`}>
                                 <AnimateHeight duration={300} height={active.includes(2) ? 'auto' : 0}>
                                     <div className='p-4'>
-                                        <HandleDetailForm
-                                            data={dataDetail}
-                                            setData={setDataDetail}
-                                            listData={listDataDetail}
-                                            setListData={setListDataDetail}
-                                            orderDetailMutate={mutate}
-                                        />
+                                        <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
+                                            <div className="flex items-center flex-wrap">
+                                                {
+                                                    !disable &&
+                                                    <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
+                                                        <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                                                        {t('add_product_list')}
+                                                    </button>
+                                                }
+                                            </div>
+
+                                            {/* <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
+                                        </div>
                                         <div className="datatables">
                                             <DataTable
                                                 highlightOnHover
@@ -506,6 +536,15 @@ const DetailModal = ({ ...props }: Props) => {
                                             />
                                         </div>
                                     </div>
+                                    <DetailModal
+                                        openModal={openModal}
+                                        setOpenModal={setOpenModal}
+                                        data={dataDetail}
+                                        setData={setDataDetail}
+                                        orderDetailMutate={mutate}
+                                        listData={listDataDetail}
+                                        setListData={setListDataDetail}
+                                    />
                                 </AnimateHeight>
                             </div>
                         </div>
@@ -516,13 +555,13 @@ const DetailModal = ({ ...props }: Props) => {
                                     <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
                                         {t('cancel')}
                                     </button>
-                                    <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+                                    <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleSubmit()}>
                                         {router.query.id !== "create" ? t('update') : t('save')}
                                     </button>
                                 </>
                             }
                             {
-                                router.query.id !== "create" && !disable &&
+                                router.query.type === "PENDING" &&
                                 <button type="button" onClick={e => handleChangeComplete()} className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
                                     {t('complete')}
                                 </button>
@@ -535,4 +574,4 @@ const DetailModal = ({ ...props }: Props) => {
         </>
     );
 };
-export default DetailModal;
+export default ExportPage;

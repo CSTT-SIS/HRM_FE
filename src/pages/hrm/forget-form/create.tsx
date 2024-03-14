@@ -19,6 +19,7 @@ import shift from '../shift/shift.json';
 import { Vietnamese } from "flatpickr/dist/l10n/vn.js"
 import DropdownTreeSelect from "react-dropdown-tree-select";
 import "react-dropdown-tree-select/dist/styles.css";
+import { getCurrentFormattedTime } from '@/utils/commons';
 
 
 interface TreeNode {
@@ -26,20 +27,21 @@ interface TreeNode {
     checked: boolean;
     children?: TreeNode[];
   }
-const treeData = [
-  {
-    label: 'Phòng Tài chính',
-    value: '0-0',
-    children: [
-      { label: 'Phòng 1', value: '0-0-1' },
-      { label: 'Phòng 2', value: '0-0-2' },
-    ],
-  },
-  {
-    label: 'Phòng Nhân sự',
-    value: '0-1',
-  },
-];
+  const treeData = [
+    {
+      label: 'Phòng Hành chính',
+      value: '0-0',
+      children: [
+        { label: 'Bộ phận cấp dưỡng', value: '0-0-1' },
+        { label: 'Tổ xe', value: '0-0-2' },
+      ],
+    },
+    {
+      label: 'Phòng Kế toán',
+      value: '0-1',
+    },
+  ];
+
 
 
 interface Props {
@@ -160,11 +162,11 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
             </div>
             <Formik
 				initialValues={{
-											name: null,
+											name: "Bountafaibounnheuang",
 											code: null,
-                                            position: null,
-                                            department: null,
-                                            submitday: null,
+                                            position: "Phó phòng",
+                                            department: "Phòng Hành chính",
+                                            submitday: getCurrentFormattedTime(),
                                             fromdate: null,
                                             enddate: null,
                                             shift: null,
@@ -184,23 +186,10 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('name_staff')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field
+                                                <Field disabled
                                                 className="form-input"
                                                         name="name"
-                                                        render={({ field }: any) => (
-                                                            <>
-                                                                <Select
-                                                                    // {...field}
-                                                                    options={listPersonnel}
-                                                                    isSearchable
-                                                                    placeholder={t('choose_name')}
-                                                                    maxMenuHeight={150}
-                                                                    onChange={(item) => {
-                                                                        setFieldValue('name', item)
-                                                                    }}
-                                                                />
-                                                            </>
-                                                        )}
+                                                        type="text"
                                                     />
                                                {submitCount ? (
     errors.name ? <div className="mt-1 text-danger">{errors.name}</div> : null
@@ -214,20 +203,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                 <Field
                                                 className="form-input"
                                                         name="position"
-                                                        render={({ field }: any) => (
-                                                            <>
-                                                                <Select
-                                                                    // {...field}
-                                                                    options={listDuty}
-                                                                    isSearchable
-                                                                    placeholder={t('choose_duty')}
-                                                                    maxMenuHeight={150}
-                                                                    onChange={(item) => {
-                                                                        setFieldValue('position', item)
-                                                                    }}
-                                                                />
-                                                            </>
-                                                        )}
+                                                        disabled
+                                                        type="text"
                                                     />
                                                     {submitCount ? errors.position ? <div className="mt-1 text-danger"> {errors.position} </div> : null : ''}
                                             </div>
@@ -240,21 +217,10 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                 </label>
                                                 <Field
                                                             name="department"
-                                                            render={({ field }: any) => (
-                                                                <DropdownTreeSelect
-                                                                className="dropdown-tree"
-                                                                  data={treeDataState}
-                                                                  texts={{ placeholder: `${t('choose_department')}`}}
-                                                                  showPartiallySelected={true}
-                                                                  inlineSearchInput={true}
-                                                                  mode='radioSelect'
-                                                                  onChange={(currentNode, selectedNodes) => {
-                                                                    console.log(selectedNodes[0]?.value)
-                                                                    setFieldValue('department', selectedNodes[0]);
-                                                                    handleChangeTreeData(selectedNodes)
-                                                                  }}
-                                                                />
-                                                                )}
+                                                            type="text"
+                                                            disabled
+                                                            className="form-input"
+
         />
 
                                                     {submitCount ? errors.department ? <div className="mt-1 text-danger"> {errors.department} </div> : null : ''}
@@ -266,24 +232,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                 </label>
                                                 <Field
                                                         name="submitday"
-                                                        render={({ field }: any) => (
-                                                            <Flatpickr
-                                                                data-enable-time
-                                                                placeholder={`${t('choose_submit_day')}`}
-                                                                options={{
-                                                                    enableTime: true,
-                                                                    defaultDate: new Date(),
-                                                                    dateFormat: 'd-m-Y',
-                                                                    locale: {
-                                                                        ...Vietnamese
-                                                                    },
-                                                                }}
-                                                                className="form-input"
-                                                                onChange={(item) => {
-                                                                    setFieldValue('submitday', item)
-                                                                }}
-                                                            />
-                                                        )}
+                                                        type="date"
+                                                        className="form-input"
                                                     />
                                                     {submitCount ? errors.submitday ? <div className="mt-1 text-danger"> {errors.submitday} </div> : null : ''}
                                             </div>
@@ -296,24 +246,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                 </label>
                                                 <Field
                                                         name="from_date"
-                                                        render={({ field }: any) => (
-                                                            <Flatpickr
-                                                                data-enable-time
-                                                                placeholder={`${t('choose_from_time')}`}
-                                                                options={{
-                                                                    enableTime: true,
-                                                                    noCalendar: true,
-                                                                    dateFormat: 'H:i',
-                                                                    locale: {
-                                                                        ...Vietnamese
-                                                                    }
-                                                                }}
-                                                                className="form-input"
-                                                                onChange={(item) => {
-                                                                    setFieldValue('fromdate', item)
-                                                                }}
-                                                            />
-                                                        )}
+                                                        type="time"
+                                                        className="form-input"
                                                     />
                                                     {submitCount ? errors.fromdate ? <div className="mt-1 text-danger"> {errors.fromdate} </div> : null : ''}
                                             </div>
@@ -324,24 +258,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                 </label>
                                                 <Field
                                                         name="end_date"
-                                                        render={({ field }: any) => (
-                                                            <Flatpickr
-                                                                data-enable-time
-                                                                placeholder={`${t('choose_end_time')}`}
-                                                                options={{
-                                                                    enableTime: true,
-                                                                    noCalendar: true,
-                                                                    dateFormat: 'H:i',
-                                                                    locale: {
-                                                                        ...Vietnamese
-                                                                    }
-                                                                }}
-                                                                className="form-input"
-                                                                onChange={(item) => {
-                                                                    setFieldValue('end_date', item)
-                                                                }}
-                                                            />
-                                                        )}
+                                                        type="time"
+                                                        className="form-input"
                                                     />
                                                     {submitCount ? errors.enddate ? <div className="mt-1 text-danger"> {errors.enddate} </div> : null : ''}
                                             </div>
@@ -400,7 +318,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 
                                             </div>
                                             <div className="flex justify-between gap-5">
-                                            <div className="mb-5 w-1/2">
+                                                <div className="flex-1">
+
                                                 <label htmlFor="reason" className='label'>
                                                     {' '}
                                                     {t('reason')} <span style={{ color: 'red' }}>* </span>
@@ -409,6 +328,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                 {submitCount ? errors.reason ? <div className="mt-1 text-danger"> {errors.reason} </div> : null : ''}
                                             </div>
                                             </div>
+
                                             <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">
                                                 <button type="button" className="btn btn-outline-dark cancel-button" onClick={() => handleCancel()}>
                                                     {t('cancel')}

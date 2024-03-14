@@ -1,11 +1,11 @@
 [
     {
         "id": 1,
-        "name": "Nguyễn Văn A",
+        "name": "Bountafaibounnheuang",
         "code": "NV01",
         "status": "active",
         "position": "Kế toán",
-        "department": "Phòng 1",
+        "department": "Phòng Hành chính",
         "submitday": "19/01/2023",
         "fromdate": "19/01/2023",
         "enddate": "20/01/2023",
@@ -13,16 +13,16 @@
         "shift": "Ca hành chính, Ca sáng",
         "late_second": "20",
         "early_second": "20",
-        "checker": "Nguyễn Văn A",
+        "checker": "Bountafaibounnheuang",
         "isCheck": true
     },
     {
         "id": 2,
-        "name": "Trần Văn B",
+        "name": "Khampa Sirt",
         "code": "NV02",
         "status": "active",
         "position": "Kế toán",
-        "department": "Phòng 1",
+        "department": "Phòng Hành chính",
         "submitday": "19/01/2023",
         "fromdate": "19/01/2023",
         "enddate": "20/01/2023",
@@ -30,16 +30,16 @@
         "shift": "Ca hành chính, Ca sáng",
         "late_second": "20",
         "early_second": "20",
-        "checker": "Nguyễn Văn A",
+        "checker": "Bountafaibounnheuang",
         "isCheck": true
     },
     {
         "id": 3,
-        "name": "Nguyễn Thị C",
+        "name": "Phu thone",
         "code": "NV03",
         "status": "active",
         "position": "Kế toán",
-        "department": "Phòng 1",
+        "department": "Phòng Hành chính",
         "submitday": "19/01/2023",
         "fromdate": "19/01/2023",
         "enddate": "20/01/2023",
@@ -47,16 +47,16 @@
         "shift": "Ca hành chính, Ca sáng",
         "late_second": "20",
         "early_second": "20",
-        "checker": "Nguyễn Văn A",
+        "checker": "Bountafaibounnheuang",
         "isCheck": true
     },
     {
         "id": 4,
-        "name": "Vũ Văn D",
+        "name": "Sun khăm",
         "code": "NV04",
         "status": "active",
         "position": "Kế toán",
-        "department": "Phòng 1",
+        "department": "Phòng Hành chính",
         "submitday": "19/01/2023",
         "fromdate": "19/01/2023",
         "enddate": "20/01/2023",
@@ -64,7 +64,7 @@
         "shift": "Ca hành chính, Ca sáng",
         "late_second": "20",
         "early_second": "20",
-        "checker": "Nguyễn Văn A",
+        "checker": "Bountafaibounnheuang",
         "isCheck": true
     }
 ]

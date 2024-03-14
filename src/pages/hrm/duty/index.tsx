@@ -58,13 +58,8 @@ const Duty = ({ ...props }: Props) => {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const data = localStorage.getItem('duty_list');
-            if (data) {
-                setGetStorge(JSON.parse(data));
-            } else {
+                setGetStorge(duty_list);
                 localStorage.setItem('duty_list', JSON.stringify(duty_list));
-            }
-
         }
     }, [])
 
@@ -132,14 +127,14 @@ const Duty = ({ ...props }: Props) => {
             render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
         },
         { accessor: 'name', title: 'Tên chức vụ', sortable: false },
-        { accessor: 'code', title: 'Mã Chức vụ', sortable: false },
+        // { accessor: 'code', title: 'Mã Chức vụ', sortable: false },
         { accessor: 'duty_group', title: 'Nhóm chức vụ', sortable: false },
         { accessor: 'description', title: 'Mô tả', sortable: false },
         {
             accessor: 'status',
             title: 'Trạng thái',
             sortable: false,
-            render: ({ status }: any) => <span className={`badge badge-outline-${status === "active" ? "success" : "danger"} `}>{status}</span>,
+            render: ({ status }: any) => <span className={`badge badge-outline-${status === "active" ? "success" : "danger"} `}>{t(`${status}`)}</span>,
         },
         {
             accessor: 'action',

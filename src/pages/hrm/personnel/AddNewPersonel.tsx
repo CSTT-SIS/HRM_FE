@@ -18,7 +18,9 @@ import AnimateHeight from 'react-animate-height';
 import IconCaretDown from '@/components/Icon/IconCaretDown';
 import IconBack from '@/components/Icon/IconBack';
 import ImageUploading, { ImageListType } from 'react-images-uploading';
-
+import list_departments from '../department/department_list.json';
+import list_personnels from '../personnel/personnel_list.json';
+import list_duty from "../duty/duty_list.json";
 interface Props {
     [key: string]: any;
 }
@@ -28,6 +30,32 @@ const AddNewPersonel = ({ ...props }: Props) => {
     const [disabled, setDisabled] = useState(false);
     const [query, setQuery] = useState<any>();
     const [images, setImages] = useState<any>([]);
+    const [listDepartment, setListDepartment] = useState<any>();
+    const [listPersons, setListPersons] = useState<any>();
+    const [listDuty, setListDuty]= useState<any>([]);
+    useEffect(() => {
+        const list_temp_department = list_departments?.map((department: any) => {
+            return {
+                value: department.id,
+                label: department.name
+            }
+        })
+        setListDepartment(list_temp_department);
+        const list_temp_person = list_personnels?.map((person: any) => {
+            return {
+                value: person.code,
+                label: person.name
+            }
+        })
+        setListPersons(list_temp_person);
+        const list_temp_duty = list_duty?.map((person: any) => {
+            return {
+                value: person.code,
+                label: person.name
+            }
+        })
+        setListDuty(list_temp_duty);
+    }, [])
     const onChange = (imageList: ImageListType, addUpdateIndex: number[] | undefined) => {
         setImages(imageList as never[]);
     };
@@ -56,7 +84,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
             .required(`${t('please_fill_name_staff')}`),
         code: Yup.string()
             .min(2, 'Too Short!')
-            .required(`${t('please_fill_staff_code')}`),
+            .required(`${t('please_fill_Xaypayouode')}`),
         surname: Yup.string()
             .min(2, 'Too Short!')
             .required(`${t('please_fill_surname_name')}`),
@@ -223,10 +251,9 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="surname" className='label'>
                                                             {' '}
-                                                            {t('surname_middle')} <span style={{ color: 'red' }}>* </span>
+                                                            {t('surname_middle')}
                                                         </label>
                                                         <Field name="surname" type="text" id="surname" placeholder={t('enter_surname_middle')} className="form-input" />
-                                                        {submitCount ? errors.surname ? <div className="mt-1 text-danger"> {errors.surname} </div> : null : ''}
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="name" className='label'>
@@ -241,18 +268,16 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="email" className='label'>
                                                             {' '}
-                                                            Email <span style={{ color: 'red' }}>* </span>
+                                                            Email
                                                         </label>
                                                         <Field name="email" type="text" id="email" placeholder={t('enter_email')} className="form-input" />
-                                                        {submitCount ? errors.email ? <div className="mt-1 text-danger"> {errors.email} </div> : null : ''}
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="phone" className='label'>
                                                             {' '}
-                                                            {t('phone_number')} <span style={{ color: 'red' }}>* </span>
+                                                            {t('phone_number')}
                                                         </label>
                                                         <Field name="phone" type="text" id="phone" placeholder={t('enter_phone_number')} className="form-input" />
-                                                        {submitCount ? errors.phone ? <div className="mt-1 text-danger"> {errors.phone} </div> : null : ''}
                                                     </div>
 
                                                 </div>
@@ -291,14 +316,8 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('date_of_birth')}
                                                         </label>
-                                                        <Flatpickr
-                                                            options={{
-                                                                dateFormat: 'Y-m-d',
-                                                                position: 'auto left',
-                                                            }}
-                                                            className="form-input"
-                                                            placeholder={`${t('enter_date_of_birth')}`}
-                                                        />
+                                                        <Field id="dateofbirth" type="date" name="dateofbirth" className="form-input"/>
+
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -336,14 +355,8 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('date_of_issue')}
                                                         </label>
-                                                        <Flatpickr
-                                                            options={{
-                                                                dateFormat: 'Y-m-d',
-                                                                position: 'auto left',
-                                                            }}
-                                                            className="form-input"
-                                                            placeholder={`${t('enter_date_of_issue')}`}
-                                                        />
+                                                        <Field id="dateissue" type="date" name="dateissue" className="form-input"/>
+
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="IDnumber" className='label'>
@@ -366,14 +379,8 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('date_of_issue_passport')}
                                                         </label>
-                                                        <Flatpickr
-                                                            options={{
-                                                                dateFormat: 'Y-m-d',
-                                                                position: 'auto left',
-                                                            }}
-                                                            className="form-input"
-                                                            placeholder={`${t('enter_date_of_issue_passport')}`}
-                                                        />
+                                                        <Field id="dateissuepassport" type="date" name="dateissuepassport" className="form-input"/>
+
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -389,14 +396,8 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('date_end_passport')}
                                                         </label>
-                                                        <Flatpickr
-                                                            options={{
-                                                                dateFormat: 'Y-m-d',
-                                                                position: 'auto left',
-                                                            }}
-                                                            className="form-input"
-                                                            placeholder={`${t('enter_date_end_passport')}`}
-                                                        />
+                                                        <Field id="dateendpassport" type="date" name="dateendpassport" className="form-input"/>
+
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -464,7 +465,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             name='departmentparentId'
                                                             placeholder={t('select_departmentparent')}
                                                             onInputChange={e => handleSearch(e)}
-                                                            options={departmentparent}
+                                                            options={listDepartment}
                                                             maxMenuHeight={160}
                                                             value={values.departmentparentId}
                                                             onChange={e => {
@@ -481,7 +482,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             placeholder={t('select_duty')}
 
                                                             onInputChange={e => handleSearch(e)}
-                                                            options={[]}
+                                                            options={listDuty}
                                                             maxMenuHeight={160}
                                                             value={values.manageId}
                                                             onChange={e => {
@@ -498,7 +499,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             id='manageId'
                                                             name='manageId'
                                                             onInputChange={e => handleSearch(e)}
-                                                            options={manage}
+                                                            options={listPersons}
                                                             placeholder={t('select_manager')}
                                                             maxMenuHeight={160}
                                                             value={values.manageId}
@@ -514,7 +515,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             id='manageId'
                                                             name='manageId'
                                                             onInputChange={e => handleSearch(e)}
-                                                            options={manage}
+                                                            options={listPersons}
                                                             maxMenuHeight={160}
                                                             value={values.manageId}
                                                             placeholder={t('select_manager_2')}
@@ -531,19 +532,20 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('approver')}
                                                         </label>
-                                                        <Field name="approver" type="text" id="approver" placeholder={t('enter_approver')} className="form-input" />
+                                                        <Field name="approver" type="text" id="approver" placeholder={t('enter_approver')} className="form-input " />
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="date_join" className='label'>
                                                             {' '}
                                                             {t('date_join')}
                                                         </label>
+
                                                         <Flatpickr
                                                             options={{
                                                                 dateFormat: 'Y-m-d',
                                                                 position: 'auto left',
                                                             }}
-                                                            className="form-input"
+                                                            className="form-input calender-input"
                                                             placeholder={`${t('enter_date_join')}`}
                                                         />
                                                     </div>

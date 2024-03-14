@@ -67,12 +67,8 @@ const Department = ({ ...props }: Props) => {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const data = localStorage.getItem('departmentList');
-            if (data) {
-                setGetStorge(JSON.parse(data));
-            } else {
+                setGetStorge(DepartmentList);
                 localStorage.setItem('departmentList', JSON.stringify(DepartmentList));
-            }
 
         }
     }, [])
@@ -172,8 +168,8 @@ const Department = ({ ...props }: Props) => {
             id: 1,
             content: {
                 id: 1,
-                name: "Phòng hành chính",
-                code: "PB01",
+                name: "Phòng Hành chính",
+                code: "HC",
                 abbreviated: "PHC",
                 status: "active"
             },
@@ -183,23 +179,48 @@ const Department = ({ ...props }: Props) => {
                     id: 2,
                     content: {
                         id: 2,
-                        name: "Ban 1.1",
+                        name: "Tổ xe",
                         code: "B1.1",
                         status: "active",
-                        abbreviated: "PHCB1",
+                        abbreviated: "TX",
 
                     },
                     hasChildren: false,
 
                 },
+                {
+                    id: 3,
+                    content: {
+                        id: 3,
+                        name: "Bộ phận cấp dưỡng",
+                        code: "B1.2",
+                        status: "active",
+                        abbreviated: "CD",
+
+                    },
+                    hasChildren: false,
+
+                },
+                {
+                    id: 4,
+                    content: {
+                        id: 4,
+                        name: "Bảo vệ",
+                        code: "B1.3",
+                        status: "active",
+                        abbreviated: "BV",
+
+                    },
+                    hasChildren: false,
+                },
             ],
 
         },
         {
-            id: 3,
+            id: 4,
             content: {
-                id: 3,
-                name: "Phòng kĩ thuật",
+                id: 4,
+                name: "Phòng Kĩ thuật",
                 code: "PB02",
                 abbreviated: "PHKT",
                 status: "active"
@@ -207,10 +228,10 @@ const Department = ({ ...props }: Props) => {
             hasChildren: true,
             children: [
                 {
-                    id: 4,
+                    id: 6,
                     content: {
-                        id: 4,
-                        name: "Ban 2.1",
+                        id: 6,
+                        name: "Tổ gia công mẫu",
                         code: "B2.1",
                         abbreviated: "PHKTB1",
                         status: "active"
@@ -219,10 +240,10 @@ const Department = ({ ...props }: Props) => {
 
                 },
                 {
-                    id: 5,
+                    id: 7,
                     content: {
-                        id: 5,
-                        name: "Ban 2.2",
+                        id: 7,
+                        name: "Tổ Môi trường",
                         code: "B2.2",
                         abbreviated: "PHKTB2",
                         status: "active"

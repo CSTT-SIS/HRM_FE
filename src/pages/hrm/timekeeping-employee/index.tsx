@@ -61,8 +61,6 @@ const Department = ({ ...props }: Props) => {
     useEffect(() => {
         dispatch(setPageTitle(`${t('timekeeping')}`));
     });
-    const [listDay, setListDay] = useState();
-
     const router = useRouter();
     const [showLoader, setShowLoader] = useState(true);
     const [page, setPage] = useState<any>(PAGE_NUMBER_DEFAULT);
@@ -71,6 +69,7 @@ const Department = ({ ...props }: Props) => {
     const [total, setTotal] = useState(0);
     const [getStorge, setGetStorge] = useState<any>();
     const [data, setData] = useState<any>();
+    const [listDay, setListDay] = useState<undefined | string[]>(undefined);
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
@@ -81,21 +80,17 @@ const Department = ({ ...props }: Props) => {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const data = localStorage.getItem('employeeList');
-            if (data) {
-                setGetStorge(JSON.parse(data));
-            } else {
+                setGetStorge(EmployeeList);
                 localStorage.setItem('employeeList', JSON.stringify(EmployeeList));
-            }
-        }
+                    }
     }, [])
 
     useEffect(() => {
         setTotal(getStorge?.length);
         setPageSize(PAGE_SIZES_DEFAULT);
         setRecordsData(getStorge?.filter((item: any, index: any) => { return index <= 9 && page === 1 ? item : index >= 10 && index <= (page * 9) ? item : null }));
-        // setListDay(listDay_)
-
+        const listDay_ = getDaysOfMonth(currentYear, currentMonth);
+        setListDay(listDay_);
     }, [getStorge, getStorge?.length, page])
 
     useEffect(() => {
@@ -106,7 +101,14 @@ const Department = ({ ...props }: Props) => {
         setOpenModal(true);
         setData(data);
     };
-
+    const handleChangeMonth = (selectedDates: any, dateStr: any) => {
+        const date_str = selectedDates[0] ?? ""
+        console.log(date_str, selectedDates)
+        const year: number = date_str.getFullYear();
+        const month: number = date_str.getMonth() + 1;
+        const listDay = getDaysOfMonth(year, month);
+        setListDay(listDay);
+    }
     const handleDelete = (data: any) => {
         const swalDeletes = Swal.mixin({
 			customClass: {
@@ -189,12 +191,18 @@ const Department = ({ ...props }: Props) => {
     }
     ]
 
-    DayList?.map((item: Day, columIndex: number) => {
+    listDay?.map((item: string, columIndex: number) => {
         columns.push(
             {
                 accessor: '',
-                title: `${item.dayMonth}`,
-                render: (records: any, index: any) =>                     <span onClick={() => handleEdit(records)} style={{cursor: "pointer"}}>1</span>
+                title: item,
+                render: (records: any, index: any) =>
+                    // if (columIndex <= 3) {
+                    //     return <span onClick={() => handleEdit(records)} style={{cursor: "pointer"}}>1</span>
+                    // } else {
+                    //     return <div onClick={() => setOpenModal(true)} style={{cursor: "pointer", height: "20px"}}></div>
+                    // }
+                    <span onClick={() => handleEdit(records)} style={{cursor: "pointer"}}>1</span>
                 ,
             }
         )
@@ -242,11 +250,10 @@ const Department = ({ ...props }: Props) => {
                                 ]
                             }}
                             onChange={(selectedDates, dateStr, instance) => {
-                                // Xử lý sự kiện thay đổi ngày tháng ở đây
+                                handleChangeMonth(selectedDates, dateStr)
                             }}
                          />
                         </div>
-                    <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
                         </div>
                 </div>
                 <div className="datatables">

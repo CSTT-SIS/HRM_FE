@@ -176,17 +176,8 @@ const AddNewShift = ({ ...props }: Props) => {
                                 </label>
                                 <Field
                                     name="from_time"
-                                    render={({ field }: any) => (
-                                        <Flatpickr
-                                            data-enable-time
-                                            placeholder={`${t('choose_from_time')}`}
-                                            options={{
-                                                enableTime: true,
-                                                dateFormat: 'H:i'
-                                            }}
-                                            className="form-input"
-                                        />
-                                    )}
+                                    type="time"
+                                    className="form-input"
                                 />
                                 {submitCount ? errors.from_time ? <div className="mt-1 text-danger"> {errors.from_time} </div> : null : ''}
                             </div>
@@ -197,17 +188,8 @@ const AddNewShift = ({ ...props }: Props) => {
                                 </label>
                                 <Field
                                     name="end_time"
-                                    render={({ field }: any) => (
-                                        <Flatpickr
-                                            data-enable-time
-                                            placeholder={`${t('choose_end_time')}`}
-                                            options={{
-                                                enableTime: true,
-                                                dateFormat: 'Y-m-d H:i'
-                                            }}
-                                            className="form-input"
-                                        />
-                                    )}
+                                    type="time"
+                                    className="form-input"
                                 />
                                 {submitCount ? errors.end_time ? <div className="mt-1 text-danger"> {errors.end_time} </div> : null : ''}
                             </div>
@@ -220,17 +202,8 @@ const AddNewShift = ({ ...props }: Props) => {
                                     </label>
                                     <Field
                                         name="break_from_time"
-                                        render={({ field }: any) => (
-                                            <Flatpickr
-                                                data-enable-time
-                                                placeholder={`${t('choose_break_from_time')}`}
-                                                options={{
-                                                    enableTime: true,
-                                                    dateFormat: 'H:i'
-                                                }}
-                                                className="form-input"
-                                            />
-                                        )}
+                                        type="time"
+                                        className="form-input"
                                     />
                                     {submitCount ? errors.break_from_time ? <div className="mt-1 text-danger"> {errors.break_from_time} </div> : null : ''}
                                 </div>
@@ -241,24 +214,16 @@ const AddNewShift = ({ ...props }: Props) => {
                                     </label>
                                     <Field
                                         name="break_end_time"
-                                        render={({ field }: any) => (
-                                            <Flatpickr
-                                                data-enable-time
-                                                placeholder={`${t('choose_break_end_time')}`}
-                                                options={{
-                                                    enableTime: true,
-                                                    dateFormat: 'Y-m-d H:i'
-                                                }}
-                                                className="form-input"
-                                            />
-                                        )}
+                                        type="time"
+                                        className="form-input"
                                     />
                                     {submitCount ? errors.break_end_time ? <div className="mt-1 text-danger"> {errors.break_end_time} </div> : null : ''}
                                 </div>
                             </div>
                         </>}
                         <div className='flex justify-between gap-5'>
-                            <div className="mb-5 w-1/2">
+
+                        <div className="mb-5 w-1/2">
                                 <label htmlFor="time" className='label'>
                                     {' '}
                                     {t('description')} <span style={{ color: 'red' }}>* </span>
@@ -266,7 +231,18 @@ const AddNewShift = ({ ...props }: Props) => {
                                 <Field name="description" as="textarea" id="description" placeholder={t('fill_description')} className="form-input" />
                                 {submitCount ? errors.description ? <div className="mt-1 text-danger"> {errors.description} </div> : null : ''}
                             </div>
+
                             <div className="mb-5 w-1/2">
+                                <label htmlFor="note" className='label'>
+                                    {' '}
+                                    {t('note')}
+                                </label>
+                                <Field name="note" as="textarea" id="note" placeholder={t('fill_note')} className="form-input" />
+                                {errors.note ? <div className="mt-1 text-danger"> {errors.note} </div> : null}
+                            </div>
+                        </div>
+                        <div className='flex justify-between gap-5'>
+                        <div className="mb-5 w-1/2">
                                 <label htmlFor="description" className='label'>
                                     {' '}
                                     {t('time_shift')} <span style={{ color: 'red' }}>* </span>
@@ -274,8 +250,7 @@ const AddNewShift = ({ ...props }: Props) => {
                                 <Field name="time" type="number" id="time" placeholder={t('fill_total_time')} className="form-input" />
                                 {submitCount ? errors.time ? <div className="mt-1 text-danger"> {errors.time} </div> : null : ''}
                             </div>
-                        </div>
-                        <div className='flex justify-between gap-5'>
+
                         <div className="mb-5 w-1/2">
                                 <label htmlFor="status" className='label'> {t('status')} < span style={{ color: 'red' }}>* </span></label >
                                 <div className="flex" style={{ alignItems: 'center', marginTop: '13px' }}>
@@ -293,14 +268,7 @@ const AddNewShift = ({ ...props }: Props) => {
                                     <div className="text-danger mt-1"> {errors.status} </div>
                                 ) : null : ''}
                             </div>
-                            <div className="mb-5 w-1/2">
-                                <label htmlFor="note" className='label'>
-                                    {' '}
-                                    {t('note')}
-                                </label>
-                                <Field name="note" type="text" id="note" placeholder={t('fill_note')} className="form-input" />
-                                {errors.note ? <div className="mt-1 text-danger"> {errors.note} </div> : null}
-                            </div>
+
 
                         </div>
                         <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">

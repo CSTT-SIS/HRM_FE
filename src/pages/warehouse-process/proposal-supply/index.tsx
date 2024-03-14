@@ -142,12 +142,12 @@ const ProposalPage = ({ ...props }: Props) => {
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
-                <div className="flex items-center w-max mx-auto gap-2">
+                <div className="flex justify-start gap-2">
                     <button className='bg-[#F2E080] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/proposal-supply/${records.id}?status=${true}&&type=approve`)}>
                         <IconEye /> <span>{`${t('detail')}`}</span>
                     </button>
                     {
-                        records.status === "DRAFT" &&
+                        records.status !== "HEAD_APPROVED" &&
                         <button className='bg-[#9CD3EB] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleDetail(records)}>
                             <IconPencil /> <span>{`${t('edit')}`}</span>
                         </button>
@@ -200,8 +200,8 @@ const ProposalPage = ({ ...props }: Props) => {
                 </div>
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap gap-1">
-                        <IconFilter />
-                        <span>Lọc nhanh :</span>
+                        {/* <IconFilter /> */}
+                        {/* <span>Lọc nhanh :</span> */}
                         <div className='flex items-center flex-wrap gap-2'>
                             <div className={active.includes(1) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(1)}>Chưa duyệt</div>
                             <div className={active.includes(2) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(2)}>Đã duyệt</div>
