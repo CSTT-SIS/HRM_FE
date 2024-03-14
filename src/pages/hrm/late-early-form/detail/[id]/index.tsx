@@ -198,7 +198,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                             fromdate: detail ? `${detail?.fromdate}` : '',
                                             enddate: detail ? `${detail?.enddate}` : '',
                                             // shift: detail ? `${detail?.shift}` : '',
-                                            checker: detail? `${detail?.checker}` : '',
+                                            checker: detail ? `${detail?.checker}` : '',
                                             reason: detail ? `${detail?.reason}` : ''
 										}}
 										validationSchema={SubmittedForm}
@@ -207,7 +207,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 										}}
                                         enableReinitialize
 									>
-										{({ errors, touched, submitCount, setFieldValue }) => (
+										{({ errors, touched, submitCount, setFieldValue, values }) => (
 											<Form className="space-y-5">
                                             <div className='flex justify-between gap-5'>
                                             <div className="mb-5 w-1/2">
@@ -297,18 +297,10 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('checker_name')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field disabled as="select" name="checker" id="checker" className="form-input">
-                                                    { listPersonnel?.map((person: any) => {
-                                                        return (
-                                                            <option key={person.value} value={person.value}>
-                                                                {person.label}
-                                                            </option>
-                                                        );
-                                                    })}
+                                                <Field id="checker" disabled name="checker" type="text" className="form-input"/>
 
-                                </Field>
                                                {submitCount ? (
-    errors.checker ? <div className="mt-1 text-danger">{errors.checker}</div> : null
+    errors.checker ? <div className="mt-1 text-danger">{`${errors.checker}`}</div> : null
   ) : null}
                                             </div>
                                             <div className="mb-5 w-1/2">
@@ -316,7 +308,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('reason')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field disabled as="textarea" name="reason" id="reason" className="form-input" />
+                                                <Field disabled as="textarea" name="reason" id="reason"
+                                                placeholder={`${t('fill_reason')}`}className="form-input" />
                                                     {submitCount ? errors.reason ? <div className="mt-1 text-danger"> {errors.reason} </div> : null : ''}
                                             </div>
                                             </div>

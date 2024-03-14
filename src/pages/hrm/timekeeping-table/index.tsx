@@ -63,13 +63,8 @@ const Department = ({ ...props }: Props) => {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const data = localStorage.getItem('TimekeepingList');
-            if (data) {
-                setGetStorge(JSON.parse(data));
-            } else {
+                setGetStorge(TimekeepingList);
                 localStorage.setItem('TimekeepingList', JSON.stringify(TimekeepingList));
-            }
-
         }
     }, [])
 

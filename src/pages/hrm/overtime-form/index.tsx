@@ -264,14 +264,7 @@ const OvertimeForm = ({ ...props }: Props) => {
                         </Link>
 
                         <input type="file" ref={fileInputRef} style={{ display: "none" }} />
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" onClick={() => fileInputRef.current?.click()}>
-                            <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
-                            Nhập file
-                        </button>
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
-                            <IconDownload className="ltr:mr-2 rtl:ml-2" />
-                            Xuất file excel
-                        </button>
+                       
                     </div>
                     <div className='flex flex-row gap-2'>
                         <div className='flex flex-1 gap-1'>

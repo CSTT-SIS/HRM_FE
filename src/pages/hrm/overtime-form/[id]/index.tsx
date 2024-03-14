@@ -198,7 +198,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                             enddate: detail ? `${detail?.enddate}` : '',
                                             shift: detail ? `${detail?.shift}` : '',
                                             overtime_time: 0,
-                                            checker: detail ? `${detail?.checker}` : ''
+                                            checker: detail ? listPersonnel?.find((e: any) => e.label === detail.checker) : null,
 										}}
 										validationSchema={SubmittedForm}
 										onSubmit={(values) => {
@@ -206,7 +206,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 										}}
                                         enableReinitialize
 									>
-										{({ errors, touched, submitCount, setFieldValue }) => (
+										{({ errors, touched, submitCount, setFieldValue, values }) => (
 											<Form className="space-y-5">
                                             <div className='flex justify-between gap-5'>
                                             <div className="mb-5 w-1/2">
@@ -267,7 +267,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                                     {' '}
                                                     {t('submitday')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field id="submitday" type="datetime-local" name="submitday" className="form-input" placeholder={`${t('choose_submit_day')}`} />
+                                                <Field id="submitday" type="datetime" name="submitday" className="form-input" placeholder={`${t('choose_submit_day')}`} />
                                                     {submitCount ? errors.submitday ? <div className="mt-1 text-danger"> {errors.submitday} </div> : null : ''}
                                             </div>
                                             </div>
@@ -310,42 +310,21 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
 
                                                     {submitCount ? errors.shift ? <div className="mt-1 text-danger"> {errors.shift} </div> : null : ''}
                                             </div>
-                                            <div className="mb-5 w-1/2">
-                                                <label htmlFor="overtime_time" className='label'>
-                                                    {' '}
-                                                    {t('overtime_time')} <span style={{ color: 'red' }}>* </span>
-                                                </label>
-                                                <Field name="overtime_time" type="number" id="overtime_time" placeholder={`${t('fill_overtime_time')}`} className="form-input" />
-                                                {submitCount ? errors.overtime_time ? <div className="mt-1 text-danger"> {errors.overtime_time} </div> : null : ''}
-                                            </div>
-                                            </div>
-                                            <div className='flex justify-between gap-5'>
+
                                             <div className="mb-5 w-1/2">
                                                 <label htmlFor="checker" className='label'>
                                                     {' '}
                                                     {t('checker_name')} <span style={{ color: 'red' }}>* </span>
                                                 </label>
-                                                <Field
-                                                className="form-input"
-                                                        name="checker"
-                                                        render={({ field }: any) => (
-                                                            <>
-                                                                <Select
-                                                                    // {...field}
-                                                                    options={listPersonnel}
-                                                                    value={{value: "NV01", label: "Trần Văn B"}}
+                                                <Select
+                                                                   options={listPersonnel}
+                                                                   value={values?.checker}
                                                                     isSearchable
-                                                                    placeholder={t('choose_checker')}
-                                                                    maxMenuHeight={150}
-                                                                    onChange={(item) => {
-                                                                        setFieldValue('checker', item)
-                                                                    }}
-                                                                />
-                                                            </>
-                                                        )}
-                                                    />
+                                                                    placeholder={`${t('choose_checker')}`}
+                                                                    onChange={(e) => setFieldValue("checker", e.target.value)}
+                                                                    />
                                                {submitCount ? (
-    errors.checker ? <div className="mt-1 text-danger">{errors.checker}</div> : null
+    errors.checker ? <div className="mt-1 text-danger">{`${errors.checker}`}</div> : null
   ) : null}
                                             </div>
 

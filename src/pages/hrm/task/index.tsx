@@ -25,6 +25,7 @@ import IconEdit from '@/components/Icon/IconEdit';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
 import IconNewDownload from '@/components/Icon/IconNewDownload';
 import IconNewEdit from '@/components/Icon/IconNewEdit';
+import IconNewEye from '@/components/Icon/IconNewEye';
 interface Props {
 	[key: string]: any;
 }
@@ -52,12 +53,8 @@ const Task = ({ ...props }: Props) => {
 
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
-			const data = localStorage.getItem('taskList');
-			if (data) {
-				setGetStorge(JSON.parse(data));
-			} else {
+				setGetStorge(TaskList);
 				localStorage.setItem('taskList', JSON.stringify(TaskList));
-			}
 		}
 	}, []);
 
@@ -124,7 +121,9 @@ const Task = ({ ...props }: Props) => {
 			);
 		}
 	};
-
+    const handleDetail = (item: any) => {
+        router.push(`/hrm/task/detail/${item.id}`)
+    }
 	const columns = [
 		{
 			accessor: 'id',
@@ -132,7 +131,10 @@ const Task = ({ ...props }: Props) => {
 			render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
 		},
 		{ accessor: 'creator', title: 'Người tạo', sortable: false },
-		{ accessor: 'name', title: 'Tên nhiệm vụ', sortable: false },
+		{ accessor: 'name', title: 'Tên nhiệm vụ', sortable: false,
+        render: (records: any) => {
+            return <span onClick={() => handleDetail(records)}>{records?.name}</span>}
+        },
 		{
 			accessor: 'department',
 			title: 'Phòng',
@@ -173,6 +175,11 @@ const Task = ({ ...props }: Props) => {
 			titleClassName: '!text-center',
 			render: (records: any) => (
 				<div className="mx-auto flex w-max items-center gap-2">
+                     <button type="button"  className='button-detail' onClick={() => handleDetail(records)}>
+                    <IconNewEye /><span>
+                            {t('detail')}
+                                </span>
+                    </button>
                     <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
                     <IconNewEdit /><span>
                             {t('edit')}

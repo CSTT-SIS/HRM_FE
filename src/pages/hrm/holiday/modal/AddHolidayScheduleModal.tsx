@@ -20,7 +20,7 @@ const getEmployeeOptions = () => {
 	return [
 		{
 			id: 1,
-			user: 'Staff_A',
+			user: 'Nguyễn Văn A',
 			title: 'Tết dương',
 			start: now.getFullYear() + '-' + getMonth(now) + '-01T14:30:00',
 			end: now.getFullYear() + '-' + getMonth(now) + '-01T15:30:00',
@@ -29,7 +29,7 @@ const getEmployeeOptions = () => {
 		},
 		{
 			id: 2,
-			user: 'Staff_B',
+			user: 'Trần Văn B',
 			title: 'Tết nguyên đán',
 			start: now.getFullYear() + '-' + getMonth(now) + '-07T19:30:00',
 			end: now.getFullYear() + '-' + getMonth(now) + '-08T14:30:00',
@@ -38,7 +38,7 @@ const getEmployeeOptions = () => {
 		},
 		{
 			id: 3,
-			user: 'Staff_C',
+			user: 'Nguyễn Văn C',
 			title: 'Giỗ tổ',
 			start: now.getFullYear() + '-' + getMonth(now) + '-17T14:30:00',
 			end: now.getFullYear() + '-' + getMonth(now) + '-18T14:30:00',
@@ -47,7 +47,7 @@ const getEmployeeOptions = () => {
 		},
 		{
 			id: 4,
-			user: 'Staff_D',
+			user: 'Lê Văn D',
 			title: 'Quốc khánh',
 			start: now.getFullYear() + '-' + getMonth(now) + '-12T10:30:00',
 			end: now.getFullYear() + '-' + getMonth(now) + '-13T10:30:00',
@@ -56,7 +56,7 @@ const getEmployeeOptions = () => {
 		},
 		{
 			id: 5,
-			user: 'Staff_E',
+			user: 'Đặng Văn E',
 			title: 'Lễ 5',
 			start: now.getFullYear() + '-' + getMonth(now) + '-12T15:00:00',
 			end: now.getFullYear() + '-' + getMonth(now) + '-13T15:00:00',
@@ -65,7 +65,7 @@ const getEmployeeOptions = () => {
 		},
 		{
 			id: 6,
-			user: 'Staff_F',
+			user: 'Nguyễn Văn F',
 			title: 'Lễ 6',
 			start: now.getFullYear() + '-' + getMonth(now) + '-12T21:30:00',
 			end: now.getFullYear() + '-' + getMonth(now) + '-13T21:30:00',
@@ -74,7 +74,7 @@ const getEmployeeOptions = () => {
 		},
 		{
 			id: 7,
-			user: 'Staff_G',
+			user: 'Lê Văn G',
 			title: 'Lễ 7',
 			start: now.getFullYear() + '-' + getMonth(now) + '-12T05:30:00',
 			end: now.getFullYear() + '-' + getMonth(now) + '-13T05:30:00',
@@ -83,7 +83,7 @@ const getEmployeeOptions = () => {
 		},
 		{
 			id: 8,
-			user: 'Staff_H',
+			user: 'Trần Văn H',
 			title: 'Lễ 8',
 			start: now.getFullYear() + '-' + getMonth(now) + '-12T20:00:00',
 			end: now.getFullYear() + '-' + getMonth(now) + '-13T20:00:00',
@@ -92,7 +92,7 @@ const getEmployeeOptions = () => {
 		},
 		{
 			id: 9,
-			user: 'Staff_I',
+			user: 'Lê Văn I',
 			title: 'Lễ 9',
 			start: now.getFullYear() + '-' + getMonth(now) + '-27T20:00:00',
 			end: now.getFullYear() + '-' + getMonth(now) + '-28T20:00:00',
@@ -101,7 +101,7 @@ const getEmployeeOptions = () => {
 		},
 		{
 			id: 10,
-			user: 'Staff_K',
+			user: 'Trần Văn K',
 			title: 'Lễ 10',
 			start: now.getFullYear() + '-' + getMonth(now, 1) + '-24T08:12:14',
 			end: now.getFullYear() + '-' + getMonth(now, 1) + '-27T22:20:20',
@@ -110,7 +110,7 @@ const getEmployeeOptions = () => {
 		},
 		{
 			id: 11,
-			user: 'Staff_L',
+			user: 'Phan Văn L',
 			title: 'Lễ 11',
 			start: now.getFullYear() + '-' + getMonth(now, -1) + '-13T08:12:14',
 			end: now.getFullYear() + '-' + getMonth(now, -1) + '-16T22:20:20',
@@ -119,7 +119,7 @@ const getEmployeeOptions = () => {
 		},
 		{
 			id: 13,
-			user: 'Staff_M',
+			user: 'Phan Văn M',
 			title: 'Lễ 13',
 			start: now.getFullYear() + '-' + getMonth(now, 1) + '-15T08:12:14',
 			end: now.getFullYear() + '-' + getMonth(now, 1) + '-18T22:20:20',
