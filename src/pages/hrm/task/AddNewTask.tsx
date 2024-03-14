@@ -239,7 +239,7 @@ const AddNewTask = ({ ...props }: Props) => {
                         <div className="mb-3 w-1/2">
                                 <label htmlFor="file">
                                     {' '}
-                                    {t('File')} <span style={{ color: 'red' }}>* </span>
+                                    {t('file')} <span style={{ color: 'red' }}>* </span>
                                 </label>
                                 <Field name="file" type="file" rows="2" id="file" style={{ height: '37.6px' }} placeholder={`${t('enter_description_task')}`} className="form-input" />
                             </div>

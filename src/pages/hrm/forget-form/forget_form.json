@@ -69,5 +69,23 @@
         "checker": "Khampa Sirt",
         "isCheck": true,
         "reason": ""
+    },
+    {
+        "id": 5,
+        "name": "Suok Thi Da",
+        "code": "NV05",
+        "status": "active",
+        "position": "Nhân viên",
+        "department": "Phòng Hành chính",
+        "submitday": "2024-01-01",
+        "fromdate": "04:30",
+        "enddate": "14:30",
+        "day": "Thứ 2, thứ 3",
+        "shift": "Ca hành chính",
+        "late_second": "20",
+        "early_second": "20",
+        "checker": "Khampa Sirt",
+        "isCheck": true,
+        "reason": ""
     }
 ]

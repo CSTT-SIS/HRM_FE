@@ -241,6 +241,19 @@ const Department = ({ ...props }: Props) => {
 					hasChildren: false,
 
 				},
+                {
+					id: 2,
+					content: {
+						id: 1,
+						name: "Toukta",
+						code: "NV1",
+						type: 'NV',
+						department: 'Phòng Hành chính',
+						duty: 'Nhân viên'
+					},
+					hasChildren: false,
+
+				},
 			],
 
 		},
@@ -275,11 +288,24 @@ const Department = ({ ...props }: Props) => {
 						code: "NV03",
 						type: 'NV',
 						department: 'Phòng Kỹ thuật',
-						duty: 'Trợ lý'
+						duty: 'Nhân viên'
 					},
 					hasChildren: false,
 
 				},
+                {
+					id: 5,
+					content: {
+						id: 3,
+						name: "Vilaxay",
+						code: "NV03",
+						type: 'NV',
+						department: 'Phòng Kỹ thuật',
+						duty: 'Nhân viên'
+					},
+					hasChildren: false,
+
+				}
 			],
 
 		},

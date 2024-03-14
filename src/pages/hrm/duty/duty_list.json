@@ -17,21 +17,12 @@
     },
     {
         "id": 3,
-        "name": "Trưởng ban",
+        "name": "Trưởng bộ phận",
         "code": "TB",
         "duty_group": "Quản lý",
         "description": "",
         "status": "active"
     },
-    {
-        "id": 4,
-        "name": "Trợ lý",
-        "code": "TL",
-        "duty_group": "Nhân viên",
-        "description": "",
-        "status": "active"
-    },
-
     {
         "id": 6,
         "name": "Nhân viên hành chính",

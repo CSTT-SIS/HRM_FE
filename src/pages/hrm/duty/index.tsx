@@ -127,7 +127,7 @@ const Duty = ({ ...props }: Props) => {
             render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
         },
         { accessor: 'name', title: 'Tên chức vụ', sortable: false },
-        { accessor: 'code', title: 'Mã Chức vụ', sortable: false },
+        // { accessor: 'code', title: 'Mã Chức vụ', sortable: false },
         { accessor: 'duty_group', title: 'Nhóm chức vụ', sortable: false },
         { accessor: 'description', title: 'Mô tả', sortable: false },
         {
