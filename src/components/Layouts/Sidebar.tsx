@@ -534,7 +534,7 @@ const Sidebar = () => {
                                                 <div className='divide'></div>
                                                 <li className="menu menu1 nav-item">
                                                     <div className="flex items-start group-menu-name">
-                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color h-7">{t('order_management')}</span>
+                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color h-7">{t('proposal_order')}</span>
                                                     </div>
                                                     <ul className="text-gray-500">
                                                         <li className="nav-item">
@@ -550,7 +550,7 @@ const Sidebar = () => {
                                                 <div className='divide'></div>
                                                 <li className="menu menu1 nav-item">
                                                     <div className="flex items-start group-menu-name">
-                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color h-7">{t('repair_management')}</span>
+                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color h-7">{t('repair_request')}</span>
                                                     </div>
                                                     <ul className="text-gray-500">
                                                         {/* <li className="nav-item">
@@ -574,7 +574,7 @@ const Sidebar = () => {
                                                 <div className='divide'></div>
                                                 <li className="menu menu1 nav-item">
                                                     <div className="flex items-start group-menu-name">
-                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color h-7">{t('supply')}</span>
+                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color h-7">{t('supply_management')}</span>
                                                     </div>
                                                     <ul className="text-gray-500">
                                                         <li className="nav-item">

@@ -316,7 +316,14 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('date_of_birth')}
                                                         </label>
-                                                        <Field id="dateofbirth" type="date" name="dateofbirth" className="form-input" />
+                                                        <Flatpickr
+                                                            options={{
+                                                                dateFormat: 'Y-m-d',
+                                                                position: 'auto left',
+                                                            }}
+                                                            className="form-input calender-input"
+                                                            placeholder={`${t('enter_date_of_birth')}`}
+                                                        />
 
                                                     </div>
                                                 </div>
@@ -355,7 +362,14 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('date_of_issue')}
                                                         </label>
-                                                        <Field id="dateissue" type="date" name="dateissue" className="form-input" />
+                                                        <Flatpickr
+                                                            options={{
+                                                                dateFormat: 'Y-m-d',
+                                                                position: 'auto left',
+                                                            }}
+                                                            className="form-input calender-input"
+                                                            placeholder={`${t('enter_date_of_issue')}`}
+                                                        />
 
                                                     </div>
                                                     <div className="mb-5 w-1/2">
@@ -379,8 +393,14 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('date_of_issue_passport')}
                                                         </label>
-                                                        <Field id="dateissuepassport" type="date" name="dateissuepassport" className="form-input" />
-
+                                                        <Flatpickr
+                                                            options={{
+                                                                dateFormat: 'Y-m-d',
+                                                                position: 'auto left',
+                                                            }}
+                                                            className="form-input calender-input"
+                                                            placeholder={`${t('enter_date_of_issue_passport')}`}
+                                                        />
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -396,8 +416,14 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('date_end_passport')}
                                                         </label>
-                                                        <Field id="dateendpassport" type="date" name="dateendpassport" className="form-input" />
-
+                                                        <Flatpickr
+                                                            options={{
+                                                                dateFormat: 'Y-m-d',
+                                                                position: 'auto left',
+                                                            }}
+                                                            className="form-input calender-input"
+                                                            placeholder={`${t('enter_date_end_passport')}`}
+                                                        />
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -431,23 +457,23 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             },
                                                             {
                                                                 label: 'Vĩnh Phúc'
-                                                            },{
+                                                            }, {
                                                                 label: 'Bắc Ninh'
-                                                            },{
+                                                            }, {
                                                                 label: 'Quảng Ninh'
-                                                            },{
+                                                            }, {
                                                                 label: 'Hải Dương'
-                                                            },{
+                                                            }, {
                                                                 label: 'Hải Phòng'
-                                                            },{
+                                                            }, {
                                                                 label: 'Hưng Yên'
-                                                            },{
+                                                            }, {
                                                                 label: 'Thái Bình'
-                                                            },{
+                                                            }, {
                                                                 label: 'Hà Nam'
-                                                            },{
+                                                            }, {
                                                                 label: 'Nam Định'
-                                                            },{
+                                                            }, {
                                                                 label: 'Ninh Bình'
                                                             }]}
                                                             placeholder={t('enter_province')}

@@ -371,13 +371,12 @@ const Header = () => {
 							<Dropdown
 								offset={[0, 8]}
 								placement={`${isRtl ? 'bottom-start' : 'bottom-end'}`}
-								btnClassName="relative block p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60"
+								btnClassName="relative block p-2 rounded-full bg-white-light/40 dark:bg-dark/40 hover:text-primary hover:bg-white-light/90 dark:hover:bg-dark/60 custom-bell"
 								button={
 									<span>
-										<IconBellBing />
+										<img src='/assets/images/iconbell.png' width={20} height={20} ></img>
 										<span className="absolute top-0 flex h-3 w-3 ltr:right-0 rtl:left-0">
-											<span className="absolute -top-[3px] inline-flex h-full w-full animate-ping rounded-full bg-success/50 opacity-75 ltr:-left-[3px] rtl:-right-[3px]"></span>
-											<span className="relative inline-flex h-[6px] w-[6px] rounded-full bg-success"></span>
+											<span className="relative inline-flex h-[10px] w-[10px] rounded-full bg-success"></span>
 										</span>
 									</span>
 								}

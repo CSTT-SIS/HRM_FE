@@ -156,13 +156,13 @@ const AddNewTask = ({ ...props }: Props) => {
                 {({ errors, values, setFieldValue, submitCount }) => (
                     <Form className="space-y-5">
                         <div className="flex justify-between gap-5">
-                        <div className="mb-3 w-1/2">
-                            <label htmlFor="name">
-                                {' '}
-                                {t('name_task')} <span style={{ color: 'red' }}>* </span>
-                            </label>
-                            <Field name="name" type="text" id="name" placeholder={`${t('enter_name_task')}`} className="form-input" />
-                            {submitCount ? errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null : ''}
+                            <div className="mb-3 w-1/2">
+                                <label htmlFor="name">
+                                    {' '}
+                                    {t('name_task')} <span style={{ color: 'red' }}>* </span>
+                                </label>
+                                <Field name="name" type="text" id="name" placeholder={`${t('enter_name_task')}`} className="form-input" />
+                                {submitCount ? errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null : ''}
                             </div>
                             <div className="mb-3 w-1/2">
                                 <label htmlFor="creator">
@@ -226,17 +226,21 @@ const AddNewTask = ({ ...props }: Props) => {
                                     {t('deadline_task')} <span style={{ color: 'red' }}>* </span>
 
                                 </label>
-                                <Field type="datetime-local" name="deadline_task"
-                                placeholder={`${t('enter_deadline_task')}`}id="deadline_task" className="form-input">
-                                </Field>
-
+                                <Flatpickr
+                                    options={{
+                                        enableTime: true,
+										dateFormat: "d-m-Y H:i",
+										time_24hr: true
+                                    }}
+                                    className="form-input calender-input"
+                                />
                                 {submitCount ? errors.deadline ? <div className="mt-1 text-danger"> {errors.deadline} </div> : null : ''}
                             </div>
 
                         </div>
 
                         <div className='flex justify-between gap-5'>
-                        <div className="mb-3 w-1/2">
+                            <div className="mb-3 w-1/2">
                                 <label htmlFor="file">
                                     {' '}
                                     {t('file')} <span style={{ color: 'red' }}>* </span>
@@ -244,12 +248,12 @@ const AddNewTask = ({ ...props }: Props) => {
                                 <Field name="file" type="file" rows="2" id="file" style={{ height: '37.6px' }} placeholder={`${t('enter_description_task')}`} className="form-input" />
                             </div>
                             <div className="mb-3 w-1/2">
-                            <label htmlFor="description">
-                                {' '}
-                                {t('description_task')} <span style={{ color: 'red' }}>* </span>
-                            </label>
-                            <Field name="description" as="textarea" rows="2" id="description" placeholder={`${t('enter_description_task')}`} className="form-input" />
-                        </div>
+                                <label htmlFor="description">
+                                    {' '}
+                                    {t('description_task')} <span style={{ color: 'red' }}>* </span>
+                                </label>
+                                <Field name="description" as="textarea" rows="2" id="description" placeholder={`${t('enter_description_task')}`} className="form-input" />
+                            </div>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="directive"> {t('directive_task')}</label>

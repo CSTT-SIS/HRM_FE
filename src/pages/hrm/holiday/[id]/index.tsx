@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import React, { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
@@ -12,7 +12,8 @@ import personnel_list from "../../personnel/personnel_list.json";
 interface Props {
 	[key: string]: any;
 }
-
+import Flatpickr from 'react-flatpickr';
+import 'flatpickr/dist/flatpickr.css';
 const getEmployeeOptions = () => {
 	const now = new Date();
 	const getMonth = (dt: Date, add: number = 0) => {
@@ -138,23 +139,23 @@ const getEmployeeOptions = () => {
 
 const AddWorkScheduleModal = ({ ...props }: Props) => {
 	const { t } = useTranslation();
-    const router = useRouter();
-    const [detail, setDetail] = useState<any>();
-    const [listPerson, setListPerson] = useState<any>();
+	const router = useRouter();
+	const [detail, setDetail] = useState<any>();
+	const [listPerson, setListPerson] = useState<any>();
 
-    useEffect(() => {
-        if (Number(router.query.id)) {
-            const detailData = holiday?.find(d => d.id === Number(router.query.id));
-            console.log(detailData)
-            setDetail(detailData);
-        }
-    }, [router]);
-    useEffect(() => {
-        const list_per = personnel_list?.map((e: any) => {
-            return { label: e.name, value: e.code}
-        })
-        setListPerson(list_per);
-    }, [])
+	useEffect(() => {
+		if (Number(router.query.id)) {
+			const detailData = holiday?.find(d => d.id === Number(router.query.id));
+			console.log(detailData)
+			setDetail(detailData);
+		}
+	}, [router]);
+	useEffect(() => {
+		const list_per = personnel_list?.map((e: any) => {
+			return { label: e.name, value: e.code }
+		})
+		setListPerson(list_per);
+	}, [])
 	const SubmittedForm = Yup.object().shape({
 		user: Yup.string().required(`${t('please_select_the_staff')}`),
 		title: Yup.string().required(`${t('please_fill_title_holiday_schedule')}`),
@@ -164,100 +165,118 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 	const { isAddHolidayScheduleModal, setIsAddHolidayScheduleModal, minStartDate, minEndDate, saveHolidaySchedule, handleDelete } = props;
 	return (
 
-								<div className="p-5">
-                                    <div className='flex justify-between header-page-bottom pb-4 mb-4'>
-                <h1 className='page-title'>{t('update_holiday')}</h1>
-                <Link href="/hrm/holiday">
-                        <button type="button" className="btn btn-primary btn-sm m-1 back-button" >
-                                    <IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                                                    <span>
-                                                    {t('back')}
-                                                        </span>
-                                    </button>
-                </Link>
-            </div>
-									<Formik
-										initialValues={{
-											id: detail ? `${detail?.id}` : '',
-											user: detail ? listPerson?.filter((e: any) => e.label === detail?.user) : [],
-											title: detail ? `${detail?.title}` : '',
-											start: detail ? `${detail?.start}` : '',
-											end: detail ? `${detail?.end}` : '',
-											description: detail ? `${detail?.description}` : '',
-										}}
-                                        enableReinitialize
-										validationSchema={SubmittedForm}
-										onSubmit={(values) => {
-											saveHolidaySchedule(values);
-										}}
-									>
-										{({ errors, touched, submitCount, values, setFieldValue }) => (
-												<Form className="space-y-5">
-                                                <div className="mb-3 flex gap-2">
-                                                    <div className="flex-1">
+		<div className="p-5">
+			<div className='flex justify-between header-page-bottom pb-4 mb-4'>
+				<h1 className='page-title'>{t('update_holiday')}</h1>
+				<Link href="/hrm/holiday">
+					<button type="button" className="btn btn-primary btn-sm m-1 back-button" >
+						<IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+						<span>
+							{t('back')}
+						</span>
+					</button>
+				</Link>
+			</div>
+			<Formik
+				initialValues={{
+					id: detail ? `${detail?.id}` : '',
+					user: detail ? listPerson?.filter((e: any) => e.label === detail?.user) : [],
+					title: detail ? `${detail?.title}` : '',
+					start: detail ? `${detail?.start}` : '',
+					end: detail ? `${detail?.end}` : '',
+					description: detail ? `${detail?.description}` : '',
+				}}
+				enableReinitialize
+				validationSchema={SubmittedForm}
+				onSubmit={(values) => {
+					saveHolidaySchedule(values);
+				}}
+			>
+				{({ errors, touched, submitCount, values, setFieldValue }) => (
+					<Form className="space-y-5">
+						<div className="mb-3 flex gap-2">
+							<div className="flex-1">
 
-													<label htmlFor="title">
-														{t('holiday_title')}
-														<span style={{ color: 'red' }}> *</span>
-													</label>
-													<Field name="title" type="text" id="title" placeholder={t('fill_holiday_title')} className="form-input" />
-													{submitCount? errors.title ? <div className="mt-1 text-danger"> {errors.title} </div> : null : ''}
-                                                    </div>
-                                                    <div className="flex-1">
-													<label htmlFor="user">
-														{t('participants')}
-														<span style={{ color: 'red' }}> *</span>
-													</label>
-                                                    <Select
-                                                                name="user"
-                                                                id="user"
-                                                                    options={listPerson}
-                                                                    isMulti
-                                                                    isSearchable
-                                                                    placeholder={`${t('choose_participants')}`}
-                                                                    value={values?.user}
-                                                                    onChange={e => {
-                                                                        setFieldValue('user', e)
-                                                                    }}
-                                                                    />
-													{submitCount ? errors.user ? <div className="mt-1 text-danger"> {`${errors.user}`} </div> : null : ''}
-												</div>
-												</div>
+								<label htmlFor="title">
+									{t('holiday_title')}
+									<span style={{ color: 'red' }}> *</span>
+								</label>
+								<Field name="title" type="text" id="title" placeholder={t('fill_holiday_title')} className="form-input" />
+								{submitCount ? errors.title ? <div className="mt-1 text-danger"> {errors.title} </div> : null : ''}
+							</div>
+							<div className="flex-1">
+								<label htmlFor="user">
+									{t('participants')}
+									<span style={{ color: 'red' }}> *</span>
+								</label>
+								<Select
+									name="user"
+									id="user"
+									options={listPerson}
+									isMulti
+									isSearchable
+									placeholder={`${t('choose_participants')}`}
+									value={values?.user}
+									onChange={e => {
+										setFieldValue('user', e)
+									}}
+								/>
+								{submitCount ? errors.user ? <div className="mt-1 text-danger"> {`${errors.user}`} </div> : null : ''}
+							</div>
+						</div>
 
 
-												<div className="mb-3 flex gap-2">
-                                                    <div className='flex-1'>
-                                                    <label htmlFor="dateStart">
-														{t('from_time')}<span style={{ color: 'red' }}>* </span>
-													</label>
-													<Field id="start" type="datetime-local" name="start" className="form-input" placeholder={t('choose_start_time')} min={minStartDate} />
-													{submitCount ? errors.start ? <div className="mt-1 text-danger"> {errors.start} </div> : null : ''}
-                                                    </div>
-                                                    <div className='flex-1'>
-													<label htmlFor="dateEnd">
-														{t('end_time')} <span style={{ color: 'red' }}>* </span>
-													</label>
-													<Field id="end" type="datetime-local" name="end" className="form-input" placeholder={t('choose_end_time')} min={minEndDate} />
-													{submitCount ? errors.end ? <div className="mt-1 text-danger"> {errors.end} </div> : null : ''}
-												</div>
-												</div>
+						<div className="mb-3 flex gap-2">
+							<div className='flex-1'>
+								<label htmlFor="dateStart">
+									{t('from_time')}<span style={{ color: 'red' }}>* </span>
+								</label>
+								<Flatpickr
+									options={{
+										enableTime: true,
+										dateFormat: "d-m-Y H:i",
+										time_24hr: true
 
-												<div className="mb-3">
-													<label htmlFor="description">{t('discription')}</label>
-													<Field id="description" as="textarea" rows="2" name="description" className="form-input" placeholder={t('fill_holiday_schedule_description')} />
-												</div>
-                                                <div className="!mt-8 flex items-center justify-end">
-														<button type="button" className="btn cancel-button">
-															{t('cancel')}
-														</button>
-														<button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
-															{t('update')}
-														</button>
-													</div>
-											</Form>
-										)}
-									</Formik>
-								</div>
+									}}
+
+									className="form-input calender-input"
+								/>
+								{submitCount ? errors.start ? <div className="mt-1 text-danger"> {errors.start} </div> : null : ''}
+							</div>
+							<div className='flex-1'>
+								<label htmlFor="dateEnd">
+									{t('end_time')} <span style={{ color: 'red' }}>* </span>
+								</label>
+								<Flatpickr
+									options={{
+										enableTime: true,
+										dateFormat: "d-m-Y H:i",
+										time_24hr: true
+
+									}}
+
+									className="form-input calender-input"
+								/>
+								{submitCount ? errors.end ? <div className="mt-1 text-danger"> {errors.end} </div> : null : ''}
+							</div>
+						</div>
+
+						<div className="mb-3">
+							<label htmlFor="description">{t('discription')}</label>
+							<Field id="description" as="textarea" rows="2" name="description" className="form-input" placeholder={t('fill_holiday_schedule_description')} />
+						</div>
+						<div className="!mt-8 flex items-center justify-end">
+							<button type="button" className="btn cancel-button">
+								{t('cancel')}
+							</button>
+							<button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+								{t('update')}
+							</button>
+						</div>
+					</Form>
+				)}
+			</Formik>
+		</div>
 
 	);
 };

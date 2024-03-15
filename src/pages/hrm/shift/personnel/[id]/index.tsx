@@ -20,9 +20,9 @@ import IconCaretDown from '@/components/Icon/IconCaretDown';
 import IconBack from '@/components/Icon/IconBack';
 import personnel_list from '../personnel_list.json';
 import ImageUploading, { ImageListType } from 'react-images-uploading';
-import list_departments from '../../department/department_list.json';
+import list_departments from '../../../department/department_list.json';
 import list_personnels from '../../personnel/personnel_list.json';
-import list_duty from "../../duty/duty_list.json";
+import list_duty from "../../../duty/duty_list.json";
 interface Props {
     [key: string]: any;
 }

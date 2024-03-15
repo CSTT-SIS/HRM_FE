@@ -42,7 +42,6 @@ import IconImportFile from '@/components/Icon/IconImportFile';
 import IconNewDownload from '@/components/Icon/IconNewDownload';
 import IconNewDownload2 from '@/components/Icon/IconNewDownload2';
 
-
 interface Props {
 	[key: string]: any;
 }
@@ -390,11 +389,11 @@ const Department = ({ ...props }: Props) => {
 				<div className="mb-5">
 					<TableTree>
 						<Headers>
-							<Header width={200}>Tên nhân viên</Header>
-							<Header width={150}>Mã nhân viên</Header>
-							<Header width={200}>Chức vụ</Header>
-							<Header width={200}>Phòng ban</Header>
-							<Header width={150}>Thao tác</Header>
+							<Header width={'20%'}>Tên nhân viên</Header>
+							<Header width={'20%'}>Mã nhân viên</Header>
+							<Header width={'20%'}>Chức vụ</Header>
+							<Header width={'20%'}>Phòng ban</Header>
+							<Header width={'20%'}>Thao tác</Header>
 						</Headers>
 						<Rows
 							items={items}

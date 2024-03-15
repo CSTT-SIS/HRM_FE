@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import IconX from '@/components/Icon/IconX';
 import React, { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,7 +10,8 @@ import IconBack from '@/components/Icon/IconBack';
 import workSchedules from '../workSchedules.json'
 import Select from "react-select";
 import personnel_list from "../../personnel/personnel_list.json"
-
+import Flatpickr from 'react-flatpickr';
+import 'flatpickr/dist/flatpickr.css';
 interface Props {
 	[key: string]: any;
 }
@@ -142,21 +143,21 @@ const getEmployeeOptions = () => {
 
 const AddWorkScheduleModal = ({ ...props }: Props) => {
 	const { t } = useTranslation();
-    const router = useRouter();
-    const [detail, setDetail] = useState<any>();
-    const [listPerson, setListPerson] = useState<any>();
-    useEffect(() => {
-        if (Number(router.query.id)) {
-            const detailData = workSchedules?.find(d => d.id === Number(router.query.id));
-            setDetail(detailData);
-        }
-    }, [router]);
-    useEffect(() => {
-        const list_per = personnel_list?.map((e: any) => {
-            return { label: e.name, value: e.code}
-        })
-        setListPerson(list_per);
-    }, [])
+	const router = useRouter();
+	const [detail, setDetail] = useState<any>();
+	const [listPerson, setListPerson] = useState<any>();
+	useEffect(() => {
+		if (Number(router.query.id)) {
+			const detailData = workSchedules?.find(d => d.id === Number(router.query.id));
+			setDetail(detailData);
+		}
+	}, [router]);
+	useEffect(() => {
+		const list_per = personnel_list?.map((e: any) => {
+			return { label: e.name, value: e.code }
+		})
+		setListPerson(list_per);
+	}, [])
 
 	const SubmittedForm = Yup.object().shape({
 		user: Yup.string().required(`${t('please_select_the_staff')}`),
@@ -167,133 +168,151 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 	const { isAddWorkScheduleModal, setIsAddWokScheduleModal, minStartDate, minEndDate, saveWorkSchedule, handleDelete } = props;
 	return (
 
-								<div className="p-5">
-                                      <div className='flex justify-between header-page-bottom pb-4 mb-4'>
-                <h1 className='page-title'>{t('update_calendar')}</h1>
-                <Link href="/hrm/calendar">
-                        <button type="button" className="btn btn-primary btn-sm m-1 back-button" >
-                                    <IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                                                    <span>
-                                                    {t('back')}
-                                                        </span>
-                                    </button>
-                        </Link>
-            </div>
-									<Formik
-										initialValues={{
-											id: detail ? `${detail?.id}` : '',
-											user: detail ? listPerson?.filter((e: any) => e.label === detail?.user) : [],
-											title: detail ? `${detail?.title}` : '',
-											start: detail ? `${detail?.start}` : '',
-											end: detail ? `${detail?.end}` : '',
-											type: detail ? `${detail?.type}` : '',
-											description: detail ? `${detail?.description}` : '',
-										}}
-										validationSchema={SubmittedForm}
-										onSubmit={(values) => {
-											saveWorkSchedule(values);
-										}}
-                                        enableReinitialize
-									>
-										{({ errors, touched, submitCount, setFieldValue, values}) => (
-												<Form className="space-y-5">
-                                               <div className="mb-3 flex gap-2">
-                                                <div className="flex-1">
+		<div className="p-5">
+			<div className='flex justify-between header-page-bottom pb-4 mb-4'>
+				<h1 className='page-title'>{t('update_calendar')}</h1>
+				<Link href="/hrm/calendar">
+					<button type="button" className="btn btn-primary btn-sm m-1 back-button" >
+						<IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+						<span>
+							{t('back')}
+						</span>
+					</button>
+				</Link>
+			</div>
+			<Formik
+				initialValues={{
+					id: detail ? `${detail?.id}` : '',
+					user: detail ? listPerson?.filter((e: any) => e.label === detail?.user) : [],
+					title: detail ? `${detail?.title}` : '',
+					start: detail ? `${detail?.start}` : '',
+					end: detail ? `${detail?.end}` : '',
+					type: detail ? `${detail?.type}` : '',
+					description: detail ? `${detail?.description}` : '',
+				}}
+				validationSchema={SubmittedForm}
+				onSubmit={(values) => {
+					saveWorkSchedule(values);
+				}}
+				enableReinitialize
+			>
+				{({ errors, touched, submitCount, setFieldValue, values }) => (
+					<Form className="space-y-5">
+						<div className="mb-3 flex gap-2">
+							<div className="flex-1">
 
-													<label htmlFor="title">
-														{t('calendar_title')}
-														<span style={{ color: 'red' }}> *</span>
-													</label>
-													<Field name="title" type="text" id="title" placeholder={t('fill_calendar_title')} className="form-input" />
-													{submitCount? errors.title ? <div className="mt-1 text-danger"> {errors.title} </div> : null : ''}
-                                                    </div>
-												<div className="flex-1">
-													<label htmlFor="user">
-														{t('participants')}
-														<span style={{ color: 'red' }}> *</span>
-													</label>
+								<label htmlFor="title">
+									{t('calendar_title')}
+									<span style={{ color: 'red' }}> *</span>
+								</label>
+								<Field name="title" type="text" id="title" placeholder={t('fill_calendar_title')} className="form-input" />
+								{submitCount ? errors.title ? <div className="mt-1 text-danger"> {errors.title} </div> : null : ''}
+							</div>
+							<div className="flex-1">
+								<label htmlFor="user">
+									{t('participants')}
+									<span style={{ color: 'red' }}> *</span>
+								</label>
 
-                                                                <Select
-                                                                name="user"
-                                                                id="user"
-                                                                    options={listPerson}
-                                                                    isMulti
-                                                                    isSearchable
-                                                                    placeholder={`${t('choose_participants')}`}
-                                                                    value={values?.user}
-                                                                    onChange={e => {
-                                                                        setFieldValue('user', e)
-                                                                    }}
-                                                                    />
+								<Select
+									name="user"
+									id="user"
+									options={listPerson}
+									isMulti
+									isSearchable
+									placeholder={`${t('choose_participants')}`}
+									value={values?.user}
+									onChange={e => {
+										setFieldValue('user', e)
+									}}
+								/>
 
 
-													{submitCount ? errors.user ? <div className="mt-1 text-danger"> {`${errors.user}`} </div> : null : ''}
-												</div>
-                                                </div>
+								{submitCount ? errors.user ? <div className="mt-1 text-danger"> {`${errors.user}`} </div> : null : ''}
+							</div>
+						</div>
 
-												<div className="mb-3 flex gap-2">
-                                                    <div className='flex-1'>
-                                                    <label htmlFor="dateStart">
-														{t('from_time')}<span style={{ color: 'red' }}>* </span>
-													</label>
-													<Field id="start" type="datetime-local" name="start" className="form-input" placeholder={t('choose_start_time')} min={minStartDate} />
-													{submitCount ? errors.start ? <div className="mt-1 text-danger"> {errors.start} </div> : null : ''}
-                                                    </div>
-                                                    <div className='flex-1'>
-													<label htmlFor="dateEnd">
-														{t('end_time')} <span style={{ color: 'red' }}>* </span>
-													</label>
-													<Field id="end" type="datetime-local" name="end" className="form-input" placeholder={t('choose_end_time')} min={minEndDate} />
-													{submitCount ? errors.end ? <div className="mt-1 text-danger"> {errors.end} </div> : null : ''}
-												</div>
-												</div>
+						<div className="mb-3 flex gap-2">
+							<div className='flex-1'>
+								<label htmlFor="dateStart">
+									{t('from_time')}<span style={{ color: 'red' }}>* </span>
+								</label>
+								<Flatpickr
+									options={{
+										enableTime: true,
+										dateFormat: "d-m-Y H:i",
+										time_24hr: true
 
-												<div className="mb-3">
-													<label htmlFor="description">{t('discription')}</label>
-													<Field id="description" as="textarea" rows="2" name="description" className="form-input" placeholder={t('fill_work_schedule_description')} />
-												</div>
-												<div>
-													<label>{t('level')}</label>
-													<div className="mt-3">
-														<label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-															<Field type="radio" name="type" value="primary"
-                                                            checked={detail?.className === "primary"}
-                                                            className="form-radio" />
-															<span className="ltr:pl-2 rtl:pr-2">{t('less_important')}</span>
-														</label>
-														<label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-															<Field type="radio" name="type" value="info"
-                                                            checked={detail?.className === "info"}
-                                                            className="form-radio text-info" />
-															<span className="ltr:pl-2 rtl:pr-2">{t('normal')}</span>
-														</label>
-														<label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-															<Field type="radio" name="type"
-                                                                                                                        checked={detail?.className === "success"}
-                                                                                                                        value="success" className="form-radio text-success" />
-															<span className="ltr:pl-2 rtl:pr-2">{t('important')}</span>
-														</label>
-														<label className="inline-flex cursor-pointer">
-															<Field type="radio" name="type" value="danger"
-                                                                                                                        checked={detail?.className === "danger"}
-                                                                                                                        className="form-radio text-danger" />
-															<span className="ltr:pl-2 rtl:pr-2">{t('priority')}</span>
-														</label>
-													</div>
-													<div className="!mt-8 flex items-center justify-end">
-														<button type="button" className="btn cancel-button" onClick={() => setIsAddWokScheduleModal(false)}>
-															{t('cancel')}
-														</button>
+									}}
 
-														<button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
-															{t('update')}
-														</button>
-													</div>
-												</div>
-											</Form>
-										)}
-									</Formik>
-								</div>
+									className="form-input calender-input"
+								/>
+								{submitCount ? errors.start ? <div className="mt-1 text-danger"> {errors.start} </div> : null : ''}
+							</div>
+							<div className='flex-1'>
+								<label htmlFor="dateEnd">
+									{t('end_time')} <span style={{ color: 'red' }}>* </span>
+								</label>
+								<Flatpickr
+									options={{
+										enableTime: true,
+										dateFormat: "d-m-Y H:i",
+										time_24hr: true
+
+									}}
+
+									className="form-input calender-input"
+								/>
+								{submitCount ? errors.end ? <div className="mt-1 text-danger"> {errors.end} </div> : null : ''}
+							</div>
+						</div>
+
+						<div className="mb-3">
+							<label htmlFor="description">{t('discription')}</label>
+							<Field id="description" as="textarea" rows="2" name="description" className="form-input" placeholder={t('fill_work_schedule_description')} />
+						</div>
+						<div>
+							<label>{t('level')}</label>
+							<div className="mt-3">
+								<label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
+									<Field type="radio" name="type" value="primary"
+										checked={detail?.className === "primary"}
+										className="form-radio" />
+									<span className="ltr:pl-2 rtl:pr-2">{t('less_important')}</span>
+								</label>
+								<label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
+									<Field type="radio" name="type" value="info"
+										checked={detail?.className === "info"}
+										className="form-radio text-info" />
+									<span className="ltr:pl-2 rtl:pr-2">{t('normal')}</span>
+								</label>
+								<label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
+									<Field type="radio" name="type"
+										checked={detail?.className === "success"}
+										value="success" className="form-radio text-success" />
+									<span className="ltr:pl-2 rtl:pr-2">{t('important')}</span>
+								</label>
+								<label className="inline-flex cursor-pointer">
+									<Field type="radio" name="type" value="danger"
+										checked={detail?.className === "danger"}
+										className="form-radio text-danger" />
+									<span className="ltr:pl-2 rtl:pr-2">{t('priority')}</span>
+								</label>
+							</div>
+							<div className="!mt-8 flex items-center justify-end">
+								<button type="button" className="btn cancel-button" onClick={() => setIsAddWokScheduleModal(false)}>
+									{t('cancel')}
+								</button>
+
+								<button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+									{t('update')}
+								</button>
+							</div>
+						</div>
+					</Form>
+				)}
+			</Formik>
+		</div>
 
 	);
 };
