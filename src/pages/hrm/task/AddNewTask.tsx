@@ -233,6 +233,8 @@ const AddNewTask = ({ ...props }: Props) => {
 										time_24hr: true
                                     }}
                                     className="form-input calender-input"
+                                    placeholder={`${t('enter_deadline_task')}`}
+
                                 />
                                 {submitCount ? errors.deadline ? <div className="mt-1 text-danger"> {errors.deadline} </div> : null : ''}
                             </div>

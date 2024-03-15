@@ -252,21 +252,6 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                     {' '}
                                     {t('department')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field
-                                    disabled
-                                    name="department"
-                                    id="department"
-                                    type="text"
-                                    className="form-input"
-                                />
-
-                                {submitCount ? errors.department ? <div className="mt-1 text-danger"> {errors.department} </div> : null : ''}
-                            </div>
-                            <div className="mb-5 w-1/2">
-                                <label htmlFor="submitday" className='label'>
-                                    {' '}
-                                    {t('submitday')} <span style={{ color: 'red' }}>* </span>
-                                </label>
                                 <Flatpickr
                                     options={{
                                         enableTime: true,
@@ -274,6 +259,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                         time_24hr: true
                                     }}
                                     className="form-input calender-input"
+                                    placeholder={`${t('choose_submit_day')}`}
                                 />
                                 {submitCount ? errors.submitday ? <div className="mt-1 text-danger"> {errors.submitday} </div> : null : ''}
                             </div>
@@ -282,7 +268,25 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                             <div className="mb-5 w-1/2">
                                 <label htmlFor="fromdate" className='label'>
                                     {' '}
-                                    {t('from_time')} <span style={{ color: 'red' }}>* </span>
+                                    {t('register_from_date')} <span style={{ color: 'red' }}>* </span>
+                                </label>
+                                <Flatpickr
+                                    options={{
+                                        enableTime: true,
+                                        noCalendar: true,
+                                        dateFormat: "H:i",
+                                        time_24hr: true
+                                    }}
+                                    placeholder={`${t('choose_register_from_date')}`}
+                                    className="form-input calender-input"
+                                />
+
+                                {submitCount ? errors.fromdate ? <div className="mt-1 text-danger"> {errors.fromdate} </div> : null : ''}
+                            </div>
+                            <div className="mb-5 w-1/2">
+                                <label htmlFor="enddate" className='label'>
+                                    {' '}
+                                    {t('register_end_date')} <span style={{ color: 'red' }}>* </span>
                                 </label>
                                 <Flatpickr
                                     options={{
@@ -292,8 +296,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                         time_24hr: true
                                     }}
                                     className="form-input calender-input"
+                                    placeholder={`${t('choose_register_end_date')}`}
                                 />
-
                                 {submitCount ? errors.fromdate ? <div className="mt-1 text-danger"> {errors.fromdate} </div> : null : ''}
                             </div>
                             <div className="mb-5 w-1/2">

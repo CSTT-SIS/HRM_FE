@@ -56,18 +56,18 @@ interface TreeNode {
 
 const treeData = [
     {
-      label: 'Phòng Hành chính',
-      value: '0-0',
-      children: [
-        { label: 'Bộ phận cấp dưỡng', value: '0-0-1' },
-        { label: 'Tổ xe', value: '0-0-2' },
-      ],
+        label: 'Phòng Hành chính',
+        value: '0-0',
+        children: [
+            { label: 'Bộ phận cấp dưỡng', value: '0-0-1' },
+            { label: 'Tổ xe', value: '0-0-2' },
+        ],
     },
     {
-      label: 'Phòng Kế toán',
-      value: '0-1',
+        label: 'Phòng Kế toán',
+        value: '0-1',
     },
-  ];
+];
 
 const LateEarlyForm = ({ ...props }: Props) => {
     const dispatch = useDispatch();
@@ -105,8 +105,8 @@ const LateEarlyForm = ({ ...props }: Props) => {
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const data = localStorage.getItem('lateEarlyFormList');
-                setGetStorge(LateEarlyFormList);
-                localStorage.setItem('lateEarlyFormList', JSON.stringify(LateEarlyFormList));
+            setGetStorge(LateEarlyFormList);
+            localStorage.setItem('lateEarlyFormList', JSON.stringify(LateEarlyFormList));
 
         }
     }, [])
@@ -122,34 +122,34 @@ const LateEarlyForm = ({ ...props }: Props) => {
     }, [recordsData])
 
     const handleEdit = (data: any) => {
-		// setOpenModal(true);
-		// setData(data);
+        // setOpenModal(true);
+        // setData(data);
         router.push(`/hrm/late-early-form/${data.id}`)
-	};
+    };
 
     const handleDetail = (data: any) => {
         router.push(`/hrm/late-early-form/detail/${data.id}`)
-	};
+    };
 
     const handleDelete = (data: any) => {
         const swalDeletes = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-secondary',
-				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-				popup: 'confirm-delete',
-			},
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'confirm-delete',
+            },
             imageUrl: '/assets/images/delete_popup.png',
-			buttonsStyling: false,
-		});
+            buttonsStyling: false,
+        });
         swalDeletes
             .fire({
                 title: `${t('delete_form')}`,
-				html: `<span class='confirm-span'>${t('delete_form')}</span> ${data.name}?`,
+                html: `<span class='confirm-span'>${t('delete_form')}</span> ${data.name}?`,
                 padding: '2em',
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
                 confirmButtonText: `${t('confirm')}`,
-				reverseButtons: true,
+                reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -163,23 +163,23 @@ const LateEarlyForm = ({ ...props }: Props) => {
 
     const handleCheck = (data: any) => {
         const swalDeletes = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-secondary',
-				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-				popup: 'confirm-delete',
-			},
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'confirm-delete',
+            },
             imageUrl: '/assets/images/delete_popup.png',
-			buttonsStyling: false,
-		});
+            buttonsStyling: false,
+        });
         swalDeletes
             .fire({
                 title: `${t('check_form')}`,
-				html: `<span class='confirm-span'>${t('check')}</span> ${data.name}?`,
+                html: `<span class='confirm-span'>${t('check')}</span> ${data.name}?`,
                 padding: '2em',
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
                 confirmButtonText: `${t('confirm')}`,
-				reverseButtons: true,
+                reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -207,41 +207,45 @@ const LateEarlyForm = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{(page - 1) * pageSize + index + 1}</span>,
         },
-    //     { accessor: 'code', title: `${t('personel_code')}`, sortable: false,
-    //     render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.code}</span>
-    // },
-        { accessor: 'name', title: `${t('personel_name')}`, sortable: false,
-        render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.name}</span>
-    },
-        { accessor: 'department', title: `${t('personel_department')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.department}</span>
-    },
-        { accessor: 'submitday', title: `${t('submitday')}`, sortable: false,         render: (records: any, index: any) => <span onClick={(records) => handleDetail(records)}>{`${dayjs(records?.submitday).format("DD/MM/YYYY")}`}</span>
-    },
-    //     { accessor: 'fromdate', title: `${t('fromdate')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.fromdate}</span>
-    // },
-    //     { accessor: 'enddate', title: `${t('enddate')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.enddate}</span>
-    // },
+        //     { accessor: 'code', title: `${t('personel_code')}`, sortable: false,
+        //     render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.code}</span>
+        // },
+        {
+            accessor: 'name', title: `${t('personel_name')}`, sortable: false,
+            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.name}</span>
+        },
+        {
+            accessor: 'department', title: `${t('personel_department')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.department}</span>
+        },
+        {
+            accessor: 'submitday', title: `${t('submitday')}`, sortable: false, render: (records: any, index: any) => <span onClick={(records) => handleDetail(records)}>{`${dayjs(records?.submitday).format("DD/MM/YYYY")}`}</span>
+        },
+        //     { accessor: 'fromdate', title: `${t('fromdate')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.fromdate}</span>
+        // },
+        //     { accessor: 'enddate', title: `${t('enddate')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.enddate}</span>
+        // },
         { accessor: 'checker', title: `${t('checker')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.checker}</span> },
-        { accessor: 'isCheck',
-         title: `${t('status')}`,
-          sortable: false,
-          render: (records: any, index: any) => <span className={`badge badge-outline-${records?.isCheck ? "success" : "danger"} `} onClick={() => handleDetail(records)}>{records?.isCheck ? `${t('isCheckTrue')}` : `${t('isCheckFalse')}`}</span>
-    },
+        {
+            accessor: 'isCheck',
+            title: `${t('status')}`,
+            sortable: false,
+            render: (records: any, index: any) => <span className={`badge badge-outline-${records?.isCheck ? "success" : "danger"} `} onClick={() => handleDetail(records)}>{records?.isCheck ? `${t('isCheckTrue')}` : `${t('isCheckFalse')}`}</span>
+        },
         {
             accessor: 'action',
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <button type="button"  className='button-detail' onClick={() => handleDetail(records)}>
-                    <IconNewEye /><span>
+                    <button type="button" className='button-detail' onClick={() => handleDetail(records)}>
+                        <IconNewEye /><span>
                             {t('detail')}
-                                </span>
+                        </span>
                     </button>
-                    <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
-                    <IconNewEdit /><span>
+                    <button type="button" className='button-edit' onClick={() => handleEdit(records)}>
+                        <IconNewEdit /><span>
                             {t('edit')}
-                                </span>
+                        </span>
                     </button>
 
                     {/* <button type="button" className="button-check" onClick={() => handleCheck(records)}>
@@ -251,12 +255,12 @@ const LateEarlyForm = ({ ...props }: Props) => {
                     </button> */}
 
                     <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
-                    <IconNewTrash />
-                            <span>
+                        <IconNewTrash />
+                        <span>
                             {t('delete')}
-                                </span>
+                        </span>
                     </button>
-            </div>
+                </div>
             )
         },
     ]
@@ -273,10 +277,10 @@ const LateEarlyForm = ({ ...props }: Props) => {
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
                         <Link href="/hrm/late-early-form/create">
-                        <button type="button" className=" m-1 button-table button-create" >
-								<IconNewPlus/>
-								<span className="uppercase">{t('add')}</span>
-							</button>
+                            <button type="button" className=" m-1 button-table button-create" >
+                                <IconNewPlus />
+                                <span className="uppercase">{t('add')}</span>
+                            </button>
                         </Link>
 
                         {/* <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
@@ -290,37 +294,37 @@ const LateEarlyForm = ({ ...props }: Props) => {
                     </div>
                     <div className='flex flex-row gap-2'>
                         <div className='flex flex-1'>
-                        <Select
-                        className="zIndex-10 w-[100%]"
-                                                            id='unidepartmentparentIdtId'
-                                                            name='departmentparentId'
-                                                            placeholder={t('choose_department')}
-                                                            options={listDepartment}
-                                                            maxMenuHeight={160}
-                                                        />
-                                                        </div>
-                        <div className='flex flex-1'>
-                        <Flatpickr
-                            className='form-input'
-                            options = {{
-                            // dateFormat: 'd/m/y',
-                            defaultDate: new Date(),
-                            locale: {
-                                ...Vietnamese
-                            },
-                                plugins: [
-                                    monthSelectPlugin(monthSelectConfig) // Sử dụng plugin với cấu hình
-                                ]
-                            }}
-                            onChange={(selectedDates, dateStr, instance) => {
-                                // Xử lý sự kiện thay đổi ngày tháng ở đây
-                            }}
-                         />
+                            <Select
+                                className="zIndex-10 w-[100%]"
+                                id='unidepartmentparentIdtId'
+                                name='departmentparentId'
+                                placeholder={t('choose_department')}
+                                options={listDepartment}
+                                maxMenuHeight={160}
+                            />
                         </div>
                         <div className='flex flex-1'>
-                        <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                            <Flatpickr
+                                className='form-input'
+                                options={{
+                                    // dateFormat: 'd/m/y',
+                                    defaultDate: new Date(),
+                                    locale: {
+                                        ...Vietnamese
+                                    },
+                                    plugins: [
+                                        monthSelectPlugin(monthSelectConfig) // Sử dụng plugin với cấu hình
+                                    ]
+                                }}
+                                onChange={(selectedDates, dateStr, instance) => {
+                                    // Xử lý sự kiện thay đổi ngày tháng ở đây
+                                }}
+                            />
                         </div>
+                        <div className='flex flex-1'>
+                            <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
                         </div>
+                    </div>
                 </div>
                 <div className="datatables">
                     <DataTable
