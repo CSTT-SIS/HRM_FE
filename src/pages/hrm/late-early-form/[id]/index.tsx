@@ -266,6 +266,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                         time_24hr: true
                                     }}
                                     className="form-input calender-input"
+                                    placeholder={`${t('choose_submit_day')}`}
+
                                 />
                                 {submitCount ? errors.submitday ? <div className="mt-1 text-danger"> {errors.submitday} </div> : null : ''}
                             </div>
@@ -284,6 +286,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                         time_24hr: true
                                     }}
                                     className="form-input calender-input"
+                                    placeholder={`${t('choose_register_from_date')}`}
+
                                 />
 
                                 {submitCount ? errors.fromdate ? <div className="mt-1 text-danger"> {errors.fromdate} </div> : null : ''}
@@ -301,6 +305,8 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                         time_24hr: true
                                     }}
                                     className="form-input calender-input"
+                                    placeholder={`${t('choose_register_end_date')}`}
+
                                 />
 
                                 {submitCount ? errors.enddate ? <div className="mt-1 text-danger"> {errors.enddate} </div> : null : ''}

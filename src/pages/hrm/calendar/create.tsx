@@ -231,6 +231,7 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 										time_24hr: true
 
 									}}
+									placeholder={`${t('choose_from_time')}`}
 
 									className="form-input calender-input"
 								/>
@@ -247,6 +248,7 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 										time_24hr: true
 
 									}}
+									placeholder={`${t('choose_end_time')}`}
 
 									className="form-input calender-input"
 								/>
