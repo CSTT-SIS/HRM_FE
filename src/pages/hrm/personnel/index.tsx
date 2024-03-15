@@ -37,6 +37,10 @@ import TableTree, { Cell, Header, Headers, Row, Rows } from '@atlaskit/table-tre
 import IconNewEdit from '@/components/Icon/IconNewEdit';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
 import IconNewCalendar from '@/components/Icon/IconNewCalendar';
+import IconNewPlus from '@/components/Icon/IconNewPlus';
+import IconImportFile from '@/components/Icon/IconImportFile';
+import IconNewDownload from '@/components/Icon/IconNewDownload';
+import IconNewDownload2 from '@/components/Icon/IconNewDownload2';
 
 interface Props {
 	[key: string]: any;
@@ -363,20 +367,20 @@ const Department = ({ ...props }: Props) => {
 				<div className="mb-4.5 flex flex-col justify-between gap-5 md:flex-row md:items-center">
 					<div className="flex flex-wrap items-center">
 						<Link href="/hrm/personnel/AddNewPersonel">
-							<button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
-								<IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-								{t('add')}
+							<button type="button" className=" m-1 button-table button-create" >
+								<IconNewPlus/>
+								<span className="uppercase">{t('add')}</span>
 							</button>
 						</Link>
 						<input type="file" ref={fileInputRef} style={{ display: "none" }} />
 
-						<button type="button" className="btn btn-primary btn-sm m-1 custom-button" onClick={() => fileInputRef.current?.click()}>
-                            <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
-                            Nhập file
+						<button type="button" className=" m-1 button-table button-import" onClick={() => fileInputRef.current?.click()}>
+                            <IconImportFile/>
+                            <span className="uppercase">Nhập file</span>
                         </button>
-						<button type="button" className="btn btn-primary btn-sm m-1  custom-button">
-							<IconDownload className="ltr:mr-2 rtl:ml-2" />
-							Xuất file excel
+						<button type="button" className=" m-1 button-table button-download">
+							<IconNewDownload2/>
+							<span className="uppercase">Xuất file excel</span>
 						</button>
 					</div>
 					<input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />

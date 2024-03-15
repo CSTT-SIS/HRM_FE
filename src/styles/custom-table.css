@@ -49,6 +49,12 @@
     border-radius: 4px;
     font-weight: 700 !important;
 }
+
+.button-edit:hover, .button-delete:hover, .button-detail:hover, .button-check:hover, .button-calendar:hover {
+    border: 1px solid #082819!important;
+    box-shadow: 2px 2px 0px 0px #082819!important;
+}
+
 .button-edit {
     background-color: #8CD7F7 !important;
     color: black !important;
@@ -114,19 +120,6 @@
     background-color: #7E8F12 !important;
 }
 .custom_table td:first-child {
-    position: sticky;
-    left: 0;
-    background-color: white;
-    z-index: 1;
-}
-
-.custom_table th:first-child {
-    position: sticky;
-    left: 0;
-    background-color: #E0E6ED4D;
-    z-index: 1;
-}
-.custom_table td: {
     position: sticky;
     left: 0;
     background-color: white;

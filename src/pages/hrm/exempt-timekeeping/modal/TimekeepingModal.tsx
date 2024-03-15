@@ -2,7 +2,7 @@ import { useEffect, Fragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Dialog, Transition } from '@headlessui/react';
-
+import Select from "react-select";
 import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
 import Swal from 'sweetalert2';
@@ -19,7 +19,9 @@ import { capitalize, formatDate, showMessage } from '@/@core/utils';
 // icons
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
-
+import withReactContent from 'sweetalert2-react-content';
+import list_departments from '../../department/department_list.json';
+import list_duty from "../../duty/duty_list.json";
 import { useRouter } from 'next/router';
 
 // json
@@ -28,6 +30,7 @@ import IconDownload from '@/components/Icon/IconDownload';
 import IconCalendar from '@/components/Icon/IconCalendar';
 
 import PersonnelList from "../personnel_list.json";
+import IconNewPlus from '@/components/Icon/IconNewPlus';
 
 interface Props {
     [key: string]: any;
@@ -39,7 +42,8 @@ const TimekeepingModal = ({ ...props }: Props) => {
 	useEffect(() => {
 		dispatch(setPageTitle(`${t('staff')}`));
 	});
-
+    const [listDepartment, setListDepartment] = useState<any>();
+    const [listDuty, setListDuty]= useState<any>([]);
 	const router = useRouter();
 	const [display, setDisplay] = useState('tree')
 	const [showLoader, setShowLoader] = useState(true);
@@ -54,7 +58,23 @@ const TimekeepingModal = ({ ...props }: Props) => {
 
 	const [openModal, setOpenModal] = useState(false);
 	const [codeArr, setCodeArr] = useState<string[]>([]);
+    useEffect(() => {
+        const list_temp_department = list_departments?.map((department: any) => {
+            return {
+                value: department.id,
+                label: department.name
+            }
+        })
+        setListDepartment(list_temp_department);
 
+        const list_temp_duty = list_duty?.map((person: any) => {
+            return {
+                value: person.code,
+                label: person.name
+            }
+        })
+        setListDuty(list_temp_duty);
+    }, [])
 	const toggleCode = (name: string) => {
 		if (codeArr.includes(name)) {
 			setCodeArr((value) => value.filter((d) => d !== name));
@@ -72,6 +92,8 @@ const TimekeepingModal = ({ ...props }: Props) => {
 			setTreeview1([...treeview1, name]);
 		}
 	};
+    const MySwal = withReactContent(Swal);
+
 
 	const [treeview2, setTreeview2] = useState<string[]>(['parent']);
 	const toggleTreeview2 = (name: any) => {
@@ -183,6 +205,11 @@ const TimekeepingModal = ({ ...props }: Props) => {
         setListSelected([])
     };
 
+    const handleAddToList = () => {
+        showMessage(`${t('add_personnel_to_list_success')}`, 'success');
+        props.setOpenModal(false);
+    }
+
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
             <Dialog as="div" open={props.openModal} onClose={() => props.setOpenModal(false)} className="relative z-50">
@@ -209,7 +236,7 @@ const TimekeepingModal = ({ ...props }: Props) => {
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <Dialog.Panel className="panel w-full max-w-4xl overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark">
+                            <Dialog.Panel className="panel w-full max-w-5xl overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark">
                                 <button
                                     type="button"
                                     onClick={() => handleCancel()}
@@ -227,18 +254,40 @@ const TimekeepingModal = ({ ...props }: Props) => {
 				</div>
 			)}
 			<div className="panel mt-6">
-                <div className="mb-4.5 flex flex-col justify-between gap-5 md:flex-row md:items-center">
+                <div className="mb-4.5 flex flex-col justify-between gap-20 md:flex-row md:items-center">
 					<div className="flex flex-wrap items-center">
                     {
                             listSelected?.length > 0 &&
-                             <button type="button" className="btn btn-primary btn-sm m-1  custom-button">
-							<IconPlus className="ltr:mr-2 rtl:ml-2" />
-							Thêm vào danh sách
+                             <button type="button" className="button-table" onClick={() => handleAddToList()} style={{paddingLeft: "1rem", paddingRight: "1rem"}}>
+							<IconNewPlus />
+							<span className="uppercase">Thêm vào danh sách</span>
 						</button>
                         }
 					</div>
-					<div className='display-style'>
-						<input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+					<div className='flex flex-1 flex-wrap gap-2'>
+                        <div className="flex flex-1">
+                        <Select
+                        className="zIndex-10 w-[100%]"
+                                                            name='departmentparentId'
+                                                            placeholder={t('choose_department')}
+                                                            options={listDepartment}
+                                                            maxMenuHeight={160}
+
+                                                        />
+                        </div>
+                        <div className="flex flex-1">
+                        <Select
+                        className="zIndex-10 w-[100%]"
+                        name='dutyid'
+                                                            placeholder={t('select_duty')}
+                                                            options={listDuty}
+                                                            maxMenuHeight={160}
+
+                                                        />
+                        </div>
+                        <div className="flex flex-1">
+						<input type="text" className="form-input flex-1" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                        </div>
 					</div>
 				</div>
 				<div className="datatables">

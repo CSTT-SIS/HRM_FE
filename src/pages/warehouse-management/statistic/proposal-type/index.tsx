@@ -51,7 +51,7 @@ const ProposalTypeChart = ({ ...props }: Props) => {
         chart: {
             height: 360,
             type: 'bar',
-            fontFamily: 'Nunito, sans-serif',
+            fontFamily: 'Mulish, sans-serif',
             toolbar: {
                 show: false,
             },

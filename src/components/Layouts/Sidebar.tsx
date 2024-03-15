@@ -81,6 +81,7 @@ import IconListWareHouse from '../Icon/IconListWareHouse';
 import IconMenuRepair from '../Icon/Menu/IconMenuRepair';
 import IconMenuProposal from '../Icon/Menu/IconMenuProposal';
 import IconMenuPurchase from '../Icon/Menu/IconMenuPurchase';
+import IconNewArrowLeft from '../Icon/IconNewArrowLeft';
 
 const Sidebar = () => {
     const router = useRouter();
@@ -158,7 +159,7 @@ const Sidebar = () => {
                             className="collapse-icon flex items-center rounded-full transition duration-300 hover:bg-gray-500/10 rtl:rotate-180 dark:text-white-light dark:hover:bg-dark-light/10"
                             onClick={() => dispatch(toggleSidebar())}
                         >
-                            <IconCaretsDown className="rotate-90" />
+                            <IconNewArrowLeft className="rotate-90" />
                             <span className='uppercase'>{t('collapse')}</span>
                         </button>
                     </div>
@@ -533,7 +534,7 @@ const Sidebar = () => {
                                                 <div className='divide'></div>
                                                 <li className="menu menu1 nav-item">
                                                     <div className="flex items-start group-menu-name">
-                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color h-7">{t('order_management')}</span>
+                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color h-7">{t('proposal_order')}</span>
                                                     </div>
                                                     <ul className="text-gray-500">
                                                         <li className="nav-item">
@@ -549,7 +550,7 @@ const Sidebar = () => {
                                                 <div className='divide'></div>
                                                 <li className="menu menu1 nav-item">
                                                     <div className="flex items-start group-menu-name">
-                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color h-7">{t('repair_management')}</span>
+                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color h-7">{t('repair_request')}</span>
                                                     </div>
                                                     <ul className="text-gray-500">
                                                         {/* <li className="nav-item">
@@ -573,7 +574,7 @@ const Sidebar = () => {
                                                 <div className='divide'></div>
                                                 <li className="menu menu1 nav-item">
                                                     <div className="flex items-start group-menu-name">
-                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color h-7">{t('supply')}</span>
+                                                        <span className="text-black rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark uppercase header-menu-color h-7">{t('supply_management')}</span>
                                                     </div>
                                                     <ul className="text-gray-500">
                                                         <li className="nav-item">

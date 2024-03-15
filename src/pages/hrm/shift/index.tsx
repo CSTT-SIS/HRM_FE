@@ -32,6 +32,7 @@ import IconEye from '@/components/Icon/IconEye';
 import IconNewEye from '@/components/Icon/IconNewEye';
 import IconNewEdit from '@/components/Icon/IconNewEdit';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
+import IconNewPlus from '@/components/Icon/IconNewPlus';
 
 interface Props {
     [key: string]: any;
@@ -226,10 +227,10 @@ const Duty = ({ ...props }: Props) => {
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
                         <Link href="/hrm/shift/create">
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
-                                    <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                                                    {t('add')}
-                                    </button>
+                        <button type="button" className=" m-1 button-table button-create" >
+								<IconNewPlus/>
+								<span className="uppercase">{t('add')}</span>
+							</button>
                         </Link>
 
                         {/* <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
@@ -243,9 +244,9 @@ const Duty = ({ ...props }: Props) => {
                     </div>
                     <div className='flex gap-2'>
                         <div className='flex gap-1'>
-                        <div className="flex items-center w-[80px]">Hiển thị</div>
+                        <div className="flex-1">
                         <Select
-                        className='w-[95%] zIndex-10'
+                        className='w-[100%] zIndex-10'
                                     id='unidepartmentparentIdtId'
                                     name='departmentparentId'
                                     // defaultValue='all'
@@ -255,7 +256,11 @@ const Duty = ({ ...props }: Props) => {
                                     maxMenuHeight={160}
                                 />
                         </div>
-                    <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                        <div className="flex-1">
+                        <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+
+</div>
+                        </div>
                         </div>
                 </div>
                 <div className="datatables">

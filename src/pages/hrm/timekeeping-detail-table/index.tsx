@@ -163,7 +163,7 @@ const Department = ({ ...props }: Props) => {
         { accessor: 'daily', title: 'Công ngày thường', sortable: false },
         { accessor: 'dayoff', title: 'Công ngày nghỉ', sortable: false },
         { accessor: 'holiday', title: 'Công ngày lễ', sortable: false },
-        { accessor: 'holiday', title: 'Làm thêm giờ hưởng lương', sortable: false },
+        { accessor: 'holiday', title: 'Làm thêm', sortable: false },
         { accessor: 'holiday', title: 'Nghỉ phép', sortable: false },
         { accessor: 'holiday', title: 'Nghỉ lễ', sortable: false },
         { accessor: 'holiday', title: 'Công tác', sortable: false },

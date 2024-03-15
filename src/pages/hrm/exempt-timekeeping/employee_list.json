@@ -2,25 +2,33 @@
     {
         "id": 1,
         "name": "Bountafaibounnheuang",
-        "code": "CO01",
-        "status": "active"
+        "code": "NV01",
+        "status": "active",
+        "department": "Phòng Hành chính",
+        "duty": "Phó phòng"
     },
     {
         "id": 2,
         "name": "Khampa Sirt",
-        "code": "CO02",
-        "status": "active"
+        "code": "NV02",
+        "status": "active",
+        "department": "Phòng Kỹ thuật",
+        "duty": "Nhân viên"
     },
     {
         "id": 3,
         "name": "Phu thone",
-        "code": "CO03",
-        "status": "active"
+        "code": "NV03",
+        "status": "active",
+        "department": "Phòng Kỹ thuật",
+        "duty": "Nhân viên"
     },
     {
         "id": 4,
         "name": "Sun khăm",
-        "code": "CO04",
-        "status": "active"
+        "code": "NV04",
+        "status": "active",
+        "department": "Bộ phận lái xe",
+        "duty": "Lái xe"
     }
 ]
