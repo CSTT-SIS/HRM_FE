@@ -194,22 +194,31 @@ const Duty = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
+                                        <div className="w-[80px]">
+
                         <Link href={`/hrm/shift/detail/${records?.id}`}>
                             <button type='button' className='button-detail'>
                                 <IconNewEye /> <span>{t('detail')}</span>
                             </button>
                             </Link>
+                            </div>
+                            <div className="w-[60px]">
+
                     <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
                     <IconNewEdit /><span>
                             {t('edit')}
                                 </span>
                     </button>
+                    </div>
+                    <div className="w-[80px]">
+
                     <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
                     <IconNewTrash />
                             <span>
                             {t('delete')}
                                 </span>
                     </button>
+                    </div>
                 </div>
             ),
         },
@@ -246,7 +255,7 @@ const Duty = ({ ...props }: Props) => {
                         <div className='flex gap-1'>
                         <div className="flex-1">
                         <Select
-                        className='w-[100%] zIndex-10'
+                        className='w-[150px] zIndex-10'
                                     id='unidepartmentparentIdtId'
                                     name='departmentparentId'
                                     // defaultValue='all'

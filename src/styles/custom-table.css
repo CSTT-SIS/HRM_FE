@@ -40,7 +40,7 @@
     color: #ffffff !important;
 
 }
-.button-edit, .button-delete, .button-detail, .button-check, .button-calendar {
+.button-download1, .button-edit, .button-delete, .button-detail, .button-check, .button-calendar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -50,7 +50,11 @@
     font-weight: 700 !important;
 }
 
-.button-edit:hover, .button-delete:hover, .button-detail:hover, .button-check:hover, .button-calendar:hover {
+.button-download1 {
+    background: #EFBD99!important;
+}
+
+.button-edit:hover, .button-delete:hover, .button-detail:hover, .button-check:hover, .button-calendar:hover, .button-download1:hover {
     border: 1px solid #082819!important;
     box-shadow: 2px 2px 0px 0px #082819!important;
 }
@@ -75,7 +79,7 @@
 
 }
 
-.button-delete span, .button-detail span, .button-check span, .button-calendar span {
+.button-download1 span, .button-delete span, .button-detail span, .button-check span, .button-calendar span {
     font-size: 12px;
     margin-left: 8px;
 }

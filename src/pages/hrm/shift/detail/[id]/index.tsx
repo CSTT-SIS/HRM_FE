@@ -15,6 +15,7 @@ import Link from 'next/link';
 import IconArrowBackward from '@/components/Icon/IconArrowBackward';
 import IconBack from '@/components/Icon/IconBack';
 import shift from '../../shift.json';
+import Personnel from '../../personnel';
 
 interface Props {
     [key: string]: any;
@@ -103,6 +104,8 @@ const AddNewShift = ({ ...props }: Props) => {
                     </button>
                 </Link>
             </div>
+            <div className='header-page-bottom pb-4 mb-4'>
+
             <Formik
                 initialValues={{
                     code_shift: detail?.code_shift,
@@ -309,6 +312,11 @@ const AddNewShift = ({ ...props }: Props) => {
                     </Form>
                 )}
             </Formik>
+            </div>
+            <div>
+            <h1 className='page-title'>{t('list_staff_by_shift')}</h1>
+            <Personnel />
+            </div>
         </div>
 
     );

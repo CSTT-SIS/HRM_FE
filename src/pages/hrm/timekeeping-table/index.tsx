@@ -197,22 +197,22 @@ const Department = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <Tippy content={`${t('detail')}`}>
+                    <div className="w-[80px]">
                         <Link href={`/hrm/timekeeping-table/${records.id}`} className="button-detail">
                             <IconNewEye /><span>
                                 {t('detail')}
                             </span>
                         </Link>
 
-                    </Tippy>
-                    <Tippy content={`${t('delete')}`}>
+                    </div>
+                    <div className="w-[80px]">
                         <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
                             <IconNewTrash />
                             <span>
                                 {t('delete')}
                             </span>
                         </button>
-                    </Tippy>
+                    </div>
                 </div>
             ),
         },

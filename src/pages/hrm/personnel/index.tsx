@@ -321,7 +321,7 @@ const Department = ({ ...props }: Props) => {
 			render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
 		},
 		{ accessor: 'name', title: 'Tên nhân viên', sortable: false },
-		{ accessor: 'code', title: 'Mã nhân viên', sortable: false },
+		{ accessor: 'code', title: 'Mã nhân viên', sortable: false, width: '20%' },
 
 		{
 			accessor: 'action',
@@ -391,10 +391,10 @@ const Department = ({ ...props }: Props) => {
 					<TableTree>
 						<Headers>
 							<Header width={200}>Tên nhân viên</Header>
-							<Header width={100}>Mã nhân viên</Header>
+							<Header width={150}>Mã nhân viên</Header>
 							<Header width={200}>Chức vụ</Header>
 							<Header width={200}>Phòng ban</Header>
-							<Header width={100}>Thao tác</Header>
+							<Header width={150}>Thao tác</Header>
 						</Headers>
 						<Rows
 							items={items}
@@ -413,17 +413,22 @@ const Department = ({ ...props }: Props) => {
 										{
 											content.type !== 'PB' ?
 												<div className="flex items-center w-max mx-auto gap-2">
+                                                                        <div className="w-[60px]">
+
 														<button type="button" className='button-edit' onClick={() => handleEdit(content)}>
 															<IconNewEdit /><span>
 																{t('edit')}
 															</span>
 														</button>
+                                                        </div>
+                                                        <div className="w-[80px]">
 														<button type="button" className='button-delete' onClick={() => handleDelete(content)}>
 															<IconNewTrash />
 															<span>
 																{t('delete')}
 															</span>
 														</button>
+                                                        </div>
 													</div> : <></>
 										}
 									</div></Cell>

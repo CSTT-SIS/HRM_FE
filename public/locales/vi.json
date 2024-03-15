@@ -712,7 +712,7 @@
 	"please_fill_Xaypayouode": "Vui lòng nhập mã nhân viên",
 	"please_fill_surname_name": "Vui lòng nhập tên đệm",
 	"please_fill_username": "Vui lòng nhập tên người dùng",
-	"download": "Tải xuống",
+	"download": "Tải về",
 	"overtime_form": "Đơn Xin làm thêm giờ",
 	"detail_late_early_form": "Chi tiết Đơn xin đi muộn, về sớm",
 	"register_from_date": "Thời gian đăng ký từ",
@@ -808,5 +808,6 @@
     "detail_shift": "Chi tiết ca làm việc",
     "file": "File đính kèm",
     "add_personnel": "Thêm người",
-    "add_personnel_to_list_success": "Thêm vào danh sách thành công"
+    "add_personnel_to_list_success": "Thêm vào danh sách thành công",
+    "list_staff_by_shift": "Danh sách nhân viên thuộc ca"
 }

@@ -247,12 +247,15 @@ const Department = ({ ...props }: Props) => {
 			titleClassName: '!text-center',
 			render: (records: any) => (
 				<div className="mx-auto flex w-max items-center gap-2">
+                                        <div className="w-[80px]">
+
 						<button type="button" className='button-delete' onClick={() => handleDelete(records)}>
 							<IconNewTrash />
                             <span>
                                 {t('delete')}
                             </span>
 						</button>
+                        </div>
 				</div>
 			),
 		},
