@@ -194,6 +194,8 @@ const AddNewShift = ({ ...props }: Props) => {
                                         time_24hr: true
                                     }}
                                     className="form-input calender-input"
+                                    placeholder={`${t('choose_from_time')}`}
+
                                 />
                                 {submitCount ? errors?.from_time ? <div className="mt-1 text-danger">
                                     {`${errors?.from_time}`}
@@ -212,6 +214,8 @@ const AddNewShift = ({ ...props }: Props) => {
                                         time_24hr: true
                                     }}
                                     className="form-input calender-input"
+                                    placeholder={`${t('choose_end_time')}`}
+
                                 />
                                 {submitCount ? errors?.end_time ? <div className="mt-1 text-danger">
                                     {`${errors?.end_time}`}
@@ -231,6 +235,8 @@ const AddNewShift = ({ ...props }: Props) => {
                                             dateFormat: "H:i",
                                             time_24hr: true
                                         }}
+                                        placeholder={`${t('choose_break_from_time')}`}
+
                                         className="form-input calender-input"
                                     />
                                     {submitCount ? errors?.break_from_time ? <div className="mt-1 text-danger">
@@ -249,6 +255,8 @@ const AddNewShift = ({ ...props }: Props) => {
                                             dateFormat: "H:i",
                                             time_24hr: true
                                         }}
+                                        placeholder={`${t('choose_break_end_time')}`}
+
                                         className="form-input calender-input"
                                     />
                                     {submitCount ? errors?.break_end_time ? <div className="mt-1 text-danger">

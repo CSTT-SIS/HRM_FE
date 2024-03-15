@@ -9,6 +9,7 @@ import { PAGE_NUMBER_DEFAULT, PAGE_SIZES, PAGE_SIZES_DEFAULT } from '@/utils/con
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
 import Link from 'next/link';
 import dayjs from 'dayjs';
+import Select from "react-select";
 
 import TaskList from './task_list.json';
 import Swal from 'sweetalert2';
@@ -28,6 +29,9 @@ import IconNewDownload from '@/components/Icon/IconNewDownload';
 import IconNewEdit from '@/components/Icon/IconNewEdit';
 import IconNewEye from '@/components/Icon/IconNewEye';
 import IconNewPlus from '@/components/Icon/IconNewPlus';
+import list_departments from '../department/department_list.json';
+import { IconFilter } from '@/components/Icon/IconFilter';
+
 interface Props {
 	[key: string]: any;
 }
@@ -46,6 +50,8 @@ const Task = ({ ...props }: Props) => {
 	const [total, setTotal] = useState(0);
 	const [getStorge, setGetStorge] = useState<any>();
 	const [data, setData] = useState<any>();
+	const [listDepartment, setListDepartment] = useState<any>();
+    const [active, setActive] = useState<any>([1]);
 
 	const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
@@ -54,9 +60,16 @@ const Task = ({ ...props }: Props) => {
 	const [selectedDepartments, setSelectedDepartments] = useState<string[]>([]);
 
 	useEffect(() => {
+		const list_temp_department = list_departments?.map((department: any) => {
+			return {
+				value: department.id,
+				label: department.name
+			}
+		})
+		setListDepartment(list_temp_department);
 		if (typeof window !== 'undefined') {
-				setGetStorge(TaskList);
-				localStorage.setItem('taskList', JSON.stringify(TaskList));
+			setGetStorge(TaskList);
+			localStorage.setItem('taskList', JSON.stringify(TaskList));
 		}
 	}, []);
 
@@ -73,7 +86,9 @@ const Task = ({ ...props }: Props) => {
 	useEffect(() => {
 		setShowLoader(false);
 	}, [recordsData]);
-
+	const handleActive = (value: any) => {
+        setActive([value]);
+    };
 	const handleEdit = (data: any) => {
 		// setOpenModal(true);
 		// setData(data);
@@ -81,13 +96,13 @@ const Task = ({ ...props }: Props) => {
 	};
 
 	const handleDelete = (data: any) => {
-        const swalDeletes = Swal.mixin({
+		const swalDeletes = Swal.mixin({
 			customClass: {
 				confirmButton: 'btn btn-secondary',
 				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
 				popup: 'confirm-delete',
 			},
-            imageUrl: '/assets/images/delete_popup.png',
+			imageUrl: '/assets/images/delete_popup.png',
 			buttonsStyling: false,
 		});
 		swalDeletes
@@ -95,8 +110,8 @@ const Task = ({ ...props }: Props) => {
 				title: `${t('delete_task')}`,
 				html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.name}?`,
 				padding: '2em',
-                cancelButtonText: `${t('cancel')}`,
-                confirmButtonText: `${t('confirm')}`,
+				cancelButtonText: `${t('cancel')}`,
+				confirmButtonText: `${t('confirm')}`,
 				showCancelButton: true,
 				reverseButtons: true,
 			})
@@ -123,9 +138,9 @@ const Task = ({ ...props }: Props) => {
 			);
 		}
 	};
-    const handleDetail = (item: any) => {
-        router.push(`/hrm/task/detail/${item.id}`)
-    }
+	const handleDetail = (item: any) => {
+		router.push(`/hrm/task/detail/${item.id}`)
+	}
 	const columns = [
 		{
 			accessor: 'id',
@@ -133,10 +148,12 @@ const Task = ({ ...props }: Props) => {
 			render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
 		},
 		{ accessor: 'creator', title: 'Người tạo', sortable: false },
-		{ accessor: 'name', title: 'Tên nhiệm vụ', sortable: false,
-        render: (records: any) => {
-            return <span onClick={() => handleDetail(records)}>{records?.name}</span>}
-        },
+		{
+			accessor: 'name', title: 'Tên nhiệm vụ', sortable: false,
+			render: (records: any) => {
+				return <span onClick={() => handleDetail(records)}>{records?.name}</span>
+			}
+		},
 		{
 			accessor: 'department',
 			title: 'Phòng ban',
@@ -162,9 +179,10 @@ const Task = ({ ...props }: Props) => {
 		{ accessor: 'executor', title: 'Người thực hiện', sortable: false },
 		// { accessor: 'collaborator', title: 'Người phối hợp thực hiện', sortable: false },
 		// { accessor: 'description', title: 'Mô tả nhiệm vụ', sortable: false },
-		{ accessor: 'deadline', title: 'Thời hạn', sortable: false,
-        render: (records: any, index: any) => <span>{`${dayjs(records?.deadline).format("H:m DD/MM/YYYY")}`}</span>
-     },
+		{
+			accessor: 'deadline', title: 'Thời hạn', sortable: false,
+			render: (records: any, index: any) => <span>{`${dayjs(records?.deadline).format("H:m DD/MM/YYYY")}`}</span>
+		},
 		{
 			accessor: 'status',
 			title: 'Trạng thái',
@@ -222,13 +240,35 @@ const Task = ({ ...props }: Props) => {
 				<div className="mb-4.5 flex flex-col justify-between gap-5 md:flex-row md:items-center">
 					<div className="flex flex-wrap items-center">
 						<Link href="/hrm/task/AddNewTask">
-                        <button type="button" className=" m-1 button-table button-create" >
-								<IconNewPlus/>
+							<button type="button" className=" m-1 button-table button-create" >
+								<IconNewPlus />
 								<span className="uppercase">{t('add')}</span>
 							</button>
 						</Link>
 					</div>
-					<input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+					<div className='flex flex-row gap-2'>
+						<Select
+							className="zIndex-10 w-[100%]"
+							id='unidepartmentparentIdtId'
+							name='departmentparentId'
+							placeholder={t('choose_department')}
+							options={listDepartment}
+							maxMenuHeight={160}
+						/>
+						<input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+					</div>
+
+				</div>
+				<div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
+					<div className="flex items-center flex-wrap gap-1">
+						<IconFilter />
+						<span>lọc nhanh :</span>
+						<div className='flex items-center flex-wrap gap-2'>
+							<div className={active.includes(1) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(1)}>Đang tiến hành</div>
+							<div className={active.includes(2) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(2)}>Hủy bỏ</div>
+							<div className={active.includes(3) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(3)}>Hoàn thành</div>
+						</div>
+					</div>
 				</div>
 				<div className="datatables">
 					<DataTable
