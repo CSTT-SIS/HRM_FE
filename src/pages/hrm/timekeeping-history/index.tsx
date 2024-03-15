@@ -234,9 +234,10 @@ const TimekeepingHistory = ({ ...props }: Props) => {
 
                         <input type="file" ref={fileInputRef} style={{ display: "none" }} />
 
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" onClick={() => fileInputRef.current?.click()}>
+                        <button type="button" className="button-table button-import m-1" onClick={() => fileInputRef.current?.click()}>
                             <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
-                            Nhập file
+                            <span className="uppercase">Nhập file</span>
+                            
                         </button>
                         {/* <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconDownload className="ltr:mr-2 rtl:ml-2" />
@@ -245,7 +246,6 @@ const TimekeepingHistory = ({ ...props }: Props) => {
                     </div>
                     <div className='flex gap-2'>
                         <div className='flex gap-1'>
-                            <div className="flex items-center min-w-[80px]">{t('choose_month')}</div>
                             <Flatpickr
                                 className='form-input'
                                 options={{
