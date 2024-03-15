@@ -76,7 +76,7 @@
 }
 
 .button-delete span, .button-detail span, .button-check span, .button-calendar span {
-    font-size: 12px;
+    font-size: 12px !important;
     margin-left: 8px;
 }
 
@@ -104,12 +104,17 @@
 }
 .css-1eg1air {
     background-color: #EBEAEA;
+    height: 44.4px;
 }
 .css-zaipue-TreeRowContainer:hover {
     background-color: #FAFBFC;
 }
 .css-1xjwrgc-CommonCell {
-    color: #000 !important;
+    color: #082819 !important;
+    font-size: 12px !important;
+}
+.css-lgdbi5-CommonCell {
+    height: 48px !important;
 }
 .bt-pagination-active {
     background-color: #7E8F12 !important;

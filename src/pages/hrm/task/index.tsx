@@ -195,10 +195,6 @@ const Task = ({ ...props }: Props) => {
                             {t('delete')}
                                 </span>
                     </button>
-					<button type="button" className='button-detail'>
-						<IconNewDownload />
-                        <span>{t('download')}</span>
-					</button>
 				</div>
 			),
 		},

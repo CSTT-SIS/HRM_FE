@@ -8,41 +8,48 @@
     },
     {
         "id": 2,
-        "name": "Phòng Kế toán",
+        "name": "Tổ xe",
         "code": "B1.1",
         "status": "active",
-        "abbreviated": "PHCB1"
+        "abbreviated": "TX"
 
     },
     {
         "id": 3,
-        "name": "Phòng Kỹ thuật",
+        "name": "Bộ phận cấp dưỡng",
+        "code": "B1.2",
+        "status": "active",
+        "abbreviated": "CD"
+
+    },
+    {
+        "id": 4,
+        "name": "Bảo vệ",
+        "code": "B2.1",
+        "status": "active",
+        "abbreviated": "BV"
+
+    },
+    {
+        "id": 5,
+        "name": "Phòng Kĩ thuật",
         "code": "PB02",
         "status": "active",
         "abbreviated": "PHKT"
 
     },
     {
-        "id": 4,
-        "name": "Bộ phận bảo trì",
+        "id": 6,
+        "name": "Tổ gia công mẫu",
         "code": "B2.1",
         "status": "active",
         "abbreviated": "PHKTB1"
-
     },
     {
-        "id": 5,
-        "name": "Bộ phận gara",
+        "id": 7,
+        "name": "Tổ Môi trường",
         "code": "B2.2",
         "status": "active",
         "abbreviated": "PHKTB2"
-
-    },
-    {
-        "id": 6,
-        "name": "Bộ phận lái xe",
-        "code": "B2.3",
-        "status": "active",
-        "abbreviated": "BPLX"
     }
 ]

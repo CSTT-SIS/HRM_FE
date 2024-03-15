@@ -68,8 +68,8 @@ const Department = ({ ...props }: Props) => {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-                setGetStorge(DepartmentList);
-                localStorage.setItem('departmentList', JSON.stringify(DepartmentList));
+            setGetStorge(DepartmentList);
+            localStorage.setItem('departmentList', JSON.stringify(DepartmentList));
 
         }
     }, [])
@@ -218,9 +218,9 @@ const Department = ({ ...props }: Props) => {
 
         },
         {
-            id: 4,
+            id: 5,
             content: {
-                id: 4,
+                id: 5,
                 name: "Phòng Kĩ thuật",
                 code: "PB02",
                 abbreviated: "PHKT",
@@ -256,18 +256,112 @@ const Department = ({ ...props }: Props) => {
 
         },
     ];
+    const itemslist: Item[] = [
+        {
+            id: 1,
+            content: {
+                id: 1,
+                name: "Phòng Hành chính",
+                code: "HC",
+                abbreviated: "PHC",
+                status: "active"
+            },
+            hasChildren: false,
+
+        },
+        {
+            id: 2,
+            content: {
+                id: 2,
+                name: "Tổ xe",
+                code: "B1.1",
+                status: "active",
+                abbreviated: "TX",
+
+            },
+            hasChildren: false,
+
+        },
+        {
+            id: 3,
+            content: {
+                id: 3,
+                name: "Bộ phận cấp dưỡng",
+                code: "B1.2",
+                status: "active",
+                abbreviated: "CD",
+
+            },
+            hasChildren: false,
+
+        },
+        {
+            id: 4,
+            content: {
+                id: 4,
+                name: "Bảo vệ",
+                code: "B1.3",
+                status: "active",
+                abbreviated: "BV",
+
+            },
+            hasChildren: false,
+        },
+        {
+            id: 5,
+            content: {
+                id: 5,
+                name: "Phòng Kĩ thuật",
+                code: "PB02",
+                abbreviated: "PHKT",
+                status: "active"
+            },
+            hasChildren: false,
+
+        },
+        {
+            id: 6,
+            content: {
+                id: 6,
+                name: "Tổ gia công mẫu",
+                code: "B2.1",
+                abbreviated: "PHKTB1",
+                status: "active"
+            },
+            hasChildren: false,
+
+        },
+        {
+            id: 7,
+            content: {
+                id: 7,
+                name: "Tổ Môi trường",
+                code: "B2.2",
+                abbreviated: "PHKTB2",
+                status: "active"
+            },
+            hasChildren: false,
+
+        },
+    ];
     const columns = [
 
-        { accessor: 'name',
-        titleClassName: '!text-center w-[100px]',
+        {
+            accessor: 'name',
+            titleClassName: '!text-center w-[100px]',
 
-         title: 'Tên phòng ban', sortable: false },
-        { accessor: 'code',
-        titleClassName: '!text-center w-[100px]',
-        title: 'Mã phòng ban', sortable: false },
-        { accessor: 'abbreviated',
-        titleClassName: '!text-center w-[100px]',
-        title: 'Tên viết tắt', sortable: false },
+            title: 'Tên phòng ban', sortable: false
+        },
+        {
+            accessor: 'code',
+            titleClassName: '!text-center w-[100px]',
+            title: 'Mã phòng ban', sortable: false
+        },
+        {
+            accessor: 'abbreviated',
+            titleClassName: '!text-center w-[100px]',
+            title: 'Tên viết tắt', sortable: false
+        },
 
         {
             accessor: 'action',
@@ -275,13 +369,17 @@ const Department = ({ ...props }: Props) => {
             titleClassName: '!text-center w-[100px]',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                        <button type="button" className='button-edit' onClick={() => handleEdit(records)}>
-                            <IconNewEdit /> {t('edit')}
-                        </button>
-
-                        <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
-                            <IconNewTrash /> {t('delete')}
-                        </button>
+                    <button type="button" className='button-edit' onClick={() => handleEdit(records)}>
+                        <IconNewEdit /><span>
+                            {t('edit')}
+                        </span>
+                    </button>
+                    <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                        <IconNewTrash />
+                        <span>
+                            {t('delete')}
+                        </span>
+                    </button>
                 </div>
             )
         },
@@ -300,7 +398,7 @@ const Department = ({ ...props }: Props) => {
                     <div className="flex items-center flex-wrap">
                         <Link href="/hrm/department/AddNewDepartment">
                             <button type="button" className="m-1 button-table button-create" >
-                                <IconNewPlus/>
+                                <IconNewPlus />
                                 <span className='uppercase'>{t('add')}</span>
                             </button>
                         </Link>
@@ -314,7 +412,8 @@ const Department = ({ ...props }: Props) => {
                         </button> */}
                     </div>
                     <div className='display-style'>
-                        Cách hiển thị
+
+                        <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
                         <button type="button" className="btn btn-primary btn-sm m-1  custom-button-display" style={{ backgroundColor: display === 'flat' ? '#E9EBD5' : '#FAFBFC', color: 'black' }} onClick={() => setDisplay('flat')}>
                             <IconDisplaylist fill={display === 'flat' ? '#959E5E' : '#BABABA'}></IconDisplaylist>
                         </button>
@@ -322,94 +421,72 @@ const Department = ({ ...props }: Props) => {
                             <IconDisplayTree fill={display === 'tree' ? '#959E5E' : '#BABABA'}></IconDisplayTree>
 
                         </button>
-                        <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
-
                     </div>
                 </div>
-                {
-                    display === 'tree' ?
-                        <div className="mb-5">
-                            <TableTree>
-                                <Headers>
-                                    <Header width={'27%'}>Tên phòng ban</Header>
-                                    <Header width={'22%'}>Mã phòng ban</Header>
-                                    <Header width={'27%'}>Tên viết tắt</Header>
-                                    <Header width={'10%'}>Thao tác</Header>
-                                </Headers>
-                                <Rows
-                                    items={items}
-                                    render={({ id, content, children = [] }: Item) => (
-                                        <Row
-                                            itemId={id}
-                                            items={children}
-                                            hasChildren={children.length > 0}
-                                            isDefaultExpanded
-                                        >
-                                            <Cell singleLine>{content.name}</Cell>
-                                            <Cell>{content.code}</Cell>
-                                            <Cell>{content.abbreviated}</Cell>
+                <div className="mb-5">
+                    <TableTree>
+                        <Headers>
+                            <Header width={'27%'}>Tên phòng ban</Header>
+                            <Header width={'22%'}>Mã phòng ban</Header>
+                            <Header width={'27%'}>Tên viết tắt</Header>
+                            <Header width={'10%'}>Thao tác</Header>
+                        </Headers>
+                        <Rows
+                            items={display === 'tree' ? items : itemslist}
+                            render={({ id, content, children = [] }: Item) => (
+                                <Row
+                                    itemId={id}
+                                    items={children}
+                                    hasChildren={children.length > 0}
+                                    isDefaultExpanded
+                                >
+                                    <Cell singleLine>{content.name}</Cell>
+                                    <Cell>{content.code}</Cell>
+                                    <Cell>{content.abbreviated}</Cell>
 
-                                            <Cell> <div className="flex items-center w-max mx-auto gap-2">
-                                                    <button type="button" className='button-edit' onClick={() => handleEdit(content)}>
-                                                        <IconNewEdit /><span>
-                                                            {t('edit')}
-                                                        </span>
-                                                    </button>
-                                                    <button type="button" className='button-delete' onClick={() => handleDelete(content)}>
-                                                        <IconNewTrash />
-                                                        <span>
-                                                            {t('delete')}
-                                                        </span>
-                                                    </button>
-                                            </div></Cell>
-                                        </Row>
-                                    )}
-                                />
-                            </TableTree>
-                            <div className="flex w-full flex-col justify-start">
-                                <ul className="inline-flex items-center space-x-1 rtl:space-x-reverse justify-end" style={{ marginTop: '10px' }}>
-                                    <li>
-                                        <button
-                                            type="button"
-                                            className="flex justify-center rounded-full bg-white-light p-2 font-semibold text-dark transition hover:bg-primary hover:text-white dark:bg-[#191e3a] dark:text-white-light dark:hover:bg-primary"
-                                        >
-                                            <IconCaretDown className="w-5 h-5 rotate-90 rtl:-rotate-90" />
+                                    <Cell> <div className="flex items-center w-max mx-auto gap-2">
+                                        <button type="button" className='button-edit' onClick={() => handleEdit(content)}>
+                                            <IconNewEdit /><span>
+                                                {t('edit')}
+                                            </span>
                                         </button>
-                                    </li>
-                                    <li>
-                                        <button type="button" className="flex justify-center rounded-full px-3.5 py-2 font-semibold text-white transition dark:bg-primary dark:text-white-light bt-pagination-active">
-                                            1
+                                        <button type="button" className='button-delete' onClick={() => handleDelete(content)}>
+                                            <IconNewTrash />
+                                            <span>
+                                                {t('delete')}
+                                            </span>
                                         </button>
-                                    </li>
-                                    <li>
-                                        <button
-                                            type="button"
-                                            className="flex justify-center rounded-full bg-white-light p-2 font-semibold text-dark transition hover:bg-primary hover:text-white dark:bg-[#191e3a] dark:text-white-light dark:hover:bg-primary"
-                                        >
-                                            <IconCaretDown className="w-5 h-5 -rotate-90 rtl:rotate-90" />
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div> : <div className="datatables">
-                            <DataTable
-                                highlightOnHover
-                                className="whitespace-nowrap table-hover custom_table"
-                                records={recordsData}
-                                columns={columns}
-                                totalRecords={total}
-                                recordsPerPage={pageSize}
-                                page={page}
-                                onPageChange={(p) => setPage(p)}
-                                recordsPerPageOptions={PAGE_SIZES}
-                                onRecordsPerPageChange={setPageSize}
-                                sortStatus={sortStatus}
-                                onSortStatusChange={setSortStatus}
-                                minHeight={200}
-                                paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
-                            />
-                        </div>
-                }
+                                    </div></Cell>
+                                </Row>
+                            )}
+                        />
+                    </TableTree>
+                    <div className="flex w-full flex-col justify-start">
+                        <ul className="inline-flex items-center space-x-1 rtl:space-x-reverse justify-end" style={{ marginTop: '10px' }}>
+                            <li>
+                                <button
+                                    type="button"
+                                    className="flex justify-center rounded-full bg-white-light p-2 font-semibold text-dark transition hover:bg-primary hover:text-white dark:bg-[#191e3a] dark:text-white-light dark:hover:bg-primary"
+                                >
+                                    <IconCaretDown className="w-5 h-5 rotate-90 rtl:-rotate-90" />
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" className="flex justify-center rounded-full px-3.5 py-2 font-semibold text-white transition dark:bg-primary dark:text-white-light bt-pagination-active">
+                                    1
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    type="button"
+                                    className="flex justify-center rounded-full bg-white-light p-2 font-semibold text-dark transition hover:bg-primary hover:text-white dark:bg-[#191e3a] dark:text-white-light dark:hover:bg-primary"
+                                >
+                                    <IconCaretDown className="w-5 h-5 -rotate-90 rtl:rotate-90" />
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
 
             </div>
             <DepartmentModal
