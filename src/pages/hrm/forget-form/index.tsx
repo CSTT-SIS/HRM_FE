@@ -295,7 +295,7 @@ const ForgetForm = ({ ...props }: Props) => {
                         </button> */}
                     </div>
                     <div className='flex flex-row gap-2'>
-                        <div className='flex flex-1'>
+                        <div className='flex flex-1 w-[180px]'>
                         <Select
                         className="zIndex-10 w-[100%]"
                                                             id='unidepartmentparentIdtId'

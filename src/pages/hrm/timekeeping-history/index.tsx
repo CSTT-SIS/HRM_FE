@@ -36,6 +36,7 @@ import { getDaysOfMonth } from '@/utils/commons';
 
 import TimekeepingList from './timekeeping_fake.json';
 import IconFolderMinus from '@/components/Icon/IconFolderMinus';
+import IconImportFile from '@/components/Icon/IconImportFile';
 
 interface Props {
     [key: string]: any;
@@ -234,8 +235,8 @@ const TimekeepingHistory = ({ ...props }: Props) => {
 
                         <input type="file" ref={fileInputRef} style={{ display: "none" }} />
 
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" onClick={() => fileInputRef.current?.click()}>
-                            <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
+                        <button type="button" className="button-table button-import" onClick={() => fileInputRef.current?.click()}>
+                            <IconImportFile />
                             Nhập file
                         </button>
                         {/* <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
@@ -245,7 +246,7 @@ const TimekeepingHistory = ({ ...props }: Props) => {
                     </div>
                     <div className='flex gap-2'>
                         <div className='flex gap-1'>
-                            <div className="flex items-center min-w-[80px]">{t('choose_month')}</div>
+                            {/* <div className="flex items-center min-w-[80px]">{t('choose_month')}</div> */}
                             <Flatpickr
                                 className='form-input'
                                 options={{
