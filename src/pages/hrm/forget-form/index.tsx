@@ -54,18 +54,18 @@ const monthSelectConfig: Partial<Config> = {
 };
 const treeData = [
     {
-      label: 'Phòng Hành chính',
-      value: '0-0',
-      children: [
-        { label: 'Bộ phận cấp dưỡng', value: '0-0-1' },
-        { label: 'Tổ xe', value: '0-0-2' },
-      ],
+        label: 'Phòng Hành chính',
+        value: '0-0',
+        children: [
+            { label: 'Bộ phận cấp dưỡng', value: '0-0-1' },
+            { label: 'Tổ xe', value: '0-0-2' },
+        ],
     },
     {
-      label: 'Phòng Kế toán',
-      value: '0-1',
+        label: 'Phòng Kế toán',
+        value: '0-1',
     },
-  ];
+];
 
 
 const ForgetForm = ({ ...props }: Props) => {
@@ -104,8 +104,8 @@ const ForgetForm = ({ ...props }: Props) => {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-                setGetStorge(ForgetFormList);
-                localStorage.setItem('lateEarlyFormList', JSON.stringify(ForgetFormList));
+            setGetStorge(ForgetFormList);
+            localStorage.setItem('lateEarlyFormList', JSON.stringify(ForgetFormList));
 
 
         }
@@ -128,14 +128,14 @@ const ForgetForm = ({ ...props }: Props) => {
 
     const handleDelete = (data: any) => {
         const swalDeletes = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-secondary',
-				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-				popup: 'confirm-delete',
-			},
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'confirm-delete',
+            },
             imageUrl: '/assets/images/delete_popup.png',
-			buttonsStyling: false,
-		});
+            buttonsStyling: false,
+        });
         swalDeletes
             .fire({
                 title: `${t('delete_form')}`,
@@ -144,7 +144,7 @@ const ForgetForm = ({ ...props }: Props) => {
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
                 confirmButtonText: `${t('confirm')}`,
-				reverseButtons: true,
+                reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -158,23 +158,23 @@ const ForgetForm = ({ ...props }: Props) => {
 
     const handleCheck = (data: any) => {
         const swalDeletes = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-secondary',
-				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-				popup: 'confirm-delete',
-			},
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'confirm-delete',
+            },
             imageUrl: '/assets/images/delete_popup.png',
-			buttonsStyling: false,
-		});
+            buttonsStyling: false,
+        });
         swalDeletes
             .fire({
                 title: `${t('check_form')}`,
-				html: `<span class='confirm-span'>${t('check')}</span> ${data.name}?`,
+                html: `<span class='confirm-span'>${t('check')}</span> ${data.name}?`,
                 padding: '2em',
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
                 confirmButtonText: `${t('confirm')}`,
-				reverseButtons: true,
+                reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -206,65 +206,70 @@ const ForgetForm = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{(page - 1) * pageSize + index + 1}</span>,
         },
-    //     { accessor: 'code', title: `${t('personel_code')}`, sortable: false,
-    //     render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.code}</span>
-    // },
-        { accessor: 'name', title: `${t('personel_name')}`, sortable: false,
-        render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.name}</span>
-    },
-        { accessor: 'position', title: `${t('personel_position')}`, sortable: false,
-        render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.position}</span>
-    },
-        { accessor: 'department', title: `${t('personel_department')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.department}</span>
-    },
-        { accessor: 'submitday', title: `${t('submitday')}`, sortable: false,         render: (records: any, index: any) => <span onClick={(records) => handleDetail(records)}>{`${dayjs(records?.submitday).format("DD/MM/YYYY")}`}</span>
-    },
-    //     { accessor: 'fromdate', title: `${t('fromdate')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.fromdate}</span>
-    // },
-    //     { accessor: 'enddate', title: `${t('enddate')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.enddate}</span>
-    // },
+        //     { accessor: 'code', title: `${t('personel_code')}`, sortable: false,
+        //     render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.code}</span>
+        // },
+        {
+            accessor: 'name', title: `${t('personel_name')}`, sortable: false,
+            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.name}</span>
+        },
+        {
+            accessor: 'position', title: `${t('personel_position')}`, sortable: false,
+            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.position}</span>
+        },
+        {
+            accessor: 'department', title: `${t('personel_department')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.department}</span>
+        },
+        {
+            accessor: 'submitday', title: `${t('submitday')}`, sortable: false, render: (records: any, index: any) => <span onClick={(records) => handleDetail(records)}>{`${dayjs(records?.submitday).format("DD/MM/YYYY")}`}</span>
+        },
+        //     { accessor: 'fromdate', title: `${t('fromdate')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.fromdate}</span>
+        // },
+        //     { accessor: 'enddate', title: `${t('enddate')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.enddate}</span>
+        // },
         { accessor: 'shift', title: `${t('late_early_shift')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.shift}</span> },
         { accessor: 'checker', title: `${t('checker')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.checker}</span> },
-        { accessor: 'isCheck',
-         title: `${t('status')}`,
-          sortable: false,
-          render: (records: any, index: any) => <span className={`badge badge-outline-${records?.isCheck ? "success" : "danger"} `} onClick={() => handleDetail(records)}>{records?.isCheck ? `${t('isCheckTrue')}` : `${t('isCheckFalse')}`}</span>
-    },
-    {
-        accessor: 'action',
-        title: 'Thao tác',
-        titleClassName: '!text-center',
-        render: (records: any) => (
-         <div className="mx-auto flex items-center gap-2">
+        {
+            accessor: 'isCheck',
+            title: `${t('status')}`,
+            sortable: false,
+            render: (records: any, index: any) => <span className={`badge badge-outline-${records?.isCheck ? "success" : "danger"} `} onClick={() => handleDetail(records)}>{records?.isCheck ? `${t('isCheckTrue')}` : `${t('isCheckFalse')}`}</span>
+        },
+        {
+            accessor: 'action',
+            title: 'Thao tác',
+            titleClassName: '!text-center',
+            render: (records: any) => (
+                <div className="mx-auto flex items-center gap-2">
                     <div className="w-[80px]">
-                     <button type="button"  className='button-detail' onClick={() => handleDetail(records)}>
-                    <IconNewEye /><span>
-                            {t('detail')}
-                                </span>
-                    </button>
+                        <button type="button" className='button-detail' onClick={() => handleDetail(records)}>
+                            <IconNewEye /><span>
+                                {t('detail')}
+                            </span>
+                        </button>
                     </div>
                     <div className="w-[60px]">
-                    <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
-                    <IconNewEdit /><span>
-                            {t('edit')}
-                                </span>
-                    </button>
+                        <button type="button" className='button-edit' onClick={() => handleEdit(records)}>
+                            <IconNewEdit /><span>
+                                {t('edit')}
+                            </span>
+                        </button>
                     </div>
                     <div className="w-[80px]">
-                    <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
-                    <IconNewTrash />
+                        <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                            <IconNewTrash />
                             <span>
-                            {t('delete')}
-                                </span>
-                    </button>
+                                {t('delete')}
+                            </span>
+                        </button>
                     </div>
-					{/* <button type="button" className='button-download1'>
+                    {/* <button type="button" className='button-download1'>
 						<IconNewDownload />
                         <span>{t('download')}</span>
 					</button> */}
-				</div>
-        )
-    },
+                </div>
+            )
+        },
     ]
 
     return (
@@ -279,10 +284,10 @@ const ForgetForm = ({ ...props }: Props) => {
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
                         <Link href="/hrm/forget-form/create">
-                        <button type="button" className=" m-1 button-table button-create" >
-								<IconNewPlus/>
-								<span className="uppercase">{t('add')}</span>
-							</button>
+                            <button type="button" className=" m-1 button-table button-create" >
+                                <IconNewPlus />
+                                <span className="uppercase">{t('add')}</span>
+                            </button>
                         </Link>
                         <input type="file" ref={fileInputRef} style={{ display: "none" }} />
                         {/* <button type="button" className="btn btn-primary btn-sm m-1 custom-button" onClick={() => fileInputRef.current?.click()}>
@@ -296,37 +301,37 @@ const ForgetForm = ({ ...props }: Props) => {
                     </div>
                     <div className='flex flex-row gap-2'>
                         <div className='flex flex-1'>
-                        <Select
-                        className="zIndex-10 w-[100%]"
-                                                            id='unidepartmentparentIdtId'
-                                                            name='departmentparentId'
-                                                            placeholder={t('choose_department')}
-                                                            options={listDepartment}
-                                                            maxMenuHeight={160}
-                                                        />
-                                                        </div>
-                        <div className='flex flex-1'>
-                        <Flatpickr
-                            className='form-input'
-                            options = {{
-                            // dateFormat: 'd/m/y',
-                            defaultDate: new Date(),
-                            locale: {
-                                ...Vietnamese
-                            },
-                                plugins: [
-                                    monthSelectPlugin(monthSelectConfig) // Sử dụng plugin với cấu hình
-                                ]
-                            }}
-                            onChange={(selectedDates, dateStr, instance) => {
-                                // Xử lý sự kiện thay đổi ngày tháng ở đây
-                            }}
-                         />
+                            <Select
+                                className="zIndex-10 w-[100%]"
+                                id='unidepartmentparentIdtId'
+                                name='departmentparentId'
+                                placeholder={t('choose_department')}
+                                options={listDepartment}
+                                maxMenuHeight={160}
+                            />
                         </div>
                         <div className='flex flex-1'>
-                        <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                            <Flatpickr
+                                className='form-input'
+                                options={{
+                                    // dateFormat: 'd/m/y',
+                                    defaultDate: new Date(),
+                                    locale: {
+                                        ...Vietnamese
+                                    },
+                                    plugins: [
+                                        monthSelectPlugin(monthSelectConfig) // Sử dụng plugin với cấu hình
+                                    ]
+                                }}
+                                onChange={(selectedDates, dateStr, instance) => {
+                                    // Xử lý sự kiện thay đổi ngày tháng ở đây
+                                }}
+                            />
                         </div>
+                        <div className='flex flex-1'>
+                            <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
                         </div>
+                    </div>
                 </div>
                 <div className="datatables">
                     <DataTable
@@ -355,7 +360,7 @@ const ForgetForm = ({ ...props }: Props) => {
                 setData={setData}
                 setGetStorge={setGetStorge}
             />
-             <DetailModal
+            <DetailModal
                 openModal={openDetail}
                 setOpenModal={setOpenDetail}
                 data={data}
