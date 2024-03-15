@@ -4,7 +4,7 @@
         "name": "Trưởng phòng",
         "code": "TP",
         "duty_group": "Quản lý",
-        "description": "",
+        "description": "Phụ trách chung",
         "status": "active"
     },
     {
@@ -12,7 +12,7 @@
         "name": "Phó Trưởng phòng",
         "code": "PTP",
         "duty_group": "Quản lý",
-        "description": "",
+        "description": "Phụ trách chung",
         "status": "active"
     },
     {
@@ -20,7 +20,7 @@
         "name": "Trưởng bộ phận",
         "code": "TB",
         "duty_group": "Quản lý",
-        "description": "",
+        "description": "Phụ trách quản lý bộ phận",
         "status": "active"
     },
     {
@@ -28,7 +28,7 @@
         "name": "Nhân viên hành chính",
         "code": "NV-HC",
         "duty_group": "Nhân viên",
-        "description": "",
+        "description": "Xử lý tài liệu hồ sơ",
         "status": "active"
     },
     {
@@ -36,7 +36,7 @@
         "name": "Nhân viên bảo trì",
         "code": "NV-SC",
         "duty_group": "Nhân viên",
-        "description": "",
+        "description": "Bảo trì xe, máy",
         "status": "active"
     },
     {
@@ -44,7 +44,7 @@
         "name": "Lái xe",
         "code": "NV-TK",
         "duty_group": "Nhân viên",
-        "description": "",
+        "description": "Lái xe theo kế hoạch",
         "status": "active"
     },
     {
@@ -52,7 +52,7 @@
         "name": "Lái máy",
         "code": "TT",
         "duty_group": "Nhân viên",
-        "description": "",
+        "description": "Lái máy theo kế hoạch",
         "status": "active"
     }
 ]

@@ -11,7 +11,8 @@
 		"directive": "ý kiến chỉ đạo 1",
 		"attachment": "Attachment1.docx",
 		"color": "warning",
-		"status": "ĐANG TIẾN HÀNH"
+		"status": "ĐANG TIẾN HÀNH",
+        "date_create": "2024-01-01"
 	},
 	{
 		"id": 2,
@@ -25,7 +26,9 @@
 		"directive": "ý kiến chỉ đạo 2",
 		"attachment": "Attachment2.docx",
 		"color": "danger",
-		"status": "HUỶ BỎ"
+		"status": "HUỶ BỎ",
+        "date_create": "2024-01-01"
+
 	},
 	{
 		"id": 3,
@@ -39,7 +42,9 @@
 		"directive": "ý kiến chỉ đạo 3",
 		"attachment": "Attachment3.docx",
 		"color": "success",
-		"status": "HOÀN THÀNH"
+		"status": "HOÀN THÀNH",
+        "date_create": "2024-01-01"
+
 	},
 	{
 		"id": 4,
@@ -53,7 +58,8 @@
 		"directive": "ý kiến chỉ đạo 4",
 		"attachment": "Attachment4.docx",
 		"color": "success",
-		"status": "HOÀN THÀNH"
+		"status": "HOÀN THÀNH",
+        "date_create": "2024-01-01"
 	},
 	{
 		"id": 5,
@@ -67,6 +73,7 @@
 		"directive": "ý kiến chỉ đạo 5",
 		"attachment": "Attachment5.docx",
 		"color": "warning",
-		"status": "ĐANG TIẾN HÀNH"
+		"status": "ĐANG TIẾN HÀNH",
+        "date_create": "2024-01-01"
 	}
 ]

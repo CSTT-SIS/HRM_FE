@@ -191,6 +191,7 @@ const AddNewTask = ({ ...props }: Props) => {
                                     {t('executor_task')} <span style={{ color: 'red' }}>* </span>
                                 </label>
                                 <Select
+                                    isDisabled
                                     id='executor'
                                     name='executor'
                                     options={listPersonnel}
@@ -208,6 +209,7 @@ const AddNewTask = ({ ...props }: Props) => {
                                 <label htmlFor="collaborator"> {t('collaborator_task')}</label>
 
                                 <Select
+                                    isDisabled
                                     id='collaborator'
                                     name='collaborator'
                                     options={listPersonnel}
@@ -228,7 +230,7 @@ const AddNewTask = ({ ...props }: Props) => {
                                     {' '}
                                     {t('date_create')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field type="date" name="date_create" id="date_create" className="form-input">
+                                <Field disabled type="date" name="date_create" id="date_create" className="form-input">
                                 </Field>
                             </div>
 
@@ -237,8 +239,8 @@ const AddNewTask = ({ ...props }: Props) => {
                                     {t('deadline_task')} <span style={{ color: 'red' }}>* </span>
 
                                 </label>
-                                <Field disabled type="datetime-local" name="deadline_task"
-                                placeholder={`${t('enter_deadline_task')}`}id="deadline_task" className="form-input">
+                                <Field disabled type="datetime-local" name="deadline"
+                                placeholder={`${t('enter_deadline_task')}`}id="deadline" className="form-input">
                                 </Field>
 
                                 {submitCount ? errors.deadline ? <div className="mt-1 text-danger"> {errors.deadline} </div> : null : ''}
@@ -251,7 +253,7 @@ const AddNewTask = ({ ...props }: Props) => {
                                     {' '}
                                     {t('file')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field name="file" type="file" rows="2" id="file" style={{ height: '37.6px' }} placeholder={`${t('enter_description_task')}`} className="form-input" />
+                                <Field disabled name="file" type="file" rows="2" id="file" style={{ height: '37.6px' }} placeholder={`${t('enter_description_task')}`} className="form-input" />
                             </div>
                             <div className="mb-3 w-1/2">
                             <label htmlFor="description">
