@@ -1,4 +1,4 @@
-import { useEffect, Fragment, useState, useCallback } from 'react';
+import { useEffect, Fragment, useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { setPageTitle } from '../../../store/themeConfigSlice';
 import { lazy } from 'react';
@@ -53,6 +53,7 @@ const monthSelectConfig: Partial<Config> = {
 };
 
 const TimekeepingHistory = ({ ...props }: Props) => {
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -181,7 +182,7 @@ const TimekeepingHistory = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
         },
-       
+
         {
             accessor: 'name',
             title: 'Tên nhân viên', sortable: false,
@@ -231,7 +232,9 @@ const TimekeepingHistory = ({ ...props }: Props) => {
                                     </button>
                         </Link> */}
 
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                        <input type="file" ref={fileInputRef} style={{ display: "none" }} />
+
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" onClick={() => fileInputRef.current?.click()}>
                             <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
                             Nhập file
                         </button>

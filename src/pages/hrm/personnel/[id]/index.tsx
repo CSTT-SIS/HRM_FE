@@ -36,7 +36,7 @@ const EditPersonel = ({ ...props }: Props) => {
     };
     const [listDepartment, setListDepartment] = useState<any>();
     const [listPersons, setListPersons] = useState<any>();
-    const [listDuty, setListDuty]= useState<any>([]);
+    const [listDuty, setListDuty] = useState<any>([]);
     const maxNumber = 69;
     const { t } = useTranslation();
     const [disabled, setDisabled] = useState(false);
@@ -250,10 +250,9 @@ const EditPersonel = ({ ...props }: Props) => {
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="surname" className='label'>
                                                             {' '}
-                                                            {t('surname_middle')} <span style={{ color: 'red' }}>* </span>
+                                                            {t('surname_middle')}
                                                         </label>
                                                         <Field name="surname" type="text" id="surname" placeholder={t('enter_surname_middle')} className="form-input" />
-                                                        {submitCount ? errors.surname ? <div className="mt-1 text-danger"> {errors.surname} </div> : null : ''}
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="name" className='label'>
@@ -268,25 +267,23 @@ const EditPersonel = ({ ...props }: Props) => {
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="email" className='label'>
                                                             {' '}
-                                                            Email <span style={{ color: 'red' }}>* </span>
+                                                            Email
                                                         </label>
                                                         <Field name="email" type="text" id="email" placeholder={t('enter_email')} className="form-input" />
-                                                        {submitCount ? errors.email ? <div className="mt-1 text-danger"> {errors.email} </div> : null : ''}
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="phone" className='label'>
                                                             {' '}
-                                                            {t('phone_number')} <span style={{ color: 'red' }}>* </span>
+                                                            {t('phone_number')}
                                                         </label>
                                                         <Field name="phone" type="text" id="phone" placeholder={t('enter_phone_number')} className="form-input" />
-                                                        {submitCount ? errors.phone ? <div className="mt-1 text-danger"> {errors.phone} </div> : null : ''}
                                                     </div>
 
                                                 </div>
                                             </div>
                                             {/* <button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>
-                                                                   {t('reset_password')}
-                                                               </button> */}
+                                                                    {t('reset_password')}
+                                                                </button> */}
                                         </AnimateHeight>
                                     </div>
                                 </div>
@@ -323,9 +320,10 @@ const EditPersonel = ({ ...props }: Props) => {
                                                                 dateFormat: 'Y-m-d',
                                                                 position: 'auto left',
                                                             }}
-                                                            className="form-input"
+                                                            className="form-input calender-input"
                                                             placeholder={`${t('enter_date_of_birth')}`}
                                                         />
+
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -368,9 +366,10 @@ const EditPersonel = ({ ...props }: Props) => {
                                                                 dateFormat: 'Y-m-d',
                                                                 position: 'auto left',
                                                             }}
-                                                            className="form-input"
+                                                            className="form-input calender-input"
                                                             placeholder={`${t('enter_date_of_issue')}`}
                                                         />
+
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="IDnumber" className='label'>
@@ -398,7 +397,7 @@ const EditPersonel = ({ ...props }: Props) => {
                                                                 dateFormat: 'Y-m-d',
                                                                 position: 'auto left',
                                                             }}
-                                                            className="form-input"
+                                                            className="form-input calender-input"
                                                             placeholder={`${t('enter_date_of_issue_passport')}`}
                                                         />
                                                     </div>
@@ -421,7 +420,7 @@ const EditPersonel = ({ ...props }: Props) => {
                                                                 dateFormat: 'Y-m-d',
                                                                 position: 'auto left',
                                                             }}
-                                                            className="form-input"
+                                                            className="form-input calender-input"
                                                             placeholder={`${t('enter_date_end_passport')}`}
                                                         />
                                                     </div>
@@ -448,7 +447,40 @@ const EditPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('province')}
                                                         </label>
-                                                        <Field name="province" type="text" id="province" placeholder={t('enter_province')} className="form-input" />
+                                                        <Select
+                                                            id='province'
+                                                            name='province'
+                                                            onInputChange={e => handleSearch(e)}
+                                                            options={[{
+                                                                label: 'Hà Nội'
+                                                            },
+                                                            {
+                                                                label: 'Vĩnh Phúc'
+                                                            }, {
+                                                                label: 'Bắc Ninh'
+                                                            }, {
+                                                                label: 'Quảng Ninh'
+                                                            }, {
+                                                                label: 'Hải Dương'
+                                                            }, {
+                                                                label: 'Hải Phòng'
+                                                            }, {
+                                                                label: 'Hưng Yên'
+                                                            }, {
+                                                                label: 'Thái Bình'
+                                                            }, {
+                                                                label: 'Hà Nam'
+                                                            }, {
+                                                                label: 'Nam Định'
+                                                            }, {
+                                                                label: 'Ninh Bình'
+                                                            }]}
+                                                            placeholder={t('enter_province')}
+                                                            maxMenuHeight={160}
+                                                            onChange={e => {
+                                                                setFieldValue('province', e)
+                                                            }}
+                                                        />
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="religion" className='label'>
@@ -558,19 +590,20 @@ const EditPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('approver')}
                                                         </label>
-                                                        <Field name="approver" type="text" id="approver" placeholder={t('enter_approver')} className="form-input" />
+                                                        <Field name="approver" type="text" id="approver" placeholder={t('enter_approver')} className="form-input " />
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="date_join" className='label'>
                                                             {' '}
                                                             {t('date_join')}
                                                         </label>
+
                                                         <Flatpickr
                                                             options={{
                                                                 dateFormat: 'Y-m-d',
                                                                 position: 'auto left',
                                                             }}
-                                                            className="form-input"
+                                                            className="form-input calender-input"
                                                             placeholder={`${t('enter_date_join')}`}
                                                         />
                                                     </div>

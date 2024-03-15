@@ -30,28 +30,28 @@ interface TreeNode {
 
 const treeData = [
     {
-      label: 'Phòng Hành chính',
-      value: '0-0',
-      children: [
-        { label: 'Bộ phận cấp dưỡng', value: '0-0-1' },
-        { label: 'Tổ xe', value: '0-0-2' },
-      ],
+        label: 'Phòng Hành chính',
+        value: '0-0',
+        children: [
+            { label: 'Bộ phận cấp dưỡng', value: '0-0-1' },
+            { label: 'Tổ xe', value: '0-0-2' },
+        ],
     },
     {
-      label: 'Phòng Kế toán',
-      value: '0-1',
+        label: 'Phòng Kế toán',
+        value: '0-1',
     },
-  ];
+];
 
 
 interface Props {
-	[key: string]: any;
+    [key: string]: any;
 }
 
 const LateEarlyFormModal = ({ ...props }: Props) => {
-	const { t } = useTranslation();
+    const { t } = useTranslation();
     const router = useRouter();
-	const [disabled, setDisabled] = useState(false);
+    const [disabled, setDisabled] = useState(false);
     const [listPersonnel, setListPersonnel] = useState<any>([]);
     const [listDuty, setListDuty] = useState<any>([]);
     const [listShift, setListShift] = useState<any>([]);
@@ -60,18 +60,18 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
     const [detail, setDetail] = useState<any>({});
 
     useEffect(() => {
-        const listPer = personnel_list?.map((item: any) =>  {
-            return {label: item.name, value: item.code}
+        const listPer = personnel_list?.map((item: any) => {
+            return { label: item.name, value: item.code }
         });
         setListPersonnel(listPer);
 
-        const listDuty = duty_list?.map((item: any) =>  {
-            return {label: item.name, value: item.code}
+        const listDuty = duty_list?.map((item: any) => {
+            return { label: item.name, value: item.code }
         });
         setListDuty(listDuty);
 
-        const listShift = shift?.map((item: any) =>  {
-            return {label: item.name_shift, value: item.code_shift}
+        const listShift = shift?.map((item: any) => {
+            return { label: item.name_shift, value: item.code_shift }
         });
         setListShift(listShift);
     }, []);
@@ -85,28 +85,28 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                 const selectedNodesLabels = detailData?.department;
 
                 function recursiveFindAndUpdateTree(some_tree: TreeNode[] | undefined): void {
-                  if (!some_tree || some_tree.length === 0) return;
-                  some_tree.forEach((e) => {
-                    if (detailData?.department === e.label) {
-                      e.checked = true;
-                    } else {
-                      e.checked = false;
-                    }
-                    recursiveFindAndUpdateTree(e.children);
-                  });
+                    if (!some_tree || some_tree.length === 0) return;
+                    some_tree.forEach((e) => {
+                        if (detailData?.department === e.label) {
+                            e.checked = true;
+                        } else {
+                            e.checked = false;
+                        }
+                        recursiveFindAndUpdateTree(e.children);
+                    });
                 }
 
                 recursiveFindAndUpdateTree(newTree);
                 return newTree;
-              });
+            });
         }
     }, [router])
 
-	const SubmittedForm = Yup.object().shape({
-		name: Yup.object()
-			.typeError(`${t('please_choose_name_staff')}`),
+    const SubmittedForm = Yup.object().shape({
+        name: Yup.object()
+            .typeError(`${t('please_choose_name_staff')}`),
         checker: Yup.object()
-			.typeError(`${t('please_choose_name_checker')}`),
+            .typeError(`${t('please_choose_name_checker')}`),
         position: Yup.object()
             .typeError(`${t('please_choose_duty')}`),
         department: Yup.object()
@@ -116,234 +116,257 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
         enddate: Yup.date().typeError(`${t('please_choose_end_day')}`),
         shift: Yup.date().typeError(`${t('please_choose_shift')}`),
         overtime_time: Yup.number().required(`${t('please_fill_overtime_time')}`)
-	});
+    });
 
-	const handleDepartment = (value: any) => {
-		if (props?.data) {
-			const reNew = props.totalData.filter((item: any) => item.id !== props.data.id);
-			reNew.push({
-				id: props.data.id,
-				name: value.name,
-				code: value.code,
-			});
-			localStorage.setItem('departmentList', JSON.stringify(reNew));
-			props.setGetStorge(reNew);
-			props.setOpenModal(false);
-			props.setData(undefined);
-			showMessage(`${t('edit_department_success')}`, 'success');
-		} else {
-			const reNew = props.totalData;
-			reNew.push({
-				id: Number(props?.totalData[props?.totalData?.length - 1].id) + 1,
-				name: value.name,
-				code: value.code,
-				status: value.status,
-			});
-			localStorage.setItem('departmentList', JSON.stringify(reNew));
-			props.setGetStorge(props.totalData);
-			props.setOpenModal(false);
-			props.setData(undefined);
-			showMessage(`${t('add_department_success')}`, 'success');
-		}
-	};
+    const handleDepartment = (value: any) => {
+        if (props?.data) {
+            const reNew = props.totalData.filter((item: any) => item.id !== props.data.id);
+            reNew.push({
+                id: props.data.id,
+                name: value.name,
+                code: value.code,
+            });
+            localStorage.setItem('departmentList', JSON.stringify(reNew));
+            props.setGetStorge(reNew);
+            props.setOpenModal(false);
+            props.setData(undefined);
+            showMessage(`${t('edit_department_success')}`, 'success');
+        } else {
+            const reNew = props.totalData;
+            reNew.push({
+                id: Number(props?.totalData[props?.totalData?.length - 1].id) + 1,
+                name: value.name,
+                code: value.code,
+                status: value.status,
+            });
+            localStorage.setItem('departmentList', JSON.stringify(reNew));
+            props.setGetStorge(props.totalData);
+            props.setOpenModal(false);
+            props.setData(undefined);
+            showMessage(`${t('add_department_success')}`, 'success');
+        }
+    };
 
-	const handleCancel = () => {
-		props.setOpenModal(false);
-		props.setData(undefined);
-	};
+    const handleCancel = () => {
+        props.setOpenModal(false);
+        props.setData(undefined);
+    };
 
     const handleChangeTreeData = (selectedNodes: { label: string }[]) => {
         setTreeDataState((tree: TreeNode[]) => {
-          const newTree = tree;
-          const selectedNodesLabels = selectedNodes.map((e) => e.label);
+            const newTree = tree;
+            const selectedNodesLabels = selectedNodes.map((e) => e.label);
 
-          function recursiveFindAndUpdateTree(some_tree: TreeNode[] | undefined): void {
-            if (!some_tree || some_tree.length === 0) return;
-            some_tree.forEach((e) => {
-              if (selectedNodesLabels.includes(e.label)) {
-                e.checked = true;
-              } else {
-                e.checked = false;
-              }
-              recursiveFindAndUpdateTree(e.children);
-            });
-          }
+            function recursiveFindAndUpdateTree(some_tree: TreeNode[] | undefined): void {
+                if (!some_tree || some_tree.length === 0) return;
+                some_tree.forEach((e) => {
+                    if (selectedNodesLabels.includes(e.label)) {
+                        e.checked = true;
+                    } else {
+                        e.checked = false;
+                    }
+                    recursiveFindAndUpdateTree(e.children);
+                });
+            }
 
-          recursiveFindAndUpdateTree(newTree);
-          return newTree;
+            recursiveFindAndUpdateTree(newTree);
+            return newTree;
         });
-      }
-	return (
+    }
+    return (
 
-		<div className="p-5">
+        <div className="p-5">
             <div className='flex justify-between header-page-bottom pb-4 mb-4'>
                 <h1 className='page-title'>{t('update_overtime_form')}</h1>
                 <Link href="/hrm/overtime-form">
-                        <button type="button" className="btn btn-primary btn-sm m-1 back-button" >
-                                    <IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                                                    <span>
-                                                    {t('back')}
-                                                        </span>
-                                    </button>
+                    <button type="button" className="btn btn-primary btn-sm m-1 back-button" >
+                        <IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
+                        <span>
+                            {t('back')}
+                        </span>
+                    </button>
                 </Link>
             </div>
             <Formik
-				initialValues={{
-											name: detail ? `${detail?.name}` : '',
-											code: detail ? `${detail?.code}` : '',
-                                            position: detail ? `${detail?.position}` : '',
-                                            department: detail ? `${detail?.department}` : '',
-                                            submitday: detail ? `${detail?.submitday}` : getCurrentFormattedTime(),
-                                            fromdate: detail ? `${detail?.fromdate}` : '',
-                                            enddate: detail ? `${detail?.enddate}` : '',
-                                            shift: detail ? `${detail?.shift}` : '',
-                                            overtime_time: 0,
-                                            checker: detail ? listPersonnel?.find((e: any) => e.label === detail.checker) : null,
-										}}
-										validationSchema={SubmittedForm}
-										onSubmit={(values) => {
-											handleDepartment(values);
-										}}
-                                        enableReinitialize
-									>
-										{({ errors, touched, submitCount, setFieldValue, values }) => (
-											<Form className="space-y-5">
-                                            <div className='flex justify-between gap-5'>
-                                            <div className="mb-5 w-1/2">
-                                                <label htmlFor="name" className='label'>
-                                                    {' '}
-                                                    {t('name_staff')} <span style={{ color: 'red' }}>* </span>
-                                                </label>
-                                                <Field disabled as="select" name="name" id="name" className="form-input">
-                                                    { listPersonnel?.map((person: any) => {
-                                                        return (
-                                                            <option key={person.value} value={person.value}>
-                                                                {person.label}
-                                                            </option>
-                                                        );
-                                                    })}
+                initialValues={{
+                    name: detail ? `${detail?.name}` : '',
+                    code: detail ? `${detail?.code}` : '',
+                    position: detail ? `${detail?.position}` : '',
+                    department: detail ? `${detail?.department}` : '',
+                    submitday: detail ? `${detail?.submitday}` : getCurrentFormattedTime(),
+                    fromdate: detail ? `${detail?.fromdate}` : '',
+                    enddate: detail ? `${detail?.enddate}` : '',
+                    shift: detail ? `${detail?.shift}` : '',
+                    overtime_time: 0,
+                    checker: detail ? listPersonnel?.find((e: any) => e.label === detail.checker) : null,
+                }}
+                validationSchema={SubmittedForm}
+                onSubmit={(values) => {
+                    handleDepartment(values);
+                }}
+                enableReinitialize
+            >
+                {({ errors, touched, submitCount, setFieldValue, values }) => (
+                    <Form className="space-y-5">
+                        <div className='flex justify-between gap-5'>
+                            <div className="mb-5 w-1/2">
+                                <label htmlFor="name" className='label'>
+                                    {' '}
+                                    {t('name_staff')} <span style={{ color: 'red' }}>* </span>
+                                </label>
+                                <Field disabled as="select" name="name" id="name" className="form-input">
+                                    {listPersonnel?.map((person: any) => {
+                                        return (
+                                            <option key={person.value} value={person.value}>
+                                                {person.label}
+                                            </option>
+                                        );
+                                    })}
 
                                 </Field>
-                                               {submitCount ? (
-    errors.name ? <div className="mt-1 text-danger">{errors.name}</div> : null
-  ) : null}
-                                            </div>
-                                            <div className="mb-5 w-1/2">
-                                                <label htmlFor="position" className='label'>
-                                                    {' '}
-                                                    {t('duty')} <span style={{ color: 'red' }}>* </span>
-                                                </label>
-                                                <Field disabled as="select" name="position" id="position" className="form-input">
-                                                    { listDuty?.map((duty: any) => {
-                                                        return (
-                                                            <option key={duty.value} value={duty.value}>
-                                                                {duty.label}
-                                                            </option>
-                                                        );
-                                                    })}
+                                {submitCount ? (
+                                    errors.name ? <div className="mt-1 text-danger">{errors.name}</div> : null
+                                ) : null}
+                            </div>
+                            <div className="mb-5 w-1/2">
+                                <label htmlFor="position" className='label'>
+                                    {' '}
+                                    {t('duty')} <span style={{ color: 'red' }}>* </span>
+                                </label>
+                                <Field disabled as="select" name="position" id="position" className="form-input">
+                                    {listDuty?.map((duty: any) => {
+                                        return (
+                                            <option key={duty.value} value={duty.value}>
+                                                {duty.label}
+                                            </option>
+                                        );
+                                    })}
 
                                 </Field>
-                                                    {submitCount ? errors.position ? <div className="mt-1 text-danger"> {errors.position} </div> : null : ''}
-                                            </div>
-                                            </div>
-                                            <div className='flex justify-between gap-5'>
-                                            <div className="mb-5 w-1/2">
-                                                <label htmlFor="department" className='label'>
-                                                    {' '}
-                                                    {t('department')} <span style={{ color: 'red' }}>* </span>
-                                                </label>
-                                                <Field
-                                                disabled
-                                                            name="department"
-                                                            id="department"
-                                                            type="text"
-                                                            className="form-input"
-                                                            />
+                                {submitCount ? errors.position ? <div className="mt-1 text-danger"> {errors.position} </div> : null : ''}
+                            </div>
+                        </div>
+                        <div className='flex justify-between gap-5'>
+                            <div className="mb-5 w-1/2">
+                                <label htmlFor="department" className='label'>
+                                    {' '}
+                                    {t('department')} <span style={{ color: 'red' }}>* </span>
+                                </label>
+                                <Field
+                                    disabled
+                                    name="department"
+                                    id="department"
+                                    type="text"
+                                    className="form-input"
+                                />
 
-                                                    {submitCount ? errors.department ? <div className="mt-1 text-danger"> {errors.department} </div> : null : ''}
-                                            </div>
-                                            <div className="mb-5 w-1/2">
-                                                <label htmlFor="submitday" className='label'>
-                                                    {' '}
-                                                    {t('submitday')} <span style={{ color: 'red' }}>* </span>
-                                                </label>
-                                                <Field id="submitday" type="datetime" name="submitday" className="form-input" placeholder={`${t('choose_submit_day')}`} />
-                                                    {submitCount ? errors.submitday ? <div className="mt-1 text-danger"> {errors.submitday} </div> : null : ''}
-                                            </div>
-                                            </div>
-                                            <div className='flex justify-between gap-5'>
-                                            <div className="mb-5 w-1/2">
-                                                <label htmlFor="fromdate" className='label'>
-                                                    {' '}
-                                                    {t('from_time')} <span style={{ color: 'red' }}>* </span>
-                                                </label>
-                                                <Field id="fromdate" type="time" name="fromdate" className="form-input" placeholder={`${t('choose_from_date')}`} />
+                                {submitCount ? errors.department ? <div className="mt-1 text-danger"> {errors.department} </div> : null : ''}
+                            </div>
+                            <div className="mb-5 w-1/2">
+                                <label htmlFor="submitday" className='label'>
+                                    {' '}
+                                    {t('submitday')} <span style={{ color: 'red' }}>* </span>
+                                </label>
+                                <Flatpickr
+                                    options={{
+                                        enableTime: true,
+                                        dateFormat: "d-m-Y",
+                                        time_24hr: true
+                                    }}
+                                    className="form-input calender-input"
+                                />
+                                {submitCount ? errors.submitday ? <div className="mt-1 text-danger"> {errors.submitday} </div> : null : ''}
+                            </div>
+                        </div>
+                        <div className='flex justify-between gap-5'>
+                            <div className="mb-5 w-1/2">
+                                <label htmlFor="fromdate" className='label'>
+                                    {' '}
+                                    {t('from_time')} <span style={{ color: 'red' }}>* </span>
+                                </label>
+                                <Flatpickr
+                                    options={{
+                                        enableTime: true,
+                                        noCalendar: true,
+                                        dateFormat: "H:i",
+                                        time_24hr: true
+                                    }}
+                                    className="form-input calender-input"
+                                />
 
-                                                    {submitCount ? errors.fromdate ? <div className="mt-1 text-danger"> {errors.fromdate} </div> : null : ''}
-                                            </div>
-                                            <div className="mb-5 w-1/2">
-                                                <label htmlFor="enddate" className='label'>
-                                                    {' '}
-                                                    {t('end_time')} <span style={{ color: 'red' }}>* </span>
-                                                </label>
-                                                <Field id="enddate" type="time" name="enddate" className="form-input" placeholder={`${t('choose_end_time')}`} />
+                                {submitCount ? errors.fromdate ? <div className="mt-1 text-danger"> {errors.fromdate} </div> : null : ''}
+                            </div>
+                            <div className="mb-5 w-1/2">
+                                <label htmlFor="enddate" className='label'>
+                                    {' '}
+                                    {t('end_time')} <span style={{ color: 'red' }}>* </span>
+                                </label>
+                                <Flatpickr
+                                    options={{
+                                        enableTime: true,
+                                        noCalendar: true,
+                                        dateFormat: "H:i",
+                                        time_24hr: true
+                                    }}
+                                    className="form-input calender-input"
+                                />
 
-                                                    {submitCount ? errors.enddate ? <div className="mt-1 text-danger"> {errors.enddate} </div> : null : ''}
-                                            </div>
-                                            </div>
-                                            <div className='flex justify-between gap-5'>
-                                            <div className="mb-5 w-1/2">
-                                                <label htmlFor="shift" className='label'>
-                                                    {' '}
-                                                    {t('shift')} <span style={{ color: 'red' }}>* </span>
-                                                </label>
-                                                <Field as="select" name="shift" id="shift" className="form-input">
-                                                    { listShift?.map((shift: any) => {
-                                                        return (
-                                                            <option key={shift.value} value={shift.value}>
-                                                                {shift.label}
-                                                            </option>
-                                                        );
-                                                    })}
+                                {submitCount ? errors.enddate ? <div className="mt-1 text-danger"> {errors.enddate} </div> : null : ''}
+                            </div>
+                        </div>
+                        <div className='flex justify-between gap-5'>
+                            <div className="mb-5 w-1/2">
+                                <label htmlFor="shift" className='label'>
+                                    {' '}
+                                    {t('shift')} <span style={{ color: 'red' }}>* </span>
+                                </label>
+                                <Field as="select" name="shift" id="shift" className="form-input">
+                                    {listShift?.map((shift: any) => {
+                                        return (
+                                            <option key={shift.value} value={shift.value}>
+                                                {shift.label}
+                                            </option>
+                                        );
+                                    })}
 
                                 </Field>
 
-                                                    {submitCount ? errors.shift ? <div className="mt-1 text-danger"> {errors.shift} </div> : null : ''}
-                                            </div>
+                                {submitCount ? errors.shift ? <div className="mt-1 text-danger"> {errors.shift} </div> : null : ''}
+                            </div>
 
-                                            <div className="mb-5 w-1/2">
-                                                <label htmlFor="checker" className='label'>
-                                                    {' '}
-                                                    {t('checker_name')} <span style={{ color: 'red' }}>* </span>
-                                                </label>
-                                                <Select
-                                                                   options={listPersonnel}
-                                                                   value={values?.checker}
-                                                                    isSearchable
-                                                                    placeholder={`${t('choose_checker')}`}
-                                                                    onChange={(e) => setFieldValue("checker", e.target.value)}
-                                                                    />
-                                               {submitCount ? (
-    errors.checker ? <div className="mt-1 text-danger">{`${errors.checker}`}</div> : null
-  ) : null}
-                                            </div>
+                            <div className="mb-5 w-1/2">
+                                <label htmlFor="checker" className='label'>
+                                    {' '}
+                                    {t('checker_name')} <span style={{ color: 'red' }}>* </span>
+                                </label>
+                                <Select
+                                    options={listPersonnel}
+                                    value={values?.checker}
+                                    isSearchable
+                                    placeholder={`${t('choose_checker')}`}
+                                    onChange={(e) => setFieldValue("checker", e.target.value)}
+                                />
+                                {submitCount ? (
+                                    errors.checker ? <div className="mt-1 text-danger">{`${errors.checker}`}</div> : null
+                                ) : null}
+                            </div>
 
-                                            </div>
-                                            <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">
-                                                <button type="button" className="btn btn-outline-dark cancel-button" onClick={() => handleCancel()}>
-                                                    {t('cancel')}
-                                                </button>
-                                                <button type="submit" className="btn :ml-4 rtl:mr-4 add-button" disabled={disabled}>
-                                                    {t('update')}
-                                                </button>
-                                            </div>
+                        </div>
+                        <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">
+                            <button type="button" className="btn btn-outline-dark cancel-button" onClick={() => handleCancel()}>
+                                {t('cancel')}
+                            </button>
+                            <button type="submit" className="btn :ml-4 rtl:mr-4 add-button" disabled={disabled}>
+                                {t('update')}
+                            </button>
+                        </div>
 
-                                        </Form>
-										)}
-									</Formik>
-								</div>
+                    </Form>
+                )}
+            </Formik>
+        </div>
 
-	);
+    );
 }
 
 export default LateEarlyFormModal;

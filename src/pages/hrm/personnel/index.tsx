@@ -38,7 +38,6 @@ import IconNewEdit from '@/components/Icon/IconNewEdit';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
 import IconNewCalendar from '@/components/Icon/IconNewCalendar';
 
-
 interface Props {
 	[key: string]: any;
 }
@@ -386,11 +385,11 @@ const Department = ({ ...props }: Props) => {
 				<div className="mb-5">
 					<TableTree>
 						<Headers>
-							<Header width={200}>Tên nhân viên</Header>
-							<Header width={100}>Mã nhân viên</Header>
-							<Header width={200}>Chức vụ</Header>
-							<Header width={200}>Phòng ban</Header>
-							<Header width={100}>Thao tác</Header>
+							<Header width={'20%'}>Tên nhân viên</Header>
+							<Header width={'20%'}>Mã nhân viên</Header>
+							<Header width={'20%'}>Chức vụ</Header>
+							<Header width={'20%'}>Phòng ban</Header>
+							<Header width={'20%'}>Thao tác</Header>
 						</Headers>
 						<Rows
 							items={items}

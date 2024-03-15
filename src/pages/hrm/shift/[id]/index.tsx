@@ -135,16 +135,16 @@ const AddNewShift = ({ ...props }: Props) => {
                                 <div className="flex" style={{ alignItems: 'center', marginTop: '13px' }}>
                                     <label style={{ marginBottom: 0, marginRight: '10px' }}>
                                         <Field type="radio" name="type_shift" value="Ca theo thời gian"
-                                        checked={typeShift === "0"}
-                                        onChange={(e: any) => handleChangeTypeShift(e, "0")}
-                                        className="form-checkbox rounded-full" />
+                                            checked={typeShift === "0"}
+                                            onChange={(e: any) => handleChangeTypeShift(e, "0")}
+                                            className="form-checkbox rounded-full" />
                                         {t('shift_base_time')}
                                     </label>
                                     <label style={{ marginBottom: 0 }}>
                                         <Field type="radio" name="type_shift" value="Ca theo tổng số giờ"
-                                        checked={typeShift === "1"}
-                                        onChange={(e: any) => handleChangeTypeShift(e, "1")}
-                                        className="form-checkbox rounded-full" />
+                                            checked={typeShift === "1"}
+                                            onChange={(e: any) => handleChangeTypeShift(e, "1")}
+                                            className="form-checkbox rounded-full" />
                                         {t('shift_base_total_time')}
                                     </label>
                                 </div>
@@ -157,7 +157,7 @@ const AddNewShift = ({ ...props }: Props) => {
                                 </label>
                                 <Field name="code_shift" type="text" id="code_shift" placeholder={`${t('fill_code_shift')}`} className="form-input" />
                                 {submitCount ? errors?.code_shift ? <div className="mt-1 text-danger">
-                                {`${errors?.code_shift}`}</div> : null : ''}
+                                    {`${errors?.code_shift}`}</div> : null : ''}
                             </div>
 
                         </div>
@@ -177,7 +177,7 @@ const AddNewShift = ({ ...props }: Props) => {
                                 </label>
                                 <Field name="work_coefficient" type="number" id="work_coefficient" placeholder="" className="form-input" />
                                 {submitCount ? errors?.work_coefficient ? <div className="mt-1 text-danger">
-                                {`${errors?.work_coefficient}`}</div> : null : ""}
+                                    {`${errors?.work_coefficient}`}</div> : null : ""}
                             </div>
                         </div>
                         {typeShift === "0" && <> <div className='flex justify-between gap-5'>
@@ -186,28 +186,36 @@ const AddNewShift = ({ ...props }: Props) => {
                                     {' '}
                                     {t('from_time')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field
-                                    name="from_time"
-                                    className="form-input"
-                                    type="time"
+                                <Flatpickr
+                                    options={{
+                                        enableTime: true,
+                                        noCalendar: true,
+                                        dateFormat: "H:i",
+                                        time_24hr: true
+                                    }}
+                                    className="form-input calender-input"
                                 />
                                 {submitCount ? errors?.from_time ? <div className="mt-1 text-danger">
-                                {`${errors?.from_time}`}
-                                    </div> : null : ''}
+                                    {`${errors?.from_time}`}
+                                </div> : null : ''}
                             </div>
                             <div className="mb-5 w-1/2">
                                 <label htmlFor="end_time" className='label'>
                                     {' '}
                                     {t('end_time')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field
-                                    name="end_time"
-                                    className="form-input"
-                                        type="time"
+                                <Flatpickr
+                                    options={{
+                                        enableTime: true,
+                                        noCalendar: true,
+                                        dateFormat: "H:i",
+                                        time_24hr: true
+                                    }}
+                                    className="form-input calender-input"
                                 />
                                 {submitCount ? errors?.end_time ? <div className="mt-1 text-danger">
-                                {`${errors?.end_time}`}
-                                     </div> : null : ''}
+                                    {`${errors?.end_time}`}
+                                </div> : null : ''}
                             </div>
                         </div>
                             <div className='flex justify-between gap-5'>
@@ -216,13 +224,17 @@ const AddNewShift = ({ ...props }: Props) => {
                                         {' '}
                                         {t('break_from_time')} <span style={{ color: 'red' }}>* </span>
                                     </label>
-                                    <Field
-                                        name="break_from_time"
-                                        className="form-input"
-                                        type="time"
+                                    <Flatpickr
+                                        options={{
+                                            enableTime: true,
+                                            noCalendar: true,
+                                            dateFormat: "H:i",
+                                            time_24hr: true
+                                        }}
+                                        className="form-input calender-input"
                                     />
                                     {submitCount ? errors?.break_from_time ? <div className="mt-1 text-danger">
-                                    {`${errors?.break_from_time}`}
+                                        {`${errors?.break_from_time}`}
                                     </div> : null : ''}
                                 </div>
                                 <div className="mb-5 w-1/2">
@@ -230,14 +242,18 @@ const AddNewShift = ({ ...props }: Props) => {
                                         {' '}
                                         {t('break_end_time')} <span style={{ color: 'red' }}>* </span>
                                     </label>
-                                    <Field
-                                        name="break_end_time"
-                                        className="form-input"
-                                        type="time"
+                                    <Flatpickr
+                                        options={{
+                                            enableTime: true,
+                                            noCalendar: true,
+                                            dateFormat: "H:i",
+                                            time_24hr: true
+                                        }}
+                                        className="form-input calender-input"
                                     />
                                     {submitCount ? errors?.break_end_time ? <div className="mt-1 text-danger">
-                                    {`${errors?.break_end_time}`}
-                                         </div> : null : ''}
+                                        {`${errors?.break_end_time}`}
+                                    </div> : null : ''}
                                 </div>
                             </div>
                         </>}
@@ -249,8 +265,8 @@ const AddNewShift = ({ ...props }: Props) => {
                                 </label>
                                 <Field name="description" as="textarea" id="description" placeholder={t('fill_description')} className="form-input" />
                                 {submitCount ? errors?.description ? <div className="mt-1 text-danger">
-                                {`${errors?.description}`}
-                                    </div> : null : ''}
+                                    {`${errors?.description}`}
+                                </div> : null : ''}
                             </div>
 
                             <div className="mb-5 w-1/2">
@@ -260,26 +276,26 @@ const AddNewShift = ({ ...props }: Props) => {
                                 </label>
                                 <Field name="note" as="textarea" id="note" placeholder={t('fill_note')} className="form-input" />
                                 {submitCount ? errors?.note ? <div className="mt-1 text-danger">
-                                {`${errors?.status}`}
+                                    {`${errors?.status}`}
                                 </div> : null : ''}
                             </div>
                         </div>
                         <div className='flex justify-between gap-5'>
-                        <div className="mb-5 w-1/2">
+                            <div className="mb-5 w-1/2">
                                 <label htmlFor="description" className='label'>
                                     {' '}
                                     {t('time_shift')} <span style={{ color: 'red' }}>* </span>
                                 </label>
                                 <Field name="time" type="number" id="time" placeholder={t('fill_total_time')} className="form-input" />
                                 {submitCount ? errors?.time ? <div className="mt-1 text-danger">
-                                {`${errors?.time}`}
-                                   </div> : null : ''}
+                                    {`${errors?.time}`}
+                                </div> : null : ''}
                             </div>
-                        <div className="mb-5 w-1/2">
+                            <div className="mb-5 w-1/2">
                                 <label htmlFor="status" className='label'> {t('status')} < span style={{ color: 'red' }}>* </span></label >
                                 <div className="flex" style={{ alignItems: 'center', marginTop: '13px' }}>
                                     <label style={{ marginBottom: 0, marginRight: '10px' }}>
-                                        <Field type="radio" name="status" value="active" className="form-checkbox rounded-full"/>
+                                        <Field type="radio" name="status" value="active" className="form-checkbox rounded-full" />
                                         {t('active')}
                                     </label>
                                     <label style={{ marginBottom: 0 }}>
@@ -290,8 +306,8 @@ const AddNewShift = ({ ...props }: Props) => {
 
                                 {submitCount ? errors?.status ? (
                                     <div className="text-danger mt-1">
-                                                                    {`${errors?.status}`}
-                                </div>
+                                        {`${errors?.status}`}
+                                    </div>
                                 ) : null : ''}
                             </div>
 

@@ -67,8 +67,8 @@ const Department = ({ ...props }: Props) => {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-                setGetStorge(DepartmentList);
-                localStorage.setItem('departmentList', JSON.stringify(DepartmentList));
+            setGetStorge(DepartmentList);
+            localStorage.setItem('departmentList', JSON.stringify(DepartmentList));
 
         }
     }, [])
@@ -267,13 +267,17 @@ const Department = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                        <button type="button" className='button-edit' onClick={() => handleEdit(records)}>
-                            <IconNewEdit /> {t('edit')}
-                        </button>
-
-                        <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
-                            <IconNewTrash /> {t('delete')}
-                        </button>
+                    <button type="button" className='button-edit' onClick={() => handleEdit(records)}>
+                        <IconNewEdit /><span>
+                            {t('edit')}
+                        </span>
+                    </button>
+                    <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                        <IconNewTrash />
+                        <span>
+                            {t('delete')}
+                        </span>
+                    </button>
                 </div>
             )
         },
@@ -306,7 +310,8 @@ const Department = ({ ...props }: Props) => {
                         </button> */}
                     </div>
                     <div className='display-style'>
-                        Cách hiển thị
+
+                        <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
                         <button type="button" className="btn btn-primary btn-sm m-1  custom-button-display" style={{ backgroundColor: display === 'flat' ? '#E9EBD5' : '#FAFBFC', color: 'black' }} onClick={() => setDisplay('flat')}>
                             <IconDisplaylist fill={display === 'flat' ? '#959E5E' : '#BABABA'}></IconDisplaylist>
                         </button>
@@ -314,8 +319,6 @@ const Department = ({ ...props }: Props) => {
                             <IconDisplayTree fill={display === 'tree' ? '#959E5E' : '#BABABA'}></IconDisplayTree>
 
                         </button>
-                        <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
-
                     </div>
                 </div>
                 {
@@ -342,17 +345,17 @@ const Department = ({ ...props }: Props) => {
                                             <Cell>{content.abbreviated}</Cell>
 
                                             <Cell> <div className="flex items-center w-max mx-auto gap-2">
-                                                    <button type="button" className='button-edit' onClick={() => handleEdit(content)}>
-                                                        <IconNewEdit /><span>
-                                                            {t('edit')}
-                                                        </span>
-                                                    </button>
-                                                    <button type="button" className='button-delete' onClick={() => handleDelete(content)}>
-                                                        <IconNewTrash />
-                                                        <span>
-                                                            {t('delete')}
-                                                        </span>
-                                                    </button>
+                                                <button type="button" className='button-edit' onClick={() => handleEdit(content)}>
+                                                    <IconNewEdit /><span>
+                                                        {t('edit')}
+                                                    </span>
+                                                </button>
+                                                <button type="button" className='button-delete' onClick={() => handleDelete(content)}>
+                                                    <IconNewTrash />
+                                                    <span>
+                                                        {t('delete')}
+                                                    </span>
+                                                </button>
                                             </div></Cell>
                                         </Row>
                                     )}

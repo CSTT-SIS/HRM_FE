@@ -613,6 +613,11 @@ li.menu>button:hover svg.icon-menu {
     background-size: 20px;
 }
 
-:disabled {
-    color: #837d7d!important;
+input:disabled {
+    color: black !important;
+    background-color: rgb(165, 165, 165) !important;
+}
+.custom-bell:hover {
+    border: 1px solid #BABABA !important;
+    background-color: white !important;
 }
