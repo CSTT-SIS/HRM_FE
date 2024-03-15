@@ -147,21 +147,23 @@ const Department = ({ ...props }: Props) => {
     );
     const Action = (props: Content) => (
         <div className="flex items-center w-max mx-auto gap-2">
-            <Tippy content={`${t('edit')}`}>
+                                <div className="w-[60px]">
+
                 <button type="button" className='button-edit' onClick={() => handleEdit(props)}>
                     <IconNewEdit /><span>
-                        {t('edit')}
+                        <span>{t('edit')}</span>
                     </span>
                 </button>
-            </Tippy>
-            <Tippy content={`${t('delete')}`}>
+                </div>
+                <div className="w-[80px]">
+
                 <button type="button" className='button-delete' onClick={() => handleDelete(props)}>
                     <IconNewTrash />
                     <span>
                         {t('delete')}
                     </span>
                 </button>
-            </Tippy>
+                </div>
         </div>
     );
     const items: Item[] = [
@@ -369,17 +371,21 @@ const Department = ({ ...props }: Props) => {
             titleClassName: '!text-center w-[100px]',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                    <button type="button" className='button-edit' onClick={() => handleEdit(records)}>
-                        <IconNewEdit /><span>
+                                        <div className="w-[60px]">
+
+                        <button type="button" className='button-edit' onClick={() => handleEdit(records)}>
+                            <IconNewEdit />
+                            <span>
                             {t('edit')}
-                        </span>
-                    </button>
-                    <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
-                        <IconNewTrash />
-                        <span>
-                            {t('delete')}
-                        </span>
-                    </button>
+                            </span>
+                        </button>
+</div>
+<div className="w-[80px]">
+
+                        <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                            <IconNewTrash /> <span>{t('delete')}</span>
+                        </button>
+                </div>
                 </div>
             )
         },
@@ -445,17 +451,21 @@ const Department = ({ ...props }: Props) => {
                                     <Cell>{content.abbreviated}</Cell>
 
                                     <Cell> <div className="flex items-center w-max mx-auto gap-2">
+                                                            <div className="w-[60px]">
                                         <button type="button" className='button-edit' onClick={() => handleEdit(content)}>
                                             <IconNewEdit /><span>
                                                 {t('edit')}
                                             </span>
                                         </button>
+                                        </div>
+                                                            <div className="w-[80px]">
                                         <button type="button" className='button-delete' onClick={() => handleDelete(content)}>
                                             <IconNewTrash />
                                             <span>
                                                 {t('delete')}
                                             </span>
                                         </button>
+                                        </div>
                                     </div></Cell>
                                 </Row>
                             )}
