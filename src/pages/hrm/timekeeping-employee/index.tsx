@@ -259,7 +259,7 @@ const Department = ({ ...props }: Props) => {
                 <div className="datatables">
                     <DataTable
                         highlightOnHover
-                        className="whitespace-nowrap table-hover custom_table"
+                        className="whitespace-nowrap table-hover custom_table custom_table_fixcolumn"
                         records={recordsData}
                         columns={columns}
                         totalRecords={total}
