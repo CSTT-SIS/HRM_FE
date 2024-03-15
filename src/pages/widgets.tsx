@@ -68,7 +68,7 @@ const Widgets = () => {
             chart: {
                 height: 325,
                 type: 'area',
-                fontFamily: 'Nunito, sans-serif',
+                fontFamily: 'Mulish, sans-serif',
                 zoom: {
                     enabled: false,
                 },
@@ -209,7 +209,7 @@ const Widgets = () => {
             chart: {
                 type: 'donut',
                 height: 460,
-                fontFamily: 'Nunito, sans-serif',
+                fontFamily: 'Mulish, sans-serif',
             },
             dataLabels: {
                 enabled: false,
@@ -302,7 +302,7 @@ const Widgets = () => {
             chart: {
                 height: 160,
                 type: 'bar',
-                fontFamily: 'Nunito, sans-serif',
+                fontFamily: 'Mulish, sans-serif',
                 toolbar: {
                     show: false,
                 },
@@ -379,7 +379,7 @@ const Widgets = () => {
             chart: {
                 height: 290,
                 type: 'area',
-                fontFamily: 'Nunito, sans-serif',
+                fontFamily: 'Mulish, sans-serif',
                 sparkline: {
                     enabled: true,
                 },
@@ -429,7 +429,7 @@ const Widgets = () => {
             chart: {
                 height: 58,
                 type: 'line',
-                fontFamily: 'Nunito, sans-serif',
+                fontFamily: 'Mulish, sans-serif',
                 sparkline: {
                     enabled: true,
                 },
@@ -474,7 +474,7 @@ const Widgets = () => {
             chart: {
                 height: 58,
                 type: 'line',
-                fontFamily: 'Nunito, sans-serif',
+                fontFamily: 'Mulish, sans-serif',
                 sparkline: {
                     enabled: true,
                 },
@@ -528,7 +528,7 @@ const Widgets = () => {
             chart: {
                 height: 360,
                 type: 'bar',
-                fontFamily: 'Nunito, sans-serif',
+                fontFamily: 'Mulish, sans-serif',
                 toolbar: {
                     show: false,
                 },
@@ -615,7 +615,7 @@ const Widgets = () => {
             chart: {
                 height: 160,
                 type: 'area',
-                fontFamily: 'Nunito, sans-serif',
+                fontFamily: 'Mulish, sans-serif',
                 sparkline: {
                     enabled: true,
                 },
@@ -658,7 +658,7 @@ const Widgets = () => {
             chart: {
                 height: 160,
                 type: 'area',
-                fontFamily: 'Nunito, sans-serif',
+                fontFamily: 'Mulish, sans-serif',
                 sparkline: {
                     enabled: true,
                 },
@@ -702,7 +702,7 @@ const Widgets = () => {
             chart: {
                 height: 160,
                 type: 'area',
-                fontFamily: 'Nunito, sans-serif',
+                fontFamily: 'Mulish, sans-serif',
                 sparkline: {
                     enabled: true,
                 },

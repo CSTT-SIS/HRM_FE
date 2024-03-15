@@ -597,7 +597,7 @@
 	"personel_name": "Tên nhân viên",
 	"personel_position": "Vị trí",
 	"personel_department": "Phòng ban",
-	"submitday": "Ngày tạo",
+	"submitday": "Ngày đăng ký",
 	"fromdate": "TG đăng ký từ",
 	"enddate": "TG đăng ký đến",
 	"late_early_shift": "Ca xin đi muộn, về sớm",
@@ -634,7 +634,7 @@
 	"regular_workday_hours": "Công ngày thường",
 	"non_working_day_hours": "Công ngày nghỉ",
 	"holiday_hours": "Công ngày lễ",
-	"overtime_with_pay": "Làm thêm giờ hưởng lương",
+	"overtime_with_pay": "Làm thêm",
 	"leave_of_absence": "Nghỉ phép",
 	"holiday_leave": "Nghỉ lễ",
 	"business_trip": "Công tác",
@@ -806,5 +806,7 @@
     "supply_infomation": "Thông tin cấp mìn",
     "detail_task": "Chi tiết nhiệm vụ",
     "detail_shift": "Chi tiết ca làm việc",
-    "file": "File đính kèm"
+    "file": "File đính kèm",
+    "add_personnel": "Thêm người",
+    "add_personnel_to_list_success": "Thêm vào danh sách thành công"
 }

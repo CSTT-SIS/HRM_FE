@@ -37,6 +37,7 @@ import IconNewEdit from '@/components/Icon/IconNewEdit';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
 import IconDisplaylist from '@/components/Icon/IconDisplaylist';
 import IconDisplayTree from '@/components/Icon/IconDisplayTree';
+import IconNewPlus from '@/components/Icon/IconNewPlus';
 interface Props {
     [key: string]: any;
 }
@@ -257,14 +258,21 @@ const Department = ({ ...props }: Props) => {
     ];
     const columns = [
 
-        { accessor: 'name', title: 'Tên phòng ban', sortable: false },
-        { accessor: 'code', title: 'Mã phòng ban', sortable: false },
-        { accessor: 'abbreviated', title: 'Tên viết tắt', sortable: false },
+        { accessor: 'name',
+        titleClassName: '!text-center w-[100px]',
+
+         title: 'Tên phòng ban', sortable: false },
+        { accessor: 'code',
+        titleClassName: '!text-center w-[100px]',
+        title: 'Mã phòng ban', sortable: false },
+        { accessor: 'abbreviated',
+        titleClassName: '!text-center w-[100px]',
+        title: 'Tên viết tắt', sortable: false },
 
         {
             accessor: 'action',
             title: 'Thao tác',
-            titleClassName: '!text-center',
+            titleClassName: '!text-center w-[100px]',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
                         <button type="button" className='button-edit' onClick={() => handleEdit(records)}>
@@ -291,9 +299,9 @@ const Department = ({ ...props }: Props) => {
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
                         <Link href="/hrm/department/AddNewDepartment">
-                            <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
-                                <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                                {t('add')}
+                            <button type="button" className="m-1 button-table button-create" >
+                                <IconNewPlus/>
+                                <span className='uppercase'>{t('add')}</span>
                             </button>
                         </Link>
                         {/* <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >

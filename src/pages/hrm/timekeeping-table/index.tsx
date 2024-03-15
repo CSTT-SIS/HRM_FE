@@ -33,6 +33,8 @@ import IconChecks from '@/components/Icon/IconChecks';
 import IconNewEye from '@/components/Icon/IconNewEye';
 import IconNewCheck from '@/components/Icon/IconNewCheck';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
+import IconNewDownload2 from '@/components/Icon/IconNewDownload2';
+import IconNewPlus from '@/components/Icon/IconNewPlus';
 
 
 interface Props {
@@ -163,7 +165,7 @@ const Department = ({ ...props }: Props) => {
         { accessor: 'regular_workday_hours', title: 'Công ngày thường', sortable: false },
         { accessor: 'non_working_day_hours', title: 'Công ngày nghỉ', sortable: false },
         { accessor: 'holiday_hours', title: 'Công ngày lễ', sortable: false },
-        { accessor: 'overtime_with_pay', title: 'Làm thêm giờ hưởng lương', sortable: false },
+        { accessor: 'overtime_with_pay', title: 'Làm thêm', sortable: false },
         { accessor: 'leave_of_absence', title: 'Nghỉ phép', sortable: false },
         { accessor: 'holiday_leave', title: 'Nghỉ lễ', sortable: false },
         { accessor: 'business_trip', title: 'Công tác', sortable: false },
@@ -216,22 +218,23 @@ const Department = ({ ...props }: Props) => {
                             <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
                             Nhập file
                         </button> */}
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
-                            <IconDownload className="ltr:mr-2 rtl:ml-2" />
-                            Xuất file excel
+                        <button type="button" className="button-table button-download m-1" >
+                            <IconNewDownload2/>
+                            <span className="uppercase">Xuất file excel</span>
                         </button>
 
                     </div>
                     <div className="flex items-center flex-wrap">
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
-                            <IconPlus className="ltr:mr-2 rtl:ml-2" />
-                            Tổng hợp
+                        <button type="button" className="button-table button-import m-1" >
+                            <IconNewPlus />
+                            <span className="uppercase"> Tổng hợp</span>
                         </button>
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
-                            <IconChecks className="ltr:mr-2 rtl:ml-2" />
-                            Khóa công tổng hợp
-                        </button>
-                        <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                        <button type="button" className="button-table" style={{paddingLeft: "5px", paddingRight: "5px"}}>
+                            <IconChecks/>
+                            <span className="uppercase">Khóa công tổng hợp</span>
+                            </button>
+
+                        {/* <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} /> */}
 
                     </div>
                 </div>

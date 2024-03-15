@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 import IconXCircle from '@/components/Icon/IconXCircle';
 import AddWorkScheduleModal from './modal/AddWorkScheduleModal';
 import Link from 'next/link';
+import IconNewPlus from '@/components/Icon/IconNewPlus';
 
 const Canlendar = () => {
 	const dispatch = useDispatch();
@@ -332,10 +333,10 @@ const Canlendar = () => {
 						</div>
 					</div>
 					<Link href="/hrm/calendar/create">
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
-                                    <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                                                    {t('add')}
-                                    </button>
+                    <button type="button" className=" m-1 button-table button-create" >
+								<IconNewPlus/>
+								<span className="uppercase">{t('add')}</span>
+							</button>
                         </Link>
 				</div>
 				<div className="calendar-wrapper">

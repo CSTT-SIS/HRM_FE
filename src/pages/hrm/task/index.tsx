@@ -27,6 +27,7 @@ import IconNewTrash from '@/components/Icon/IconNewTrash';
 import IconNewDownload from '@/components/Icon/IconNewDownload';
 import IconNewEdit from '@/components/Icon/IconNewEdit';
 import IconNewEye from '@/components/Icon/IconNewEye';
+import IconNewPlus from '@/components/Icon/IconNewPlus';
 interface Props {
 	[key: string]: any;
 }
@@ -214,9 +215,9 @@ const Task = ({ ...props }: Props) => {
 				<div className="mb-4.5 flex flex-col justify-between gap-5 md:flex-row md:items-center">
 					<div className="flex flex-wrap items-center">
 						<Link href="/hrm/task/AddNewTask">
-							<button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
-								<IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-								{t('add')}
+                        <button type="button" className=" m-1 button-table button-create" >
+								<IconNewPlus/>
+								<span className="uppercase">{t('add')}</span>
 							</button>
 						</Link>
 					</div>

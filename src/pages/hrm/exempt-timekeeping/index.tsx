@@ -39,6 +39,9 @@ import IconChecks from '@/components/Icon/IconChecks';
 import { getDaysOfMonth, toDateString } from '@/utils/commons';
 import Link from 'next/link';
 import IconTrash from '@/components/Icon/IconTrash';
+import IconNewPlus from '@/components/Icon/IconNewPlus';
+import IconNewDownload2 from '@/components/Icon/IconNewDownload2';
+import IconNewTrash from '@/components/Icon/IconNewTrash';
 
 
 interface Props {
@@ -84,12 +87,8 @@ const Department = ({ ...props }: Props) => {
     const [listSelected, setListSelected]= useState<any>([]);
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const data = localStorage.getItem('employeeList');
-            if (data) {
-                setGetStorge(JSON.parse(data));
-            } else {
+                setGetStorge(EmployeeList);
                 localStorage.setItem('employeeList', JSON.stringify(EmployeeList));
-            }
         }
     }, [])
 
@@ -203,36 +202,61 @@ const Department = ({ ...props }: Props) => {
         }
     }
 
-    const columns = [
-        {
-            accessor: 'id',
-            title: '#',
-            render: (records: any, index: any) =>                                     <input type="checkbox" className="form-checkbox" onChange={(e) => handleSelect(records, e.target.checked)} />
-            ,
-        },
-        { accessor: 'code', title: 'Mã chấm công', sortable: false
-    },
-        { accessor: 'name', title: 'Tên nhân viên', sortable: false,
-    }
-    ]
+    // const columns = [
+    //     {
+    //         accessor: 'id',
+    //         title: '#',
+    //         render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>
+    //     },
+    //     { accessor: 'code', title: 'Mã chấm công', sortable: false
+    // },
+    //     { accessor: 'name', title: 'Tên nhân viên', sortable: false,
+    // }
+    // ]
 
-    listDay?.map((item: string, columIndex: number) => {
-        columns.push(
-            {
-                accessor: '',
-                title: item,
-                render: (records: any, index: any) =>
-                    // if (columIndex <= 3) {
-                    //     return <span onClick={() => handleEdit(records)} style={{cursor: "pointer"}}>1</span>
-                    // } else {
-                    //     return <div onClick={() => setOpenModal(true)} style={{cursor: "pointer", height: "20px"}}></div>
-                    // }
-                    <span onClick={() => handleEdit(records)} style={{cursor: "pointer"}}>1</span>
-                ,
-            }
-        )
-    })
+    // listDay?.map((item: string, columIndex: number) => {
+    //     columns.push(
+    //         {
+    //             accessor: '',
+    //             title: item,
+    //             render: (records: any, index: any) =>
+    //                 // if (columIndex <= 3) {
+    //                 //     return <span onClick={() => handleEdit(records)} style={{cursor: "pointer"}}>1</span>
+    //                 // } else {
+    //                 //     return <div onClick={() => setOpenModal(true)} style={{cursor: "pointer", height: "20px"}}></div>
+    //                 // }
+    //                 <span onClick={() => handleEdit(records)} style={{cursor: "pointer"}}>1</span>
+    //             ,
+    //         }
+    //     )
+    // })
+	const columns = [
+		{
+			accessor: 'id',
+			title: '#',
+			render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
+		},
+		{ accessor: 'name', title: 'Tên nhân viên', sortable: false },
+		{ accessor: 'code', title: 'Mã nhân viên', sortable: false },
+		{ accessor: 'department', title: 'Phòng ban', sortable: false },
+		{ accessor: 'duty', title: 'Chức vụ', sortable: false },
 
+		{
+			accessor: 'action',
+			title: 'Thao tác',
+			titleClassName: '!text-center',
+			render: (records: any) => (
+				<div className="mx-auto flex w-max items-center gap-2">
+						<button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+							<IconNewTrash />
+                            <span>
+                                {t('delete')}
+                            </span>
+						</button>
+				</div>
+			),
+		},
+	];
     return (
         <div>
             {showLoader && (
@@ -243,19 +267,19 @@ const Department = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-1">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" onClick={() => setOpenModal(true)}>
-                                    <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                                                    {t('add')}
+                        <button type="button" className="button-table button-import m-1" onClick={() => setOpenModal(true)}>
+                                    <IconNewPlus />
+                                                    <span className="uppercase">{t('add_personnel')}</span>
                                     </button>
 
                         {/* <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
                             Nhập file
                         </button> */}
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
-                            <IconDownload className="ltr:mr-2 rtl:ml-2" />
-                            Xuất file excel
-                        </button>
+                        {/* <button type="button" className="button-table button-download" >
+                            <IconNewDownload2 className="ltr:mr-2 rtl:ml-2" />
+                            <span className="uppercase">Xuất file excel</span>
+                        </button> */}
                            {
                            isSelected && <button type="button" className="btn btn-primary btn-sm m-1 custom-button" onClick={() => handleDelete({})} >
                                     <IconTrash className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
@@ -264,7 +288,7 @@ const Department = ({ ...props }: Props) => {
                            }
                     </div>
                     <div className='flex gap-2'>
-                        <div className='flex gap-1'>
+                        {/* <div className='flex gap-1'>
                         <div className="flex items-center min-w-[80px]" style={{width: "50%"}}>{t('choose_month')}</div>
                         <Flatpickr
                             className='form-input'
@@ -282,7 +306,7 @@ const Department = ({ ...props }: Props) => {
                                handleChangeMonth(selectedDates, dateStr)
                             }}
                          />
-                        </div>
+                        </div> */}
                     <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
                         </div>
                 </div>

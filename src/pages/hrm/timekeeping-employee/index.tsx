@@ -37,6 +37,7 @@ import IconDownload from '@/components/Icon/IconDownload';
 import IconEye from '@/components/Icon/IconEye';
 import IconChecks from '@/components/Icon/IconChecks';
 import { getDaysOfMonth } from '@/utils/commons';
+import IconNewDownload2 from '@/components/Icon/IconNewDownload2';
 
 
 interface Props {
@@ -229,14 +230,13 @@ const Department = ({ ...props }: Props) => {
                             <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
                             Nhập file
                         </button> */}
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
-                            <IconDownload className="ltr:mr-2 rtl:ml-2" />
-                            Xuất file excel
+                        <button type="button" className="button-table button-download" >
+                            <IconNewDownload2 />
+                            <span className='uppercase'>Xuất file excel</span>
                         </button>
                     </div>
                     <div className='flex gap-2'>
                         <div className='flex gap-1'>
-                        <div className="flex items-center min-w-[80px]">{t('choose_month')}</div>
                         <Flatpickr
                             className='form-input'
                             options = {{
