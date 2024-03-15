@@ -1,15 +1,15 @@
 import { test, expect, Page } from '@playwright/test';
 import { makeRamdomText } from '@/utils/commons';
+import select from './elements/select';
+import input from './elements/input';
 
 const fillForm = async (page: Page, text: string) => {
-	await page.locator('#name').fill(text)
-
-	await page.locator('#warehouseId').click();
-	await page.keyboard.type('hành chính');
-	await page.keyboard.press('Enter');
+	await page.waitForTimeout(1000);
+	await input(page).locator('#name').fill(text);
+	await select(page).locator('#warehouseId').fill('hanh');
 };
 
-test.skip('Product Category CRUD', () => {
+test.describe.serial('Product Category CRUD', () => {
 	const text = makeRamdomText(5);
 	const editText = text + 'edit';
 	test('01. Create', async ({ page }) => {

@@ -331,10 +331,10 @@ const Department = ({ ...props }: Props) => {
                         <div className="mb-5">
                             <TableTree>
                                 <Headers>
-                                    <Header width={300}>Tên PB</Header>
-                                    <Header width={150}>Mã PB</Header>
-                                    <Header width={150}>Tên viết tắt</Header>
-                                    <Header width={100}>Thao tác</Header>
+                                    <Header width={'27%'}>Tên phòng ban</Header>
+                                    <Header width={'22%'}>Mã phòng ban</Header>
+                                    <Header width={'27%'}>Tên viết tắt</Header>
+                                    <Header width={'10%'}>Thao tác</Header>
                                 </Headers>
                                 <Rows
                                     items={items}

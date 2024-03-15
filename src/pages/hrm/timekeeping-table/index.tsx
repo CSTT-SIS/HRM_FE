@@ -22,7 +22,13 @@ import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
 
 import { useRouter } from 'next/router';
-
+import Flatpickr from 'react-flatpickr';
+import 'flatpickr/dist/flatpickr.css';
+import { Vietnamese } from "flatpickr/dist/l10n/vn.js"
+// ** Styles
+//
+import "flatpickr/dist/plugins/monthSelect/style.css"
+import monthSelectPlugin, { Config } from "flatpickr/dist/plugins/monthSelect"
 // json
 import TimekeepingList from './timekeeping_fake.json';
 import DepartmentModal from './modal/DepartmentModal';
@@ -35,11 +41,17 @@ import IconNewCheck from '@/components/Icon/IconNewCheck';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
 import IconNewDownload2 from '@/components/Icon/IconNewDownload2';
 import IconNewPlus from '@/components/Icon/IconNewPlus';
+import { getDaysOfMonth } from '@/utils/commons';
 
 
 interface Props {
     [key: string]: any;
 }
+const monthSelectConfig: Partial<Config> = {
+    shorthand: true, //defaults to false
+    dateFormat: "m/Y", //defaults to "F Y"
+    theme: "light" // defaults to "light"
+};
 
 const Department = ({ ...props }: Props) => {
 
@@ -58,6 +70,7 @@ const Department = ({ ...props }: Props) => {
     const [total, setTotal] = useState(0);
     const [getStorge, setGetStorge] = useState<any>();
     const [data, setData] = useState<any>();
+    const [listDay, setListDay] = useState<undefined | string[]>(undefined);
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
@@ -65,8 +78,8 @@ const Department = ({ ...props }: Props) => {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-                setGetStorge(TimekeepingList);
-                localStorage.setItem('TimekeepingList', JSON.stringify(TimekeepingList));
+            setGetStorge(TimekeepingList);
+            localStorage.setItem('TimekeepingList', JSON.stringify(TimekeepingList));
         }
     }, [])
 
@@ -114,6 +127,14 @@ const Department = ({ ...props }: Props) => {
                 }
             });
     };
+    const handleChangeMonth = (selectedDates: any, dateStr: any) => {
+        const date_str = selectedDates[0] ?? ""
+        console.log(date_str, selectedDates)
+        const year: number = date_str.getFullYear();
+        const month: number = date_str.getMonth() + 1;
+        const listDay = getDaysOfMonth(year, month);
+        setListDay(listDay);
+    }
     const handleCheck = (data: any) => {
         const swalChecks = Swal.mixin({
             customClass: {
@@ -177,7 +198,7 @@ const Department = ({ ...props }: Props) => {
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
                     <Tippy content={`${t('detail')}`}>
-                        <Link href="/hrm/timekeeping-detail-table" className="button-detail">
+                        <Link href={`/hrm/timekeeping-table/${records.id}`} className="button-detail">
                             <IconNewEye /><span>
                                 {t('detail')}
                             </span>
