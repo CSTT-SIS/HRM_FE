@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { setPageTitle } from '../../../store/themeConfigSlice';
 import { lazy } from 'react';
 import Link from 'next/link';
+import Select from "react-select";
 // Third party libs
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
 import Swal from 'sweetalert2';
@@ -35,6 +36,9 @@ import IconNewTrash from '@/components/Icon/IconNewTrash';
 import DropdownTreeSelect from "react-dropdown-tree-select";
 import "react-dropdown-tree-select/dist/styles.css";
 import IconNewEye from '@/components/Icon/IconNewEye';
+import IconNewPlus from '@/components/Icon/IconNewPlus';
+import list_departments from '../department/department_list.json';
+
 
 interface Props {
     [key: string]: any;
@@ -71,6 +75,7 @@ const LateEarlyForm = ({ ...props }: Props) => {
     useEffect(() => {
         dispatch(setPageTitle(`${t('late_early_form')}`));
     });
+    const [listDepartment, setListDepartment] = useState<any>();
 
     const router = useRouter();
 
@@ -87,6 +92,15 @@ const LateEarlyForm = ({ ...props }: Props) => {
     const [openModal, setOpenModal] = useState(false);
     const [openDetail, setOpenDetail] = useState(false);
     const [treeDataState, setTreeDataState] = useState<any>(treeData)
+    useEffect(() => {
+        const list_temp_department = list_departments?.map((department: any) => {
+            return {
+                value: department.id,
+                label: department.name
+            }
+        })
+        setListDepartment(list_temp_department);
+    }, [])
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -193,9 +207,9 @@ const LateEarlyForm = ({ ...props }: Props) => {
             title: '#',
             render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{(page - 1) * pageSize + index + 1}</span>,
         },
-        { accessor: 'code', title: `${t('personel_code')}`, sortable: false,
-        render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.code}</span>
-    },
+    //     { accessor: 'code', title: `${t('personel_code')}`, sortable: false,
+    //     render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.code}</span>
+    // },
         { accessor: 'name', title: `${t('personel_name')}`, sortable: false,
         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.name}</span>
     },
@@ -203,10 +217,10 @@ const LateEarlyForm = ({ ...props }: Props) => {
     },
         { accessor: 'submitday', title: `${t('submitday')}`, sortable: false,         render: (records: any, index: any) => <span onClick={(records) => handleDetail(records)}>{`${dayjs(records?.submitday).format("DD/MM/YYYY")}`}</span>
     },
-        { accessor: 'fromdate', title: `${t('fromdate')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.fromdate}</span>
-    },
-        { accessor: 'enddate', title: `${t('enddate')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.enddate}</span>
-    },
+    //     { accessor: 'fromdate', title: `${t('fromdate')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.fromdate}</span>
+    // },
+    //     { accessor: 'enddate', title: `${t('enddate')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.enddate}</span>
+    // },
         { accessor: 'checker', title: `${t('checker')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.checker}</span> },
         { accessor: 'isCheck',
          title: `${t('status')}`,
@@ -259,37 +273,35 @@ const LateEarlyForm = ({ ...props }: Props) => {
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
                         <Link href="/hrm/late-early-form/create">
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
-                                    <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                                                    {t('add')}
-                                    </button>
+                        <button type="button" className=" m-1 button-table button-create" >
+								<IconNewPlus/>
+								<span className="uppercase">{t('add')}</span>
+							</button>
                         </Link>
 
                         {/* <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
                             Nhập file
                         </button> */}
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                        {/* <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconDownload className="ltr:mr-2 rtl:ml-2" />
                             Xuất file excel
-                        </button>
+                        </button> */}
                     </div>
                     <div className='flex flex-row gap-2'>
-                        <div className='flex flex-1 gap-1'>
-                        <div className="flex items-center min-w-[80px]">{t('choose_department')}</div>
-                        <DropdownTreeSelect
-                                className="dropdown-tree flex-1 for-search"
-                                                                  data={treeDataState}
-                                                                  texts={{ placeholder: `${t('choose_department')}`}}
-                                                                  showPartiallySelected={true}
-                                                                  inlineSearchInput={true}
-                                                                  mode='radioSelect'
-                                                                />
-                        </div>
-                        <div className='flex flex-1 gap-1 justify-end'>
-                        <div className="flex items-center min-w-[80px]">{t('choose_month')}</div>
+                        <div className='flex flex-1'>
+                        <Select
+                        className="zIndex-10 w-[100%]"
+                                                            id='unidepartmentparentIdtId'
+                                                            name='departmentparentId'
+                                                            placeholder={t('choose_department')}
+                                                            options={listDepartment}
+                                                            maxMenuHeight={160}
+                                                        />
+                                                        </div>
+                        <div className='flex flex-1'>
                         <Flatpickr
-                            className='form-input flex-[20%]'
+                            className='form-input'
                             options = {{
                             // dateFormat: 'd/m/y',
                             defaultDate: new Date(),
@@ -305,7 +317,9 @@ const LateEarlyForm = ({ ...props }: Props) => {
                             }}
                          />
                         </div>
+                        <div className='flex flex-1'>
                         <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                        </div>
                         </div>
                 </div>
                 <div className="datatables">

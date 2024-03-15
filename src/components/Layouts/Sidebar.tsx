@@ -81,6 +81,7 @@ import IconListWareHouse from '../Icon/IconListWareHouse';
 import IconMenuRepair from '../Icon/Menu/IconMenuRepair';
 import IconMenuProposal from '../Icon/Menu/IconMenuProposal';
 import IconMenuPurchase from '../Icon/Menu/IconMenuPurchase';
+import IconNewArrowLeft from '../Icon/IconNewArrowLeft';
 
 const Sidebar = () => {
     const router = useRouter();
@@ -158,7 +159,7 @@ const Sidebar = () => {
                             className="collapse-icon flex items-center rounded-full transition duration-300 hover:bg-gray-500/10 rtl:rotate-180 dark:text-white-light dark:hover:bg-dark-light/10"
                             onClick={() => dispatch(toggleSidebar())}
                         >
-                            <IconCaretsDown className="rotate-90" />
+                            <IconNewArrowLeft className="rotate-90" />
                             <span className='uppercase'>{t('collapse')}</span>
                         </button>
                     </div>

@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 import IconXCircle from '@/components/Icon/IconXCircle';
 import AddHolidayScheduleModal from './modal/AddHolidayScheduleModal';
 import Link from 'next/link';
+import IconNewPlus from '@/components/Icon/IconNewPlus';
 
 const HolidaySchedule = () => {
 	const dispatch = useDispatch();
@@ -310,10 +311,10 @@ const HolidaySchedule = () => {
 						<div className="text-center text-lg font-semibold ltr:sm:text-left rtl:sm:text-right">{t('dayoff')}</div>
 					</div>
 					<Link href="/hrm/holiday/create">
-                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
-                                    <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                                                    {t('add')}
-                                    </button>
+                    <button type="button" className=" m-1 button-table button-create" >
+								<IconNewPlus/>
+								<span className="uppercase">{t('add')}</span>
+							</button>
                         </Link>
 				</div>
 				<div className="calendar-wrapper">
