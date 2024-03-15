@@ -264,7 +264,7 @@ const TimekeepingModal = ({ ...props }: Props) => {
 						</button>
                         }
 					</div>
-					<div className='flex flex-1 flex-wrap gap-2'>
+					<div className='flex flex-1 flex-wrap gap-2 max-w-[60%] mb-1'>
                         <div className="flex flex-1">
                         <Select
                         className="zIndex-10 w-[100%]"
