@@ -194,25 +194,36 @@ const Task = ({ ...props }: Props) => {
 		{
 			accessor: 'action',
 			title: 'Thao tác',
+            // width: "150px",
 			titleClassName: '!text-center',
 			render: (records: any) => (
-				<div className="mx-auto flex w-max items-center gap-2">
-					<button type="button" className='button-detail' onClick={() => handleDetail(records)}>
-						<IconNewEye /><span>
-							{t('detail')}
-						</span>
-					</button>
-					<button type="button" className='button-edit' onClick={() => handleEdit(records)}>
-						<IconNewEdit /><span>
-							{t('edit')}
-						</span>
-					</button>
-					<button type="button" className='button-delete' onClick={() => handleDelete(records)}>
-						<IconNewTrash />
-						<span>
-							{t('delete')}
-						</span>
-					</button>
+				<div className="mx-auto flex items-center gap-2">
+                    <div className="w-[80px]">
+                     <button type="button"  className='button-detail' onClick={() => handleDetail(records)}>
+                    <IconNewEye /><span>
+                            {t('detail')}
+                                </span>
+                    </button>
+                    </div>
+                    <div className="w-[60px]">
+                    <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
+                    <IconNewEdit /><span>
+                            {t('edit')}
+                                </span>
+                    </button>
+                    </div>
+                    <div className="w-[80px]">
+                    <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                    <IconNewTrash />
+                            <span>
+                            {t('delete')}
+                                </span>
+                    </button>
+                    </div>
+					{/* <button type="button" className='button-download1'>
+						<IconNewDownload />
+                        <span>{t('download')}</span>
+					</button> */}
 				</div>
 			),
 		},

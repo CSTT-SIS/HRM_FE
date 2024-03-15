@@ -236,30 +236,29 @@ const LateEarlyForm = ({ ...props }: Props) => {
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
-                <div className="flex items-center w-max mx-auto gap-2">
-                    <button type="button" className='button-detail' onClick={() => handleDetail(records)}>
-                        <IconNewEye /><span>
+               <div className="mx-auto flex items-center gap-2">
+                    <div className="w-[80px]">
+                     <button type="button"  className='button-detail' onClick={() => handleDetail(records)}>
+                    <IconNewEye /><span>
                             {t('detail')}
                         </span>
                     </button>
-                    <button type="button" className='button-edit' onClick={() => handleEdit(records)}>
-                        <IconNewEdit /><span>
+                    </div>
+                    <div className="w-[60px]">
+                    <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
+                    <IconNewEdit /><span>
                             {t('edit')}
                         </span>
                     </button>
-
-                    {/* <button type="button" className="button-check" onClick={() => handleCheck(records)}>
-                        <IconNewCheck /> <span>
-                        {t('approve')}
-                        </span>
-                    </button> */}
-
+                    </div>
+                    <div className="w-[80px]">
                     <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
                         <IconNewTrash />
                         <span>
                             {t('delete')}
                         </span>
                     </button>
+                </div>
                 </div>
             )
         },
