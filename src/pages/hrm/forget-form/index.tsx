@@ -229,18 +229,17 @@ const ForgetForm = ({ ...props }: Props) => {
         // },
         { accessor: 'shift', title: `${t('late_early_shift')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.shift}</span> },
         { accessor: 'checker', title: `${t('checker')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.checker}</span> },
-        {
-            accessor: 'isCheck',
-            title: `${t('status')}`,
-            sortable: false,
-            render: (records: any, index: any) => <span className={`badge badge-outline-${records?.isCheck ? "success" : "danger"} `} onClick={() => handleDetail(records)}>{records?.isCheck ? `${t('isCheckTrue')}` : `${t('isCheckFalse')}`}</span>
-        },
-        {
-            accessor: 'action',
-            title: 'Thao tác',
-            titleClassName: '!text-center',
-            render: (records: any) => (
-                <div className="mx-auto flex items-center gap-2">
+        { accessor: 'isCheck',
+         title: `${t('status')}`,
+          sortable: false,
+          render: (records: any, index: any) => <span className={`badge badge-outline-${records?.isCheck ? "success" : "danger"} `} onClick={() => handleDetail(records)}>{records?.isCheck ? `${t('isCheckTrue')}` : `${t('isCheckFalse')}`}</span>
+    },
+    {
+        accessor: 'action',
+        title: 'Thao tác',
+        titleClassName: '!text-center',
+        render: (records: any) => (
+         <div className="mx-auto flex items-center gap-2 justify-center">
                     <div className="w-[80px]">
                         <button type="button" className='button-detail' onClick={() => handleDetail(records)}>
                             <IconNewEye /><span>
@@ -300,15 +299,33 @@ const ForgetForm = ({ ...props }: Props) => {
                         </button> */}
                     </div>
                     <div className='flex flex-row gap-2'>
+                        <div className='flex flex-1 w-[180px]'>
+                        <Select
+                        className="zIndex-10 w-[100%]"
+                                                            id='unidepartmentparentIdtId'
+                                                            name='departmentparentId'
+                                                            placeholder={t('choose_department')}
+                                                            options={listDepartment}
+                                                            maxMenuHeight={160}
+                                                        />
+                                                        </div>
                         <div className='flex flex-1'>
-                            <Select
-                                className="zIndex-10 w-[100%]"
-                                id='unidepartmentparentIdtId'
-                                name='departmentparentId'
-                                placeholder={t('choose_department')}
-                                options={listDepartment}
-                                maxMenuHeight={160}
-                            />
+                        <Flatpickr
+                            className='form-input'
+                            options = {{
+                            // dateFormat: 'd/m/y',
+                            defaultDate: new Date(),
+                            locale: {
+                                ...Vietnamese
+                            },
+                                plugins: [
+                                    monthSelectPlugin(monthSelectConfig) // Sử dụng plugin với cấu hình
+                                ]
+                            }}
+                            onChange={(selectedDates, dateStr, instance) => {
+                                // Xử lý sự kiện thay đổi ngày tháng ở đây
+                            }}
+                         />
                         </div>
                         <div className='flex flex-1'>
                             <Flatpickr

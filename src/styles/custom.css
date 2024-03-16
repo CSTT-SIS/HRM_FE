@@ -621,7 +621,7 @@ li.menu>button:hover svg.icon-menu {
     background-size: 20px;
 }
 
-input:disabled {
+input:disabled, textarea:disabled {
     color: black !important;
     background-color: rgb(165, 165, 165) !important;
 }
@@ -668,3 +668,13 @@ input:disabled {
     background: #476704!important;
     color: #fff;
 }
+
+.css-16xfy0z-control {
+    color: black !important;
+    background-color: rgb(165, 165, 165) !important;
+}
+
+.css-16xfy0z-control .css-olqui2-singleValue {
+    color: black !important;
+}
+

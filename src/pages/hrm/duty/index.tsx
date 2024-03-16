@@ -142,7 +142,7 @@ const Duty = ({ ...props }: Props) => {
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
-                <div className="mx-auto flex items-center gap-2">
+                <div className="mx-auto flex items-center gap-2 justify-center">
                 <div className="w-[60px]">
                 <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
                 <IconNewEdit /><span>
