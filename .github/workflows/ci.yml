@@ -11,7 +11,7 @@ jobs:
         steps:
             - uses: actions/checkout@v4
               with:
-                ssh-key: ${{ secrets.E2E_SSH_PRIVATE_KEY }}
+                  ssh-key: ${{ secrets.E2E_SSH_PRIVATE_KEY }}
             - uses: oven-sh/setup-bun@v1
             - run: bun i
             - name: 'Create env file'
@@ -34,6 +34,8 @@ jobs:
             reportName: report-${{ github.run_id }}${{ github.run_number }}${{ github.run_attempt }}
         steps:
             - uses: actions/checkout@v4
+              with:
+                  ssh-key: ${{ secrets.E2E_SSH_PRIVATE_KEY }}
             - uses: actions/download-artifact@v4
               with:
                   name: build
