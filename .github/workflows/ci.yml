@@ -28,6 +28,7 @@ jobs:
                   path: build.tar
 
     test:
+        permissions: write-all
         needs: build
         runs-on: ubuntu-latest
         env:
