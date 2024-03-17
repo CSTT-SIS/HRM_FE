@@ -35,6 +35,9 @@ jobs:
             - uses: actions/download-artifact@v4
               with:
                   name: build
+            - uses: geekyeggo/delete-artifact@v4
+              with:
+                  name: build
             - run: tar -xvf build.tar
             - uses: oven-sh/setup-bun@v1
             - name: Install playwright
