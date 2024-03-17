@@ -39,9 +39,6 @@ jobs:
             - uses: actions/download-artifact@v4
               with:
                   name: build
-            - uses: geekyeggo/delete-artifact@v4
-              with:
-                  name: build
             - run: tar -xvf build.tar
             - uses: oven-sh/setup-bun@v1
             - name: Install playwright
@@ -63,6 +60,10 @@ jobs:
                   port: 22
                   source: '${{ env.reportName }}'
                   target: /root/workspace/hrm-e2e-rp/playwright-report
+            - uses: geekyeggo/delete-artifact@v4
+              with:
+                  name: build
+                  failOnError: false
             - uses: daun/playwright-report-summary@v3
               if: always()
               with:
