@@ -10,6 +10,8 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
+              with:
+                  ssh-key: ${{ secrets.E2E_SSH_PRIVATE_KEY }}
             - uses: oven-sh/setup-bun@v1
             - run: bun i
             - name: 'Create env file'
@@ -26,12 +28,15 @@ jobs:
                   path: build.tar
 
     test:
+        permissions: write-all
         needs: build
         runs-on: ubuntu-latest
         env:
             reportName: report-${{ github.run_id }}${{ github.run_number }}${{ github.run_attempt }}
         steps:
             - uses: actions/checkout@v4
+              with:
+                  ssh-key: ${{ secrets.E2E_SSH_PRIVATE_KEY }}
             - uses: actions/download-artifact@v4
               with:
                   name: build
@@ -56,6 +61,10 @@ jobs:
                   port: 22
                   source: '${{ env.reportName }}'
                   target: /root/workspace/hrm-e2e-rp/playwright-report
+            - uses: geekyeggo/delete-artifact@v4
+              with:
+                  name: build
+                  failOnError: false
             - uses: daun/playwright-report-summary@v3
               if: always()
               with:
