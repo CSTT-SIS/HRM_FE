@@ -11,6 +11,7 @@
 		"directive": "ý kiến chỉ đạo 1",
 		"attachment": "Attachment1.docx",
 		"color": "warning",
+		"percent": "50%",
 		"status": "ĐANG TIẾN HÀNH"
 	},
 	{
@@ -25,7 +26,8 @@
 		"directive": "ý kiến chỉ đạo 2",
 		"attachment": "Attachment2.docx",
 		"color": "danger",
-		"status": "HUỶ BỎ"
+		"percent": "50%",
+		"status": "ĐANG TIẾN HÀNH"
 	},
 	{
 		"id": 3,
@@ -39,6 +41,7 @@
 		"directive": "ý kiến chỉ đạo 3",
 		"attachment": "Attachment3.docx",
 		"color": "success",
+		"percent": "100%",
 		"status": "HOÀN THÀNH"
 	},
 	{
@@ -53,6 +56,7 @@
 		"directive": "ý kiến chỉ đạo 4",
 		"attachment": "Attachment4.docx",
 		"color": "success",
+		"percent": "100%",
 		"status": "HOÀN THÀNH"
 	},
 	{
@@ -67,6 +71,7 @@
 		"directive": "ý kiến chỉ đạo 5",
 		"attachment": "Attachment5.docx",
 		"color": "warning",
+		"percent": "60%",
 		"status": "ĐANG TIẾN HÀNH"
 	}
 ]

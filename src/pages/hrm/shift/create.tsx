@@ -211,7 +211,7 @@ const AddNewShift = ({ ...props }: Props) => {
                                 <div className="mb-5 w-1/2">
                                     <label htmlFor="break_from_time" className='label'>
                                         {' '}
-                                        {t('break_from_time')} <span style={{ color: 'red' }}>* </span>
+                                        {t('break_from_time')} 
                                     </label>
                                     <Flatpickr
                                         options={{
@@ -224,12 +224,11 @@ const AddNewShift = ({ ...props }: Props) => {
 
                                         className="form-input calender-input"
                                     />
-                                    {submitCount ? errors.break_from_time ? <div className="mt-1 text-danger"> {errors.break_from_time} </div> : null : ''}
                                 </div>
                                 <div className="mb-5 w-1/2">
                                     <label htmlFor="break_end_time" className='label'>
                                         {' '}
-                                        {t('break_end_time')} <span style={{ color: 'red' }}>* </span>
+                                        {t('break_end_time')} 
                                     </label>
                                     <Flatpickr
                                         options={{
@@ -239,10 +238,8 @@ const AddNewShift = ({ ...props }: Props) => {
                                             time_24hr: true
                                         }}
                                         placeholder={`${t('choose_break_end_time')}`}
-
                                         className="form-input calender-input"
                                     />
-                                    {submitCount ? errors.break_end_time ? <div className="mt-1 text-danger"> {errors.break_end_time} </div> : null : ''}
                                 </div>
                             </div>
                         </>}
@@ -251,10 +248,9 @@ const AddNewShift = ({ ...props }: Props) => {
                             <div className="mb-5 w-1/2">
                                 <label htmlFor="time" className='label'>
                                     {' '}
-                                    {t('description')} <span style={{ color: 'red' }}>* </span>
+                                    {t('description')} 
                                 </label>
                                 <Field name="description" as="textarea" id="description" placeholder={t('fill_description')} className="form-input" />
-                                {submitCount ? errors.description ? <div className="mt-1 text-danger"> {errors.description} </div> : null : ''}
                             </div>
 
                             <div className="mb-5 w-1/2">
