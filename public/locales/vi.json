@@ -420,7 +420,7 @@
 	"//_SHIFT": "BẮT ĐẦU CHUYỂN",
 	"code_shift": "Mã ca",
 	"time_total": "Tổng thời gian",
-	"work_coefficient": "Hệ số công việc",
+	"work_coefficient": "Hệ số công",
 	"break_from_time": "Nghỉ giữa ca từ",
 	"break_end_time": "Nghỉ giữa ca đến",
 	"//_END": "KẾT THÚC SỰ CHUYỂN",
@@ -810,5 +810,8 @@
     "file": "File đính kèm",
     "add_personnel": "Thêm người",
     "add_personnel_to_list_success": "Thêm vào danh sách thành công",
-    "list_staff_by_shift": "Danh sách nhân viên thuộc ca"
+    "list_staff_by_shift": "Danh sách nhân viên thuộc ca",
+	"enter_project": "Nhập dự án",
+	"project" : "Dự án"
+
 }

@@ -51,7 +51,7 @@ const Task = ({ ...props }: Props) => {
 	const [getStorge, setGetStorge] = useState<any>();
 	const [data, setData] = useState<any>();
 	const [listDepartment, setListDepartment] = useState<any>();
-    const [active, setActive] = useState<any>([1]);
+	const [active, setActive] = useState<any>([1]);
 
 	const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
@@ -87,8 +87,8 @@ const Task = ({ ...props }: Props) => {
 		setShowLoader(false);
 	}, [recordsData]);
 	const handleActive = (value: any) => {
-        setActive([value]);
-    };
+		setActive([value]);
+	};
 	const handleEdit = (data: any) => {
 		// setOpenModal(true);
 		// setData(data);
@@ -188,38 +188,38 @@ const Task = ({ ...props }: Props) => {
 			title: 'Trạng thái',
 			render: (records: any, index: any) => <span className={`badge bg-${records?.color}`}>{records?.status}</span>,
 		},
-		// { accessor: 'directive', title: 'Ý kiến chỉ đạo', sortable: false },
+		{ accessor: 'percent', title: '% công việc', sortable: false },
 		// { accessor: 'attachment', title: 'File đính kèm', sortable: false },
 
 		{
 			accessor: 'action',
 			title: 'Thao tác',
-            // width: "150px",
+			// width: "150px",
 			titleClassName: '!text-center',
 			render: (records: any) => (
 				<div className="mx-auto flex items-center gap-2 justify-center">
-                    <div className="w-[80px]">
-                     <button type="button"  className='button-detail' onClick={() => handleDetail(records)}>
-                    <IconNewEye /><span>
-                            {t('detail')}
-                                </span>
-                    </button>
-                    </div>
-                    <div className="w-[60px]">
-                    <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
-                    <IconNewEdit /><span>
-                            {t('edit')}
-                                </span>
-                    </button>
-                    </div>
-                    <div className="w-[80px]">
-                    <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
-                    <IconNewTrash />
-                            <span>
-                            {t('delete')}
-                                </span>
-                    </button>
-                    </div>
+					<div className="w-[80px]">
+						<button type="button" className='button-detail' onClick={() => handleDetail(records)}>
+							<IconNewEye /><span>
+								{t('detail')}
+							</span>
+						</button>
+					</div>
+					<div className="w-[60px]">
+						<button type="button" className='button-edit' onClick={() => handleEdit(records)}>
+							<IconNewEdit /><span>
+								{t('edit')}
+							</span>
+						</button>
+					</div>
+					<div className="w-[80px]">
+						<button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+							<IconNewTrash />
+							<span>
+								{t('delete')}
+							</span>
+						</button>
+					</div>
 					{/* <button type="button" className='button-download1'>
 						<IconNewDownload />
                         <span>{t('download')}</span>
@@ -246,6 +246,18 @@ const Task = ({ ...props }: Props) => {
 							</button>
 						</Link>
 					</div>
+
+
+				</div>
+				<div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
+					<div className="flex items-center flex-wrap gap-1">
+						<IconFilter />
+						<span>Lọc nhanh :</span>
+						<div className='flex items-center flex-wrap gap-2'>
+							<div className={active.includes(1) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(1)}>Đang tiến hành</div>
+							<div className={active.includes(3) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(3)}>Hoàn thành</div>
+						</div>
+					</div>
 					<div className='flex flex-row gap-2'>
 						<Select
 							className="zIndex-10 w-[180px]"
@@ -256,18 +268,6 @@ const Task = ({ ...props }: Props) => {
 							maxMenuHeight={160}
 						/>
 						<input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
-					</div>
-
-				</div>
-				<div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
-					<div className="flex items-center flex-wrap gap-1">
-						<IconFilter />
-						<span>lọc nhanh :</span>
-						<div className='flex items-center flex-wrap gap-2'>
-							<div className={active.includes(1) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(1)}>Đang tiến hành</div>
-							<div className={active.includes(2) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(2)}>Hủy bỏ</div>
-							<div className={active.includes(3) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(3)}>Hoàn thành</div>
-						</div>
 					</div>
 				</div>
 				<div className="datatables">
