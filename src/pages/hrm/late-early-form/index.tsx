@@ -236,7 +236,7 @@ const LateEarlyForm = ({ ...props }: Props) => {
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
-               <div className="mx-auto flex items-center gap-2">
+               <div className="mx-auto flex items-center gap-2 justify-center">
                     <div className="w-[80px]">
                      <button type="button"  className='button-detail' onClick={() => handleDetail(records)}>
                     <IconNewEye /><span>
@@ -292,7 +292,7 @@ const LateEarlyForm = ({ ...props }: Props) => {
                         </button> */}
                     </div>
                     <div className='flex flex-row gap-2'>
-                        <div className='flex flex-1'>
+                        <div className='flex flex-1 w-[180px]'>
                             <Select
                                 className="zIndex-10 w-[100%]"
                                 id='unidepartmentparentIdtId'

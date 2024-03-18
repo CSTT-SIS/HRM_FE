@@ -197,7 +197,7 @@ const Task = ({ ...props }: Props) => {
 			// width: "150px",
 			titleClassName: '!text-center',
 			render: (records: any) => (
-				<div className="mx-auto flex items-center gap-2">
+				<div className="mx-auto flex items-center gap-2 justify-center">
 					<div className="w-[80px]">
 						<button type="button" className='button-detail' onClick={() => handleDetail(records)}>
 							<IconNewEye /><span>
@@ -260,7 +260,7 @@ const Task = ({ ...props }: Props) => {
 					</div>
 					<div className='flex flex-row gap-2'>
 						<Select
-							className="zIndex-10 w-[100%]"
+							className="zIndex-10 w-[180px]"
 							id='unidepartmentparentIdtId'
 							name='departmentparentId'
 							placeholder={t('choose_department')}
