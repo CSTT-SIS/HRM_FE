@@ -11,13 +11,9 @@
 		"directive": "ý kiến chỉ đạo 1",
 		"attachment": "Attachment1.docx",
 		"color": "warning",
-<<<<<<< HEAD
 		"percent": "50%",
-		"status": "ĐANG TIẾN HÀNH"
-=======
 		"status": "ĐANG TIẾN HÀNH",
         "date_create": "2024-01-01"
->>>>>>> f69a95c9f2a7dab5d259916c70c3b4bc2de68c28
 	},
 	{
 		"id": 2,
