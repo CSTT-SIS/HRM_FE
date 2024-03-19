@@ -802,8 +802,8 @@
 	"person_request": "Người yêu cầu",
 	"time_request": "Thời gian yêu cầu",
 	"order_management": "Yêu cầu mua vật tư",
-	"warehousing_bill_import": "Quản lí nhập kho",
-	"warehousing_bill_export": "Quản lí xuất kho",
+	"warehousing_bill_import": "Yêu cầu nhập kho",
+	"warehousing_bill_export": "yêu cầu xuất kho",
 	"attached_image": "Hình ảnh đính kèm",
 	"proposal_supply": "Cung cấp vật tư",
 	"supply_infomation": "Thông tin cung cấp vật tư",
@@ -816,5 +816,6 @@
 	"enter_project": "Nhập dự án",
 	"project": "Dự án",
 	"catalog_management": "Quản lí danh mục",
-	"proposal_management": "Quản lí yêu cầu"
+	"proposal_management": "Quản lí yêu cầu",
+    "inventory_number": "Số lượng tồn kho"
 }
