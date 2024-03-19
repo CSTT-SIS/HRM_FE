@@ -393,7 +393,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                                         dateFormat: 'Y-m-d H:i'
                                                                     }}
                                                                     value={field?.value}
-                                                                    className={true ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                                    className={true ? "form-input bg-[#f2f2f2] calender-input" : "form-input calender-input"}
                                                                     disabled={true}
                                                                 />
                                                             )}

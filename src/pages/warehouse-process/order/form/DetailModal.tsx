@@ -140,18 +140,18 @@ const DetailModal = ({ ...props }: Props) => {
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <Dialog.Panel className="panel w-full max-w-lg overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark">
+                            <Dialog.Panel className="panel w-full max-w-lg overflow-hidden rounded-2xl border-0 p-0 text-[#476704] dark:text-white-dark">
                                 <button
                                     type="button"
                                     onClick={() => handleCancel()}
-                                    className="absolute top-4 text-gray-400 outline-none hover:text-gray-800 ltr:right-4 rtl:left-4 dark:hover:text-gray-600"
+                                    className="absolute top-4 ltr:right-4 rtl:left-4 dark:hover:text-gray-600"
                                 >
                                     <IconX />
                                 </button>
-                                <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {/* {props.data === undefined ? t('add_detail') : t('edit_detail')} */}
+                                <div className="bg-[#F5F5F5] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
+                                    {props.data === undefined ? t('add_product_list') : t('edit_product')}
                                 </div>
-                                <div className="p-5">
+                                <div className="pl-10 pr-10 p-5">
                                     <Formik
                                         initialValues={initialValue}
                                         validationSchema={SubmittedForm}
@@ -209,7 +209,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                         <div className="text-danger mt-1"> {`${errors.note}`} </div>
                                                     ) : null}
                                                 </div>
-                                                <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
+                                                <div className="p-[15px] flex items-center justify-center ltr:text-right rtl:text-left">
                                                     <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
                                                         {t('cancel')}
                                                     </button>
