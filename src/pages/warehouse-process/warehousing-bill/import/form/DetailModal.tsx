@@ -152,7 +152,7 @@ const DetailModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data === undefined ? t('add_detail') : t('edit_detail')}
+                                    {/* {props.data === undefined ? t('add_detail') : t('edit_detail')} */}
                                 </div>
                                 <div>
                                     <div className="p-5">
@@ -187,6 +187,19 @@ const DetailModal = ({ ...props }: Props) => {
                                                                 <div className="text-danger mt-1"> {`${errors.productId}`} </div>
                                                             ) : null}
                                                         </div>
+                                                    </div>
+                                                    <div className="mb-5">
+                                                        <label htmlFor="inventory" > {t('inventory_number')} </label >
+                                                        <Field
+                                                            name="inventory"
+                                                            type="number"
+                                                            id="inventory"
+                                                            className={"form-input bg-[#f2f2f2]"}
+                                                            disabled={true}
+                                                        />
+                                                        {submitCount && errors.inventory ? (
+                                                            <div className="text-danger mt-1"> {`${errors.inventory}`} </div>
+                                                        ) : null}
                                                     </div>
                                                     <div className="mb-5">
                                                         <label htmlFor="proposalQuantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >

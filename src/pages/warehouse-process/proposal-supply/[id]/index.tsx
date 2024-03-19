@@ -20,7 +20,7 @@ import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import Select, { components } from 'react-select';
 import IconBack from '@/components/Icon/IconBack';
-import { DropdownDepartment } from '@/services/swr/dropdown.twr';
+import { DropdownDepartment, DropdownWarehouses } from '@/services/swr/dropdown.twr';
 import DetailModal from '../form/DetailModal';
 import moment from 'moment';
 import Flatpickr from 'react-flatpickr';
@@ -53,6 +53,7 @@ const DetailPage = ({ ...props }: Props) => {
     // get data
     const { data: ProposalDetail, pagination, mutate, isLoading } = ProposalDetails({ ...query });
     const { data: dropdownDepartment, pagination: paginationDepartment, mutate: mutateDepartment, isLoading: isLoadingDepartment } = DropdownDepartment({ page: page });
+    const { data: warehouseDropdown, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({ page: 1 });
 
     useEffect(() => {
         dispatch(setPageTitle(`${t('proposal')}`));
@@ -164,7 +165,7 @@ const DetailPage = ({ ...props }: Props) => {
         },
         {
             accessor: 'name',
-            title: 'Tên sản phẩm',
+            title: 'Tên Vật tư',
             render: ({ product }: any) => <span>{product?.name}</span>,
             sortable: false
         },
@@ -418,6 +419,26 @@ const DetailPage = ({ ...props }: Props) => {
                                                             <div className="text-danger mt-1"> {`${errors.departmentId}`} </div>
                                                         ) : null}
                                                     </div>
+                                                </div>
+                                                <div className='flex justify-between gap-5 mt-5'>
+                                                    <div className=" w-1/2">
+                                                        <label htmlFor="warehouseId">
+                                                            {t('warehouse')} <span style={{ color: 'red' }}>* </span>
+                                                        </label>
+                                                        <Select
+                                                            id="warehouseId"
+                                                            name="warehouseId"
+                                                            options={warehouseDropdown?.data}
+                                                            isLoading={warehouseLoading}
+                                                            maxMenuHeight={160}
+                                                            value={values?.warehouseId}
+                                                            onChange={(e) => {
+                                                                setFieldValue('warehouseId', e);
+                                                            }}
+                                                        />
+                                                        {submitCount && errors.warehouseId ? <div className="mt-1 text-danger"> {`${errors.warehouseId}`} </div> : null}
+                                                    </div>
+                                                    <div className=" w-1/2"> </div>
                                                 </div>
                                                 <div className='mt-5'>
                                                     <label htmlFor="type" className='label'> {t('content')} < span style={{ color: 'red' }}>* </span></label >

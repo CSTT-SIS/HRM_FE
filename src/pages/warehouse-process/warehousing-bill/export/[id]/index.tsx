@@ -110,7 +110,7 @@ const ExportPage = ({ ...props }: Props) => {
         },
         {
             accessor: 'name',
-            title: 'Tên sản phẩm',
+            title: 'Tên Vật tư',
             render: ({ product, replacementPart }: any) => <span>{product?.name || replacementPart?.name}</span>,
             sortable: false
         },

@@ -178,7 +178,7 @@ const DetailPage = ({ ...props }: Props) => {
         },
         {
             accessor: 'name',
-            title: 'Tên sản phẩm',
+            title: 'Tên Vật tư',
             render: ({ product, name }: any) => <span>{product?.name || name}</span>,
             sortable: false
         },
@@ -568,7 +568,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                                 <>
                                                                     <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
                                                                         <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                                                                        {t('add_detail')}
+                                                                        {/* {t('add_detail')} */}
                                                                     </button>
                                                                     {/* <button type="button" onClick={(e) => handleAutoAdd()} className="btn btn-primary btn-sm m-1 custom-button" >
                                                                         <IconArchive className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
