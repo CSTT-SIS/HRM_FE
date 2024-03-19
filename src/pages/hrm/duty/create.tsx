@@ -7,11 +7,10 @@ import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
 import Swal from 'sweetalert2';
 import { showMessage } from '@/@core/utils';
-import IconX from '@/components/Icon/IconX';
-import IconArrowLeft from '@/components/Icon/IconArrowLeft';
-import IconArrowBackward from '@/components/Icon/IconArrowBackward';
 import IconBack from '@/components/Icon/IconBack';
 import Select from "react-select";
+import { createPosition } from '@/services/apis/position.api';
+
 interface Props {
     [key: string]: any;
 }
@@ -37,33 +36,11 @@ const AddNewDuty = ({ ...props }: Props) => {
     });
 
     const handleDuty = (value: any) => {
-        if (props?.data) {
-            const reNew = props.totalData.filter((item: any) => item.id !== props.data.id);
-            reNew.push({
-                id: props.data.id,
-                name: value.name,
-                code: value.code,
-                status: value.status
+        createPosition(value).then(() => {
+                showMessage(`${t('create_duty_success')}`, 'success');
+            }).catch((err) => {
+                showMessage(`${t('create_duty_error')}`, 'error');
             });
-            localStorage.setItem('dutyList', JSON.stringify(reNew));
-            props.setGetStorge(reNew);
-            props.setOpenModal(false);
-            props.setData(undefined);
-            showMessage(`${t('edit_duty_success')}`, 'success');
-        } else {
-            const reNew = props.totalData;
-            reNew.push({
-                id: Number(props?.totalData[props?.totalData?.length - 1].id) + 1,
-                name: value.name,
-                code: value.code,
-                status: value.status
-            })
-            localStorage.setItem('dutyList', JSON.stringify(reNew));
-            props.setGetStorge(props.totalData);
-            props.setOpenModal(false);
-            props.setData(undefined);
-            showMessage(`${t('create_duty_success')}`, 'success')
-        }
     }
 
     const handleCancel = () => {

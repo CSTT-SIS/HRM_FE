@@ -1,32 +1,25 @@
 import { useEffect, Fragment, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { setPageTitle } from '../../../store/themeConfigSlice';
-import { lazy } from 'react';
 import Link from 'next/link';
 // Third party libs
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
 import Swal from 'sweetalert2';
-import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
-import { deleteDepartment, detailDepartment, listAllDepartment } from '../../../services/apis/department.api';
+import { Positions } from '@/services/swr/position.twr';
 // constants
 import { PAGE_SIZES, PAGE_SIZES_DEFAULT, PAGE_NUMBER_DEFAULT } from '@/utils/constants';
 // helper
-import { capitalize, formatDate, showMessage } from '@/@core/utils';
+import { showMessage } from '@/@core/utils';
 // icons
-import IconPencil from '../../../components/Icon/IconPencil';
-import IconTrashLines from '../../../components/Icon/IconTrashLines';
 import { IconLoading } from '@/components/Icon/IconLoading';
-import IconPlus from '@/components/Icon/IconPlus';
 
 import { useRouter } from 'next/router';
 
 // json
 import DutyModal from './modal/DutyModal';
-import IconFolderMinus from '@/components/Icon/IconFolderMinus';
-import IconDownload from '@/components/Icon/IconDownload';
 import duty_list from './duty_list.json'
 import IconNewEdit from '@/components/Icon/IconNewEdit';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
@@ -56,19 +49,17 @@ const Duty = ({ ...props }: Props) => {
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
     const [openModal, setOpenModal] = useState(false);
+    //get data
+    const { data: position, pagination, mutate} = Positions({
+        sortBy: 'id.ASC',
+     ...router.query
+    })
 
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-                setGetStorge(duty_list);
-                localStorage.setItem('duty_list', JSON.stringify(duty_list));
-        }
-    }, [])
-
-    useEffect(() => {
-        setTotal(getStorge?.length);
-        setPageSize(PAGE_SIZES_DEFAULT);
-        setRecordsData(getStorge?.filter((item: any, index: any) => { return index <= 9 && page === 1 ? item : index >= 10 && index <= (page * 9) ? item : null }));
-    }, [getStorge, getStorge?.length, page])
+    // useEffect(() => {
+    //     setTotal(getStorge?.length);
+    //     setPageSize(PAGE_SIZES_DEFAULT);
+    //     setRecordsData(getStorge?.filter((item: any, index: any) => { return index <= 9 && page === 1 ? item : index >= 10 && index <= (page * 9) ? item : null }));
+    // }, [getStorge, getStorge?.length, page])
 
     useEffect(() => {
         setShowLoader(false);
@@ -78,6 +69,22 @@ const Duty = ({ ...props }: Props) => {
         router.push(`/hrm/duty/${data.id}`)
         // setOpenModal(true);
         // setData(data);
+    };
+
+    const handleChangePage = (page: number, pageSize: number) => {
+        router.replace(
+            {
+                pathname: router.pathname,
+                query: {
+                    ...router.query,
+                    page: page,
+                    perPage: pageSize,
+                },
+            },
+            undefined,
+            { shallow: true },
+        );
+        return pageSize;
     };
 
     const handleDelete = (data: any) => {
@@ -197,14 +204,14 @@ const Duty = ({ ...props }: Props) => {
                     <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover custom_table"
-                        records={recordsData}
+                        records={position?.data}
                         columns={columns}
-                        totalRecords={total}
-                        recordsPerPage={pageSize}
-                        page={page}
-                        onPageChange={(p) => setPage(p)}
+                        totalRecords={pagination?.totalRecords}
+                        recordsPerPage={pagination?.perPage}
+                        page={pagination?.page}
+                         onPageChange={(p) => handleChangePage(p, pagination?.perPage)}
                         recordsPerPageOptions={PAGE_SIZES}
-                        onRecordsPerPageChange={setPageSize}
+                        onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
                         sortStatus={sortStatus}
                         onSortStatusChange={setSortStatus}
                         minHeight={200}

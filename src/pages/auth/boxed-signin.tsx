@@ -71,14 +71,14 @@ const LoginBoxed = () => {
     return (
         <div>
             <div className="absolute inset-0">
-                <img src="/assets/images/bg.png" alt="image" className="w-full h-full object-cover" />
+                <img src="/assets/images/login_bg.png" alt="image" className="w-full h-full object-cover" />
             </div>
             <div className="relative flex min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat px-6 py-10 dark:bg-[#060818] sm:px-28 gap-20 ml-8 mr-8" style={{ margin: "auto" }}>
-                <div className='flex-1 items-center' style={{ display: "flex", flexDirection: 'column', alignSelf: "flex-start" }}>
+                <div className='flex-1 items-center' style={{ display: "flex", flexDirection: 'column' }}>
                     <img src='/assets/images/logo_login.png' style={{ width: "70%" }} className='' />
                     {/* <h1 className='company-name mb-2'>vangtat mining</h1> */}
-                    <h1 className='welcome uppercase'>{t('welcome')}</h1>
-                    <h1 className='welcome-member uppercase'>{t('vangtat_participants')}</h1>
+                    <span className='welcome uppercase'>{t('welcome')}</span>
+                    <span className='welcome-member uppercase'>{t('vangtat_participants')}</span>
                 </div>
                 <div className="relative w-full rounded-md p-2 flex-1 form-login-container">
                     <div className="relative flex flex-col justify-center rounded-md bg-white/60 px-6 py-20 backdrop-blur-lg dark:bg-black/50 lg:min-h-[70vh]">
