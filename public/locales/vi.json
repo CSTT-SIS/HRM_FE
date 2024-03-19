@@ -817,5 +817,6 @@
 	"project": "Dự án",
 	"catalog_management": "Quản lí danh mục",
 	"proposal_management": "Quản lí yêu cầu",
-    "inventory_number": "Số lượng tồn kho"
+    "inventory_number": "Số lượng tồn kho",
+    "expiration_date": "Ngày hết hạn"
 }
