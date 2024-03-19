@@ -187,7 +187,7 @@ const DetailPage = ({ ...props }: Props) => {
         },
         {
             accessor: 'name',
-            title: 'Tên sản phẩm',
+            title: 'Tên Vật tư',
             render: ({ product }: any) => <span>{product?.name}</span>,
             sortable: false
         },
