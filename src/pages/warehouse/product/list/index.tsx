@@ -153,14 +153,14 @@ const ProductCategoryPage = ({ ...props }: Props) => {
             render: (records: any) => (
                 <div className="flex justify-start gap-2">
                     <div className="w-[60px]">
-                        <button type="button" className='button-edit' onClick={() => handleEdit(records)}>
+                        <button data-testId="edit-product-btn" type="button" className='button-edit' onClick={() => handleEdit(records)}>
                             <IconNewEdit /><span>
                                 {t('edit')}
                             </span>
                         </button>
                     </div>
                     <div className="w-[80px]">
-                        <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                        <button data-testId="delete-product-btn" type="button" className='button-delete' onClick={() => handleDelete(records)}>
                             <IconNewTrash />
                             <span>
                                 {t('delete')}
