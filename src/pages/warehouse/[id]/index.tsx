@@ -64,13 +64,13 @@ const ShelfPage = ({ ...props }: Props) => {
         },
         {
             accessor: 'product',
-            title: 'Tên sản phẩm',
+            title: 'Tên Vật tư',
             render: ({ product }: any) => <span >{product?.name}</span>,
             sortable: false
         },
         {
             accessor: 'product',
-            title: 'Mã sản phẩm',
+            title: 'Mã Vật tư',
             render: ({ product }: any) => <span >{product?.code}</span>,
             sortable: false
         },

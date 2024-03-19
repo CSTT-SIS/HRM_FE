@@ -138,7 +138,6 @@ const CategoryModal = ({ ...props }: Props) => {
 								</div>
 								<div className="w-1/2">
 									<label htmlFor="warehouseId">
-										{' '}
 										{t('warehouse')} <span style={{ color: 'red' }}>* </span>
 									</label>
 									<Select

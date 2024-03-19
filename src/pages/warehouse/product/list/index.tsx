@@ -128,8 +128,8 @@ const ProductCategoryPage = ({ ...props }: Props) => {
 			title: '#',
 			render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
 		},
-		{ accessor: 'code', title: 'Mã sản phẩm', sortable: false },
-		{ accessor: 'name', title: 'Tên sản phẩm', sortable: false },
+		{ accessor: 'code', title: 'Mã Vật tư', sortable: false },
+		{ accessor: 'name', title: 'Tên Vật tư', sortable: false },
 		// { accessor: 'price', title: 'Giá', sortable: false },
 		// { accessor: 'tax', title: 'Thuế', sortable: false },
 		{
@@ -140,7 +140,7 @@ const ProductCategoryPage = ({ ...props }: Props) => {
 		},
 		{
 			accessor: 'category',
-			title: 'Danh mục sản phẩm',
+			title: 'Danh mục Vật tư',
 			render: ({ category }: any) => <span>{category?.name}</span>,
 			sortable: false,
 		},
