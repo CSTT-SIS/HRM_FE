@@ -163,10 +163,9 @@ const AddNewShift = ({ ...props }: Props) => {
                             <div className="mb-5 w-1/2">
                                 <label htmlFor="work_coefficient" className='label'>
                                     {' '}
-                                    {t('work_coefficient')} <span style={{ color: 'red' }}>* </span>
+                                    {t('work_coefficient')} 
                                 </label>
                                 <Field name="work_coefficient" type="number" id="work_coefficient" placeholder="" className="form-input" />
-                                {submitCount ? errors.work_coefficient ? <div className="mt-1 text-danger"> {errors.work_coefficient} </div> : null : ""}
                             </div>
                         </div>
                         {typeShift === "0" && <> <div className='flex justify-between gap-5'>

@@ -24,6 +24,8 @@ import IconTrashLines from '@/components/Icon/IconTrashLines';
 
 // modal
 import UnitModal from './UnitModal';
+import IconNewEdit from '@/components/Icon/IconNewEdit';
+import IconNewTrash from '@/components/Icon/IconNewTrash';
 
 
 interface Props {
@@ -132,14 +134,24 @@ const ProductUnitPage = ({ ...props }: Props) => {
             accessor: 'action',
             title: 'Thao tác',
             titleClassName: '!text-center',
+            width: '10%',
             render: (records: any) => (
-                <div className="flex items-center w-max mx-auto gap-2">
-                    <button className='bg-[#9CD3EB] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleEdit(records)}>
-                        <IconPencil /> <span>{`${t('edit')}`}</span>
-                    </button>
-                    <button className='bg-[#E43940] flex justify-between gap-1 p-1 rounded text-[#F5F5F5]' type="button" onClick={() => handleDelete(records)} data-testid={'delete-product-btn'}>
-                        <IconTrashLines /> <span>{`${t('delete')}`}</span>
-                    </button>
+                <div className="flex justify-start gap-2">
+                    <div className="w-[60px]">
+                        <button type="button" className='button-edit' onClick={() => handleEdit(records)}>
+                            <IconNewEdit /><span>
+                                {t('edit')}
+                            </span>
+                        </button>
+                    </div>
+                    <div className="w-[80px]">
+                        <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                            <IconNewTrash />
+                            <span>
+                                {t('delete')}
+                            </span>
+                        </button>
+                    </div>
                 </div>
             ),
         },
@@ -167,7 +179,7 @@ const ProductUnitPage = ({ ...props }: Props) => {
                 <div className="datatables">
                     <DataTable
                         highlightOnHover
-                        className="whitespace-nowrap table-hover"
+                        className="whitespace-nowrap table-hover custom_table"
                         records={unit?.data}
                         columns={columns}
                         totalRecords={pagination?.totalRecords}

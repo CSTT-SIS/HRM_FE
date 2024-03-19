@@ -64,13 +64,13 @@ const ShelfPage = ({ ...props }: Props) => {
         },
         {
             accessor: 'product',
-            title: 'Tên sản phẩm',
+            title: 'Tên Vật tư',
             render: ({ product }: any) => <span >{product?.name}</span>,
             sortable: false
         },
         {
             accessor: 'product',
-            title: 'Mã sản phẩm',
+            title: 'Mã Vật tư',
             render: ({ product }: any) => <span >{product?.code}</span>,
             sortable: false
         },
@@ -80,21 +80,7 @@ const ShelfPage = ({ ...props }: Props) => {
             render: ({ product }: any) => <span >{product?.unit?.name}</span>,
             sortable: false
         },
-        // {
-        //     accessor: 'product',
-        //     title: 'Giá',
-        //     render: ({ product }: any) => <span >{product?.price}</span>,
-        //     sortable: false
-        // },
-        // {
-        //     accessor: 'product',
-        //     title: 'Thuế',
-        //     render: ({ product }: any) => <span >{product?.tax}</span>,
-        //     sortable: false
-        // },
         { accessor: 'quantity', title: 'Số lương', sortable: false },
-        // { accessor: 'minQuantity', title: 'Số lương tối thiểu', sortable: false },
-        // { accessor: 'maxQuantity', title: 'Số lương tối đa', sortable: false },
         { accessor: 'description', title: 'Ghi chú', sortable: false }
     ]
 
@@ -115,6 +101,7 @@ const ShelfPage = ({ ...props }: Props) => {
     };
 
     const handleSearch = (param: any) => {
+        console.log("🚀 ~ handleSearch ~ param:", param)
         router.replace(
             {
                 pathname: router.pathname,
@@ -221,18 +208,15 @@ const ShelfPage = ({ ...props }: Props) => {
                     <IconLoading />
                 </div>
             )}
-            <title>ShelfPage</title>
             <>
                 <div className="flex flex-wrap">
                     <div className="w-full">
                         <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded panel">
                             <div className='flex justify-between'>
                                 <Link href="/warehouse">
-                                    <div className="btn btn-primary btn-sm m-1 gap-3 bg-[#E9EBD5] text-[#476704] border-[#E9EBD5] w-28 h-9" >
+                                    <div className="btn btn-primary btn-sm back-button m-1 h-9">
                                         <IconBackward />
-                                        <span>
-                                            {t('back')}
-                                        </span>
+                                        <span>{t('back')}</span>
                                     </div>
                                 </Link>
                             </div>
@@ -297,12 +281,12 @@ const ShelfPage = ({ ...props }: Props) => {
                                                     {t('add')}
                                                 </button>
                                             </div>
-                                            <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                                            <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
                                         </div>
                                         <div className="datatables">
                                             <DataTable
                                                 highlightOnHover
-                                                className="whitespace-nowrap table-hover"
+                                                className="whitespace-nowrap table-hover custom_table"
                                                 records={product?.data}
                                                 columns={columns}
                                                 totalRecords={pagination?.totalRecords}

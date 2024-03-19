@@ -127,7 +127,7 @@ const DetailPage = ({ ...props }: Props) => {
         },
         {
             accessor: 'name',
-            title: 'Tên sản phẩm',
+            title: 'Tên Vật tư',
             render: ({ product }: any) => <span>{product?.name}</span>,
             sortable: false
         },
@@ -185,7 +185,7 @@ const DetailPage = ({ ...props }: Props) => {
                     <div className="flex items-center flex-wrap">
                         <button type="button" onClick={(e) => router.query.id !== "create" ? setOpenModal(true) : showMessage(`${t('create_befor_update_detail')}`, 'error')} className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                            {t('add_detail')}
+                            {/* {t('add_detail')} */}
                         </button>
                     </div>
 

@@ -26,6 +26,10 @@ import { IconShipping } from '@/components/Icon/IconShipping';
 import moment from 'moment';
 import IconEye from '@/components/Icon/IconEye';
 import { IconFilter } from '@/components/Icon/IconFilter';
+import IconNewTrash from '@/components/Icon/IconNewTrash';
+import IconNewEdit from '@/components/Icon/IconNewEdit';
+import IconNewEye from '@/components/Icon/IconNewEye';
+import Link from 'next/link';
 
 interface Props {
     [key: string]: any;
@@ -176,41 +180,38 @@ const OrderForm = ({ ...props }: Props) => {
             accessor: 'action',
             title: 'Thao tác',
             titleClassName: '!text-center',
+            width: '10%',
             render: (records: any) => (
                 <div className="flex justify-start gap-2">
-                    <button className='bg-[#F2E080] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/order/${records.id}?status=${true}&&type=${records.status}`)}>
-                        <IconEye /> <span>{`${t('detail')}`}</span>
-                    </button>
+                    <div className="w-[80px]">
+                        <Link href={`/warehouse-process/order/${records.id}?status=${true}&&type=${records.status}`}>
+                            <button type='button' className='button-detail'>
+                                <IconNewEye /> <span>{t('detail')}</span>
+                            </button>
+                        </Link>
+                    </div>
                     {
                         records.status === "PENDING" &&
-                        <button className='bg-[#9CD3EB] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleDetail(records)}>
-                            <IconPencil /> <span>{`${t('edit')}`}</span>
-                        </button>
+                        <div className="w-[60px]">
+                            <button type="button" className='button-edit' onClick={() => handleDetail(records)}>
+                                <IconNewEdit /><span>
+                                    {t('edit')}
+                                </span>
+                            </button>
+                        </div>
                     }
                     {
-                        (records.status === "CANCELLED") &&
-                        <button className='bg-[#E43940] flex justify-between gap-1 p-1 rounded text-[#F5F5F5]' type="button" onClick={() => handleDelete(records)}>
-                            <IconTrashLines /> <span>{`${t('delete')}`}</span>
-                        </button>
-                    }
-                    {/* {
-                        (records.status === "PENDING" || records.status === "PLACED") &&
-                        <>
-                            <button className='bg-[#C5E7AF] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleShipping(records)}>
-                                <IconShipping size={20} />  <span>{`${t('shipping')}`}</span>
+                        records.status === "CANCELLED" &&
+                        <div className="w-[80px]">
+                            <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                                <IconNewTrash />
+                                <span>
+                                    {t('delete')}
+                                </span>
                             </button>
-                            <button className='bg-[#E43940] flex justify-between gap-1 p-1 rounded text-[#F5F5F5]' type="button" onClick={() => handleCancel(records)}>
-                                <IconXCircle /> <span>{`${t('cancel')}`}</span>
-                            </button>
-                        </>
+                        </div>
                     }
-                    {
-                        (records.status === "PENDING" || records.status === "SHIPPING") &&
-                        <button className='bg-[#C5E7AF] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleReceive(records)}>
-                            <IconCartCheck /> <span>{`${t('receive')}`}</span>
-                        </button>
-                    } */}
-                </div>
+                </div >
             ),
         },
     ]
@@ -259,7 +260,7 @@ const OrderForm = ({ ...props }: Props) => {
                 <div className="datatables">
                     <DataTable
                         highlightOnHover
-                        className="whitespace-nowrap table-hover"
+                        className="whitespace-nowrap table-hover custom_table"
                         records={orders?.data}
                         columns={columns}
                         totalRecords={pagination?.totalRecords}

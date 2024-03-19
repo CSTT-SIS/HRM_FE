@@ -20,7 +20,6 @@ import { StocktakeDetail } from '@/services/swr/stocktake.twr';
 import { AddStocktakeDetail, AddStocktakeDetailAuto, AddStocktakeDetails, CreateStocktake, DeleteStocktakeDetail, EditStocktake, GetStocktake, StocktakeApprove, StocktakeCancel, StocktakeFinish, StocktakeStart } from '@/services/apis/stocktake.api';
 import TallyModal from '../form/TallyModal';
 import IconArchive from '@/components/Icon/IconArchive';
-import StocktakeForm from '../form/StocktakeForm';
 import { IconInventory } from '@/components/Icon/IconInventory';
 import { Field, Form, Formik } from 'formik';
 import AnimateHeight from 'react-animate-height';
@@ -178,7 +177,7 @@ const DetailPage = ({ ...props }: Props) => {
         },
         {
             accessor: 'name',
-            title: 'Tên sản phẩm',
+            title: 'Tên Vật tư',
             render: ({ product, name }: any) => <span>{product?.name || name}</span>,
             sortable: false
         },
@@ -228,7 +227,7 @@ const DetailPage = ({ ...props }: Props) => {
     ]
 
     const handleCancel = () => {
-        router.push('/warehouse-management/stocktake');
+        router.push('/warehouse-process/stocktake');
     };
 
     const handleChangeComplete = (id: any) => {
@@ -250,7 +249,7 @@ const DetailPage = ({ ...props }: Props) => {
 
     const handleFinish = () => {
         StocktakeFinish({ id: router.query.id }).then(() => {
-            router.push('/warehouse-management/stocktake');
+            router.push('/warehouse-process/stocktake');
             showMessage(`${t('update_success')}`, 'success');
         }).catch((err) => {
             showMessage(`${err?.response?.data?.message}`, 'error');
@@ -386,7 +385,7 @@ const DetailPage = ({ ...props }: Props) => {
                 )}
                 <div className='flex justify-between header-page-bottom pb-4 mb-4'>
                     <h1 className='page-title'>{t('stocktake')}</h1>
-                    <Link href="/warehouse-management/stocktake">
+                    <Link href="/warehouse-process/stocktake">
                         <div className="btn btn-primary btn-sm m-1 back-button h-9" >
                             <IconBackward />
                             <span>
@@ -473,7 +472,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                                     }}
                                                                     value={field?.value}
                                                                     onChange={e => setFieldValue("startDate", moment(e[0]).format("YYYY-MM-DD hh:mm"))}
-                                                                    className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                                    className={disable ? "form-input bg-[#f2f2f2] calender-input" : "form-input calender-input"}
                                                                     disabled={disable}
                                                                 />)
                                                                 }
@@ -568,7 +567,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                                 <>
                                                                     <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
                                                                         <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                                                                        {t('add_detail')}
+                                                                        {t('add_product_list')}
                                                                     </button>
                                                                     {/* <button type="button" onClick={(e) => handleAutoAdd()} className="btn btn-primary btn-sm m-1 custom-button" >
                                                                         <IconArchive className="w-5 h-5 ltr:mr-2 rtl:ml-2" />

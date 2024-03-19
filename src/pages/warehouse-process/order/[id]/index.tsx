@@ -187,7 +187,7 @@ const DetailPage = ({ ...props }: Props) => {
         },
         {
             accessor: 'name',
-            title: 'Tên sản phẩm',
+            title: 'Tên Vật tư',
             render: ({ product }: any) => <span>{product?.name}</span>,
             sortable: false
         },
@@ -435,7 +435,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                                         }}
                                                                         value={moment().format("DD/MM/YYYY hh:mm")}
                                                                         onChange={e => setFieldValue("estimatedDeliveryDate", moment(e[0]).format("YYYY-MM-DD hh:mm"))}
-                                                                        className={true ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                                        className={true ? "form-input bg-[#f2f2f2] calender-input" : "form-input calender-input"}
                                                                         disabled={true}
                                                                     />
                                                                 )}
@@ -512,7 +512,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                                         }}
                                                                         value={field?.value}
                                                                         onChange={e => setFieldValue("estimatedDeliveryDate", moment(e[0]).format("YYYY-MM-DD hh:mm"))}
-                                                                        className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                                        className={disable ? "form-input bg-[#f2f2f2] calender-input" : "form-input calender-input"}
                                                                         disabled={disable}
                                                                     />
                                                                 )}

@@ -28,6 +28,10 @@ import IconEye from '@/components/Icon/IconEye';
 import { IconInventory } from '@/components/Icon/IconInventory';
 import IconChecks from '@/components/Icon/IconChecks';
 import IconListCheck from '@/components/Icon/IconListCheck';
+import IconNewEdit from '@/components/Icon/IconNewEdit';
+import IconNewEye from '@/components/Icon/IconNewEye';
+import IconNewTrash from '@/components/Icon/IconNewTrash';
+import Link from 'next/link';
 
 interface Props {
     [key: string]: any;
@@ -117,7 +121,7 @@ const StocktakePage = ({ ...props }: Props) => {
     };
 
     const handleDetail = (value: any) => {
-        router.push(`/warehouse-management/stocktake/${value.id}?status=${value.status}`)
+        router.push(`/warehouse-process/stocktake/${value.id}?status=${value.status}`)
     }
 
     const handleReject = ({ id }: any) => {
@@ -170,38 +174,67 @@ const StocktakePage = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex justify-start gap-2">
-                    <button className='bg-[#F2E080] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-management/stocktake/${records.id}?status=${true}`)}>
-                        <IconEye /> <span>{`${t('detail')}`}</span>
-                    </button>
+                    <div className="w-[80px]">
+                        <Link href={`/warehouse-process/stocktake/${records.id}?status=${true}`}>
+                            <button type='button' className='button-detail'>
+                                <IconNewEye /> <span>{t('detail')}</span>
+                            </button>
+                        </Link>
+                    </div>
                     {
                         records.status === "DRAFT" &&
                         <>
-                            <button className='bg-[#9CD3EB] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleDetail(records)}>
-                                <IconPencil /> <span>{`${t('edit')}`}</span>
-                            </button>
-                            <button className='bg-[#E43940] flex justify-between gap-1 p-1 rounded text-[#F5F5F5]' type="button" onClick={() => handleDelete(records)}>
-                                <IconTrashLines /> <span>{`${t('delete')}`}</span>
-                            </button>
+                            <div className="w-[60px]">
+                                <button type="button" className='button-edit' onClick={() => handleDetail(records)}>
+                                    <IconNewEdit /><span>
+                                        {t('edit')}
+                                    </span>
+                                </button>
+                            </div>
+                            <div className="w-[80px]">
+                                <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                                    <IconNewTrash />
+                                    <span>
+                                        {t('delete')}
+                                    </span>
+                                </button>
+                            </div>
                         </>
                     }
-                    {
-                        records.status === "IN_PROGRESS" &&
-                        <button className='bg-[#C5E7AF] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-management/stocktake/${records.id}?type=tally&&status=${true}`)}>
-                            <IconListCheck />  <span>{`${t('tally')}`}</span>
-                        </button>
-                    }
-                    {/* <Tippy content={`${t('reject')}`}>
-                        <button type="button" onClick={() => handleCancel(records)}>
-                            <IconXCircle />
-                        </button>
-                    </Tippy> */}
-                    {
-                        records.status === "FINISHED" &&
-                        <button className='bg-[#EFBD99] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-management/stocktake/${records.id}?type=approve&&status=${true}`)}>
-                            <IconChecks />  <span>{`${t('approve')}`}</span>
-                        </button>
-                    }
                 </div>
+                // <div className="flex justify-start gap-2">
+                //      <button className='bg-[#F2E080] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/stocktake/${records.id}?status=${true}`)}>
+                //         <IconEye /> <span>{`${t('detail')}`}</span>
+                //     </button>
+                //     {
+                //         records.status === "DRAFT" &&
+                //         <>
+                //             <button className='bg-[#9CD3EB] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleDetail(records)}>
+                //                 <IconPencil /> <span>{`${t('edit')}`}</span>
+                //             </button>
+                //             <button className='bg-[#E43940] flex justify-between gap-1 p-1 rounded text-[#F5F5F5]' type="button" onClick={() => handleDelete(records)}>
+                //                 <IconTrashLines /> <span>{`${t('delete')}`}</span>
+                //             </button>
+                //         </>
+                //     }
+                //     {
+                //         records.status === "IN_PROGRESS" &&
+                //         <button className='bg-[#C5E7AF] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/stocktake/${records.id}?type=tally&&status=${true}`)}>
+                //             <IconListCheck />  <span>{`${t('tally')}`}</span>
+                //         </button>
+                //     }
+                //     {/* <Tippy content={`${t('reject')}`}>
+                //         <button type="button" onClick={() => handleCancel(records)}>
+                //             <IconXCircle />
+                //         </button>
+                //     </Tippy> */}
+                //     {
+                //         records.status === "FINISHED" &&
+                //         <button className='bg-[#EFBD99] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/stocktake/${records.id}?type=approve&&status=${true}`)}>
+                //             <IconChecks />  <span>{`${t('approve')}`}</span>
+                //         </button>
+                //     }
+                // </div>
             ),
         },
     ]
@@ -217,7 +250,7 @@ const StocktakePage = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" onClick={(e) => router.push(`/warehouse-management/stocktake/create?status=DRAFT`)} className="btn btn-primary btn-sm m-1 custom-button" >
+                        <button type="button" onClick={(e) => router.push(`/warehouse-process/stocktake/create?status=DRAFT`)} className="btn btn-primary btn-sm m-1 custom-button" >
                             <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                             {t('add')}
                         </button>
@@ -228,7 +261,7 @@ const StocktakePage = ({ ...props }: Props) => {
                 <div className="datatables">
                     <DataTable
                         highlightOnHover
-                        className="whitespace-nowrap table-hover"
+                        className="whitespace-nowrap table-hover custom_table"
                         records={stocktakes?.data}
                         columns={columns}
                         totalRecords={pagination?.totalRecords}
