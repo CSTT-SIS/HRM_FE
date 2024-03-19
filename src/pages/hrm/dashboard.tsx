@@ -6,22 +6,8 @@ import Dropdown from '../../components/Dropdown';
 import { useEffect, useState } from 'react';
 import { setPageTitle } from '../../store/themeConfigSlice';
 import dynamic from 'next/dynamic';
-import IconHorizontalDots from '@/components/Icon/IconHorizontalDots';
-import IconTrendingUp from '@/components/Icon/IconTrendingUp';
-import IconPlus from '@/components/Icon/IconPlus';
-import IconCreditCard from '@/components/Icon/IconCreditCard';
-import IconChecks from '@/components/Icon/IconChecks';
-import IconFile from '@/components/Icon/IconFile';
-import IconServer from '@/components/Icon/IconServer';
-import IconChrome from '@/components/Icon/IconChrome';
-import IconSafari from '@/components/Icon/IconSafari';
-import IconGlobe from '@/components/Icon/IconGlobe';
-import IconUsersGroup from '@/components/Icon/IconUsersGroup';
-import IconLink from '@/components/Icon/IconLink';
-import IconChatDots from '@/components/Icon/IconChatDots';
-import IconThumbUp from '@/components/Icon/IconThumbUp';
-import IconCaretsDown from '@/components/Icon/IconCaretsDown';
-import IconSquareCheck from '@/components/Icon/IconSquareCheck';
+import { DataTable } from 'mantine-datatable';
+
 import IconClock from '@/components/Icon/IconClock';
 import IconMail from '@/components/Icon/IconMail';
 
@@ -158,6 +144,119 @@ const DashBoard = () => {
             },
         },
     };
+    const columnChart1: any = {
+        series: [
+            {
+                name: 'Revenue',
+                data: [76, 85, 101, 98, 67],
+            },
+        ],
+        options: {
+            chart: {
+                height: 300,
+                type: 'bar',
+                zoom: {
+                    enabled: false,
+                },
+                toolbar: {
+                    show: false,
+                },
+            },
+            colors: ['#805dca', '#e7515a'],
+            dataLabels: {
+                enabled: false,
+            },
+            stroke: {
+                show: true,
+                width: 2,
+                colors: ['transparent'],
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '55%',
+                    endingShape: 'rounded',
+                },
+            },
+            grid: {
+                borderColor: isDark ? '#191e3a' : '#e0e6ed',
+                xaxis: {
+                    lines: {
+                        show: false,
+                    },
+                },
+            },
+            xaxis: {
+                categories: ['Kho nhà máy', 'Kho garage', 'Kho mìn', 'Kho hành chính', 'Kho xăng dầu'],
+                axisBorder: {
+                    color: isDark ? '#191e3a' : '#e0e6ed',
+                },
+            },
+            yaxis: {
+                opposite: isRtl ? true : false,
+                labels: {
+                    offsetX: isRtl ? -10 : 0,
+                },
+            },
+            tooltip: {
+                theme: isDark ? 'dark' : 'light',
+                y: {
+                    formatter: function (val: any) {
+                        return val;
+                    },
+                },
+            },
+        },
+    };
+    const barChart: any = {
+        series: [
+            {
+                name: '%',
+                data: [44, 55, 41],
+            },
+        ],
+        options: {
+            chart: {
+                height: 300,
+                type: 'bar',
+                zoom: {
+                    enabled: false,
+                },
+                toolbar: {
+                    show: false,
+                },
+            },
+            dataLabels: {
+                enabled: false,
+            },
+            stroke: {
+                show: true,
+                width: 1,
+            },
+            colors: ['#4361ee'],
+            xaxis: {
+                categories: ['Tốt', 'Đạt', 'Chưa đạt'],
+                axisBorder: {
+                    color: isDark ? '#191e3a' : '#e0e6ed',
+                },
+            },
+            yaxis: {
+                opposite: isRtl ? true : false,
+                reversed: isRtl ? true : false,
+            },
+            grid: {
+                borderColor: isDark ? '#191e3a' : '#e0e6ed',
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: true,
+                },
+            },
+            fill: {
+                opacity: 0.8,
+            },
+        },
+    };
     const donutChart: any = {
         series: [44, 55, 13],
         options: {
@@ -174,7 +273,7 @@ const DashBoard = () => {
             stroke: {
                 show: false,
             },
-            labels: ['Nghỉ phép', 'Thai sản', 'Tăng ca'],
+            labels: ['Chuyên viên', 'Quản lý', 'Trưởng bộ phận'],
             colors: ['#4361ee', '#805dca', '#e2a03f'],
             responsive: [
                 {
@@ -244,17 +343,33 @@ const DashBoard = () => {
                         </button>
                     </div>
                 </div>
-                <div className="panel">
-                    <div className="mb-5 flex items-center justify-between">
-                        <h5 className="text-lg font-semibold dark:text-white-light">Tình hình nghỉ theo thời gian</h5>
+                <div className="panel h-full p-0">
+                    <div className="flex p-5">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+                            <img className="h-7 w-7 rounded-full object-cover" src="/assets/images/flags/VI.svg" alt="flag"></img>
+                        </div>
+                        <div className="font-semibold ltr:ml-3 rtl:mr-3">
+                            <p className="text-xl dark:text-white-light">230 nhân sự</p>
+                            <h5 className="text-xs text-[#506690]">Việt Nam</h5>
+                        </div>
                     </div>
-                    <div className="mb-5">
-                        {isMounted && <ReactApexChart series={lineChart.series} options={lineChart.options} className="rounded-lg bg-white dark:bg-black overflow-hidden" type="line" height={300} width={"100%"} />}
+                </div>
+
+                <div className="panel h-full p-0">
+                    <div className="flex p-5">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+                            <img className="h-7 w-7 rounded-full object-cover" src="/assets/images/flags/LO.svg" alt="flag"></img>
+
+                        </div>
+                        <div className="font-semibold ltr:ml-3 rtl:mr-3">
+                            <p className="text-xl dark:text-white-light">340 nhân sự</p>
+                            <h5 className="text-xs text-[#506690]">Lào</h5>
+                        </div>
                     </div>
                 </div>
                 <div className="panel">
                     <div className="mb-5 flex items-center justify-between">
-                        <h5 className="text-lg font-semibold dark:text-white">Tình hình nghỉ theo phòng ban</h5>
+                        <h5 className="text-lg font-semibold dark:text-white">Số lượng nhân sự theo phòng ban</h5>
                     </div>
                     <div className="mb-5">
                         {isMounted && <ReactApexChart series={columnChart.series} options={columnChart.options} className="rounded-lg bg-white dark:bg-black overflow-hidden" type="bar" height={300} width={"100%"} />}
@@ -270,119 +385,137 @@ const DashBoard = () => {
                         {isMounted && <ReactApexChart series={donutChart.series} options={donutChart.options} className="rounded-lg bg-white dark:bg-black overflow-hidden" type="donut" height={300} width={"100%"} />}
                     </div>
                 </div>
-                <div className="panel h-full">
-                    <div className="flex items-start justify-between dark:text-white-light mb-5 -mx-5 p-5 pt-0 border-b  border-white-light dark:border-[#1b2e4b]">
-                        <h5 className="font-semibold text-lg ">Nhật ký hoạt động</h5>
-                        <div className="dropdown">
-                            <Dropdown
-                                offset={[0, 5]}
-                                placement={`${isRtl ? 'bottom-start' : 'bottom-end'}`}
-                                btnClassName="hover:text-primary"
-                                button={<IconHorizontalDots className="text-black/70 dark:text-white/70 hover:!text-primary" />}
-                            >
-                                <ul>
-                                    <li>
-                                        <button type="button">View All</button>
-                                    </li>
-                                    <li>
-                                        <button type="button">Mark as Read</button>
-                                    </li>
-                                </ul>
-                            </Dropdown>
+                <div className="panel">
+                    <div className="mb-5 flex items-center justify-between">
+                        <h5 className="text-lg font-semibold dark:text-white">Tình trạng giải quyết công việc</h5>
+                    </div>
+                    <div className="mb-5">
+                        {isMounted && <ReactApexChart series={barChart.series} options={barChart.options} className="rounded-lg bg-white dark:bg-black" type="bar" height={300} width={'100%'} />}
+                    </div>
+                </div>
+                <div className="panel">
+                    <div className="mb-5 flex items-center justify-between">
+                        <h5 className="text-lg font-semibold dark:text-white-light">Thống kê nhiệm vụ theo phòng ban</h5>
+                    </div>
+                    <div className="mb-5">
+                        <div className="datatables">
+                            <DataTable
+                                highlightOnHover
+                                className="whitespace-nowrap table-hover custom_table"
+                                records={[{
+                                    department: "Phòng hành chính",
+                                    good: 10,
+                                    reached: 20,
+                                    not_reached: 15
+                                },
+                                {
+                                    department: "Phòng kế toán",
+                                    good: 11,
+                                    reached: 14,
+                                    not_reached: 22
+                                },
+                                {
+                                    department: "Phòng kỹ thuật",
+                                    good: 4,
+                                    reached: 16,
+                                    not_reached: 15
+                                },
+                                {
+                                    department: "Bộ phân bảo trì",
+                                    good: 23,
+                                    reached: 1,
+                                    not_reached: 1
+                                }]}
+                                columns={[
+                                    {
+                                        accessor: 'department',
+                                        title: '#',
+                                    },
+                                    { accessor: 'good', title: 'Tốt', sortable: false },
+                                    { accessor: 'reached', title: 'Đạt', sortable: false },
+                                    { accessor: 'not_reached', title: 'Chưa đạt', sortable: false },
+                                ]}
+                                totalRecords={10}
+                                recordsPerPage={10}
+                                minHeight={200}
+                                page={1}
+                                onPageChange={(p) => p.toString()}
+                            />
                         </div>
                     </div>
-                    <PerfectScrollbar className="perfect-scrollbar relative h-[360px] ltr:pr-3 rtl:pl-3 ltr:-mr-3 rtl:-ml-3">
-                        <div className="space-y-7">
-                            <div className="flex">
-                                <div className="shrink-0 ltr:mr-2 rtl:ml-2 relative z-10 before:w-[2px] before:h-[calc(100%-24px)] before:bg-white-dark/30 before:absolute before:top-10 before:left-4">
-                                    <div className="bg-secondary shadow shadow-secondary w-8 h-8 rounded-full flex items-center justify-center text-white">
-                                        <IconPlus className="w-4 h-4" />
-                                    </div>
-                                </div>
-                                <div>
-                                    <h5 className="font-semibold dark:text-white-light">
-                                        New project created :{' '}
-                                        <button type="button" className="text-success">
-                                            [CSTT Admin Template]
-                                        </button>
-                                    </h5>
-                                    <p className="text-white-dark text-xs">27 Feb, 2020</p>
-                                </div>
-                            </div>
-                            <div className="flex">
-                                <div className="shrink-0 ltr:mr-2 rtl:ml-2 relative z-10 before:w-[2px] before:h-[calc(100%-24px)] before:bg-white-dark/30 before:absolute before:top-10 before:left-4">
-                                    <div className="bg-success shadow-success w-8 h-8 rounded-full flex items-center justify-center text-white">
-                                        <IconMail className="w-4 h-4" />
-                                    </div>
-                                </div>
-                                <div>
-                                    <h5 className="font-semibold dark:text-white-light">
-                                        Mail sent to{' '}
-                                        <button type="button" className="text-white-dark">
-                                            HR
-                                        </button>{' '}
-                                        and{' '}
-                                        <button type="button" className="text-white-dark">
-                                            Admin
-                                        </button>
-                                    </h5>
-                                    <p className="text-white-dark text-xs">28 Feb, 2020</p>
-                                </div>
-                            </div>
-                            <div className="flex">
-                                <div className="shrink-0 ltr:mr-2 rtl:ml-2 relative z-10 before:w-[2px] before:h-[calc(100%-24px)] before:bg-white-dark/30 before:absolute before:top-10 before:left-4">
-                                    <div className="bg-primary w-8 h-8 rounded-full flex items-center justify-center text-white">
-                                        <IconChecks className="w-4 h-4" />
-                                    </div>
-                                </div>
-                                <div>
-                                    <h5 className="font-semibold dark:text-white-light">Server Logs Updated</h5>
-                                    <p className="text-white-dark text-xs">27 Feb, 2020</p>
-                                </div>
-                            </div>
-                            <div className="flex">
-                                <div className="shrink-0 ltr:mr-2 rtl:ml-2 relative z-10 before:w-[2px] before:h-[calc(100%-24px)] before:bg-white-dark/30 before:absolute before:top-10 before:left-4">
-                                    <div className="bg-danger w-8 h-8 rounded-full flex items-center justify-center text-white">
-                                        <IconChecks className="w-4 h-4" />
-                                    </div>
-                                </div>
-                                <div>
-                                    <h5 className="font-semibold dark:text-white-light">
-                                        Task Completed :
-                                        <button type="button" className="text-success ml-1">
-                                            [Backup Files EOD]
-                                        </button>
-                                    </h5>
-                                    <p className="text-white-dark text-xs">01 Mar, 2020</p>
-                                </div>
-                            </div>
-                            <div className="flex">
-                                <div className="shrink-0 ltr:mr-2 rtl:ml-2 relative z-10 before:w-[2px] before:h-[calc(100%-24px)] before:bg-white-dark/30 before:absolute before:top-10 before:left-4">
-                                    <div className="bg-warning w-8 h-8 rounded-full flex items-center justify-center text-white">
-                                        <IconFile className="w-4 h-4" />
-                                    </div>
-                                </div>
-                                <div>
-                                    <h5 className="font-semibold dark:text-white-light">
-                                        Documents Submitted from <button type="button">Sara</button>
-                                    </h5>
-                                    <p className="text-white-dark text-xs">10 Mar, 2020</p>
-                                </div>
-                            </div>
-                            <div className="flex">
-                                <div className="ltr:mr-2 rtl:ml-2">
-                                    <div className="bg-dark w-8 h-8 rounded-full flex items-center justify-center text-white">
-                                        <IconServer className="w-4 h-4" />
-                                    </div>
-                                </div>
-                                <div>
-                                    <h5 className="font-semibold dark:text-white-light">Server rebooted successfully</h5>
-                                    <p className="text-white-dark text-xs">06 Apr, 2020</p>
-                                </div>
-                            </div>
-                        </div>
-                    </PerfectScrollbar>
                 </div>
+                <div className="panel">
+                    <div className="mb-5 flex items-center justify-between">
+                        <h5 className="text-lg font-semibold dark:text-white-light">Thống kê vật tư</h5>
+                    </div>
+                    <div className="mb-5">
+                        {isMounted && <ReactApexChart series={columnChart1.series} options={columnChart1.options} className="rounded-lg bg-white dark:bg-black overflow-hidden" type="bar" height={300} width={"100%"} />}
+
+                    </div>
+                </div>
+                <div className="panel">
+                    <div className="mb-5 flex items-center justify-between">
+                        <h5 className="text-lg font-semibold dark:text-white-light">Thống kê vật tư hết hạn</h5>
+                    </div>
+                    <div className="mb-5">
+                        <div className="datatables">
+                            <DataTable
+                                highlightOnHover
+                                className="whitespace-nowrap table-hover custom_table"
+                                records={[{
+                                    stt: 1,
+                                    name: 'Mìn C4',
+                                    type: 'Thuốc nổ',
+                                    ware: 'kho mìn',
+                                    num: 15,
+                                    date: '6/2024'
+                                },
+                                {
+                                    stt: 1,
+                                    name: 'Mìn C4',
+                                    type: 'Thuốc nổ',
+                                    ware: 'kho mìn',
+                                    num: 15,
+                                    date: '6/2024'
+                                },
+                                {
+                                    stt: 1,
+                                    name: 'Mìn C4',
+                                    type: 'Thuốc nổ',
+                                    ware: 'kho mìn',
+                                    num: 15,
+                                    date: '6/2024'
+                                },
+                                {
+                                    stt: 1,
+                                    name: 'Mìn C4',
+                                    type: 'Thuốc nổ',
+                                    ware: 'kho mìn',
+                                    num: 15,
+                                    date: '6/2024'
+                                }]}
+                                columns={[
+                                    {
+                                        accessor: 'stt',
+                                        title: 'STT',
+                                    },
+                                    { accessor: 'name', title: 'Tên', sortable: false },
+                                    { accessor: 'type', title: 'Loại', sortable: false },
+                                    { accessor: 'ware', title: 'Kho', sortable: false },
+                                    { accessor: 'num', title: 'Số lượng', sortable: false },
+                                    { accessor: 'date', title: 'Hạn', sortable: false },
+
+                                ]}
+                                totalRecords={10}
+                                recordsPerPage={10}
+                                minHeight={200}
+                                page={1}
+                                onPageChange={(p) => p.toString()}
+                            />
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     );
