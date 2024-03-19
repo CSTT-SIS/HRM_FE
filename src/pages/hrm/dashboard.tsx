@@ -429,7 +429,7 @@ const DashBoard = () => {
                                 columns={[
                                     {
                                         accessor: 'department',
-                                        title: '',
+                                        title: '#',
                                     },
                                     { accessor: 'good', title: 'Tốt', sortable: false },
                                     { accessor: 'reached', title: 'Đạt', sortable: false },
@@ -438,7 +438,8 @@ const DashBoard = () => {
                                 totalRecords={10}
                                 recordsPerPage={10}
                                 minHeight={200}
-
+                                page={1}
+                                onPageChange={(p) => p.toString()}
                             />
                         </div>
                     </div>
@@ -508,7 +509,8 @@ const DashBoard = () => {
                                 totalRecords={10}
                                 recordsPerPage={10}
                                 minHeight={200}
-
+                                page={1}
+                                onPageChange={(p) => p.toString()}
                             />
                         </div>
                     </div>
