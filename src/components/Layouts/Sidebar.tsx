@@ -521,7 +521,7 @@ const Sidebar = () => {
                                                             </Link>
                                                         </li>
                                                         <li className="nav-item">
-                                                            <Link href="/warehouse-process/proposal-order" className="group final-level-menu">
+                                                            <Link href="/warehouse-process/order" className="group final-level-menu">
                                                                 <div className="flex items-center">
                                                                     <IconMenuProposal className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('order_management')}</span>
