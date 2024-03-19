@@ -82,6 +82,8 @@ import IconMenuRepair from '../Icon/Menu/IconMenuRepair';
 import IconMenuProposal from '../Icon/Menu/IconMenuProposal';
 import IconMenuPurchase from '../Icon/Menu/IconMenuPurchase';
 import IconNewArrowLeft from '../Icon/IconNewArrowLeft';
+import { IconMenuStocktake } from '../Icon/IconMenuStocktake';
+import { IconMenuWarehousingBill } from '../Icon/IconMenuWarehousingBill';
 
 const Sidebar = () => {
     const router = useRouter();
@@ -507,7 +509,7 @@ const Sidebar = () => {
                                                         <li className="nav-item">
                                                             <Link href="/warehouse-process/proposal-supply" className="group final-level-menu">
                                                                 <div className="flex items-center">
-                                                                    <IconMenuTables className="shrink-0 group-hover:!text-primary" />
+                                                                    <IconMenuProposal className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('proposal_product')}</span>
                                                                 </div>
                                                             </Link>
@@ -553,7 +555,7 @@ const Sidebar = () => {
                                                     </div>
                                                     <ul className="text-gray-500">
                                                         <li className="nav-item">
-                                                            <Link href="/warehouse-management/stocktake" className="group final-level-menu">
+                                                            <Link href="/warehouse-process/stocktake" className="group final-level-menu">
                                                                 <div className="flex items-center">
                                                                     <IconListCheck className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('stocktake')}</span>
@@ -561,7 +563,7 @@ const Sidebar = () => {
                                                             </Link>
                                                         </li>
                                                         <li className="nav-item">
-                                                            <Link href="/warehouse-management/statistic" className="group final-level-menu">
+                                                            <Link href="/warehouse-process/statistic" className="group final-level-menu">
                                                                 <div className="flex items-center">
                                                                     <IconMenuCharts className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('statistic')}</span>
@@ -579,7 +581,7 @@ const Sidebar = () => {
                                                         <li className="nav-item">
                                                             <Link href="/warehouse-process/warehousing-bill/import" className="group final-level-menu">
                                                                 <div className="flex items-center">
-                                                                    <IconMenuDocumentation className="shrink-0 group-hover:!text-primary" />
+                                                                    <IconMenuWarehousingBill className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('warehousing_bill_import')}</span>
                                                                 </div>
                                                             </Link>
@@ -587,15 +589,15 @@ const Sidebar = () => {
                                                         <li className="nav-item">
                                                             <Link href="/warehouse-process/warehousing-bill/export" className="group final-level-menu">
                                                                 <div className="flex items-center">
-                                                                    <IconMenuDocumentation className="shrink-0 group-hover:!text-primary" />
+                                                                    <IconMenuWarehousingBill className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('warehousing_bill_export')}</span>
                                                                 </div>
                                                             </Link>
                                                         </li>
                                                         <li className="nav-item">
-                                                            <Link href="/warehouse-management/stocktake" className="group final-level-menu">
+                                                            <Link href="/warehouse-process/stocktake" className="group final-level-menu">
                                                                 <div className="flex items-center">
-                                                                    <IconListCheck className="shrink-0 group-hover:!text-primary" />
+                                                                    <IconMenuStocktake className="shrink-0 group-hover:!text-primary" />
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('proposal_stocktake')}</span>
                                                                 </div>
                                                             </Link>

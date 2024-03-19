@@ -406,7 +406,7 @@ const ExportPage = ({ ...props }: Props) => {
                                                                         }}
                                                                         value={moment().format("DD/MM/YYYY hh:mm")}
                                                                         onChange={e => setFieldValue("estimatedDeliveryDate", moment(e[0]).format("YYYY-MM-DD hh:mm"))}
-                                                                        className={true ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                                        className={true ? "form-input bg-[#f2f2f2] calender-input" : "form-input calender-input"}
                                                                         disabled={true}
                                                                     />
                                                                 )}

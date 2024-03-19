@@ -18,14 +18,11 @@ import { showMessage } from '@/@core/utils';
 // icons
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
-import IconPencil from '@/components/Icon/IconPencil';
-import IconTrashLines from '@/components/Icon/IconTrashLines';
-import IconXCircle from '@/components/Icon/IconXCircle';
-import IconCircleCheck from '@/components/Icon/IconCircleCheck';
-import IconEye from '@/components/Icon/IconEye';
-import { IconFilter } from '@/components/Icon/IconFilter';
-import Select, { components } from 'react-select';
 import { DropdownWarehouses } from '@/services/swr/dropdown.twr';
+import IconNewEye from '@/components/Icon/IconNewEye';
+import IconNewEdit from '@/components/Icon/IconNewEdit';
+import IconNewTrash from '@/components/Icon/IconNewTrash';
+import Link from 'next/link';
 
 
 interface Props {
@@ -181,21 +178,35 @@ const WarehousingPage = ({ ...props }: Props) => {
         {
             accessor: 'action',
             title: 'Thao tác',
+            width: '10%',
             titleClassName: '!text-center',
             render: (records: any) => (
-                <div className="flex w-max mx-auto gap-2">
-                    <button className='bg-[#F2E080] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/warehousing-bill/import/${records.id}?status=${true}&&type=${records.status}`)}>
-                        <IconEye /> <span>{`${t('detail')}`}</span>
-                    </button>
+                <div className="flex justify-start gap-2">
+                    <div className="w-[80px]">
+                        <Link href={`/warehouse-process/warehousing-bill/import/${records.id}?status=${true}&&type=${records.status}`}>
+                            <button type='button' className='button-detail'>
+                                <IconNewEye /> <span>{t('detail')}</span>
+                            </button>
+                        </Link>
+                    </div>
                     {
                         records.status === "PENDING" &&
                         <>
-                            <button className='bg-[#9CD3EB] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleDetail(records)}>
-                                <IconPencil /> <span>{`${t('edit')}`}</span>
-                            </button>
-                            <button className='bg-[#E43940] flex justify-between gap-1 p-1 rounded text-[#F5F5F5]' type="button" onClick={() => handleDelete(records)}>
-                                <IconTrashLines /> <span>{`${t('delete')}`}</span>
-                            </button>
+                            <div className="w-[60px]">
+                                <button type="button" className='button-edit' onClick={() => handleDetail(records)}>
+                                    <IconNewEdit /><span>
+                                        {t('edit')}
+                                    </span>
+                                </button>
+                            </div>
+                            <div className="w-[80px]">
+                                <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                                    <IconNewTrash />
+                                    <span>
+                                        {t('delete')}
+                                    </span>
+                                </button>
+                            </div>
                         </>
                     }
                 </div>
@@ -277,7 +288,7 @@ const WarehousingPage = ({ ...props }: Props) => {
                 <div className="datatables">
                     <DataTable
                         highlightOnHover
-                        className="whitespace-nowrap table-hover"
+                        className="whitespace-nowrap table-hover custom_table"
                         records={warehousing?.data}
                         columns={columns}
                         totalRecords={pagination?.totalRecords}

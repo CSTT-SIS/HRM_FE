@@ -16,14 +16,12 @@ import { PAGE_SIZES } from '@/utils/constants';
 // helper
 import { showMessage } from '@/@core/utils';
 // icons
-import IconPencil from '../../components/Icon/IconPencil';
-import IconTrashLines from '../../components/Icon/IconTrashLines';
 import { IconLoading } from '@/components/Icon/IconLoading';
-import IconPlus from '@/components/Icon/IconPlus';
 // modal
 import WarehouseModal from './modal/WarehouseModal';
 import { DeleteWarehouse } from '@/services/apis/warehouse.api';
-import IconEye from '@/components/Icon/IconEye';
+import Link from 'next/link';
+import IconNewEye from '@/components/Icon/IconNewEye';
 
 
 interface Props {
@@ -129,21 +127,20 @@ const WarehousePage = ({ ...props }: Props) => {
         { accessor: 'name', title: 'Tên kho', sortable: false },
         { accessor: 'code', title: 'Mã kho', sortable: false },
         { accessor: 'description', title: 'Mô tả', sortable: false },
-        // {
-        //     accessor: 'type',
-        //     title: 'Loại kho',
-        //     render: ({ type }: any) => <span >{type?.name}</span>,
-        //     sortable: false
-        // },
         {
             accessor: 'action',
             title: 'Thao tác',
             titleClassName: '!text-center',
+            width: '10%',
             render: (records: any) => (
-                <div className="flex items-center w-max mx-auto gap-2">
-                    <button type="button" className='bg-[#F2E080] flex justify-between gap-1 p-1 rounded' onClick={() => router.push(`/warehouse/${records.id}`)}>
-                        <IconEye /> <span>{t('detail')}</span>
-                    </button>
+                <div className="flex justify-start gap-2">
+                    <div className="w-[80px]">
+                        <Link href={`/warehouse/${records.id}`}>
+                            <button type='button' className='button-detail'>
+                                <IconNewEye /> <span>{t('detail')}</span>
+                            </button>
+                        </Link>
+                    </div>
                 </div>
             ),
         },
@@ -171,7 +168,7 @@ const WarehousePage = ({ ...props }: Props) => {
                 <div className="datatables">
                     <DataTable
                         highlightOnHover
-                        className="whitespace-nowrap table-hover"
+                        className="whitespace-nowrap table-hover custom_table"
                         records={warehouse?.data}
                         columns={columns}
                         // totalRecords={pagination?.totalRecords}
