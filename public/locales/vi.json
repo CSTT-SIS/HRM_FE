@@ -480,7 +480,7 @@
 	"max_quantity": "Số lượng tối đa",
 	"enter_max_quantity": "Nhập số lượng tối đa",
 	"enter_min_quantity": "Nhập số lượng tối thiểu",
-	"warehouse_management": "Quản lí kho",
+	"warehouse_management": "Quản lý kho",
 	"stocktake": "Kiểm kê",
 	"proposal_stocktake": "Yêu cầu kiểm kê",
 	"proposal_product": "Yêu cầu cung cấp vật tư",
@@ -815,8 +815,8 @@
 	"list_staff_by_shift": "Danh sách nhân viên thuộc ca",
 	"enter_project": "Nhập dự án",
 	"project": "Dự án",
-	"catalog_management": "Quản lí danh mục",
-	"proposal_management": "Quản lí yêu cầu",
-    "inventory_number": "Số lượng tồn kho",
-    "expiration_date": "Ngày hết hạn"
+	"catalog_management": "Quản lý danh mục",
+	"proposal_management": "Quản lý yêu cầu",
+	"inventory_number": "Số lượng tồn kho",
+	"expiration_date": "Ngày hết hạn"
 }
