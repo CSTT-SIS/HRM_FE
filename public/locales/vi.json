@@ -480,7 +480,7 @@
 	"max_quantity": "Số lượng tối đa",
 	"enter_max_quantity": "Nhập số lượng tối đa",
 	"enter_min_quantity": "Nhập số lượng tối thiểu",
-	"warehouse_management": "Quản lí kho",
+	"warehouse_management": "Quản lý kho",
 	"stocktake": "Kiểm kê",
 	"proposal_stocktake": "Yêu cầu kiểm kê",
 	"proposal_product": "Yêu cầu cung cấp vật tư",
@@ -818,5 +818,6 @@
     "create_duty_error": "Tạo mới chức vụ thất bại",
 	"catalog_management": "Quản lí danh mục",
 	"proposal_management": "Quản lí yêu cầu",
-    "inventory_number": "Số lượng tồn kho"
+    "inventory_number": "Số lượng tồn kho",
+	"expiration_date": "Ngày hết hạn"
 }

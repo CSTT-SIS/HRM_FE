@@ -95,7 +95,7 @@ const DetailModal = ({ ...props }: Props) => {
                 value: `${props?.data?.product?.id}`,
                 label: `${props?.data?.product?.name}`
             } : "",
-            note: props?.data ? `${props?.data?.note}` : "",
+            note: props?.data?.note ? `${props?.data?.note}` : "",
             // price: props?.data ? props?.data.price : ""
         })
     }, [props?.data]);
