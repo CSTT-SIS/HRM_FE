@@ -12,6 +12,9 @@ import Select, { components } from 'react-select';
 import { AddProposalDetail, EditProposalDetail } from '@/services/apis/proposal.api';
 import { DropdownProducts } from '@/services/swr/dropdown.twr';
 import { WarehousingBillAddDetail, WarehousingBillEditDetail } from '@/services/apis/warehousing-bill.api';
+import Flatpickr from 'react-flatpickr';
+import 'flatpickr/dist/flatpickr.css';
+import moment from 'moment';
 
 interface Props {
     [key: string]: any;
@@ -64,6 +67,7 @@ const DetailModal = ({ ...props }: Props) => {
                 productId: Number(param.productId.value),
                 proposalQuantity: Number(param.proposalQuantity),
                 note: param.note,
+                expirationDate: param.expirationDate
                 // price: param?.price ? param?.price : 0
             };
             if (props?.data?.id) {
@@ -212,6 +216,28 @@ const DetailModal = ({ ...props }: Props) => {
                                                         />
                                                         {submitCount && errors.proposalQuantity ? (
                                                             <div className="text-danger mt-1"> {`${errors.proposalQuantity}`} </div>
+                                                        ) : null}
+                                                    </div>
+                                                    <div className="mt-5">
+                                                        <label htmlFor="expirationDate" className='label'> {t('expiration_date')} </label >
+                                                        <Field
+                                                            name="expirationDate"
+                                                            render={({ field }: any) => (
+                                                                <Flatpickr
+                                                                    data-enable-time
+                                                                    placeholder={`${t('YYYY-MM-DD | hh:mm')}`}
+                                                                    options={{
+                                                                        enableTime: true,
+                                                                        dateFormat: 'Y-m-d H:i'
+                                                                    }}
+                                                                    value={field?.value}
+                                                                    onChange={e => setFieldValue("expirationDate", moment(e[0]).format("YYYY-MM-DD hh:mm"))}
+                                                                    className={"form-input calender-input"}
+                                                                />
+                                                            )}
+                                                        />
+                                                        {submitCount && errors.expirationDate ? (
+                                                            <div className="text-danger mt-1"> {`${errors.expirationDate}`} </div>
                                                         ) : null}
                                                     </div>
                                                     {/* <div className="mb-5">

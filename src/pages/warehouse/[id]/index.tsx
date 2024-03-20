@@ -101,7 +101,6 @@ const ShelfPage = ({ ...props }: Props) => {
     };
 
     const handleSearch = (param: any) => {
-        console.log("🚀 ~ handleSearch ~ param:", param)
         router.replace(
             {
                 pathname: router.pathname,
