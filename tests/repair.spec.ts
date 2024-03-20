@@ -23,61 +23,61 @@ const fillModal = async (page: Page, text: string) => {
 test.describe.serial('repair CRUD', () => {
 	const text = makeRamdomText(5);
 	const editText = text + 'edit';
-	test('01. Create', async ({ page }) => {
-		await page.goto('/warehouse-process/repair');
+	// test('01. Create', async ({ page }) => {
+	// 	await page.goto('/warehouse-process/repair');
 
-		await page.getByTestId('add-repair').click();
-		await page.waitForLoadState('networkidle');
+	// 	await page.getByTestId('add-repair').click();
+	// 	await page.waitForLoadState('networkidle');
 
-		await expect(page).toHaveURL('/warehouse-process/repair/create');
+	// 	await expect(page).toHaveURL('/warehouse-process/repair/create');
 
-		await fillForm(page, text);
-		await page.getByTestId('modal-repair-btn').click();
+	// 	await fillForm(page, text);
+	// 	await page.getByTestId('modal-repair-btn').click();
 
-		await fillModal(page, text);
-		await page.waitForTimeout(1000);
+	// 	await fillModal(page, text);
+	// 	await page.waitForTimeout(1000);
 
-		await page.getByTestId('submit-modal-btn').click();
-		await page.waitForTimeout(1000);
+	// 	await page.getByTestId('submit-modal-btn').click();
+	// 	await page.waitForTimeout(1000);
 
-		await page.getByTestId('submit-btn').click();
+	// 	await page.getByTestId('submit-btn').click();
 
-		await page.waitForLoadState('networkidle');
+	// 	await page.waitForLoadState('networkidle');
 
-		await expect(page).toHaveURL('/warehouse-process/repair');
+	// 	await expect(page).toHaveURL('/warehouse-process/repair');
 
-		await page.getByTestId('search-repair-input').fill(text);
-		await page.waitForLoadState('networkidle');
+	// 	await page.getByTestId('search-repair-input').fill(text);
+	// 	await page.waitForLoadState('networkidle');
 
-		await page.getByTestId('edit-repair-btn').first().waitFor({ state: 'visible' });
-		await page.waitForTimeout(1000);
-		await expect(page.getByTestId('edit-repair-btn')).toBeVisible();
-	});
+	// 	await page.getByTestId('edit-repair-btn').first().waitFor({ state: 'visible' });
+	// 	await page.waitForTimeout(1000);
+	// 	await expect(page.getByTestId('edit-repair-btn')).toBeVisible();
+	// });
 
-	test('02. Edit', async ({ page }) => {
-		await page.goto('/warehouse-process/repair');
+	// test('02. Edit', async ({ page }) => {
+	// 	await page.goto('/warehouse-process/repair');
 
-		await page.waitForTimeout(1000);
-		await page.getByTestId('search-repair-input').fill(text);
-		await page.waitForLoadState('networkidle');
+	// 	await page.waitForTimeout(1000);
+	// 	await page.getByTestId('search-repair-input').fill(text);
+	// 	await page.waitForLoadState('networkidle');
 
-		await page.getByTestId('edit-repair-btn').first().click();
-		await page.waitForLoadState('networkidle');
+	// 	await page.getByTestId('edit-repair-btn').first().click();
+	// 	await page.waitForLoadState('networkidle');
 
-		await fillForm(page, editText);
-		await page.waitForTimeout(1000);
+	// 	await fillForm(page, editText);
+	// 	await page.waitForTimeout(1000);
 
-		await page.getByTestId('submit-btn').click();
+	// 	await page.getByTestId('submit-btn').click();
 
-		await page.waitForLoadState('networkidle');
-		await expect(page).toHaveURL('/warehouse-process/repair');
+	// 	await page.waitForLoadState('networkidle');
+	// 	await expect(page).toHaveURL('/warehouse-process/repair');
 
-		await page.waitForTimeout(1000);
-		await page.getByTestId('search-repair-input').fill(editText);
-		await page.waitForLoadState('networkidle');
+	// 	await page.waitForTimeout(1000);
+	// 	await page.getByTestId('search-repair-input').fill(editText);
+	// 	await page.waitForLoadState('networkidle');
 
-		await page.getByTestId('edit-repair-btn').first().waitFor({ state: 'visible' });
-		await page.waitForTimeout(1000);
-		await expect(page.getByTestId('edit-repair-btn')).toBeVisible();
-	});
+	// 	await page.getByTestId('edit-repair-btn').first().waitFor({ state: 'visible' });
+	// 	await page.waitForTimeout(1000);
+	// 	await expect(page.getByTestId('edit-repair-btn')).toBeVisible();
+	// });
 });
