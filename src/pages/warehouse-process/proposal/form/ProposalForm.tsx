@@ -55,7 +55,7 @@ const ProposalForm = ({ ...props }: Props) => {
         } else {
             CreateProposal(query).then((res) => {
                 router.push({
-                    pathname: `/warehouse-process/proposal-supply/${res.data.id}`,
+                    pathname: `/warehouse-process/proposal/${res.data.id}`,
                     query: {
                         type: res.data.type,
                         status: res.data.status
@@ -72,7 +72,7 @@ const ProposalForm = ({ ...props }: Props) => {
         GetProposal({ id: router.query.id }).then((res) => {
             setData(res.data);
             router.push({
-                pathname: `/warehouse-process/proposal-supply/${res.data.id}`,
+                pathname: `/warehouse-process/proposal/${res.data.id}`,
                 query: {
                     type: res.data.type,
                     status: res.data.status
@@ -84,7 +84,7 @@ const ProposalForm = ({ ...props }: Props) => {
     }
 
     const handleCancel = () => {
-        router.push('/warehouse-process/proposal-supply')
+        router.push('/warehouse-process/proposal')
     };
 
     useEffect(() => {
@@ -113,7 +113,7 @@ const ProposalForm = ({ ...props }: Props) => {
         <div className="p-5">
             <div className='flex justify-between header-page-bottom pb-4 mb-4'>
                 <h1 className='page-title'>{t('add_shift')}</h1>
-                <Link href="/warehouse-process/proposal-supply">
+                <Link href="/warehouse-process/proposal">
                     <div className="btn btn-primary btn-sm m-1 back-button h-9" >
                         <IconBack />
                         <span>

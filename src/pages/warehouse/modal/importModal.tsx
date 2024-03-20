@@ -11,7 +11,10 @@ import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
 import { ImportProduct } from '@/services/apis/warehouse.api';
 import { DropdownProducts } from '@/services/swr/dropdown.twr';
-
+import Flatpickr from 'react-flatpickr';
+import 'flatpickr/dist/flatpickr.css';
+import moment from 'moment';
+import { Checkbox } from '@mantine/core';
 interface Props {
     [key: string]: any;
 }
@@ -23,6 +26,8 @@ const ImportModal = ({ ...props }: Props) => {
     const [initialValue, setInitialValue] = useState<any>();
     const [dataProductDropdown, setDataProductDropdown] = useState<any>([]);
     const [page, setPage] = useState(1);
+    const [search, setSearch] = useState();
+    const [disable, setDisable] = useState(true);
 
     const SubmittedForm = Yup.object().shape({
         quantity: Yup.string().required(`${t('please_fill_quantity')}`),
@@ -31,14 +36,17 @@ const ImportModal = ({ ...props }: Props) => {
     });
 
     //get data
-    const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ page: page });
+    const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ page: page, search: search });
 
     const handleImport = (param: any) => {
-        const query = {
+        const query: any = {
             "id": router.query.id,
             "quantity": Number(param.quantity),
             "errorQuantity": Number(param.errorQuantity),
             "productId": param.productId.value
+        }
+        if (param.expiredDate) {
+            query.expiredDate = moment(param.expiredDate).format("YYYY-MM-DD hh:mm:ss");
         }
         ImportProduct(query).then(() => {
             props.importMutate();
@@ -52,6 +60,7 @@ const ImportModal = ({ ...props }: Props) => {
     const handleCancel = () => {
         props.setOpenModal(false);
         setInitialValue({});
+        setDisable(!disable);
     };
 
     useEffect(() => {
@@ -79,6 +88,14 @@ const ImportModal = ({ ...props }: Props) => {
         setTimeout(() => {
             setPage(productPagination?.page + 1);
         }, 1000);
+    }
+
+    const handleSearch = (e: any) => {
+        setSearch(e);
+    }
+
+    const handleNoti = () => {
+        setDisable(!disable);
     }
 
     return (
@@ -128,7 +145,7 @@ const ImportModal = ({ ...props }: Props) => {
                                         enableReinitialize
                                     >
 
-                                        {({ errors, values, setFieldValue }) => (
+                                        {({ errors, values, setFieldValue, submitCount }) => (
                                             <Form className="space-y-5" >
                                                 <div className="mb-5 flex justify-between gap-4">
                                                     <div className="flex-1">
@@ -137,16 +154,17 @@ const ImportModal = ({ ...props }: Props) => {
                                                             id='productId'
                                                             name='productId'
                                                             options={dataProductDropdown}
+                                                            onInputChange={e => handleSearch(e)}
                                                             onMenuOpen={() => setPage(1)}
                                                             onMenuScrollToBottom={handleMenuScrollToBottom}
                                                             isLoading={productLoading}
                                                             maxMenuHeight={160}
-                                                            value={values.productId}
+                                                            value={values?.productId}
                                                             onChange={e => {
                                                                 setFieldValue('productId', e)
                                                             }}
                                                         />
-                                                        {errors.productId ? (
+                                                        {submitCount && errors.productId ? (
                                                             <div className="text-danger mt-1"> {`${errors.productId}`} </div>
                                                         ) : null}
                                                     </div>
@@ -160,7 +178,7 @@ const ImportModal = ({ ...props }: Props) => {
                                                         placeholder={`${t('enter_quantity_product')}`}
                                                         className="form-input"
                                                     />
-                                                    {errors.quantity ? (
+                                                    {submitCount && errors.quantity ? (
                                                         <div className="text-danger mt-1"> {`${errors.quantity}`} </div>
                                                     ) : null}
                                                 </div>
@@ -173,17 +191,47 @@ const ImportModal = ({ ...props }: Props) => {
                                                         placeholder={`${t('enter_error_quantity_product')}`}
                                                         className="form-input"
                                                     />
-                                                    {errors.errorQuantity ? (
+                                                    {submitCount && errors.errorQuantity ? (
                                                         <div className="text-danger mt-1"> {`${errors.errorQuantity}`} </div>
                                                     ) : null}
                                                 </div>
-                                                <div className="p-[15px] flex items-center justify-center ltr:text-right rtl:text-left">
-                                                    <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
-                                                        {t('cancel')}
-                                                    </button>
-                                                    <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" disabled={disabled}>
-                                                        {props.data !== undefined ? t('update') : t('add')}
-                                                    </button>
+                                                <div className="mb-5">
+                                                    <label htmlFor="expiredDate" className='label'> {t('expired_date')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <Field
+                                                        autoComplete="off"
+                                                        name="expiredDate"
+                                                        render={({ field }: any) => (
+                                                            <Flatpickr
+                                                                data-enable-time
+                                                                placeholder={`${t('YYYY-MM-DD')}`}
+                                                                options={{
+                                                                    enableTime: true,
+                                                                    dateFormat: 'Y-m-d'
+                                                                }}
+                                                                value={field?.value}
+                                                                onChange={e => setFieldValue("expiredDate", moment(e[0]).format("YYYY-MM-DD hh:mm"))}
+                                                                className={disable ? "form-input bg-[#f2f2f2] calender-input" : "form-input calender-input"}
+                                                                disabled={disable}
+                                                            />
+                                                        )}
+                                                    />
+                                                    {submitCount && errors.expiredDate ? (
+                                                        <div className="text-danger mt-1"> {`${errors.expiredDate}`} </div>
+                                                    ) : null}
+                                                </div>
+                                                <div className="flex justify-between">
+                                                    <div className="flex items-center justify-end ltr:text-right rtl:text-left gap-2">
+                                                        <Checkbox onClick={e => handleNoti()} />
+                                                        <span>{`${t('noti_expired')}`}</span>
+                                                    </div>
+                                                    <div className="p-[15px] flex items-center justify-end ltr:text-right rtl:text-left">
+                                                        <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
+                                                            {t('cancel')}
+                                                        </button>
+                                                        <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" disabled={disabled}>
+                                                            {props.data !== undefined ? t('update') : t('save')}
+                                                        </button>
+                                                    </div>
                                                 </div>
 
                                             </Form>

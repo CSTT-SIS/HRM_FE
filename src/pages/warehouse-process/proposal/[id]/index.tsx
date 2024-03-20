@@ -195,13 +195,13 @@ const DetailPage = ({ ...props }: Props) => {
     ]
 
     const handleCancel = () => {
-        router.push(`/warehouse-process/proposal-supply`)
+        router.push(`/warehouse-process/proposal`)
     };
 
     const handleChangeComplete = (id: any) => {
         ProposalPending(id).then(() => {
             showMessage(`${t('update_success')}`, 'success');
-            router.push("/warehouse-process/proposal-supply")
+            router.push("/warehouse-process/proposal")
         }).catch((err) => {
             showMessage(`${err?.response?.data?.message}`, 'error');
         });
@@ -308,7 +308,7 @@ const DetailPage = ({ ...props }: Props) => {
             )}
             <div className='flex justify-between header-page-bottom pb-4 mb-4'>
                 <h1 className='page-title'>{t('proposal_supply')}</h1>
-                <Link href="/warehouse-process/proposal-supply">
+                <Link href="/warehouse-process/proposal">
                     <div className="btn btn-primary btn-sm m-1 back-button h-9" >
                         <IconBack />
                         <span>

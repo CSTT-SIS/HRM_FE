@@ -4,12 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { Dialog, Transition } from '@headlessui/react';
 
 import * as Yup from 'yup';
-import { Field, Form, Formik } from 'formik';
+import { Field, Form, Formik, useFormikContext } from 'formik';
 import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
-import { AddProposalDetail, EditProposalDetail } from '@/services/apis/proposal.api';
 import { DropdownProducts } from '@/services/swr/dropdown.twr';
 import { WarehousingBillAddDetail, WarehousingBillEditDetail } from '@/services/apis/warehousing-bill.api';
 import Flatpickr from 'react-flatpickr';
@@ -34,7 +33,7 @@ const DetailModal = ({ ...props }: Props) => {
 
     const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ page: page });
 
-    const handleProposal = (param: any) => {
+    const handleProposal = (param: any, resetForm: any) => {
         if (Number(router.query.id)) {
             const query = {
                 productId: Number(param.productId.value),
@@ -67,7 +66,6 @@ const DetailModal = ({ ...props }: Props) => {
                 productId: Number(param.productId.value),
                 proposalQuantity: Number(param.proposalQuantity),
                 note: param.note,
-                expirationDate: param.expirationDate
                 // price: param?.price ? param?.price : 0
             };
             if (props?.data?.id) {
@@ -82,6 +80,7 @@ const DetailModal = ({ ...props }: Props) => {
                 }
             }
             handleCancel();
+            resetForm();
         }
     }
 
@@ -102,8 +101,8 @@ const DetailModal = ({ ...props }: Props) => {
             note: props?.data ? `${props?.data?.note}` : "",
             // price: props?.data ? props?.data.price : ""
         })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props?.data]);
-
 
     useEffect(() => {
         if (productPagination?.page === undefined) return;
@@ -164,8 +163,7 @@ const DetailModal = ({ ...props }: Props) => {
                                             initialValues={initialValue}
                                             validationSchema={SubmittedForm}
                                             onSubmit={async (values, { resetForm }) => {
-                                                await handleProposal(values)
-                                                resetForm()
+                                                await handleProposal(values, resetForm)
                                             }}
                                             enableReinitialize
                                         >
@@ -183,7 +181,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                                 isLoading={productLoading}
                                                                 maxMenuHeight={160}
                                                                 value={values?.productId}
-                                                                onChange={e => {
+                                                                onChange={(e: any) => {
                                                                     setFieldValue('productId', e)
                                                                 }}
                                                             />
@@ -193,21 +191,9 @@ const DetailModal = ({ ...props }: Props) => {
                                                         </div>
                                                     </div>
                                                     <div className="mb-5">
-                                                        <label htmlFor="inventory" > {t('inventory_number')} </label >
-                                                        <Field autoComplete="off"
-                                                            name="inventory"
-                                                            type="number"
-                                                            id="inventory"
-                                                            className={"form-input bg-[#f2f2f2]"}
-                                                            disabled={true}
-                                                        />
-                                                        {submitCount && errors.inventory ? (
-                                                            <div className="text-danger mt-1"> {`${errors.inventory}`} </div>
-                                                        ) : null}
-                                                    </div>
-                                                    <div className="mb-5">
                                                         <label htmlFor="proposalQuantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Field autoComplete="off"
+                                                        <Field
+                                                            autoComplete="off"
                                                             name="proposalQuantity"
                                                             type="number"
                                                             id="proposalQuantity"
@@ -216,28 +202,6 @@ const DetailModal = ({ ...props }: Props) => {
                                                         />
                                                         {submitCount && errors.proposalQuantity ? (
                                                             <div className="text-danger mt-1"> {`${errors.proposalQuantity}`} </div>
-                                                        ) : null}
-                                                    </div>
-                                                    <div className="mt-5">
-                                                        <label htmlFor="expirationDate" className='label'> {t('expiration_date')} </label >
-                                                        <Field autoComplete="off"
-                                                            name="expirationDate"
-                                                            render={({ field }: any) => (
-                                                                <Flatpickr
-                                                                    data-enable-time
-                                                                    placeholder={`${t('YYYY-MM-DD | hh:mm')}`}
-                                                                    options={{
-                                                                        enableTime: true,
-                                                                        dateFormat: 'Y-m-d H:i'
-                                                                    }}
-                                                                    value={field?.value}
-                                                                    onChange={e => setFieldValue("expirationDate", moment(e[0]).format("YYYY-MM-DD hh:mm"))}
-                                                                    className={"form-input calender-input"}
-                                                                />
-                                                            )}
-                                                        />
-                                                        {submitCount && errors.expirationDate ? (
-                                                            <div className="text-danger mt-1"> {`${errors.expirationDate}`} </div>
                                                         ) : null}
                                                     </div>
                                                     {/* <div className="mb-5">
@@ -249,7 +213,8 @@ const DetailModal = ({ ...props }: Props) => {
                                                     </div> */}
                                                     <div className="mb-5">
                                                         <label htmlFor="note" > {t('description')} </label >
-                                                        <Field autoComplete="off"
+                                                        <Field
+                                                            autoComplete="off"
                                                             name="note"
                                                             type="text"
                                                             id="note"

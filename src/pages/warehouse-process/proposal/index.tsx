@@ -45,7 +45,7 @@ const ProposalPage = ({ ...props }: Props) => {
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
     // get data
-    const { data: proposal, pagination, mutate, isLoading } = Proposals({ sortBy: 'id.ASC', ...router.query, type: "SUPPLY" });
+    const { data: proposal, pagination, mutate, isLoading } = Proposals({ sortBy: 'id.ASC', ...router.query });
     useEffect(() => {
         if (proposal?.data.length <= 0 && pagination.page > 1) {
             router.push({
@@ -124,7 +124,7 @@ const ProposalPage = ({ ...props }: Props) => {
     };
 
     const handleDetail = (value: any) => {
-        router.push(`/warehouse-process/proposal-supply/${value.id}`)
+        router.push(`/warehouse-process/proposal/${value.id}`)
     }
 
     const columns = [
@@ -150,7 +150,7 @@ const ProposalPage = ({ ...props }: Props) => {
             render: (records: any) => (
                 <div className="flex justify-start gap-2">
                     <div className="w-[80px]">
-                        <Link href={`/warehouse-process/proposal-supply/${records.id}?status=${true}&&type=approve`}>
+                        <Link href={`/warehouse-process/proposal/${records.id}?status=${true}&&type=approve`}>
                             <button type='button' className='button-detail'>
                                 <IconNewEye /> <span>{t('detail')}</span>
                             </button>
@@ -198,7 +198,7 @@ const ProposalPage = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" className="m-1 button-table button-create" onClick={(e) => router.push(`/warehouse-process/proposal-supply/create`)}>
+                        <button type="button" className="m-1 button-table button-create" onClick={(e) => router.push(`/warehouse-process/proposal/create`)}>
                             <IconNewPlus />
                             <span className='uppercase'>{t('add')}</span>
                         </button>

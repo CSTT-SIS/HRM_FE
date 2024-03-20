@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
 import { DropdownProducts } from '@/services/swr/dropdown.twr';
 import { AddOrderDetail, EditOrderDetail } from '@/services/apis/order.api';
+import { GetQuantity } from '@/services/apis/product.api';
 
 interface Props {
     [key: string]: any;
@@ -95,6 +96,7 @@ const DetailModal = ({ ...props }: Props) => {
                 label: `${props?.data?.product?.name}`
             } : "",
             note: props?.data?.note ? props?.data?.note : "",
+            inventory: props?.data?.product ? props?.data?.product.quantity : ""
         })
     }, [props?.data]);
 
@@ -112,6 +114,15 @@ const DetailModal = ({ ...props }: Props) => {
         setTimeout(() => {
             setPage(productPagination?.page + 1);
         }, 1000);
+    }
+
+    const handleQuantity = (param: any, setFieldValue: any) => {
+        GetQuantity({ id: param.value }).then((res) => {
+            console.log("🚀 ~ GetQuantity ~ res:", res)
+            setFieldValue('inventory', res.data)
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
     }
 
     return (
@@ -176,12 +187,27 @@ const DetailModal = ({ ...props }: Props) => {
                                                             value={values.productId}
                                                             onChange={e => {
                                                                 setFieldValue('productId', e)
+                                                                handleQuantity(e, setFieldValue);
                                                             }}
                                                         />
                                                         {submitCount && errors.productId ? (
                                                             <div className="text-danger mt-1"> {`${errors.productId}`} </div>
                                                         ) : null}
                                                     </div>
+                                                </div>
+                                                <div className="mb-5">
+                                                    <label htmlFor="inventory" > {t('inventory_number')} </label >
+                                                    <Field
+                                                        autoComplete="off"
+                                                        name="inventory"
+                                                        type="number"
+                                                        id="inventory"
+                                                        className={"form-input bg-[#f2f2f2]"}
+                                                        disabled={true}
+                                                    />
+                                                    {submitCount && errors.inventory ? (
+                                                        <div className="text-danger mt-1"> {`${errors.inventory}`} </div>
+                                                    ) : null}
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="quantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
