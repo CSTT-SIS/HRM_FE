@@ -190,7 +190,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                     </div>
                                                     <div className="mb-5">
                                                         <label htmlFor="inventory" > {t('inventory_number')} </label >
-                                                        <Field
+                                                        <Field autoComplete="off"
                                                             name="inventory"
                                                             type="number"
                                                             id="inventory"
@@ -203,7 +203,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                     </div>
                                                     <div className="mb-5">
                                                         <label htmlFor="proposalQuantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Field
+                                                        <Field autoComplete="off"
                                                             name="proposalQuantity"
                                                             type="number"
                                                             id="proposalQuantity"
@@ -216,14 +216,14 @@ const DetailModal = ({ ...props }: Props) => {
                                                     </div>
                                                     {/* <div className="mb-5">
                                                         <label htmlFor="price" > {t('price')} </label >
-                                                        <Field name="price" type="number" id="price" placeholder={`${t('enter_price')}`} className="form-input" />
+                                                        <Field autoComplete="off" name="price" type="number" id="price" placeholder={`${t('enter_price')}`} className="form-input" />
                                                         {submitCount && errors.price ? (
                                                             <div className="text-danger mt-1"> {`${errors.price}`} </div>
                                                         ) : null}
                                                     </div> */}
                                                     <div className="mb-5">
                                                         <label htmlFor="note" > {t('description')} </label >
-                                                        <Field
+                                                        <Field autoComplete="off"
                                                             name="note"
                                                             type="text"
                                                             id="note"

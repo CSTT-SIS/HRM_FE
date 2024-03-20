@@ -137,7 +137,7 @@ const TaskModal = ({ ...props }: Props) => {
 														{' '}
 														{t('name_task')} <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field name="name" type="text" id="name" placeholder={`${t('enter_name_task')}`} className="form-input" />
+													<Field autoComplete="off" name="name" type="text" id="name" placeholder={`${t('enter_name_task')}`} className="form-input" />
 													{errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null}
 												</div>
 												<div className="mb-3 w-1/2">
@@ -145,7 +145,7 @@ const TaskModal = ({ ...props }: Props) => {
 														{' '}
 														{t('creator_task')} <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field as="select" name="creator" id="creator" className="form-input">
+													<Field autoComplete="off" as="select" name="creator" id="creator" className="form-input">
 														<option value="">Chọn người tạo</option>
 														<option value="Bountafaibounnheuang">Bountafaibounnheuang</option>
 														<option value="Khampa Sirt">Khampa Sirt</option>
@@ -159,7 +159,7 @@ const TaskModal = ({ ...props }: Props) => {
 														{' '}
 														{t('executor_task')} <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field as="select" name="executor" id="executor" className="form-input">
+													<Field autoComplete="off" as="select" name="executor" id="executor" className="form-input">
 														<option value="">Chọn người thực hiện</option>
 														<option value="Suok Thi Da">Suok Thi Da</option>
 														<option value="Người thực hiện 2">Người thực hiện 2</option>
@@ -169,7 +169,7 @@ const TaskModal = ({ ...props }: Props) => {
 												<div className="mb-3 w-1/2">
 													<label htmlFor="collaborator"> {t('collaborator_task')}</label>
 
-													<Field as="select" name="collaborator" id="collaborator" className="form-input">
+													<Field autoComplete="off" as="select" name="collaborator" id="collaborator" className="form-input">
 														<option value="">Chọn người phối hợp</option>
 														<option value="Người người phối hợp 1">Người phối hợp 1</option>
 														<option value="Người người phối hợp 2">Người phối hợp 2</option>
@@ -180,7 +180,7 @@ const TaskModal = ({ ...props }: Props) => {
 													<label htmlFor="deadline">
 														{t('deadline_task')} <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field id="deadline" type="datetime-local" name="deadline" className="form-input" placeholder={`${t('enter_deadline_task')}`} />
+													<Field autoComplete="off" id="deadline" type="datetime-local" name="deadline" className="form-input" placeholder={`${t('enter_deadline_task')}`} />
 													{errors.deadline ? <div className="mt-1 text-danger"> {errors.deadline} </div> : null}
 												</div>
 												<div className="mb-3">
@@ -188,26 +188,26 @@ const TaskModal = ({ ...props }: Props) => {
 														{' '}
 														{t('description_task')} <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field name="description" as="textarea" rows="2" id="description" placeholder={`${t('enter_description_task')}`} className="form-input" />
+													<Field autoComplete="off" name="description" as="textarea" rows="2" id="description" placeholder={`${t('enter_description_task')}`} className="form-input" />
 												</div>
 												<div className="mb-3">
 													<label htmlFor="directive"> {t('directive_task')}</label>
-													<Field name="directive" as="textarea" rows="2" id="directive" placeholder={`${t('enter_directive_task')}`} className="form-input" />
+													<Field autoComplete="off" name="directive" as="textarea" rows="2" id="directive" placeholder={`${t('enter_directive_task')}`} className="form-input" />
 												</div>
 												{props.data !== undefined && (
 													<div className="mb-3">
 														<label>{t('status_task')}:</label>
 														<div className="mt-3">
 															<label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-																<Field type="radio" name="status" value="ĐÃ XONG" className="form-radio text-warning" />
+																<Field autoComplete="off" type="radio" name="status" value="ĐÃ XONG" className="form-radio text-warning" />
 																<span className="ltr:pl-2 rtl:pr-2">ĐÃ XONG</span>
 															</label>
 															<label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-																<Field type="radio" name="status" value="HOÀN THÀNH" className="form-radio text-success" />
+																<Field autoComplete="off" type="radio" name="status" value="HOÀN THÀNH" className="form-radio text-success" />
 																<span className="ltr:pl-2 rtl:pr-2">HOÀN THÀNH</span>
 															</label>
 															<label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-																<Field type="radio" name="status" value="HUỶ BỎ" className="form-radio text-danger" />
+																<Field autoComplete="off" type="radio" name="status" value="HUỶ BỎ" className="form-radio text-danger" />
 																<span className="ltr:pl-2 rtl:pr-2">HUỶ BỎ</span>
 															</label>
 														</div>
@@ -218,7 +218,7 @@ const TaskModal = ({ ...props }: Props) => {
 														{' '}
 														{t('attachment_task')} <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field name="attachment" type="file" id="attachment" placeholder={`${t('enter_attachment_task')}`} className="form-input" />
+													<Field autoComplete="off" name="attachment" type="file" id="attachment" placeholder={`${t('enter_attachment_task')}`} className="form-input" />
 												</div> */}
 												<div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
 													<button type="button" className="btn btn-outline-danger" onClick={() => handleCancel()}>

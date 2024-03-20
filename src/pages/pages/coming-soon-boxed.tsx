@@ -115,7 +115,7 @@ const ComingSoonBoxed = () => {
                             <div className="mb-20 md:mb-32">
                                 <h2 className="text-lg font-bold uppercase dark:text-white sm:text-xl">Subscribe to get notified!</h2>
                                 <div className="relative mb-10 mt-8">
-                                    <input type="email" placeholder="mail@gmail.com" className="form-input mb-5 py-3.5 placeholder:text-base placeholder:text-white-dark sm:mb-0 sm:pe-32" />
+                                    <input autoComplete="off" type="email" placeholder="mail@gmail.com" className="form-input mb-5 py-3.5 placeholder:text-base placeholder:text-white-dark sm:mb-0 sm:pe-32" />
                                     <button
                                         type="button"
                                         className="btn btn-gradient end-1.5 top-1/2 inline-flex border-0 px-4 py-1.5 text-base shadow-none sm:absolute sm:-translate-y-1/2"

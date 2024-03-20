@@ -185,7 +185,7 @@ const TimekeepingModal = ({ ...props }: Props) => {
     };
 
 	const columns = [
-        { accessor: 'check', title: 'Chọn', sortable: false, render: (records: any) => <input type="checkbox" onChange={(e) => handleChangeSelect(e.target.checked, records)} className='form-checkbox'/>},
+        { accessor: 'check', title: 'Chọn', sortable: false, render: (records: any) => <input autoComplete="off" type="checkbox" onChange={(e) => handleChangeSelect(e.target.checked, records)} className='form-checkbox'/>},
 		{
 			accessor: 'id',
 			title: '#',
@@ -286,7 +286,7 @@ const TimekeepingModal = ({ ...props }: Props) => {
                                                         />
                         </div>
                         <div className="flex flex-1">
-						<input type="text" className="form-input flex-1" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+						<input autoComplete="off" type="text" className="form-input flex-1" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
                         </div>
 					</div>
 				</div>

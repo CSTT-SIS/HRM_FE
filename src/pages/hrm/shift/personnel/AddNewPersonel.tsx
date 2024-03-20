@@ -242,7 +242,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('code_staff')} <span style={{ color: 'red' }}>* </span>
                                                         </label>
-                                                        <Field name="code" type="text" id="code" placeholder={`${t('enter_code_staff')}`} className="form-input" />
+                                                        <Field autoComplete="off" name="code" type="text" id="code" placeholder={`${t('enter_code_staff')}`} className="form-input" />
                                                         {submitCount ? errors.code ? <div className="mt-1 text-danger"> {errors.code} </div> : null : ''}
                                                     </div>
 
@@ -253,14 +253,14 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('surname_middle')}
                                                         </label>
-                                                        <Field name="surname" type="text" id="surname" placeholder={t('enter_surname_middle')} className="form-input" />
+                                                        <Field autoComplete="off" name="surname" type="text" id="surname" placeholder={t('enter_surname_middle')} className="form-input" />
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="name" className='label'>
                                                             {' '}
                                                             {t('name_staff')} <span style={{ color: 'red' }}>* </span>
                                                         </label>
-                                                        <Field name="name" type="text" id="name" placeholder={`${t('enter_name_staff')}`} className="form-input" />
+                                                        <Field autoComplete="off" name="name" type="text" id="name" placeholder={`${t('enter_name_staff')}`} className="form-input" />
                                                         {submitCount ? errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null : ''}
                                                     </div>
                                                 </div>
@@ -270,14 +270,14 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             Email
                                                         </label>
-                                                        <Field name="email" type="text" id="email" placeholder={t('enter_email')} className="form-input" />
+                                                        <Field autoComplete="off" name="email" type="text" id="email" placeholder={t('enter_email')} className="form-input" />
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="phone" className='label'>
                                                             {' '}
                                                             {t('phone_number')}
                                                         </label>
-                                                        <Field name="phone" type="text" id="phone" placeholder={t('enter_phone_number')} className="form-input" />
+                                                        <Field autoComplete="off" name="phone" type="text" id="phone" placeholder={t('enter_phone_number')} className="form-input" />
                                                     </div>
 
                                                 </div>
@@ -309,14 +309,14 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('other_name')}
                                                         </label>
-                                                        <Field name="othername" type="text" id="othername" placeholder={t('enter_other_name')} className="form-input" />
+                                                        <Field autoComplete="off" name="othername" type="text" id="othername" placeholder={t('enter_other_name')} className="form-input" />
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="dateofbirth" className='label'>
                                                             {' '}
                                                             {t('date_of_birth')}
                                                         </label>
-                                                        <Field id="dateofbirth" type="date" name="dateofbirth" className="form-input" />
+                                                        <Field autoComplete="off" id="dateofbirth" type="date" name="dateofbirth" className="form-input" />
 
                                                     </div>
                                                 </div>
@@ -346,7 +346,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('id_number')}
                                                         </label>
-                                                        <Field name="IDnumber" type="text" id="IDnumber" placeholder={t('enter_id_number')} className="form-input" />
+                                                        <Field autoComplete="off" name="IDnumber" type="text" id="IDnumber" placeholder={t('enter_id_number')} className="form-input" />
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -355,7 +355,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('date_of_issue')}
                                                         </label>
-                                                        <Field id="dateissue" type="date" name="dateissue" className="form-input" />
+                                                        <Field autoComplete="off" id="dateissue" type="date" name="dateissue" className="form-input" />
 
                                                     </div>
                                                     <div className="mb-5 w-1/2">
@@ -363,7 +363,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('address_issue')}
                                                         </label>
-                                                        <Field name="IDnumber" type="text" id="IDnumber" placeholder={t('enter_address_issue')} className="form-input" />
+                                                        <Field autoComplete="off" name="IDnumber" type="text" id="IDnumber" placeholder={t('enter_address_issue')} className="form-input" />
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -372,14 +372,14 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('id_passport')}
                                                         </label>
-                                                        <Field name="id_passport" type="text" id="id_passport" placeholder={t('enter_id_passport')} className="form-input" />
+                                                        <Field autoComplete="off" name="id_passport" type="text" id="id_passport" placeholder={t('enter_id_passport')} className="form-input" />
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="dateissuepassport" className='label'>
                                                             {' '}
                                                             {t('date_of_issue_passport')}
                                                         </label>
-                                                        <Field id="dateissuepassport" type="date" name="dateissuepassport" className="form-input" />
+                                                        <Field autoComplete="off" id="dateissuepassport" type="date" name="dateissuepassport" className="form-input" />
 
                                                     </div>
                                                 </div>
@@ -389,14 +389,14 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('address_issue_passport')}
                                                         </label>
-                                                        <Field name="issuepassport" type="text" id="issuepassport" placeholder={t('enter_address_issue_passport')} className="form-input" />
+                                                        <Field autoComplete="off" name="issuepassport" type="text" id="issuepassport" placeholder={t('enter_address_issue_passport')} className="form-input" />
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="dateendpassport" className='label'>
                                                             {' '}
                                                             {t('date_end_passport')}
                                                         </label>
-                                                        <Field id="dateendpassport" type="date" name="dateendpassport" className="form-input" />
+                                                        <Field autoComplete="off" id="dateendpassport" type="date" name="dateendpassport" className="form-input" />
 
                                                     </div>
                                                 </div>
@@ -406,14 +406,14 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('place_of_birth')}
                                                         </label>
-                                                        <Field name="place_of_birth" type="text" id="place_of_birth" placeholder={t('enter_place_of_birth')} className="form-input" />
+                                                        <Field autoComplete="off" name="place_of_birth" type="text" id="place_of_birth" placeholder={t('enter_place_of_birth')} className="form-input" />
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="nation" className='label'>
                                                             {' '}
                                                             {t('nation')}
                                                         </label>
-                                                        <Field name="nation" type="text" id="nation" placeholder={t('enter_nation')} className="form-input" />
+                                                        <Field autoComplete="off" name="nation" type="text" id="nation" placeholder={t('enter_nation')} className="form-input" />
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -462,7 +462,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('religion')}
                                                         </label>
-                                                        <Field name="religion" type="text" id="religion" placeholder={t('enter_religion')} className="form-input" />
+                                                        <Field autoComplete="off" name="religion" type="text" id="religion" placeholder={t('enter_religion')} className="form-input" />
                                                     </div>
                                                 </div>
                                                 <div className="mb-5 w-1/2">
@@ -470,7 +470,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                         {' '}
                                                         {t('marital_status')}
                                                     </label>
-                                                    <Field name="marital_status" type="text" id="marital_status" placeholder={t('enter_marital_status')} className="form-input" />
+                                                    <Field autoComplete="off" name="marital_status" type="text" id="marital_status" placeholder={t('enter_marital_status')} className="form-input" />
                                                 </div>
                                             </div>
                                         </AnimateHeight>
@@ -565,7 +565,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('approver')}
                                                         </label>
-                                                        <Field name="approver" type="text" id="approver" placeholder={t('enter_approver')} className="form-input " />
+                                                        <Field autoComplete="off" name="approver" type="text" id="approver" placeholder={t('enter_approver')} className="form-input " />
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="date_join" className='label'>
@@ -589,14 +589,14 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('tax_code')}
                                                         </label>
-                                                        <Field name="tax_code" type="text" id="tax_code" placeholder={t('enter_tax_code')} className="form-input" />
+                                                        <Field autoComplete="off" name="tax_code" type="text" id="tax_code" placeholder={t('enter_tax_code')} className="form-input" />
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="bank_number" className='label'>
                                                             {' '}
                                                             {t('bank_number')}
                                                         </label>
-                                                        <Field name="bank_number" type="text" id="bank_number" placeholder={t('enter_bank_number')} className="form-input" />
+                                                        <Field autoComplete="off" name="bank_number" type="text" id="bank_number" placeholder={t('enter_bank_number')} className="form-input" />
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
@@ -605,14 +605,14 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             {' '}
                                                             {t('bank')}
                                                         </label>
-                                                        <Field name="bank" type="text" id="bank" placeholder={t('enter_bank')} className="form-input" />
+                                                        <Field autoComplete="off" name="bank" type="text" id="bank" placeholder={t('enter_bank')} className="form-input" />
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="branch" className='label'>
                                                             {' '}
                                                             {t('branch')}
                                                         </label>
-                                                        <Field name="branch" type="text" id="branch" placeholder={t('enter_branch')} className="form-input" />
+                                                        <Field autoComplete="off" name="branch" type="text" id="branch" placeholder={t('enter_branch')} className="form-input" />
                                                     </div>
                                                 </div>
                                             </div>

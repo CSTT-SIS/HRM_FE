@@ -310,7 +310,7 @@ const Department = ({ ...props }: Props) => {
                             }}
                          />
                         </div> */}
-                    <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                    <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
                         </div>
                 </div>
                 <div className="datatables">

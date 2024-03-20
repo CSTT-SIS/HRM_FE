@@ -213,7 +213,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                     {' '}
                                     {t('name_staff')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field disabled as="select" name="name" id="name" className="form-input">
+                                <Field autoComplete="off" disabled as="select" name="name" id="name" className="form-input">
                                     {listPersonnel?.map((person: any) => {
                                         return (
                                             <option key={person.value} value={person.value}>
@@ -232,7 +232,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                     {' '}
                                     {t('duty')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field disabled as="select" name="position" id="position" className="form-input">
+                                <Field autoComplete="off" disabled as="select" name="position" id="position" className="form-input">
                                     {listDuty?.map((duty: any) => {
                                         return (
                                             <option key={duty.value} value={duty.value}>
@@ -251,7 +251,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                     {' '}
                                     {t('department')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field disabled type="text" name="department" className="form-input" />
+                                <Field autoComplete="off" disabled type="text" name="department" className="form-input" />
                                 {submitCount ? errors.department ? <div className="mt-1 text-danger"> {errors.department} </div> : null : ''}
                             </div>
                             <div className="mb-5 w-1/2">
@@ -337,7 +337,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                     {' '}
                                     {t('reason')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field as="textarea" name="reason" id="reason"
+                                <Field autoComplete="off" as="textarea" name="reason" id="reason"
                                     placeholder={`${t('fill_reason')}`} className="form-input" />
                                 {submitCount ? errors.reason ? <div className="mt-1 text-danger"> {errors.reason} </div> : null : ''}
                             </div>

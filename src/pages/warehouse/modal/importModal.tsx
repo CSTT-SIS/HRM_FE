@@ -153,7 +153,7 @@ const ImportModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="quantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                         name="quantity"
                                                         type="text"
                                                         id="quantity"
@@ -166,7 +166,7 @@ const ImportModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="errorQuantity" > {t('error_quantity')}</label >
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                         name="errorQuantity"
                                                         type="text"
                                                         id="errorQuantity"

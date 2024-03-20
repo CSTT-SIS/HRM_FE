@@ -88,11 +88,11 @@ const AccountSetting = () => {
                                 <div className="grid flex-1 grid-cols-1 gap-5 sm:grid-cols-2">
                                     <div>
                                         <label htmlFor="name">Full Name</label>
-                                        <input id="name" type="text" placeholder="Jimmy Turner" className="form-input" />
+                                        <input autoComplete="off" id="name" type="text" placeholder="Jimmy Turner" className="form-input" />
                                     </div>
                                     <div>
                                         <label htmlFor="profession">Profession</label>
-                                        <input id="profession" type="text" placeholder="Web Developer" className="form-input" />
+                                        <input autoComplete="off" id="profession" type="text" placeholder="Web Developer" className="form-input" />
                                     </div>
                                     <div>
                                         <label htmlFor="country">Country</label>
@@ -109,27 +109,27 @@ const AccountSetting = () => {
                                     </div>
                                     <div>
                                         <label htmlFor="address">Address</label>
-                                        <input id="address" type="text" placeholder="New York" className="form-input" />
+                                        <input autoComplete="off" id="address" type="text" placeholder="New York" className="form-input" />
                                     </div>
                                     <div>
                                         <label htmlFor="location">Location</label>
-                                        <input id="location" type="text" placeholder="Location" className="form-input" />
+                                        <input autoComplete="off" id="location" type="text" placeholder="Location" className="form-input" />
                                     </div>
                                     <div>
                                         <label htmlFor="phone">Phone</label>
-                                        <input id="phone" type="text" placeholder="+1 (530) 555-12121" className="form-input" />
+                                        <input autoComplete="off" id="phone" type="text" placeholder="+1 (530) 555-12121" className="form-input" />
                                     </div>
                                     <div>
                                         <label htmlFor="email">Email</label>
-                                        <input id="email" type="email" placeholder="Jimmy@gmail.com" className="form-input" />
+                                        <input autoComplete="off" id="email" type="email" placeholder="Jimmy@gmail.com" className="form-input" />
                                     </div>
                                     <div>
                                         <label htmlFor="web">Website</label>
-                                        <input id="web" type="text" placeholder="Enter URL" className="form-input" />
+                                        <input autoComplete="off" id="web" type="text" placeholder="Enter URL" className="form-input" />
                                     </div>
                                     <div>
                                         <label className="inline-flex cursor-pointer">
-                                            <input type="checkbox" className="form-checkbox" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox" />
                                             <span className="relative text-white-dark checked:bg-none">Make this my default address</span>
                                         </label>
                                     </div>
@@ -148,25 +148,25 @@ const AccountSetting = () => {
                                     <div className="flex items-center justify-center rounded bg-[#eee] px-3 font-semibold ltr:mr-2 rtl:ml-2 dark:bg-[#1b2e4b]">
                                         <IconLinkedin className="w-5 h-5" />
                                     </div>
-                                    <input type="text" placeholder="jimmy_turner" className="form-input" />
+                                    <input autoComplete="off" type="text" placeholder="jimmy_turner" className="form-input" />
                                 </div>
                                 <div className="flex">
                                     <div className="flex items-center justify-center rounded bg-[#eee] px-3 font-semibold ltr:mr-2 rtl:ml-2 dark:bg-[#1b2e4b]">
                                         <IconTwitter className="w-5 h-5" />
                                     </div>
-                                    <input type="text" placeholder="jimmy_turner" className="form-input" />
+                                    <input autoComplete="off" type="text" placeholder="jimmy_turner" className="form-input" />
                                 </div>
                                 <div className="flex">
                                     <div className="flex items-center justify-center rounded bg-[#eee] px-3 font-semibold ltr:mr-2 rtl:ml-2 dark:bg-[#1b2e4b]">
                                         <IconFacebook className="w-5 h-5" />
                                     </div>
-                                    <input type="text" placeholder="jimmy_turner" className="form-input" />
+                                    <input autoComplete="off" type="text" placeholder="jimmy_turner" className="form-input" />
                                 </div>
                                 <div className="flex">
                                     <div className="flex items-center justify-center rounded bg-[#eee] px-3 font-semibold ltr:mr-2 rtl:ml-2 dark:bg-[#1b2e4b]">
                                         <IconGithub />
                                     </div>
-                                    <input type="text" placeholder="jimmy_turner" className="form-input" />
+                                    <input autoComplete="off" type="text" placeholder="jimmy_turner" className="form-input" />
                                 </div>
                             </div>
                         </form>
@@ -290,21 +290,21 @@ const AccountSetting = () => {
                                         <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
                                             <div>
                                                 <label htmlFor="billingName">Name</label>
-                                                <input id="billingName" type="text" placeholder="Enter Name" className="form-input" />
+                                                <input autoComplete="off" id="billingName" type="text" placeholder="Enter Name" className="form-input" />
                                             </div>
                                             <div>
                                                 <label htmlFor="billingEmail">Email</label>
-                                                <input id="billingEmail" type="email" placeholder="Enter Email" className="form-input" />
+                                                <input autoComplete="off" id="billingEmail" type="email" placeholder="Enter Email" className="form-input" />
                                             </div>
                                         </div>
                                         <div className="mb-5">
                                             <label htmlFor="billingAddress">Address</label>
-                                            <input id="billingAddress" type="text" placeholder="Enter Address" className="form-input" />
+                                            <input autoComplete="off" id="billingAddress" type="text" placeholder="Enter Address" className="form-input" />
                                         </div>
                                         <div className="mb-5 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
                                             <div className="md:col-span-2">
                                                 <label htmlFor="billingCity">City</label>
-                                                <input id="billingCity" type="text" placeholder="Enter City" className="form-input" />
+                                                <input autoComplete="off" id="billingCity" type="text" placeholder="Enter City" className="form-input" />
                                             </div>
                                             <div>
                                                 <label htmlFor="billingState">State</label>
@@ -315,7 +315,7 @@ const AccountSetting = () => {
                                             </div>
                                             <div>
                                                 <label htmlFor="billingZip">Zip</label>
-                                                <input id="billingZip" type="text" placeholder="Enter Zip" className="form-input" />
+                                                <input autoComplete="off" id="billingZip" type="text" placeholder="Enter Zip" className="form-input" />
                                             </div>
                                         </div>
                                         <button type="button" className="btn btn-primary">
@@ -346,23 +346,23 @@ const AccountSetting = () => {
                                             </div>
                                             <div>
                                                 <label htmlFor="payNumber">Card Number</label>
-                                                <input id="payNumber" type="text" placeholder="Card Number" className="form-input" />
+                                                <input autoComplete="off" id="payNumber" type="text" placeholder="Card Number" className="form-input" />
                                             </div>
                                         </div>
                                         <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
                                             <div>
                                                 <label htmlFor="payHolder">Holder Name</label>
-                                                <input id="payHolder" type="text" placeholder="Holder Name" className="form-input" />
+                                                <input autoComplete="off" id="payHolder" type="text" placeholder="Holder Name" className="form-input" />
                                             </div>
                                             <div>
                                                 <label htmlFor="payCvv">CVV/CVV2</label>
-                                                <input id="payCvv" type="text" placeholder="CVV" className="form-input" />
+                                                <input autoComplete="off" id="payCvv" type="text" placeholder="CVV" className="form-input" />
                                             </div>
                                         </div>
                                         <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
                                             <div>
                                                 <label htmlFor="payExp">Card Expiry</label>
-                                                <input id="payExp" type="text" placeholder="Card Expiry" className="form-input" />
+                                                <input autoComplete="off" id="payExp" type="text" placeholder="Card Expiry" className="form-input" />
                                             </div>
                                         </div>
                                         <button type="button" className="btn btn-primary">
@@ -384,7 +384,7 @@ const AccountSetting = () => {
                                 <div className="flex justify-around">
                                     <div className="flex">
                                         <label className="inline-flex cursor-pointer">
-                                            <input className="form-radio cursor-pointer ltr:mr-4 rtl:ml-4" type="radio" name="flexRadioDefault" defaultChecked />
+                                            <input autoComplete="off" className="form-radio cursor-pointer ltr:mr-4 rtl:ml-4" type="radio" name="flexRadioDefault" defaultChecked />
                                             <span>
                                                 <img className="ms-3" width="100" height="68" alt="settings-dark" src="/assets/images/settings-light.svg" />
                                             </span>
@@ -392,7 +392,7 @@ const AccountSetting = () => {
                                     </div>
 
                                     <label className="inline-flex cursor-pointer">
-                                        <input className="form-radio cursor-pointer ltr:mr-4 rtl:ml-4" type="radio" name="flexRadioDefault" />
+                                        <input autoComplete="off" className="form-radio cursor-pointer ltr:mr-4 rtl:ml-4" type="radio" name="flexRadioDefault" />
                                         <span>
                                             <img className="ms-3" width="100" height="68" alt="settings-light" src="/assets/images/settings-dark.svg" />
                                         </span>
@@ -414,7 +414,7 @@ const AccountSetting = () => {
                                     Your <span className="text-primary">Profile</span> will be visible to anyone on the network.
                                 </p>
                                 <label className="relative h-6 w-12">
-                                    <input type="checkbox" className="custom_switch peer absolute z-10 h-full w-full cursor-pointer opacity-0" id="custom_switch_checkbox1" />
+                                    <input autoComplete="off" type="checkbox" className="custom_switch peer absolute z-10 h-full w-full cursor-pointer opacity-0" id="custom_switch_checkbox1" />
                                     <span className="block h-full rounded-full bg-[#ebedf2] before:absolute before:left-1 before:bottom-1 before:h-4 before:w-4 before:rounded-full before:bg-white before:transition-all before:duration-300 peer-checked:bg-primary peer-checked:before:left-7 dark:bg-dark dark:before:bg-white-dark dark:peer-checked:before:bg-white"></span>
                                 </label>
                             </div>
@@ -424,7 +424,7 @@ const AccountSetting = () => {
                                     Your <span className="text-primary">Email</span> will be visible to anyone on the network.
                                 </p>
                                 <label className="relative h-6 w-12">
-                                    <input type="checkbox" className="custom_switch peer absolute z-10 h-full w-full cursor-pointer opacity-0" id="custom_switch_checkbox2" />
+                                    <input autoComplete="off" type="checkbox" className="custom_switch peer absolute z-10 h-full w-full cursor-pointer opacity-0" id="custom_switch_checkbox2" />
                                     <span className="block h-full rounded-full bg-[#ebedf2] before:absolute before:left-1 before:bottom-1 before:h-4  before:w-4 before:rounded-full before:bg-white before:transition-all before:duration-300 peer-checked:bg-primary peer-checked:before:left-7 dark:bg-dark dark:before:bg-white-dark dark:peer-checked:before:bg-white"></span>
                                 </label>
                             </div>
@@ -434,7 +434,7 @@ const AccountSetting = () => {
                                     When enabled, press <span className="text-primary">ctrl</span> for help
                                 </p>
                                 <label className="relative h-6 w-12">
-                                    <input type="checkbox" className="custom_switch peer absolute z-10 h-full w-full cursor-pointer opacity-0" id="custom_switch_checkbox3" />
+                                    <input autoComplete="off" type="checkbox" className="custom_switch peer absolute z-10 h-full w-full cursor-pointer opacity-0" id="custom_switch_checkbox3" />
                                     <span className="block h-full rounded-full bg-[#ebedf2] before:absolute before:left-1 before:bottom-1 before:h-4  before:w-4 before:rounded-full before:bg-white before:transition-all before:duration-300 peer-checked:bg-primary peer-checked:before:left-7 dark:bg-dark dark:before:bg-white-dark dark:peer-checked:before:bg-white"></span>
                                 </label>
                             </div>
@@ -444,7 +444,7 @@ const AccountSetting = () => {
                                     Sidebar will be <span className="text-primary">hidden</span> by default
                                 </p>
                                 <label className="relative h-6 w-12">
-                                    <input type="checkbox" className="custom_switch peer absolute z-10 h-full w-full cursor-pointer opacity-0" id="custom_switch_checkbox4" />
+                                    <input autoComplete="off" type="checkbox" className="custom_switch peer absolute z-10 h-full w-full cursor-pointer opacity-0" id="custom_switch_checkbox4" />
                                     <span className="block h-full rounded-full bg-[#ebedf2] before:absolute before:left-1 before:bottom-1 before:h-4  before:w-4 before:rounded-full before:bg-white before:transition-all before:duration-300 peer-checked:bg-primary peer-checked:before:left-7 dark:bg-dark dark:before:bg-white-dark dark:peer-checked:before:bg-white"></span>
                                 </label>
                             </div>
@@ -454,7 +454,7 @@ const AccountSetting = () => {
                                     Display <span className="text-primary">Ads</span> on your dashboard
                                 </p>
                                 <label className="relative h-6 w-12">
-                                    <input type="checkbox" className="custom_switch peer absolute z-10 h-full w-full cursor-pointer opacity-0" id="custom_switch_checkbox5" />
+                                    <input autoComplete="off" type="checkbox" className="custom_switch peer absolute z-10 h-full w-full cursor-pointer opacity-0" id="custom_switch_checkbox5" />
                                     <span className="block h-full rounded-full bg-[#ebedf2] before:absolute before:left-1 before:bottom-1 before:h-4  before:w-4 before:rounded-full before:bg-white before:transition-all before:duration-300 peer-checked:bg-primary peer-checked:before:left-7 dark:bg-dark dark:before:bg-white-dark dark:peer-checked:before:bg-white"></span>
                                 </label>
                             </div>
@@ -464,7 +464,7 @@ const AccountSetting = () => {
                                     Enable your <span className="text-primary">social</span> profiles on this network
                                 </p>
                                 <label className="relative h-6 w-12">
-                                    <input type="checkbox" className="custom_switch peer absolute z-10 h-full w-full cursor-pointer opacity-0" id="custom_switch_checkbox6" />
+                                    <input autoComplete="off" type="checkbox" className="custom_switch peer absolute z-10 h-full w-full cursor-pointer opacity-0" id="custom_switch_checkbox6" />
                                     <span className="block h-full rounded-full bg-[#ebedf2] before:absolute before:left-1 before:bottom-1 before:h-4  before:w-4 before:rounded-full before:bg-white before:transition-all before:duration-300 peer-checked:bg-primary peer-checked:before:left-7 dark:bg-dark dark:before:bg-white-dark dark:peer-checked:before:bg-white"></span>
                                 </label>
                             </div>
@@ -485,7 +485,7 @@ const AccountSetting = () => {
                                 <h5 className="mb-4 text-lg font-semibold">Deactivate Account</h5>
                                 <p>You will not be able to receive messages, notifications for up to 24 hours.</p>
                                 <label className="relative h-6 w-12">
-                                    <input type="checkbox" className="custom_switch peer absolute z-10 h-full w-full cursor-pointer opacity-0" id="custom_switch_checkbox7" />
+                                    <input autoComplete="off" type="checkbox" className="custom_switch peer absolute z-10 h-full w-full cursor-pointer opacity-0" id="custom_switch_checkbox7" />
                                     <span className="block h-full rounded-full bg-[#ebedf2] before:absolute before:left-1 before:bottom-1 before:h-4 before:w-4 before:rounded-full before:bg-white before:transition-all before:duration-300 peer-checked:bg-primary peer-checked:before:left-7 dark:bg-dark dark:before:bg-white-dark dark:peer-checked:before:bg-white"></span>
                                 </label>
                             </div>

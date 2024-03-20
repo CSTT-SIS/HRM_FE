@@ -135,7 +135,7 @@ const ProposalForm = ({ ...props }: Props) => {
                     <Form className="space-y-5" >
                         <div className="mb-5">
                             <label htmlFor="name" className='label'> {t('name')} < span style={{ color: 'red' }}>* </span></label >
-                            <Field
+                            <Field autoComplete="off"
                                 name="name"
                                 type="text"
                                 id="name"
@@ -148,7 +148,7 @@ const ProposalForm = ({ ...props }: Props) => {
                         </div>
                         <div className="mb-5">
                             <label htmlFor="type" className='label'> {t('content')} < span style={{ color: 'red' }}>* </span></label >
-                            <Field
+                            <Field autoComplete="off"
                                 name="content"
                                 type="text"
                                 id="content"

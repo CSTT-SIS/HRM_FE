@@ -356,7 +356,7 @@ const Chat = () => {
                         </div>
                     </div>
                     <div className="relative">
-                        <input type="text" className="peer form-input ltr:pr-9 rtl:pl-9" placeholder="Searching..." value={searchUser} onChange={(e) => setSearchUser(e.target.value)} />
+                        <input autoComplete="off" type="text" className="peer form-input ltr:pr-9 rtl:pl-9" placeholder="Searching..." value={searchUser} onChange={(e) => setSearchUser(e.target.value)} />
                         <div className="absolute top-1/2 -translate-y-1/2 peer-focus:text-primary ltr:right-2 rtl:left-2">
                             <IconSearch />
                         </div>
@@ -669,7 +669,7 @@ const Chat = () => {
                             <div className="absolute bottom-0 left-0 w-full p-4">
                                 <div className="w-full items-center space-x-3 rtl:space-x-reverse sm:flex">
                                     <div className="relative flex-1">
-                                        <input
+                                        <input autoComplete="off"
                                             className="form-input rounded-full border-0 bg-[#f4f4f4] px-12 py-2 focus:outline-none"
                                             placeholder="Type a message"
                                             value={textMessage}

@@ -102,7 +102,7 @@ const AssetModal = ({ ...props }: Props) => {
 														{' '}
 														{t('name_asset')} <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field name="name" type="text" id="name" placeholder={`${t('enter_name_asset')}`} className="form-input" />
+													<Field autoComplete="off" name="name" type="text" id="name" placeholder={`${t('enter_name_asset')}`} className="form-input" />
 													{errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null}
 												</div>
 												<div className="mb-5">
@@ -110,7 +110,7 @@ const AssetModal = ({ ...props }: Props) => {
 														{' '}
 														{t('quantity_asset')} <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field name="quantity" type="number" id="quantity" placeholder={`${t('enter_quantity_asset')}`} className="form-input" />
+													<Field autoComplete="off" name="quantity" type="number" id="quantity" placeholder={`${t('enter_quantity_asset')}`} className="form-input" />
 													{errors.quantity ? <div className="mt-1 text-danger"> {errors.quantity} </div> : null}
 												</div>
 												<div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">

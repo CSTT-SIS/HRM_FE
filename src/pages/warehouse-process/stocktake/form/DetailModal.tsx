@@ -186,7 +186,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="">
                                                     <label htmlFor="openingQuantity" > {t('opening_quantity')}</label >
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                         name="openingQuantity"
                                                         type="number"
                                                         id="openingQuantity"

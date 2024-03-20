@@ -137,14 +137,14 @@ const AddNewShift = ({ ...props }: Props) => {
                                 </label>
                                 <div className="flex" style={{ alignItems: 'center', marginTop: '13px' }}>
                                     <label style={{ marginBottom: 0, marginRight: '10px' }}>
-                                        <Field disabled type="radio" name="type_shift" value="Ca theo thời gian"
+                                        <Field autoComplete="off" disabled type="radio" name="type_shift" value="Ca theo thời gian"
                                         checked={typeShift === "0"}
                                         onChange={(e: any) => handleChangeTypeShift(e, "0")}
                                         className="form-checkbox rounded-full" />
                                         {t('shift_base_time')}
                                     </label>
                                     <label style={{ marginBottom: 0 }}>
-                                        <Field disabled type="radio" name="type_shift" value="Ca theo tổng số giờ"
+                                        <Field autoComplete="off" disabled type="radio" name="type_shift" value="Ca theo tổng số giờ"
                                         checked={typeShift === "1"}
                                         onChange={(e: any) => handleChangeTypeShift(e, "1")}
                                         className="form-checkbox rounded-full" />
@@ -158,7 +158,7 @@ const AddNewShift = ({ ...props }: Props) => {
                                     {' '}
                                     {t('code_shift')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field disabled name="code_shift" type="text" id="code_shift" placeholder={`${t('fill_code_shift')}`} className="form-input" />
+                                <Field autoComplete="off" disabled name="code_shift" type="text" id="code_shift" placeholder={`${t('fill_code_shift')}`} className="form-input" />
                                 {submitCount ? errors?.code_shift ? <div className="mt-1 text-danger">
                                 {`${errors?.code_shift}`}</div> : null : ''}
                             </div>
@@ -170,7 +170,7 @@ const AddNewShift = ({ ...props }: Props) => {
                                     {' '}
                                     {t('name_shift')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field disabled name="name_shift" type="text" id="name_shift" placeholder={`${t('fill_name_shift')}`} className="form-input" />
+                                <Field autoComplete="off" disabled name="name_shift" type="text" id="name_shift" placeholder={`${t('fill_name_shift')}`} className="form-input" />
                                 {submitCount ? errors?.name_shift ? <div className="mt-1 text-danger">{`${errors?.name_shift}`} </div> : null : ''}
                             </div>
                             <div className="mb-5 w-1/2">
@@ -178,7 +178,7 @@ const AddNewShift = ({ ...props }: Props) => {
                                     {' '}
                                     {t('work_coefficient')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field disabled name="work_coefficient" type="number" id="work_coefficient" placeholder="" className="form-input" />
+                                <Field autoComplete="off" disabled name="work_coefficient" type="number" id="work_coefficient" placeholder="" className="form-input" />
                                 {submitCount ? errors?.work_coefficient ? <div className="mt-1 text-danger">
                                 {`${errors?.work_coefficient}`}</div> : null : ""}
                             </div>
@@ -189,7 +189,7 @@ const AddNewShift = ({ ...props }: Props) => {
                                     {' '}
                                     {t('from_time')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field disabled
+                                <Field autoComplete="off" disabled
                                     name="from_time"
                                     type="time"
                                     className="form-input"
@@ -203,7 +203,7 @@ const AddNewShift = ({ ...props }: Props) => {
                                     {' '}
                                     {t('end_time')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field disabled
+                                <Field autoComplete="off" disabled
                                     name="end_time"
                                     type="time"
                                     className="form-input"
@@ -219,7 +219,7 @@ const AddNewShift = ({ ...props }: Props) => {
                                         {' '}
                                         {t('break_from_time')} <span style={{ color: 'red' }}>* </span>
                                     </label>
-                                    <Field disabled
+                                    <Field autoComplete="off" disabled
                                         name="break_from_time"
                                         type="time"
                                         className="form-input"
@@ -233,7 +233,7 @@ const AddNewShift = ({ ...props }: Props) => {
                                         {' '}
                                         {t('break_end_time')} <span style={{ color: 'red' }}>* </span>
                                     </label>
-                                    <Field disabled
+                                    <Field autoComplete="off" disabled
                                         name="break_end_time"
                                         type="time"
                                     className="form-input"
@@ -250,7 +250,7 @@ const AddNewShift = ({ ...props }: Props) => {
                                     {' '}
                                     {t('description')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field disabled name="description" as="textarea" id="description" placeholder={t('fill_description')} className="form-input" />
+                                <Field autoComplete="off" disabled name="description" as="textarea" id="description" placeholder={t('fill_description')} className="form-input" />
                                 {submitCount ? errors?.description ? <div className="mt-1 text-danger">
                                 {`${errors?.description}`}
                                     </div> : null : ''}
@@ -261,7 +261,7 @@ const AddNewShift = ({ ...props }: Props) => {
                                     {' '}
                                     {t('note')}
                                 </label>
-                                <Field disabled name="note" as="textarea" id="note" placeholder={t('fill_note')} className="form-input" />
+                                <Field autoComplete="off" disabled name="note" as="textarea" id="note" placeholder={t('fill_note')} className="form-input" />
                                 {submitCount ? errors?.note ? <div className="mt-1 text-danger">
                                 {`${errors?.status}`}
                                 </div> : null : ''}
@@ -273,7 +273,7 @@ const AddNewShift = ({ ...props }: Props) => {
                                     {' '}
                                     {t('time_shift')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field disabled name="time" type="number" id="time" placeholder={t('fill_total_time')} className="form-input" />
+                                <Field autoComplete="off" disabled name="time" type="number" id="time" placeholder={t('fill_total_time')} className="form-input" />
                                 {submitCount ? errors?.time ? <div className="mt-1 text-danger">
                                 {`${errors?.time}`}
                                    </div> : null : ''}
@@ -283,11 +283,11 @@ const AddNewShift = ({ ...props }: Props) => {
                                 <label htmlFor="status" className='label'> {t('status')} < span style={{ color: 'red' }}>* </span></label >
                                 <div className="flex" style={{ alignItems: 'center', marginTop: '13px' }}>
                                     <label style={{ marginBottom: 0, marginRight: '10px' }}>
-                                        <Field disabled type="radio" name="status" value="active" className="form-checkbox rounded-full"/>
+                                        <Field autoComplete="off" disabled type="radio" name="status" value="active" className="form-checkbox rounded-full"/>
                                         {t('active')}
                                     </label>
                                     <label style={{ marginBottom: 0 }}>
-                                        <Field disabled type="radio" name="status" value="inactive" className="form-checkbox rounded-full" />
+                                        <Field autoComplete="off" disabled type="radio" name="status" value="inactive" className="form-checkbox rounded-full" />
                                         {t('inactive')}
                                     </label>
                                 </div>

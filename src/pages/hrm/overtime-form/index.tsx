@@ -277,7 +277,7 @@ const OvertimeForm = ({ ...props }: Props) => {
 							</button>
                         </Link>
 
-                        <input type="file" ref={fileInputRef} style={{ display: "none" }} />
+                        <input autoComplete="off" type="file" ref={fileInputRef} style={{ display: "none" }} />
 
                     </div>
                     <div className='flex flex-row gap-2'>
@@ -310,7 +310,7 @@ const OvertimeForm = ({ ...props }: Props) => {
                          />
                         </div>
                         <div className='flex flex-1'>
-                        <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                        <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
                         </div>
                         </div>
                 </div>

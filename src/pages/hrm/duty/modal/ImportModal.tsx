@@ -144,7 +144,7 @@ const ImportModal = ({ ...props }: Props) => {
                                             <Form className="space-y-5" >
                                                 <div className="mb-5">
                                                     <label htmlFor="name" > {t('name_duty')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                         as="select"
                                                         name="name"
                                                         id="name"
@@ -164,21 +164,21 @@ const ImportModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="code" > {t('code_duty')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="code" type="text" id="code" placeholder={`${t('enter_code_duty')}`} className="form-input" />
+                                                    <Field autoComplete="off" name="code" type="text" id="code" placeholder={`${t('enter_code_duty')}`} className="form-input" />
                                                     {errors.code ? (
                                                         <div className="text-danger mt-1"> {`${errors.code}`} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="unit" > {t('unit')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="unit" type="text" id="code" placeholder={`${t('enter_unit_duty')}`} className="form-input" />
+                                                    <Field autoComplete="off" name="unit" type="text" id="code" placeholder={`${t('enter_unit_duty')}`} className="form-input" />
                                                     {errors.unit ? (
                                                         <div className="text-danger mt-1"> {`${errors.code}`} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="quantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                         name="quantity"
                                                         type="text"
                                                         id="quantity"
@@ -194,7 +194,7 @@ const ImportModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="unitPrice" > {t('unit_price')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                         name="unitPrice"
                                                         type="text"
                                                         id="unitPrice"
@@ -207,7 +207,7 @@ const ImportModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="totalAmount" > {t('total_amount')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="totalAmount" type="text" id="code" placeholder={`${t('enter_total_amount')}`} className="form-input" />
+                                                    <Field autoComplete="off" name="totalAmount" type="text" id="code" placeholder={`${t('enter_total_amount')}`} className="form-input" />
                                                     {errors.totalAmount ? (
                                                         <div className="text-danger mt-1"> {`{errors.totalAmount}`} </div>
                                                     ) : null}

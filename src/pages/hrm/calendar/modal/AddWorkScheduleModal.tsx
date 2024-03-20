@@ -195,7 +195,7 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 														Tiêu đề lịch làm việc
 														<span style={{ color: 'red' }}> *</span>
 													</label>
-													<Field name="title" type="text" id="title" placeholder="Nhập tiêu đề lịch công việc" className="form-input" />
+													<Field autoComplete="off" name="title" type="text" id="title" placeholder="Nhập tiêu đề lịch công việc" className="form-input" />
 													{errors.title ? <div className="mt-1 text-danger"> {errors.title} </div> : null}
 												</div>
 												<div className="mb-3">
@@ -203,7 +203,7 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 														Người tham gia
 														<span style={{ color: 'red' }}> *</span>
 													</label>
-													<Field as="select" name="user" id="user" className="form-input">
+													<Field autoComplete="off" as="select" name="user" id="user" className="form-input">
 														<option value="">Chọn nhân viên</option>
 														{getEmployeeOptions().map((employee) => (
 															<option key={employee.value} value={employee.value}>
@@ -218,37 +218,37 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 													<label htmlFor="dateStart">
 														Thời gian bắt đầu <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field id="start" type="datetime-local" name="start" className="form-input" placeholder="Giờ bắt đầu" min={minStartDate} />
+													<Field autoComplete="off" id="start" type="datetime-local" name="start" className="form-input" placeholder="Giờ bắt đầu" min={minStartDate} />
 													{errors.start ? <div className="mt-1 text-danger"> {errors.start} </div> : null}
 												</div>
 												<div className="mb-3">
 													<label htmlFor="dateEnd">
 														Thời gian kết thúc <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field id="end" type="datetime-local" name="end" className="form-input" placeholder="Giờ kết thúc" min={minEndDate} />
+													<Field autoComplete="off" id="end" type="datetime-local" name="end" className="form-input" placeholder="Giờ kết thúc" min={minEndDate} />
 													{errors.end ? <div className="mt-1 text-danger"> {errors.end} </div> : null}
 												</div>
 												<div className="mb-3">
 													<label htmlFor="description">Mô tả</label>
-													<Field id="description" as="textarea" rows="2" name="description" className="form-input" placeholder="Mô tả công việc" />
+													<Field autoComplete="off" id="description" as="textarea" rows="2" name="description" className="form-input" placeholder="Mô tả công việc" />
 												</div>
 												<div>
 													<label>Mức độ:</label>
 													<div className="mt-3">
 														<label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-															<Field type="radio" name="type" value="primary" className="form-radio" />
+															<Field autoComplete="off" type="radio" name="type" value="primary" className="form-radio" />
 															<span className="ltr:pl-2 rtl:pr-2">Ít quan trọng</span>
 														</label>
 														<label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-															<Field type="radio" name="type" value="info" className="form-radio text-info" />
+															<Field autoComplete="off" type="radio" name="type" value="info" className="form-radio text-info" />
 															<span className="ltr:pl-2 rtl:pr-2">Bình thường</span>
 														</label>
 														<label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-															<Field type="radio" name="type" value="success" className="form-radio text-success" />
+															<Field autoComplete="off" type="radio" name="type" value="success" className="form-radio text-success" />
 															<span className="ltr:pl-2 rtl:pr-2">Quan trọng</span>
 														</label>
 														<label className="inline-flex cursor-pointer">
-															<Field type="radio" name="type" value="danger" className="form-radio text-danger" />
+															<Field autoComplete="off" type="radio" name="type" value="danger" className="form-radio text-danger" />
 															<span className="ltr:pl-2 rtl:pr-2">Ưu tiên cao</span>
 														</label>
 													</div>

@@ -98,7 +98,7 @@ const TallyModal = ({ ...props }: Props) => {
                                             <Form className="space-y-5" >
                                                 <div className="mb-5">
                                                     <label htmlFor="countedQuantity" > {t('counted_quantity')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                         name="countedQuantity"
                                                         type="number"
                                                         id="countedQuantity"

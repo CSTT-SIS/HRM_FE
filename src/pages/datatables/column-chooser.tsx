@@ -636,7 +636,7 @@ const ColumnChooser = () => {
                                                 >
                                                     <div className="flex items-center px-4 py-1">
                                                         <label className="mb-0 cursor-pointer">
-                                                            <input
+                                                            <input autoComplete="off"
                                                                 type="checkbox"
                                                                 checked={!hideCols.includes(col.accessor)}
                                                                 className="form-checkbox"
@@ -657,7 +657,7 @@ const ColumnChooser = () => {
                             </div>
                         </div>
                         <div className="text-right">
-                            <input type="text" className="form-input" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
+                            <input autoComplete="off" type="text" className="form-input" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
                         </div>
                     </div>
                 </div>

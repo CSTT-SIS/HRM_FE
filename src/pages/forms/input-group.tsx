@@ -61,12 +61,12 @@ const InputGroup = () => {
                                         <div className="flex items-center justify-center border border-white-light bg-[#eee] px-3 font-semibold ltr:rounded-l-md ltr:border-r-0 rtl:rounded-r-md rtl:border-l-0 dark:border-[#17263c] dark:bg-[#1b2e4b]">
                                             @
                                         </div>
-                                        <input type="text" placeholder="Username" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+                                        <input autoComplete="off" type="text" placeholder="Username" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
                                     </div>
                                 </div>
                                 <div className="mb-5">
                                     <div className="flex">
-                                        <input type="text" placeholder="Recipient's username" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
+                                        <input autoComplete="off" type="text" placeholder="Recipient's username" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
                                         <div className="flex items-center justify-center border border-white-light bg-[#eee] px-3 font-semibold ltr:rounded-r-md ltr:border-l-0 rtl:rounded-l-md rtl:border-r-0 dark:border-[#17263c] dark:bg-[#1b2e4b]">
                                             @example.com
                                         </div>
@@ -78,7 +78,7 @@ const InputGroup = () => {
                                         <div className="flex items-center justify-center border border-white-light bg-[#eee] px-3 font-semibold ltr:rounded-l-md ltr:border-r-0 rtl:rounded-r-md rtl:border-l-0 dark:border-[#17263c] dark:bg-[#1b2e4b]">
                                             https://
                                         </div>
-                                        <input id="url" type="text" placeholder="example.com/users/" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+                                        <input autoComplete="off" id="url" type="text" placeholder="example.com/users/" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
                                     </div>
                                 </div>
                                 <div className="mb-5">
@@ -86,7 +86,7 @@ const InputGroup = () => {
                                         <div className="flex items-center justify-center border border-white-light bg-[#eee] px-3 font-semibold ltr:rounded-l-md ltr:border-r-0 rtl:rounded-r-md rtl:border-l-0 dark:border-[#17263c] dark:bg-[#1b2e4b]">
                                             $
                                         </div>
-                                        <input type="text" placeholder="" className="form-input rounded-none" />
+                                        <input autoComplete="off" type="text" placeholder="" className="form-input rounded-none" />
                                         <div className="flex items-center justify-center border border-white-light bg-[#eee] px-3 font-semibold ltr:rounded-r-md ltr:border-l-0 rtl:rounded-l-md rtl:border-r-0 dark:border-[#17263c] dark:bg-[#1b2e4b]">
                                             .00
                                         </div>
@@ -110,12 +110,12 @@ const InputGroup = () => {
             <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
                 @
             </div>
-            <input type="text" placeholder="Username" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+            <input autoComplete="off" type="text" placeholder="Username" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
         </div>
     </div>
     <div className="mb-5">
         <div className="flex">
-            <input type="text" placeholder="Recipient's username" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
+            <input autoComplete="off" type="text" placeholder="Recipient's username" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
             <div className="bg-[#eee] flex justify-center items-center ltr:rounded-r-md rtl:rounded-l-md px-3 font-semibold border ltr:border-l-0 rtl:border-r-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
                 @example.com
             </div>
@@ -127,7 +127,7 @@ const InputGroup = () => {
             <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
                 https://
             </div>
-            <input id="url" type="text" placeholder="example.com/users/" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+            <input autoComplete="off" id="url" type="text" placeholder="example.com/users/" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
         </div>
     </div>
     <div className="mb-5">
@@ -135,7 +135,7 @@ const InputGroup = () => {
             <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
                 $
             </div>
-            <input type="text" placeholder="" className="form-input rounded-none" />
+            <input autoComplete="off" type="text" placeholder="" className="form-input rounded-none" />
             <div className="bg-[#eee] flex justify-center items-center ltr:rounded-r-md rtl:rounded-l-md px-3 font-semibold border ltr:border-l-0 rtl:border-r-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
                 .00
             </div>
@@ -172,13 +172,13 @@ const InputGroup = () => {
                                     <div className="flex items-center justify-center border border-white-light bg-[#eee] px-3 font-semibold ltr:rounded-l-md ltr:border-r-0 rtl:rounded-r-md rtl:border-l-0 dark:border-[#17263c] dark:bg-[#1b2e4b]">
                                         <IconBellBing className="text-white-dark" />
                                     </div>
-                                    <input id="iconLeft" type="text" placeholder="Notification" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+                                    <input autoComplete="off" id="iconLeft" type="text" placeholder="Notification" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
                                 </div>
                             </div>
                             <div>
                                 <label htmlFor="iconRight">Right</label>
                                 <div className="flex">
-                                    <input id="iconRight" type="text" placeholder="Notification" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
+                                    <input autoComplete="off" id="iconRight" type="text" placeholder="Notification" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
                                     <div className="flex items-center justify-center border border-white-light bg-[#eee] px-3 font-semibold ltr:rounded-r-md ltr:border-l-0 rtl:rounded-l-md rtl:border-r-0 dark:border-[#17263c] dark:bg-[#1b2e4b]">
                                         <IconBellBing className="text-white-dark" />
                                     </div>
@@ -192,12 +192,12 @@ const InputGroup = () => {
     <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
         <svg> ... </svg>
     </div>
-    <input id="iconLeft" type="text" placeholder="Notification" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+    <input autoComplete="off" id="iconLeft" type="text" placeholder="Notification" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
 </div>
 
 {/*right*/}
 <div className="flex">
-    <input id="iconRight" type="text" placeholder="Notification" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
+    <input autoComplete="off" id="iconRight" type="text" placeholder="Notification" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
     <div className="bg-[#eee] flex justify-center items-center ltr:rounded-r-md rtl:rounded-l-md px-3 font-semibold border ltr:border-l-0 rtl:border-r-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
         <svg> ... </svg>
     </div>
@@ -224,13 +224,13 @@ const InputGroup = () => {
                                     <div className="flex items-center justify-center border border-white-light bg-[#eee] px-3 font-semibold ltr:rounded-l-md ltr:border-r-0 rtl:rounded-r-md rtl:border-l-0 dark:border-[#17263c] dark:bg-[#1b2e4b]">
                                         <IconLoader className="text-white-dark animate-spin" />
                                     </div>
-                                    <input id="spiLeft" type="text" placeholder="Spinners" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+                                    <input autoComplete="off" id="spiLeft" type="text" placeholder="Spinners" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
                                 </div>
                             </div>
                             <div>
                                 <label htmlFor="spiRight">Right</label>
                                 <div className="flex">
-                                    <input id="spiRight" type="text" placeholder="Spinners" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
+                                    <input autoComplete="off" id="spiRight" type="text" placeholder="Spinners" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
                                     <div className="flex items-center justify-center border border-white-light bg-[#eee] px-3 font-semibold ltr:rounded-r-md ltr:border-l-0 rtl:rounded-l-md rtl:border-r-0 dark:border-[#17263c] dark:bg-[#1b2e4b]">
                                         <IconLoader className="text-white-dark animate-spin" />
                                     </div>
@@ -244,12 +244,12 @@ const InputGroup = () => {
     <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
         <svg> ... </svg>
     </div>
-    <input id="spiLeft" type="text" placeholder="Spinners" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+    <input autoComplete="off" id="spiLeft" type="text" placeholder="Spinners" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
 </div>
 
 {/*right*/}
 <div className="flex">
-    <input id="spiRight" type="text" placeholder="Spinners" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
+    <input autoComplete="off" id="spiRight" type="text" placeholder="Spinners" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
     <div className="bg-[#eee] flex justify-center items-center ltr:rounded-r-md rtl:rounded-l-md px-3 font-semibold border ltr:border-l-0 rtl:border-r-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
         <svg> ... </svg>
     </div>
@@ -298,13 +298,13 @@ const InputGroup = () => {
                                             </ul>
                                         </Dropdown>
                                     </div>
-                                    <input id="dropdownLeft" type="text" placeholder="Dropdown" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+                                    <input autoComplete="off" id="dropdownLeft" type="text" placeholder="Dropdown" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
                                 </div>
                             </div>
                             <div className="mt-5">
                                 <label htmlFor="dropdownRight">Right</label>
                                 <div className="flex">
-                                    <input id="dropdownLeft" type="text" placeholder="Dropdown" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
+                                    <input autoComplete="off" id="dropdownLeft" type="text" placeholder="Dropdown" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
                                     <div className="dropdown">
                                         <Dropdown
                                             offset={[0, 5]}
@@ -362,11 +362,11 @@ const InputGroup = () => {
             </ul>
         </Dropdown>
     </div>
-    <input id="dropdownLeft" type="text" placeholder="Dropdown" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+    <input autoComplete="off" id="dropdownLeft" type="text" placeholder="Dropdown" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
 </div>
 
 <div className="flex">
-    <input id="dropdownLeft" type="text" placeholder="Dropdown" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
+    <input autoComplete="off" id="dropdownLeft" type="text" placeholder="Dropdown" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
     <div className="dropdown">
         <Dropdown
             offset={[0, 5]}
@@ -413,16 +413,16 @@ const InputGroup = () => {
                                 <label htmlFor="checkLeft">Left</label>
                                 <div className="flex">
                                     <div className="flex items-center justify-center border border-white-light bg-[#f1f2f3] px-3 font-semibold ltr:rounded-l-md ltr:border-r-0 rtl:rounded-r-md rtl:border-l-0 dark:border-[#17263c] dark:bg-[#1b2e4b]">
-                                        <input type="checkbox" className="form-checkbox border-white-light ltr:mr-0 rtl:ml-0 dark:border-white-dark" defaultChecked />
+                                        <input autoComplete="off" type="checkbox" className="form-checkbox border-white-light ltr:mr-0 rtl:ml-0 dark:border-white-dark" defaultChecked />
                                     </div>
-                                    <input id="checkLeft" type="text" placeholder="Checkbox" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+                                    <input autoComplete="off" id="checkLeft" type="text" placeholder="Checkbox" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
                                 </div>
                             </div>
                             <label htmlFor="checkRight">Right</label>
                             <div className="flex">
-                                <input id="checkRight" type="text" placeholder="Checkbox" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
+                                <input autoComplete="off" id="checkRight" type="text" placeholder="Checkbox" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
                                 <div className="flex items-center justify-center border border-white-light bg-[#f1f2f3] px-3 font-semibold ltr:rounded-r-md ltr:border-l-0 rtl:rounded-l-md rtl:border-r-0 dark:border-[#17263c] dark:bg-[#1b2e4b]">
-                                    <input type="checkbox" className="form-checkbox border-white-light text-warning ltr:mr-0 rtl:ml-0 dark:border-white-dark" defaultChecked />
+                                    <input autoComplete="off" type="checkbox" className="form-checkbox border-white-light text-warning ltr:mr-0 rtl:ml-0 dark:border-white-dark" defaultChecked />
                                 </div>
                             </div>
                         </div>
@@ -431,16 +431,16 @@ const InputGroup = () => {
                                 <pre className="language-xml">{`{/*left*/}
 <div className="flex">
     <div className="bg-[#f1f2f3] dark:bg-[#1b2e4b] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c]">
-        <input type="checkbox" className="form-checkbox border-white-light dark:border-white-dark ltr:mr-0 rtl:ml-0" defaultChecked />
+        <input autoComplete="off" type="checkbox" className="form-checkbox border-white-light dark:border-white-dark ltr:mr-0 rtl:ml-0" defaultChecked />
     </div>
-    <input id="checkLeft" type="text" placeholder="Checkbox" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+    <input autoComplete="off" id="checkLeft" type="text" placeholder="Checkbox" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
 </div>
 
 {/*right*/}
 <div className="flex">
-    <input id="checkRight" type="text" placeholder="Checkbox" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
+    <input autoComplete="off" id="checkRight" type="text" placeholder="Checkbox" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
     <div className="bg-[#f1f2f3] dark:bg-[#1b2e4b] flex justify-center items-center ltr:rounded-r-md rtl:rounded-l-md px-3 font-semibold border ltr:border-l-0 rtl:border-r-0 border-white-light dark:border-[#17263c]">
-        <input type="checkbox" className="form-checkbox text-warning border-white-light dark:border-white-dark ltr:mr-0 rtl:ml-0" defaultChecked />
+        <input autoComplete="off" type="checkbox" className="form-checkbox text-warning border-white-light dark:border-white-dark ltr:mr-0 rtl:ml-0" defaultChecked />
     </div>
 </div>`}</pre>
                             </CodeHighlight>
@@ -463,17 +463,17 @@ const InputGroup = () => {
                                 <label htmlFor="radioLeft">Left</label>
                                 <div className="flex">
                                     <div className="flex items-center justify-center border border-white-light bg-[#f1f2f3] px-3 font-semibold ltr:rounded-l-md ltr:border-r-0 rtl:rounded-r-md rtl:border-l-0 dark:border-[#17263c] dark:bg-[#1b2e4b]">
-                                        <input type="radio" className="form-radio border-white-light text-info ltr:mr-0 rtl:ml-0 dark:border-white-dark" defaultChecked />
+                                        <input autoComplete="off" type="radio" className="form-radio border-white-light text-info ltr:mr-0 rtl:ml-0 dark:border-white-dark" defaultChecked />
                                     </div>
-                                    <input id="radioLeft" type="text" placeholder="Radio" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+                                    <input autoComplete="off" id="radioLeft" type="text" placeholder="Radio" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
                                 </div>
                             </div>
                             <div>
                                 <label htmlFor="radioRight">Right</label>
                                 <div className="flex">
-                                    <input id="radioRight" type="text" placeholder="Radio" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
+                                    <input autoComplete="off" id="radioRight" type="text" placeholder="Radio" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
                                     <div className="flex items-center justify-center border border-white-light bg-[#f1f2f3] px-3 font-semibold ltr:rounded-r-md ltr:border-l-0 rtl:rounded-l-md rtl:border-r-0 dark:border-[#17263c] dark:bg-[#1b2e4b]">
-                                        <input type="radio" className="form-radio border-white-light text-danger ltr:mr-0 rtl:ml-0 dark:border-white-dark" defaultChecked />
+                                        <input autoComplete="off" type="radio" className="form-radio border-white-light text-danger ltr:mr-0 rtl:ml-0 dark:border-white-dark" defaultChecked />
                                     </div>
                                 </div>
                             </div>
@@ -483,16 +483,16 @@ const InputGroup = () => {
                                 <pre className="language-xml">{`{/*left*/}
 <div className="flex">
     <div className="bg-[#f1f2f3] dark:bg-[#1b2e4b] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c]">
-        <input type="radio" className="form-radio text-info border-white-light dark:border-white-dark ltr:mr-0 rtl:ml-0" defaultChecked />
+        <input autoComplete="off" type="radio" className="form-radio text-info border-white-light dark:border-white-dark ltr:mr-0 rtl:ml-0" defaultChecked />
     </div>
-    <input id="radioLeft" type="text" placeholder="Radio" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+    <input autoComplete="off" id="radioLeft" type="text" placeholder="Radio" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
 </div>
 
 {/*right*/}
 <div className="flex">
-    <input id="radioRight" type="text" placeholder="Radio" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
+    <input autoComplete="off" id="radioRight" type="text" placeholder="Radio" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
     <div className="bg-[#f1f2f3] dark:bg-[#1b2e4b] flex justify-center items-center ltr:rounded-r-md rtl:rounded-l-md px-3 font-semibold border ltr:border-l-0 rtl:border-r-0 border-white-light dark:border-[#17263c]">
-        <input type="radio" className="form-radio text-danger border-white-light dark:border-white-dark ltr:mr-0 rtl:ml-0" defaultChecked />
+        <input autoComplete="off" type="radio" className="form-radio text-danger border-white-light dark:border-white-dark ltr:mr-0 rtl:ml-0" defaultChecked />
     </div>
 </div>`}</pre>
                             </CodeHighlight>
@@ -515,20 +515,20 @@ const InputGroup = () => {
                                 <div className="flex">
                                     <div className="flex items-center justify-center border border-white-light bg-[#eee] px-3 font-semibold ltr:rounded-l-md ltr:border-r-0 rtl:rounded-r-md rtl:border-l-0 dark:border-[#17263c] dark:bg-[#1b2e4b]">
                                         <label className="relative mb-0 h-4 w-7 cursor-pointer">
-                                            <input type="checkbox" className="peer absolute z-10 h-full w-full cursor-pointer opacity-0 focus:outline-none focus:ring-0" id="custom_switch_checkbox1" />
+                                            <input autoComplete="off" type="checkbox" className="peer absolute z-10 h-full w-full cursor-pointer opacity-0 focus:outline-none focus:ring-0" id="custom_switch_checkbox1" />
                                             <span className="block h-full rounded-full border border-[#adb5bd] bg-white before:absolute before:bottom-[2px] before:h-3 before:w-3 before:rounded-full before:bg-[#adb5bd] before:transition-all before:duration-300 peer-checked:border-primary peer-checked:bg-primary peer-checked:before:bg-white ltr:before:left-0.5 ltr:peer-checked:before:left-3.5 rtl:before:right-0.5 rtl:peer-checked:before:right-3.5 dark:bg-dark dark:before:bg-white-dark"></span>
                                         </label>
                                     </div>
-                                    <input id="switchLeft" type="text" placeholder="Switch" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+                                    <input autoComplete="off" id="switchLeft" type="text" placeholder="Switch" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
                                 </div>
                             </div>
                             <div>
                                 <label htmlFor="switchRight">Right</label>
                                 <div className="flex">
-                                    <input id="switchRight" type="text" placeholder="Switch" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
+                                    <input autoComplete="off" id="switchRight" type="text" placeholder="Switch" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
                                     <div className="flex items-center justify-center border border-white-light bg-[#eee] px-3 font-semibold ltr:rounded-r-md ltr:border-l-0 rtl:rounded-l-md rtl:border-r-0 dark:border-[#17263c] dark:bg-[#1b2e4b]">
                                         <label className="relative mb-0 h-4 w-7 cursor-pointer">
-                                            <input type="checkbox" className="peer absolute z-10 h-full w-full cursor-pointer opacity-0 focus:outline-none focus:ring-0" id="custom_switch_checkbox2" />
+                                            <input autoComplete="off" type="checkbox" className="peer absolute z-10 h-full w-full cursor-pointer opacity-0 focus:outline-none focus:ring-0" id="custom_switch_checkbox2" />
                                             <span className="block h-full rounded-full border border-[#adb5bd] bg-white before:absolute before:bottom-[2px] before:h-3 before:w-3 before:rounded-full before:bg-[#adb5bd] before:transition-all before:duration-300 peer-checked:border-primary peer-checked:bg-primary peer-checked:before:bg-white ltr:before:left-0.5 ltr:peer-checked:before:left-3.5 rtl:before:right-0.5 rtl:peer-checked:before:right-3.5 dark:bg-dark dark:before:bg-white-dark"></span>
                                         </label>
                                     </div>
@@ -541,19 +541,19 @@ const InputGroup = () => {
 <div className="flex">
     <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
         <label className="w-7 h-4 relative cursor-pointer mb-0">
-            <input type="checkbox" className="peer absolute w-full h-full opacity-0 z-10 focus:ring-0 focus:outline-none cursor-pointer" id="custom_switch_checkbox1" />
+            <input autoComplete="off" type="checkbox" className="peer absolute w-full h-full opacity-0 z-10 focus:ring-0 focus:outline-none cursor-pointer" id="custom_switch_checkbox1" />
             <span className="rounded-full border border-[#adb5bd] bg-white peer-checked:bg-primary peer-checked:border-primary dark:bg-dark block h-full before:absolute ltr:before:left-0.5 rtl:before:right-0.5 ltr:peer-checked:before:left-3.5 rtl:peer-checked:before:right-3.5 peer-checked:before:bg-white before:bg-[#adb5bd] dark:before:bg-white-dark before:bottom-[2px] before:w-3 before:h-3 before:rounded-full before:transition-all before:duration-300"></span>
         </label>
     </div>
-    <input id="switchLeft" type="text" placeholder="Switch" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+    <input autoComplete="off" id="switchLeft" type="text" placeholder="Switch" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
 </div>
 
 {/*right*/}
 <div className="flex">
-    <input id="switchRight" type="text" placeholder="Switch" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
+    <input autoComplete="off" id="switchRight" type="text" placeholder="Switch" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
     <div className="bg-[#eee] flex justify-center items-center ltr:rounded-r-md rtl:rounded-l-md px-3 font-semibold border ltr:border-l-0 rtl:border-r-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
         <label className="w-7 h-4 relative cursor-pointer mb-0">
-            <input type="checkbox" className="peer absolute w-full h-full opacity-0 z-10 focus:ring-0 focus:outline-none cursor-pointer" id="custom_switch_checkbox2" />
+            <input autoComplete="off" type="checkbox" className="peer absolute w-full h-full opacity-0 z-10 focus:ring-0 focus:outline-none cursor-pointer" id="custom_switch_checkbox2" />
             <span className="rounded-full border border-[#adb5bd] bg-white peer-checked:bg-primary peer-checked:border-primary dark:bg-dark block h-full before:absolute ltr:before:left-0.5 rtl:before:right-0.5 ltr:peer-checked:before:left-3.5 rtl:peer-checked:before:right-3.5 peer-checked:before:bg-white before:bg-[#adb5bd] dark:before:bg-white-dark before:bottom-[2px] before:w-3 before:h-3 before:rounded-full before:transition-all before:duration-300"></span>
         </label>
     </div>
@@ -580,7 +580,7 @@ const InputGroup = () => {
                                     <div className="flex items-center justify-center border border-white-light bg-[#eee] px-3 font-semibold ltr:rounded-l-md ltr:border-r-0 rtl:rounded-r-md rtl:border-l-0 dark:border-[#17263c] dark:bg-[#1b2e4b]">
                                         Large
                                     </div>
-                                    <input type="text" placeholder="Username" className="form-input py-2.5 text-base ltr:rounded-l-none rtl:rounded-r-none" />
+                                    <input autoComplete="off" type="text" placeholder="Username" className="form-input py-2.5 text-base ltr:rounded-l-none rtl:rounded-r-none" />
                                 </div>
                             </div>
                             <div className="mb-5">
@@ -588,7 +588,7 @@ const InputGroup = () => {
                                     <div className="flex items-center justify-center border border-white-light bg-[#eee] px-3 font-semibold ltr:rounded-l-md ltr:border-r-0 rtl:rounded-r-md rtl:border-l-0 dark:border-[#17263c] dark:bg-[#1b2e4b]">
                                         Default
                                     </div>
-                                    <input type="text" placeholder="Username" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+                                    <input autoComplete="off" type="text" placeholder="Username" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
                                 </div>
                             </div>
                             <div>
@@ -596,7 +596,7 @@ const InputGroup = () => {
                                     <div className="flex items-center justify-center border border-white-light bg-[#eee] px-3 font-semibold ltr:rounded-l-md ltr:border-r-0 rtl:rounded-r-md rtl:border-l-0 dark:border-[#17263c] dark:bg-[#1b2e4b]">
                                         Small
                                     </div>
-                                    <input type="text" placeholder="Username" className="form-input py-1.5 text-xs ltr:rounded-l-none rtl:rounded-r-none" />
+                                    <input autoComplete="off" type="text" placeholder="Username" className="form-input py-1.5 text-xs ltr:rounded-l-none rtl:rounded-r-none" />
                                 </div>
                             </div>
                         </form>
@@ -609,7 +609,7 @@ const InputGroup = () => {
             <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
                 Small
             </div>
-            <input type="text" placeholder="Username" className="form-input ltr:rounded-l-none rtl:rounded-r-none py-2.5 text-base" />
+            <input autoComplete="off" type="text" placeholder="Username" className="form-input ltr:rounded-l-none rtl:rounded-r-none py-2.5 text-base" />
         </div>
     </div>
     <div className="mb-5">
@@ -617,7 +617,7 @@ const InputGroup = () => {
             <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
                 Small
             </div>
-            <input type="text" placeholder="Username" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+            <input autoComplete="off" type="text" placeholder="Username" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
         </div>
     </div>
     <div>
@@ -625,7 +625,7 @@ const InputGroup = () => {
             <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
                 Small
             </div>
-            <input type="text" placeholder="Username" className="form-input ltr:rounded-l-none rtl:rounded-r-none py-1.5 text-xs" />
+            <input autoComplete="off" type="text" placeholder="Username" className="form-input ltr:rounded-l-none rtl:rounded-r-none py-1.5 text-xs" />
         </div>
     </div>
 </form>`}</pre>
@@ -651,8 +651,8 @@ const InputGroup = () => {
                                     <div className="flex items-center justify-center border border-white-light bg-[#eee] px-3 font-semibold ltr:rounded-l-md ltr:border-r-0 rtl:rounded-r-md rtl:border-l-0 dark:border-[#17263c] dark:bg-[#1b2e4b]">
                                         First and last name
                                     </div>
-                                    <input type="text" placeholder="First Name" className="form-input flex-1 rounded-none focus:!border-r ltr:border-r-0 rtl:border-l-0" />
-                                    <input type="text" placeholder="Last Name" className="form-input flex-1 ltr:rounded-l-none rtl:rounded-r-none" />
+                                    <input autoComplete="off" type="text" placeholder="First Name" className="form-input flex-1 rounded-none focus:!border-r ltr:border-r-0 rtl:border-l-0" />
+                                    <input autoComplete="off" type="text" placeholder="Last Name" className="form-input flex-1 ltr:rounded-l-none rtl:rounded-r-none" />
                                 </div>
                             </form>
                         </div>
@@ -663,8 +663,8 @@ const InputGroup = () => {
         <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
             First and last name
         </div>
-        <input type="text" placeholder="First Name" className="form-input ltr:border-r-0 rtl:border-l-0 focus:!border-r rounded-none flex-1" />
-        <input type="text" placeholder="Last Name" className="form-input ltr:rounded-l-none rtl:rounded-r-none flex-1" />
+        <input autoComplete="off" type="text" placeholder="First Name" className="form-input ltr:border-r-0 rtl:border-l-0 focus:!border-r rounded-none flex-1" />
+        <input autoComplete="off" type="text" placeholder="Last Name" className="form-input ltr:rounded-l-none rtl:rounded-r-none flex-1" />
     </div>
 </form>`}</pre>
                             </CodeHighlight>
@@ -690,12 +690,12 @@ const InputGroup = () => {
                                         <div className="flex items-center justify-center rounded-none border border-white-light bg-[#eee] px-3 font-semibold ltr:border-r-0 rtl:border-l-0 dark:border-[#17263c] dark:bg-[#1b2e4b]">
                                             0.00
                                         </div>
-                                        <input type="text" placeholder="" className="form-input flex-1 ltr:rounded-l-none rtl:rounded-r-none" />
+                                        <input autoComplete="off" type="text" placeholder="" className="form-input flex-1 ltr:rounded-l-none rtl:rounded-r-none" />
                                     </div>
                                 </div>
                                 <div>
                                     <div className="flex">
-                                        <input type="text" placeholder="" className="form-input flex-1 ltr:rounded-r-none ltr:rounded-l-md rtl:rounded-l-none rtl:rounded-r-md" />
+                                        <input autoComplete="off" type="text" placeholder="" className="form-input flex-1 ltr:rounded-r-none ltr:rounded-l-md rtl:rounded-l-none rtl:rounded-r-md" />
                                         <div className="flex items-center justify-center rounded-none border border-white-light bg-[#eee] px-3 font-semibold dark:border-[#17263c] dark:bg-[#1b2e4b]">
                                             0.00
                                         </div>
@@ -717,12 +717,12 @@ const InputGroup = () => {
             <div className="bg-[#eee] flex justify-center items-center rounded-none px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
                 0.00
             </div>
-            <input type="text" placeholder="" className="form-input ltr:rounded-l-none rtl:rounded-r-none flex-1" />
+            <input autoComplete="off" type="text" placeholder="" className="form-input ltr:rounded-l-none rtl:rounded-r-none flex-1" />
         </div>
     </div>
     <div>
         <div className="flex">
-            <input type="text" placeholder="" className="form-input ltr:rounded-r-none rtl:rounded-l-none flex-1 ltr:rounded-l-md rtl:rounded-r-md" />
+            <input autoComplete="off" type="text" placeholder="" className="form-input ltr:rounded-r-none rtl:rounded-l-none flex-1 ltr:rounded-l-md rtl:rounded-r-md" />
             <div className="bg-[#eee] flex justify-center items-center rounded-none px-3 font-semibold border border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
                 0.00
             </div>
@@ -775,14 +775,14 @@ const InputGroup = () => {
                                                 </ul>
                                             </Dropdown>
                                         </div>
-                                        <input id="dropdownLeftButton" type="text" placeholder="" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+                                        <input autoComplete="off" id="dropdownLeftButton" type="text" placeholder="" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
                                     </div>
                                 </div>
 
                                 <div className="dropdown">
                                     <label htmlFor="dropdownRightButton">Right</label>
                                     <div className="flex">
-                                        <input id="dropdownRightButton" type="text" placeholder="" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
+                                        <input autoComplete="off" id="dropdownRightButton" type="text" placeholder="" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
                                         <div className="dropdown">
                                             <Dropdown
                                                 offset={[0, 5]}
@@ -840,14 +840,14 @@ const InputGroup = () => {
                     </ul>
                 </Dropdown>
             </div>
-            <input id="dropdownLeftButton" type="text" placeholder="" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+            <input autoComplete="off" id="dropdownLeftButton" type="text" placeholder="" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
         </div>
     </div>
 
     <div className="dropdown">
         <label htmlFor="dropdownRightButton">Right</label>
         <div className="flex">
-            <input id="dropdownRightButton" type="text" placeholder="" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
+            <input autoComplete="off" id="dropdownRightButton" type="text" placeholder="" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
             <div className="dropdown">
                 <Dropdown
                     offset={[0, 5]}
@@ -924,13 +924,13 @@ const InputGroup = () => {
                                             </Dropdown>
                                         </div>
 
-                                        <input id="btnLeft" type="text" placeholder="" className="form-input ltr:rounded-l-none ltr:border-l-0 rtl:rounded-r-none rtl:border-r-0" />
+                                        <input autoComplete="off" id="btnLeft" type="text" placeholder="" className="form-input ltr:rounded-l-none ltr:border-l-0 rtl:rounded-r-none rtl:border-r-0" />
                                     </div>
                                 </div>
                                 <div className="dropdown">
                                     <label htmlFor="btnLeft">Right</label>
                                     <div className="flex">
-                                        <input id="btnRight" type="text" placeholder="" className="form-input ltr:rounded-r-none ltr:border-r-0 rtl:rounded-l-none rtl:border-l-0" />
+                                        <input autoComplete="off" id="btnRight" type="text" placeholder="" className="form-input ltr:rounded-r-none ltr:border-r-0 rtl:rounded-l-none rtl:border-l-0" />
                                         <div className="dropdown">
                                             <Dropdown
                                                 offset={[0, 5]}
@@ -1005,13 +1005,13 @@ const InputGroup = () => {
                 </Dropdown>
             </div>
 
-            <input id="btnLeft" type="text" placeholder="" className="form-input ltr:rounded-l-none rtl:rounded-r-none ltr:border-l-0 rtl:border-r-0" />
+            <input autoComplete="off" id="btnLeft" type="text" placeholder="" className="form-input ltr:rounded-l-none rtl:rounded-r-none ltr:border-l-0 rtl:border-r-0" />
         </div>
     </div>
     <div className="dropdown">
         <label htmlFor="btnLeft">Right</label>
         <div className="flex">
-            <input id="btnRight" type="text" placeholder="" className="form-input ltr:rounded-r-none rtl:rounded-l-none ltr:border-r-0 rtl:border-l-0" />
+            <input autoComplete="off" id="btnRight" type="text" placeholder="" className="form-input ltr:rounded-r-none rtl:rounded-l-none ltr:border-r-0 rtl:border-l-0" />
             <div className="dropdown">
                 <Dropdown
                     offset={[0, 5]}
@@ -1067,13 +1067,13 @@ const InputGroup = () => {
                                         <button type="button" className="btn btn-info ltr:rounded-r-none rtl:rounded-l-none">
                                             Button
                                         </button>
-                                        <input id="addonsLeft" type="text" placeholder="" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+                                        <input autoComplete="off" id="addonsLeft" type="text" placeholder="" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
                                     </div>
                                 </div>
                                 <div className="mb-5">
                                     <label htmlFor="addonsRight">Right</label>
                                     <div className="flex">
-                                        <input id="addonsRight" type="text" placeholder="" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
+                                        <input autoComplete="off" id="addonsRight" type="text" placeholder="" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
                                         <button type="button" className="btn btn-secondary ltr:rounded-l-none rtl:rounded-r-none">
                                             Button
                                         </button>
@@ -1088,13 +1088,13 @@ const InputGroup = () => {
                                         <button type="button" className="btn btn-outline-info rounded-none ltr:border-l-0 rtl:border-r-0">
                                             Button
                                         </button>
-                                        <input id="addonsLeftoutline" type="text" placeholder="" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+                                        <input autoComplete="off" id="addonsLeftoutline" type="text" placeholder="" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
                                     </div>
                                 </div>
                                 <div>
                                     <label htmlFor="addonsRightoutline">Right</label>
                                     <div className="flex">
-                                        <input id="addonsRightoutline" type="text" placeholder="" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
+                                        <input autoComplete="off" id="addonsRightoutline" type="text" placeholder="" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
                                         <button type="button" className="btn btn-outline-secondary rounded-none ltr:border-r-0 rtl:border-l-0">
                                             Button
                                         </button>
@@ -1114,13 +1114,13 @@ const InputGroup = () => {
             <button type="button" className="btn btn-info ltr:rounded-r-none rtl:rounded-l-none">
                 Button
             </button>
-            <input id="addonsLeft" type="text" placeholder="" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+            <input autoComplete="off" id="addonsLeft" type="text" placeholder="" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
         </div>
     </div>
     <div className="mb-5">
         <label htmlFor="addonsRight">Right</label>
         <div className="flex">
-            <input id="addonsRight" type="text" placeholder="" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
+            <input autoComplete="off" id="addonsRight" type="text" placeholder="" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
             <button type="button" className="btn btn-secondary ltr:rounded-l-none rtl:rounded-r-none">
                 Button
             </button>
@@ -1135,13 +1135,13 @@ const InputGroup = () => {
             <button type="button" className="btn btn-outline-info rounded-none ltr:border-l-0 rtl:border-r-0">
                 Button
             </button>
-            <input id="addonsLeftoutline" type="text" placeholder="" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+            <input autoComplete="off" id="addonsLeftoutline" type="text" placeholder="" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
         </div>
     </div>
     <div>
         <label htmlFor="addonsRightoutline">Right</label>
         <div className="flex">
-            <input id="addonsRightoutline" type="text" placeholder="" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
+            <input autoComplete="off" id="addonsRightoutline" type="text" placeholder="" className="form-input ltr:rounded-r-none rtl:rounded-l-none" />
             <button type="button" className="btn btn-outline-secondary rounded-none ltr:border-r-0 rtl:border-l-0">
                 Button
             </button>

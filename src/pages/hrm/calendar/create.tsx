@@ -184,7 +184,7 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 									{t('calendar_title')}
 									<span style={{ color: 'red' }}> *</span>
 								</label>
-								<Field name="title" type="text" id="title" placeholder={t('fill_calendar_title')} className="form-input" />
+								<Field autoComplete="off" name="title" type="text" id="title" placeholder={t('fill_calendar_title')} className="form-input" />
 								{submitCount ? errors.title ? <div className="mt-1 text-danger"> {errors.title} </div> : null : ''}
 							</div>
 							<div className="flex-1">
@@ -206,7 +206,7 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 								/>
 
 
-								{/* <Field as="select" name="user" id="user" className="form-input"
+								{/* <Field autoComplete="off" as="select" name="user" id="user" className="form-input"
                                                     isMultiple="true"
                                                     placeholder="test">
 														{getEmployeeOptions().map((employee) => (
@@ -258,25 +258,25 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 
 						<div className="mb-3">
 							<label htmlFor="description">{t('discription')}</label>
-							<Field id="description" as="textarea" rows="2" name="description" className="form-input" placeholder={t('fill_work_schedule_description')} />
+							<Field autoComplete="off" id="description" as="textarea" rows="2" name="description" className="form-input" placeholder={t('fill_work_schedule_description')} />
 						</div>
 						<div>
 							<label>{t('level')}</label>
 							<div className="mt-3">
 								<label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-									<Field type="radio" name="type" value="primary" className="form-radio" />
+									<Field autoComplete="off" type="radio" name="type" value="primary" className="form-radio" />
 									<span className="ltr:pl-2 rtl:pr-2">{t('less_important')}</span>
 								</label>
 								<label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-									<Field type="radio" name="type" value="info" className="form-radio text-info" />
+									<Field autoComplete="off" type="radio" name="type" value="info" className="form-radio text-info" />
 									<span className="ltr:pl-2 rtl:pr-2">{t('normal')}</span>
 								</label>
 								<label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-									<Field type="radio" name="type" value="success" className="form-radio text-success" />
+									<Field autoComplete="off" type="radio" name="type" value="success" className="form-radio text-success" />
 									<span className="ltr:pl-2 rtl:pr-2">{t('important')}</span>
 								</label>
 								<label className="inline-flex cursor-pointer">
-									<Field type="radio" name="type" value="danger" className="form-radio text-danger" />
+									<Field autoComplete="off" type="radio" name="type" value="danger" className="form-radio text-danger" />
 									<span className="ltr:pl-2 rtl:pr-2">{t('priority')}</span>
 								</label>
 							</div>

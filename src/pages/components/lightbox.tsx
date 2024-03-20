@@ -87,7 +87,7 @@ const LightBox = () => {
                     <div className="mb-5">
                         <div className="mb-5 flex">
                             <div className="ltr:mr-4 rtl:ml-4">
-                                <input type="radio" value="all controls" onChange={handleChange} name="allcontrols" className="form-radio mt-1.5" checked={value === 'all controls'} />
+                                <input autoComplete="off" type="radio" value="all controls" onChange={handleChange} name="allcontrols" className="form-radio mt-1.5" checked={value === 'all controls'} />
                             </div>
                             <div className="flex-1">
                                 <h4 className="text-lg font-semibold text-primary">All controls</h4>
@@ -96,7 +96,7 @@ const LightBox = () => {
                         </div>
                         <div className="flex">
                             <div className="ltr:mr-4 rtl:ml-4">
-                                <input type="radio" value="minimal" onChange={handleChange} name="allcontrols" className="form-radio mt-1.5" checked={value === 'minimal'} />
+                                <input autoComplete="off" type="radio" value="minimal" onChange={handleChange} name="allcontrols" className="form-radio mt-1.5" checked={value === 'minimal'} />
                             </div>
                             <div className="flex-1">
                                 <h4 className="text-lg font-semibold text-primary">Minimal</h4>

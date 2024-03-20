@@ -188,7 +188,7 @@ const ProductCategoryPage = ({ ...props }: Props) => {
                             <span className='uppercase'>{t('add')}</span>
                         </button>
                     </div>
-                    <input type="text" data-testid="search-product-input" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
+                    <input autoComplete="off" type="text" data-testid="search-product-input" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
                 </div>
                 <div className="datatables">
                     <DataTable

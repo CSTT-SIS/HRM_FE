@@ -190,7 +190,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="quantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                         name="quantity"
                                                         type="number"
                                                         id="quantity"
@@ -203,7 +203,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="brokenPart" > {t('broken_part')} </label >
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                         name="brokenPart"
                                                         type="text"
                                                         id="brokenPart"
@@ -216,7 +216,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="description" > {t('description')}</label >
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                         name="description"
                                                         type="text"
                                                         id="description"

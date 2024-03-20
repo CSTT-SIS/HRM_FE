@@ -118,7 +118,7 @@ const RecoverIdCover = () => {
                                 <div>
                                     <label htmlFor="Email">Email</label>
                                     <div className="relative text-white-dark">
-                                        <input id="Email" type="email" placeholder="Enter Email" className="form-input pl-10 placeholder:text-white-dark" />
+                                        <input autoComplete="off" id="Email" type="email" placeholder="Enter Email" className="form-input pl-10 placeholder:text-white-dark" />
                                         <span className="absolute left-4 top-1/2 -translate-y-1/2">
                                             <IconMail fill={true} />
                                         </span>

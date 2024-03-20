@@ -906,7 +906,7 @@ const Crypto = () => {
                         <div>
                             <div className="mb-1.5 font-semibold">Amount</div>
                             <div className="relative flex">
-                                <input type="text" placeholder="" className="form-input ltr:rounded-r-none ltr:border-r-0 rtl:rounded-l-none rtl:border-l-0" />
+                                <input autoComplete="off" type="text" placeholder="" className="form-input ltr:rounded-r-none ltr:border-r-0 rtl:rounded-l-none rtl:border-l-0" />
 
                                 <div className="dropdown">
                                     <Dropdown

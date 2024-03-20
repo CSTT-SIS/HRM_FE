@@ -2278,13 +2278,13 @@ const [modal16, setModal16] = useState(false);
                                                                         <span className="absolute top-1/2 -translate-y-1/2 ltr:left-3 rtl:right-3 dark:text-white-dark">
                                                                             <IconUser className="w-5 h-5" />
                                                                         </span>
-                                                                        <input type="email" placeholder="Email" className="form-input ltr:pl-10 rtl:pr-10" id="login_email" />
+                                                                        <input autoComplete="off" type="email" placeholder="Email" className="form-input ltr:pl-10 rtl:pr-10" id="login_email" />
                                                                     </div>
                                                                     <div className="relative mb-4">
                                                                         <span className="absolute top-1/2 -translate-y-1/2 ltr:left-3 rtl:right-3 dark:text-white-dark">
                                                                             <IconLock className="w-5 h-5" />
                                                                         </span>
-                                                                        <input type="password" placeholder="Password" className="form-input ltr:pl-10 rtl:pr-10" id="login_password" />
+                                                                        <input autoComplete="off" type="password" placeholder="Password" className="form-input ltr:pl-10 rtl:pr-10" id="login_password" />
                                                                     </div>
                                                                     <button type="button" className="btn btn-primary w-full">
                                                                         Login
@@ -2366,19 +2366,19 @@ const [modal16, setModal16] = useState(false);
                                                                         <span className="absolute top-1/2 -translate-y-1/2 ltr:left-3 rtl:right-3 dark:text-white-dark">
                                                                             <IconUser className="w-5 h-5" />
                                                                         </span>
-                                                                        <input type="text" placeholder="Name" className="form-input ltr:pl-10 rtl:pr-10" id="name" />
+                                                                        <input autoComplete="off" type="text" placeholder="Name" className="form-input ltr:pl-10 rtl:pr-10" id="name" />
                                                                     </div>
                                                                     <div className="relative mb-4">
                                                                         <span className="absolute top-1/2 -translate-y-1/2 ltr:left-3 rtl:right-3 dark:text-white-dark">
                                                                             <IconAt />
                                                                         </span>
-                                                                        <input type="email" placeholder="Email" className="form-input ltr:pl-10 rtl:pr-10" id="email" />
+                                                                        <input autoComplete="off" type="email" placeholder="Email" className="form-input ltr:pl-10 rtl:pr-10" id="email" />
                                                                     </div>
                                                                     <div className="relative mb-4">
                                                                         <span className="absolute top-1/2 -translate-y-1/2 ltr:left-3 rtl:right-3 dark:text-white-dark">
                                                                             <IconLock className="w-5 h-5" />
                                                                         </span>
-                                                                        <input type="password" placeholder="Password" className="form-input ltr:pl-10 rtl:pr-10" id="password" />
+                                                                        <input autoComplete="off" type="password" placeholder="Password" className="form-input ltr:pl-10 rtl:pr-10" id="password" />
                                                                     </div>
                                                                     <button type="button" className="btn btn-primary w-full">
                                                                         Submit
@@ -2807,13 +2807,13 @@ import { useState, Fragment } from 'react';
                                                 <span className="absolute ltr:left-3 rtl:right-3 top-1/2 -translate-y-1/2 dark:text-white-dark">
                                                     <svg>...</svg>
                                                 </span>
-                                                <input type="email" placeholder="Email" className="form-input ltr:pl-10 rtl:pr-10" id="login_email" />
+                                                <input autoComplete="off" type="email" placeholder="Email" className="form-input ltr:pl-10 rtl:pr-10" id="login_email" />
                                             </div>
                                             <div className="relative mb-4">
                                                 <span className="absolute ltr:left-3 rtl:right-3 top-1/2 -translate-y-1/2 dark:text-white-dark">
                                                     <svg>...</svg>
                                                 </span>
-                                                <input type="password" placeholder="Password" className="form-input ltr:pl-10 rtl:pr-10" id="login_password" />
+                                                <input autoComplete="off" type="password" placeholder="Password" className="form-input ltr:pl-10 rtl:pr-10" id="login_password" />
                                             </div>
                                             <button type="button" className="btn btn-primary w-full">
                                                 Login
@@ -2895,19 +2895,19 @@ import { useState, Fragment } from 'react';
                                                 <span className="absolute ltr:left-3 rtl:right-3 top-1/2 -translate-y-1/2 dark:text-white-dark">
                                                     <svg>...</svg>
                                                 </span>
-                                                <input type="text" placeholder="Name" className="form-input ltr:pl-10 rtl:pr-10" id="name" />
+                                                <input autoComplete="off" type="text" placeholder="Name" className="form-input ltr:pl-10 rtl:pr-10" id="name" />
                                             </div>
                                             <div className="relative mb-4">
                                                 <span className="absolute ltr:left-3 rtl:right-3 top-1/2 -translate-y-1/2 dark:text-white-dark">
                                                     <svg>...</svg>
                                                 </span>
-                                                <input type="email" placeholder="Email" className="form-input ltr:pl-10 rtl:pr-10" id="email" />
+                                                <input autoComplete="off" type="email" placeholder="Email" className="form-input ltr:pl-10 rtl:pr-10" id="email" />
                                             </div>
                                             <div className="relative mb-4">
                                                 <span className="absolute ltr:left-3 rtl:right-3 top-1/2 -translate-y-1/2 dark:text-white-dark">
                                                     <svg>...</svg>
                                                 </span>
-                                                <input type="password" placeholder="Password" className="form-input ltr:pl-10 rtl:pr-10" id="password" />
+                                                <input autoComplete="off" type="password" placeholder="Password" className="form-input ltr:pl-10 rtl:pr-10" id="password" />
                                             </div>
                                             <button type="button" className="btn btn-primary w-full">
                                                 Submit

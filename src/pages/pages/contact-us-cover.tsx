@@ -119,25 +119,25 @@ const RecoverIdCover = () => {
                             </div>
                             <form className="space-y-5" onSubmit={submitForm}>
                                 <div className="relative text-white-dark">
-                                    <input id="Name" type="text" placeholder="Name" className="form-input ps-10 placeholder:text-white-dark" />
+                                    <input autoComplete="off" id="Name" type="text" placeholder="Name" className="form-input ps-10 placeholder:text-white-dark" />
                                     <span className="absolute start-4 top-1/2 -translate-y-1/2">
                                         <IconUser fill={true} />
                                     </span>
                                 </div>
                                 <div className="relative text-white-dark">
-                                    <input id="Email" type="email" placeholder="Email" className="form-input ps-10 placeholder:text-white-dark" />
+                                    <input autoComplete="off" id="Email" type="email" placeholder="Email" className="form-input ps-10 placeholder:text-white-dark" />
                                     <span className="absolute start-4 top-1/2 -translate-y-1/2">
                                         <IconMail fill={true} />
                                     </span>
                                 </div>
                                 <div className="relative text-white-dark">
-                                    <input id="Phone" type="text" placeholder="Phone" className="form-input ps-10 placeholder:text-white-dark" />
+                                    <input autoComplete="off" id="Phone" type="text" placeholder="Phone" className="form-input ps-10 placeholder:text-white-dark" />
                                     <span className="absolute start-4 top-1/2 -translate-y-1/2">
                                         <IconPhoneCall fill={true} />
                                     </span>
                                 </div>
                                 <div className="relative text-white-dark">
-                                    <input id="Subject" type="text" placeholder="Subject" className="form-input ps-10 placeholder:text-white-dark" />
+                                    <input autoComplete="off" id="Subject" type="text" placeholder="Subject" className="form-input ps-10 placeholder:text-white-dark" />
                                     <span className="absolute start-4 top-1/2 -translate-y-1/2">
                                         <IconPencil fill={true} />
                                     </span>

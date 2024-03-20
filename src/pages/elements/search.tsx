@@ -114,7 +114,7 @@ const Search = () => {
                         <div>
                             <form className="mx-auto mb-5 w-full sm:w-1/2">
                                 <div className="relative">
-                                    <input
+                                    <input autoComplete="off"
                                         type="text"
                                         value={search}
                                         placeholder="Search Attendees..."
@@ -207,7 +207,7 @@ useEffect(() => {
 <div className="mb-5 space-y-5">
     <form className="mx-auto w-full sm:w-1/2 mb-5">
         <div className="relative">
-            <input
+            <input autoComplete="off"
                 type="text"
                 value={search}
                 placeholder="Search Attendees..."
@@ -265,7 +265,7 @@ useEffect(() => {
                         <form>
                             <ClickAwayListener onClickAway={overlayClickAway}>
                                 <div className="search-form-overlay relative h-12 w-full rounded-md border border-white-dark/20" onClick={overlaySearchClick}>
-                                    <input
+                                    <input autoComplete="off"
                                         type="text"
                                         placeholder="Search..."
                                         className={`peer form-input hidden h-full bg-white placeholder:tracking-wider ltr:pl-12 rtl:pr-12 ${focus ? '!block' : ''}`}
@@ -296,7 +296,7 @@ const overlayClickAway = () => {
 <form>
     <ClickAwayListener onClickAway={overlayClickAway}>
         <div className="search-form-overlay relative border border-white-dark/20 rounded-md h-12 w-full" onClick={overlaySearchClick}>
-            <input
+            <input autoComplete="off"
                 type="text"
                 placeholder="Search..."
                 className={\`form-input bg-white h-full placeholder:tracking-wider hidden ltr:pl-12 rtl:pr-12 peer ${focus ? '!block' : ''}\`}
@@ -338,7 +338,7 @@ const overlayClickAway = () => {
                                 <button type="submit" placeholder="Let's find your question in fast way" className="m-auto flex items-center justify-center p-3 text-primary">
                                     <IconSearch className="mx-auto w-5 h-5" />
                                 </button>
-                                <input
+                                <input autoComplete="off"
                                     type="text"
                                     placeholder="Let's find your question in fast way"
                                     className="form-input rounded-none border-0 border-l bg-white  py-3 placeholder:tracking-wider focus:shadow-[0_0_5px_2px_rgb(194_213_255_/_62%)] focus:outline-none dark:shadow-[#1b2e4b]"
@@ -363,7 +363,7 @@ const overlaySearchClick = () => {
         <button type="submit" placeholder="Let's find your question in fast way" className="text-primary m-auto p-3 flex items-center justify-center">
             <svg>...</svg>
         </button>
-        <input
+        <input autoComplete="off"
             type="text"
             placeholder="Let's find your question in fast way"
             className="form-input border-0 border-l rounded-none bg-white  focus:shadow-[0_0_5px_2px_rgb(194_213_255_/_62%)] dark:shadow-[#1b2e4b] placeholder:tracking-wider focus:outline-none py-3"

@@ -82,7 +82,7 @@ const Clipboard = () => {
                         <div className="mb-5">
                             <div className="rounded bg-[#f1f2f3] p-5 dark:bg-[#060818]">
                                 <form>
-                                    <input type="text" value={message1} className="form-input" onChange={(e) => setMessage1(e.target.value)} />
+                                    <input autoComplete="off" type="text" value={message1} className="form-input" onChange={(e) => setMessage1(e.target.value)} />
                                     <div className="mt-5 space-y-2 rtl:space-x-reverse sm:flex sm:space-y-0 sm:space-x-2">
                                         <CopyToClipboard
                                             text={message1}
@@ -121,7 +121,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 const [message1, setMessage1] = useState<any>('http://www.admin-dashboard.com');
 
 <form>
-    <input type="text" value={message1} className="form-input" onChange={(e) => setMessage1(e.target.value)} />
+    <input autoComplete="off" type="text" value={message1} className="form-input" onChange={(e) => setMessage1(e.target.value)} />
     <div className="sm:flex space-y-2 sm:space-y-0 sm:space-x-2 rtl:space-x-reverse mt-5">
         <CopyToClipboard
             text={message1}

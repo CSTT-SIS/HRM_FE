@@ -169,7 +169,7 @@ const ProductModal = ({ ...props }: Props) => {
 										{' '}
 										{t('name_product')} <span style={{ color: 'red' }}>* </span>
 									</label>
-									<Field name="name" type="text" id="name" placeholder={`${t('enter_name')}`} className="form-input" />
+									<Field autoComplete="off" name="name" type="text" id="name" placeholder={`${t('enter_name')}`} className="form-input" />
 									{submitCount && errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null}
 								</div>
 								<div className="w-1/2">
@@ -177,7 +177,7 @@ const ProductModal = ({ ...props }: Props) => {
 										{' '}
 										{t('code_product')} <span style={{ color: 'red' }}>* </span>
 									</label>
-									<Field name="code" type="text" id="code" placeholder={`${t('enter_code')}`} className="form-input" />
+									<Field autoComplete="off" name="code" type="text" id="code" placeholder={`${t('enter_code')}`} className="form-input" />
 									{submitCount && errors.code ? <div className="mt-1 text-danger"> {errors.code} </div> : null}
 								</div>
 							</div>
@@ -229,7 +229,7 @@ const ProductModal = ({ ...props }: Props) => {
 										{' '}
 										{t('min_quantity')} <span style={{ color: 'red' }}>* </span>
 									</label>
-									<Field name="minQuantity" type="number" id="minQuantity" placeholder={`${t('enter_min_quantity')}`} className="form-input" />
+									<Field autoComplete="off" name="minQuantity" type="number" id="minQuantity" placeholder={`${t('enter_min_quantity')}`} className="form-input" />
 									{errors.minQuantity ? <div className="mt-1 text-danger"> {errors.minQuantity} </div> : null}
 								</div>
 								<div className="w-1/2">
@@ -237,14 +237,14 @@ const ProductModal = ({ ...props }: Props) => {
 										{' '}
 										{t('max_quantity')} <span style={{ color: 'red' }}>* </span>
 									</label>
-									<Field name="maxQuantity" type="number" id="maxQuantity" placeholder={`${t('enter_max_quantity')}`} className="form-input" />
+									<Field autoComplete="off" name="maxQuantity" type="number" id="maxQuantity" placeholder={`${t('enter_max_quantity')}`} className="form-input" />
 									{errors.maxQuantity ? <div className="mt-1 text-danger"> {errors.maxQuantity} </div> : null}
 								</div>
 							</div>
 							<div className="flex justify-between gap-5">
 								<div className="w-1/2">
 									<label htmlFor="barCode"> {t('Barcode')} </label>
-									<Field name="barCode" type="text" id="barCode" placeholder={`${t('')}`} className="form-input" />
+									<Field autoComplete="off" name="barCode" type="text" id="barCode" placeholder={`${t('')}`} className="form-input" />
 									{submitCount && errors.barCode ? <div className="mt-1 text-danger"> {errors.barCode} </div> : null}
 								</div>
 								<div className="w-1/2">
@@ -252,7 +252,7 @@ const ProductModal = ({ ...props }: Props) => {
 										{' '}
 										{t('description')}{' '}
 									</label>
-									<Field name="description" as="textarea" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
+									<Field autoComplete="off" name="description" as="textarea" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
 									{submitCount && errors.description ? <div className="mt-1 text-danger"> {errors.description} </div> : null}
 								</div>
 							</div>

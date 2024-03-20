@@ -171,7 +171,7 @@ const AddNewTask = ({ ...props }: Props) => {
                                 {' '}
                                 {t('name_task')} <span style={{ color: 'red' }}>* </span>
                             </label>
-                            <Field disabled name="name" type="text" id="name" placeholder={`${t('enter_name_task')}`} className="form-input" />
+                            <Field autoComplete="off" disabled name="name" type="text" id="name" placeholder={`${t('enter_name_task')}`} className="form-input" />
                             {submitCount ? errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null : ''}
                             </div>
                             <div className="mb-3 w-1/2">
@@ -179,7 +179,7 @@ const AddNewTask = ({ ...props }: Props) => {
                                     {' '}
                                     {t('creator_task')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field type="text" name="creator" id="creator" className="form-input" disabled style={{ color: 'gray' }}>
+                                <Field autoComplete="off" type="text" name="creator" id="creator" className="form-input" disabled style={{ color: 'gray' }}>
                                 </Field>
                                 {submitCount ? errors.creator ? <div className="mt-1 text-danger"> {errors.creator} </div> : null : ''}
                             </div>
@@ -230,7 +230,7 @@ const AddNewTask = ({ ...props }: Props) => {
                                     {' '}
                                     {t('date_create')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field disabled type="date" name="date_create" id="date_create" className="form-input">
+                                <Field autoComplete="off" disabled type="date" name="date_create" id="date_create" className="form-input">
                                 </Field>
                             </div>
 
@@ -239,7 +239,7 @@ const AddNewTask = ({ ...props }: Props) => {
                                     {t('deadline_task')} <span style={{ color: 'red' }}>* </span>
 
                                 </label>
-                                <Field disabled type="datetime-local" name="deadline"
+                                <Field autoComplete="off" disabled type="datetime-local" name="deadline"
                                 placeholder={`${t('enter_deadline_task')}`}id="deadline" className="form-input">
                                 </Field>
 
@@ -253,34 +253,34 @@ const AddNewTask = ({ ...props }: Props) => {
                                     {' '}
                                     {t('file')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field disabled name="file" type="file" rows="2" id="file" style={{ height: '37.6px' }} placeholder={`${t('enter_description_task')}`} className="form-input" />
+                                <Field autoComplete="off" disabled name="file" type="file" rows="2" id="file" style={{ height: '37.6px' }} placeholder={`${t('enter_description_task')}`} className="form-input" />
                             </div>
                             <div className="mb-3 w-1/2">
                             <label htmlFor="description">
                                 {' '}
                                 {t('description_task')} <span style={{ color: 'red' }}>* </span>
                             </label>
-                            <Field disabled name="description" as="textarea" rows="2" id="description" placeholder={`${t('enter_description_task')}`} className="form-input" />
+                            <Field autoComplete="off" disabled name="description" as="textarea" rows="2" id="description" placeholder={`${t('enter_description_task')}`} className="form-input" />
                         </div>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="directive"> {t('directive_task')}</label>
-                            <Field disabled name="directive" as="textarea" rows="2" id="directive" placeholder={`${t('enter_directive_task')}`} className="form-input" />
+                            <Field autoComplete="off" disabled name="directive" as="textarea" rows="2" id="directive" placeholder={`${t('enter_directive_task')}`} className="form-input" />
                         </div>
                         {props.data !== undefined && (
                             <div className="mb-3">
                                 <label>{t('status_task')}:</label>
                                 <div className="mt-3">
                                     <label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-                                        <Field type="radio" name="status" value="ĐÃ XONG" className="form-radio text-warning" />
+                                        <Field autoComplete="off" type="radio" name="status" value="ĐÃ XONG" className="form-radio text-warning" />
                                         <span className="ltr:pl-2 rtl:pr-2">ĐÃ XONG</span>
                                     </label>
                                     <label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-                                        <Field type="radio" name="status" value="HOÀN THÀNH" className="form-radio text-success" />
+                                        <Field autoComplete="off" type="radio" name="status" value="HOÀN THÀNH" className="form-radio text-success" />
                                         <span className="ltr:pl-2 rtl:pr-2">HOÀN THÀNH</span>
                                     </label>
                                     <label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-                                        <Field type="radio" name="status" value="HUỶ BỎ" className="form-radio text-danger" />
+                                        <Field autoComplete="off" type="radio" name="status" value="HUỶ BỎ" className="form-radio text-danger" />
                                         <span className="ltr:pl-2 rtl:pr-2">HUỶ BỎ</span>
                                     </label>
                                 </div>
