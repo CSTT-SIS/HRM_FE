@@ -164,7 +164,7 @@
 	"sign_in": "Đăng nhập",
 	"sign_in_error": "Lỗi đăng nhập",
 	"sign_in_success": "Đăng nhập thành công",
-	"username": "Tên tài khoản",
+	"username": "Tên Tài khoản",
 	"password": "Mật khẩu",
 	"edit_user": "Người dùng biên tập",
 	"add_user": "Tạo mới người dùng",
@@ -814,9 +814,10 @@
 	"add_personnel_to_list_success": "Thêm vào danh sách thành công",
 	"list_staff_by_shift": "Danh sách nhân viên thuộc ca",
 	"enter_project": "Nhập dự án",
-	"project": "Dự án",
-	"catalog_management": "Quản lý danh mục",
-	"proposal_management": "Quản lý yêu cầu",
-	"inventory_number": "Số lượng tồn kho",
+	"project" : "Dự án",
+    "create_duty_error": "Tạo mới chức vụ thất bại",
+	"catalog_management": "Quản lí danh mục",
+	"proposal_management": "Quản lí yêu cầu",
+    "inventory_number": "Số lượng tồn kho",
 	"expiration_date": "Ngày hết hạn"
 }

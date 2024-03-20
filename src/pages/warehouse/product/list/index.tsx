@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { Products } from '@/services/swr/product.twr';
 // constants
 import { PAGE_SIZES } from '@/utils/constants';
-import { DeleteProduct } from '@/services/apis/product.api';
+ import { DeleteProduct } from '@/services/apis/product.api';
 // helper
 import { showMessage } from '@/@core/utils';
 // icons
@@ -20,7 +20,6 @@ import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
 import IconPencil from '@/components/Icon/IconPencil';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
-import { IconRepair } from '@/components/Icon/IconRepair';
 
 // modal
 import ProductModal from './ProductModal';
