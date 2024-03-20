@@ -38,6 +38,8 @@ test.describe.serial('repair CRUD', () => {
 		await page.waitForTimeout(1000);
 
 		await page.getByTestId('submit-modal-btn').click();
+		await page.waitForTimeout(1000);
+
 		await page.getByTestId('submit-btn').click();
 
 		await page.waitForLoadState('networkidle');
