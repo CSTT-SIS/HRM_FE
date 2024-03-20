@@ -814,10 +814,10 @@
 	"add_personnel_to_list_success": "Thêm vào danh sách thành công",
 	"list_staff_by_shift": "Danh sách nhân viên thuộc ca",
 	"enter_project": "Nhập dự án",
-	"project" : "Dự án",
-    "create_duty_error": "Tạo mới chức vụ thất bại",
-	"catalog_management": "Quản lí danh mục",
-	"proposal_management": "Quản lí yêu cầu",
-    "inventory_number": "Số lượng tồn kho",
+	"project": "Dự án",
+	"create_duty_error": "Tạo mới chức vụ thất bại",
+	"catalog_management": "Quản lý danh mục",
+	"proposal_management": "Quản lý yêu cầu",
+	"inventory_number": "Số lượng tồn kho",
 	"expiration_date": "Ngày hết hạn"
 }
