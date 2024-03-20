@@ -118,7 +118,6 @@ const DetailModal = ({ ...props }: Props) => {
 
     const handleQuantity = (param: any, setFieldValue: any) => {
         GetQuantity({ id: param.value }).then((res) => {
-            console.log("🚀 ~ GetQuantity ~ res:", res)
             setFieldValue('inventory', res.data)
         }).catch((err) => {
             showMessage(`${err?.response?.data?.message}`, 'error');

@@ -224,7 +224,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                         <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
                                                             {t('cancel')}
                                                         </button>
-                                                        <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+                                                        <button data-testId="submit-modal-btn" type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
                                                             {props.data !== undefined ? t('update') : t('add_new')}
                                                         </button>
                                                     </div>

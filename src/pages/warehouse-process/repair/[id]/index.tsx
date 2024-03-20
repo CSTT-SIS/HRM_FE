@@ -332,8 +332,6 @@ const DetailPage = ({ ...props }: Props) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [router.query.id]);
-    console.log("🚀 ~ GetRepair ~ data:", data)
-
     const handleApprove = () => {
         RepairApprove({ id: router.query.id }).then(() => {
             showMessage(`${t('update_success')}`, 'success');
@@ -572,7 +570,7 @@ const DetailPage = ({ ...props }: Props) => {
                                         <div className="flex items-center flex-wrap">
                                             {
                                                 !disable &&
-                                                <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
+                                                <button data-testId='modal-repair-btn' type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
                                                     <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                                                     {t('add_product_list')}
                                                 </button>
@@ -660,7 +658,7 @@ const DetailPage = ({ ...props }: Props) => {
                             <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
                                 {t('cancel')}
                             </button>
-                            <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleSubmit()}>
+                            <button data-testId='submit-btn' type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleSubmit()}>
                                 {router.query.id !== "create" ? t('update') : t('save')}
                             </button>
                         </div>
