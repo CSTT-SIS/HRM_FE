@@ -21,6 +21,7 @@ import { showMessage } from '@/@core/utils';
 import * as Yup from 'yup';
 import Link from 'next/link';
 import IconBackward from '@/components/Icon/IconBackward';
+import moment from 'moment';
 
 
 interface Props {
@@ -81,6 +82,12 @@ const ShelfPage = ({ ...props }: Props) => {
             sortable: false
         },
         { accessor: 'quantity', title: 'Số lương', sortable: false },
+        {
+            accessor: 'expiredAt',
+            title: 'ngày hết hạn',
+            render: ({ expiredAt }: any) => <span >{expiredAt && moment(expiredAt).format("YYYY-MM-DD")}</span>,
+            sortable: false
+        },
         { accessor: 'description', title: 'Ghi chú', sortable: false }
     ]
 

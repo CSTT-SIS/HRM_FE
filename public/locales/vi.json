@@ -574,7 +574,7 @@
 	"limit_product": "Giới hạn của vật tư",
 	"add_category": "Tạo mới danh mục vật tư",
 	"name_category": "Tên danh mục",
-	"proposal_by": "yêu cầu bởi",
+	"proposal_by": "Yêu cầu bởi",
 	"edit_category": "Sửa Loại vật tư",
 	"add_unit": "Tạo mới đơn vị",
 	"edit_unit": "Sửa đơn vị",
@@ -818,6 +818,11 @@
 	"create_duty_error": "Tạo mới chức vụ thất bại",
 	"catalog_management": "Quản lý danh mục",
 	"proposal_management": "Quản lý yêu cầu",
-	"inventory_number": "Số lượng tồn kho",
-	"expiration_date": "Ngày hết hạn"
+	"inventory_number": "Số lượng trong kho",
+	"expiration_date": "Ngày hết hạn",
+    "inventory_not_enough": "Số lượng yêu cầu không được lớn hơn số lượng yêu cầu",
+    "repair_history": "Lịch sử sửa chữa",
+    "expired_date": "Ngày hết hạn",
+    "noti_expired": "Thông báo hết hạn",
+    "choose_proposal": "Chọn yêu cầu cung cấp"
 }

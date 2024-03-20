@@ -24,7 +24,7 @@ import Select, { components } from 'react-select';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import { GetProposalDetail } from '@/services/apis/proposal.api';
-import DetailModal from '../form/DetailModal';
+import DetailModal from '../modal/DetailModal';
 import IconPlus from '@/components/Icon/IconPlus';
 import { GetRepair, GetRepairDetail } from '@/services/apis/repair.api';
 
@@ -56,7 +56,7 @@ const DetailPage = ({ ...props }: Props) => {
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().required(`${t('please_fill_name')}`),
         code: Yup.string().required(`${t('please_fill_code')}`),
-        proposalIds: new Yup.ArraySchema().required(`${t('please_fill_proposal')}`),
+        // proposalIds: new Yup.ArraySchema().required(`${t('please_fill_proposal')}`),
         // provider: Yup.string().required(`${t('please_fill_provider')}`),
         estimatedDeliveryDate: Yup.string().required(`${t('please_fill_date')}`),
     });
@@ -65,7 +65,7 @@ const DetailPage = ({ ...props }: Props) => {
 
     // get data
     const { data: orderDetails, pagination, mutate, isLoading } = OrderDetails({ ...query });
-    const { data: proposals, pagination: proposalPagiantion, isLoading: proposalLoading } = DropdownProposals({ page: pageProposal, type: "PURCHASE" });
+    const { data: proposals, pagination: proposalPagiantion, isLoading: proposalLoading } = DropdownProposals({ page: pageProposal });
     const { data: warehouses, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({});
     const { data: dropdownRepair, pagination: repairPagination, isLoading: repairLoading } = DropdownRepair({ page: pageRepair })
 
@@ -105,8 +105,14 @@ const DetailPage = ({ ...props }: Props) => {
             code: data?.code ? `${data?.code}` : "",
             estimatedDeliveryDate: data?.estimatedDeliveryDate ? moment(`${data?.estimatedDeliveryDate}`).format("YYYY-MM-DD") : "",
             provider: data?.provider ? `${data?.provider}` : "",
-            personRequest: JSON.parse(localStorage.getItem('profile') || "").fullName
+            personRequest: JSON.parse(localStorage.getItem('profile') || "").fullName,
+            warehouseId: data ? {
+                value: `${data?.warehouse?.id}`,
+                label: `${data?.warehouse?.name}`,
+            }
+                : '',
         })
+        setEntity(data?.warehouse?.name === "Gara" ? "repairRequest" : "proposal")
     }, [data]);
 
     useEffect(() => {
@@ -236,13 +242,14 @@ const DetailPage = ({ ...props }: Props) => {
     }
 
     const handleOrder = (param: any) => {
-        const query = {
+        const query: any = {
             name: param.name,
-            proposalIds: param.proposalIds.map((item: any) => { return (item.value) }),
-            type: "PURCHASE",
+            requests: param.warehouseId.label === "Gara" ? param.repairRequestId.map((item: any) => { return (item.value) }) : param.proposalIds.map((item: any) => { return (item.value) }),
+            type: param.warehouseId.label === "Gara" ? "repairRequest" : "proposal",
             code: param.code,
             estimatedDeliveryDate: moment(param.estimatedDeliveryDate).format('YYYY-MM-DD HH:mm:ss'),
-            provider: param.provider
+            provider: param.provider,
+            warehouseId: param.warehouseId.value
         };
         if (data) {
             EditOrder({ id: data.id, ...query }).then(() => {
@@ -258,7 +265,7 @@ const DetailPage = ({ ...props }: Props) => {
                 CreateOrder(query).then((res) => {
                     handleDetail(res.data.id);
                 }).catch((err) => {
-                    showMessage(`${err?.response?.data?.message}`, 'error');
+                    showMessage(`${err?.response?.data?.message[0].error}`, 'error');
                 });
             }
         }
@@ -299,12 +306,12 @@ const DetailPage = ({ ...props }: Props) => {
         }, 1000);
     }
 
-    const RenturnError = (param: any) => {
-        if (Object.keys(param?.errors || {}).length > 0 && param?.submitCount > 0) {
-            showMessage(`${t('please_add_infomation')}`, 'error');
-        }
-        return <></>;
-    }
+    // const RenturnError = (param: any) => {
+    //     if (Object.keys(param?.errors || {}).length > 0 && param?.submitCount > 0) {
+    //         showMessage(`${t('please_add_infomation')}`, 'error');
+    //     }
+    //     return <></>;
+    // }
 
     const [idProposal, setIdProposal] = useState<any>();
     const [idRepair, setIdRepair] = useState<any>();
@@ -354,10 +361,10 @@ const DetailPage = ({ ...props }: Props) => {
 
     useEffect(() => {
         let ans: any = listDataDetail?.reduce((agg: any, curr: any) => {
-            let found = agg.find((x: any) => x.productId === curr.productId);
+            let found = agg.find((x: any) => x.replacementPartId === curr.replacementPartId);
             if (found) {
                 found.quantity = found.quantity + curr.quantity
-                found.note = found.note + "," + curr.note
+                found.note = (found?.note || curr?.note) && found?.note + "," + curr?.note
             }
             else {
                 agg.push({
@@ -525,7 +532,8 @@ const DetailPage = ({ ...props }: Props) => {
                                                     <div className='flex justify-between gap-5 mt-5 mb-5'>
                                                         <div className="w-1/2">
                                                             <label htmlFor="personRequest" className='label'> {t('person_request')} < span style={{ color: 'red' }}>* </span></label >
-                                                            <Field autoComplete="off"
+                                                            <Field
+                                                                autoComplete="off"
                                                                 name="personRequest"
                                                                 type="text"
                                                                 id="personRequest"
@@ -539,7 +547,8 @@ const DetailPage = ({ ...props }: Props) => {
                                                         </div>
                                                         <div className="w-1/2">
                                                             <label htmlFor="timeRequest" className='label'> {t('time_request')} < span style={{ color: 'red' }}>* </span></label >
-                                                            <Field autoComplete="off"
+                                                            <Field
+                                                                autoComplete="off"
                                                                 name="timeRequest"
                                                                 render={({ field }: any) => (
                                                                     <Flatpickr
@@ -550,21 +559,18 @@ const DetailPage = ({ ...props }: Props) => {
                                                                             dateFormat: 'Y-m-d H:i'
                                                                         }}
                                                                         value={moment().format("DD/MM/YYYY hh:mm")}
-                                                                        onChange={e => setFieldValue("estimatedDeliveryDate", moment(e[0]).format("YYYY-MM-DD hh:mm"))}
                                                                         className={true ? "form-input bg-[#f2f2f2] calender-input" : "form-input calender-input"}
                                                                         disabled={true}
                                                                     />
                                                                 )}
                                                             />
-                                                            {submitCount && errors.estimatedDeliveryDate ? (
-                                                                <div className="text-danger mt-1"> {`${errors.estimatedDeliveryDate}`} </div>
-                                                            ) : null}
                                                         </div>
                                                     </div>
                                                     <div className='flex justify-between gap-5 mt-5'>
                                                         <div className="w-1/2">
                                                             <label htmlFor="name" className='label'> {t('name_order')} < span style={{ color: 'red' }}>* </span></label >
-                                                            <Field autoComplete="off"
+                                                            <Field
+                                                                autoComplete="off"
                                                                 name="name"
                                                                 type="text"
                                                                 id="name"
@@ -578,7 +584,8 @@ const DetailPage = ({ ...props }: Props) => {
                                                         </div>
                                                         <div className="w-1/2">
                                                             <label htmlFor="code" className='label'> {t('code_order')} < span style={{ color: 'red' }}>* </span></label >
-                                                            <Field autoComplete="off"
+                                                            <Field
+                                                                autoComplete="off"
                                                                 name="code"
                                                                 type="text"
                                                                 id="code"
@@ -640,7 +647,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                                     ) : null}
                                                                 </div> :
                                                                 <div className="w-1/2">
-                                                                    <label htmlFor="proposalIds" className='label'> {t('proposal')} < span style={{ color: 'red' }}>* </span></label >
+                                                                    <label htmlFor="proposalIds" className='label'> {t('choose_proposal')} < span style={{ color: 'red' }}>* </span></label >
                                                                     <Select
                                                                         isDisabled={disable}
                                                                         id='proposalIds'
@@ -688,7 +695,8 @@ const DetailPage = ({ ...props }: Props) => {
                                                     <div className='flex justify-between gap-5 mt-5'>
                                                         <div className="w-1/2">
                                                             <label htmlFor="estimatedDeliveryDate" className='label'> {t('estimated_delivery_date')} < span style={{ color: 'red' }}>* </span></label >
-                                                            <Field autoComplete="off"
+                                                            <Field
+                                                                autoComplete="off"
                                                                 name="estimatedDeliveryDate"
                                                                 render={({ field }: any) => (
                                                                     <Flatpickr
@@ -711,7 +719,8 @@ const DetailPage = ({ ...props }: Props) => {
                                                         </div>
                                                         <div className="w-1/2">
                                                             <label htmlFor="provider" className='label'> {t('note')}</label >
-                                                            <Field autoComplete="off"
+                                                            <Field
+                                                                autoComplete="off"
                                                                 id="provider"
                                                                 as="textarea"
                                                                 rows="2"
@@ -725,9 +734,9 @@ const DetailPage = ({ ...props }: Props) => {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                {
+                                                {/* {
                                                     <RenturnError errors={errors} submitCount={submitCount} />
-                                                }
+                                                } */}
                                             </Form>
                                         )
                                         }
