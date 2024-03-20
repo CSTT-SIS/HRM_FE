@@ -59,6 +59,7 @@ test.describe.serial('repair CRUD', () => {
 	test('02. Edit', async ({ page }) => {
 		await page.goto('/warehouse-process/repair');
 
+		await page.waitForTimeout(1000);
 		await page.getByTestId('search-repair-input').fill(text);
 		await page.waitForLoadState('networkidle');
 

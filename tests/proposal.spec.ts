@@ -57,6 +57,7 @@ test.describe.serial('proposal CRUD', () => {
 	test('02. Edit', async ({ page }) => {
 		await page.goto('/warehouse-process/proposal');
 
+		await page.waitForTimeout(1000);
 		await page.getByTestId('search-proposal-input').fill(text);
 		await page.waitForLoadState('networkidle');
 
