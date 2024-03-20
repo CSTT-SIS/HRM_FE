@@ -695,7 +695,7 @@ const Notes = () => {
                                                 <form>
                                                     <div className="mb-5">
                                                         <label htmlFor="title">Title</label>
-                                                        <input id="title" type="text" placeholder="Enter Title" className="form-input" value={params.title} onChange={(e) => changeValue(e)} />
+                                                        <input autoComplete="off" id="title" type="text" placeholder="Enter Title" className="form-input" value={params.title} onChange={(e) => changeValue(e)} />
                                                     </div>
                                                     <div className="mb-5">
                                                         <label htmlFor="name">User Name</label>

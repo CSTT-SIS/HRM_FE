@@ -169,7 +169,7 @@ const Department = ({ ...props }: Props) => {
 		hasChildren: boolean;
 		children?: Item[];
 	};
-    const CheckBox = (props: Content) => <input type='checkbox' className='form-checkbox' />;
+    const CheckBox = (props: Content) => <input autoComplete="off" type='checkbox' className='form-checkbox' />;
 	const Title = (props: Content) => <Box as="span">{props.title}</Box>;
 	const Description = (props: Content) => (
 		<Box as="span">{props.description}</Box>
@@ -223,7 +223,7 @@ const Department = ({ ...props }: Props) => {
     };
 
 	const columns = [
-        { accessor: 'check', title: 'Chọn', sortable: false, render: (records: any) => <input type="checkbox" onChange={(e) => handleChangeSelect(e.target.checked, records)} className='form-checkbox'/>},
+        { accessor: 'check', title: 'Chọn', sortable: false, render: (records: any) => <input autoComplete="off" type="checkbox" onChange={(e) => handleChangeSelect(e.target.checked, records)} className='form-checkbox'/>},
 		{
 			accessor: 'id',
 			title: '#',
@@ -293,7 +293,7 @@ const Department = ({ ...props }: Props) => {
 
 					</div>
 					<div className='display-style'>
-						<input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+						<input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
 
 					</div>
 				</div>

@@ -86,8 +86,8 @@ const FileUploadPreview = () => {
                                     </button>
                                 </div>
                                 <label className="custom-file-container__custom-file"></label>
-                                <input type="file" className="custom-file-container__custom-file__custom-file-input" accept="image/*" />
-                                <input type="hidden" name="MAX_FILE_SIZE" value="10485760" />
+                                <input autoComplete="off" type="file" className="custom-file-container__custom-file__custom-file-input" accept="image/*" />
+                                <input autoComplete="off" type="hidden" name="MAX_FILE_SIZE" value="10485760" />
                                 <ImageUploading value={images} onChange={onChange} maxNumber={maxNumber}>
                                     {({ imageList, onImageUpload, onImageRemoveAll, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
                                         <div className="upload__image-wrapper">
@@ -134,8 +134,8 @@ const onChange = (imageList: ImageListType, addUpdateIndex: number[] | undefined
         </button>
     </div>
     <label className="custom-file-container__custom-file"></label>
-    <input type="file" className="custom-file-container__custom-file__custom-file-input" accept="image/*" />
-    <input type="hidden" name="MAX_FILE_SIZE" value="10485760" />
+    <input autoComplete="off" type="file" className="custom-file-container__custom-file__custom-file-input" accept="image/*" />
+    <input autoComplete="off" type="hidden" name="MAX_FILE_SIZE" value="10485760" />
     <ImageUploading value={images} onChange={onChange} maxNumber={maxNumber}>
         {({ imageList, onImageUpload, onImageRemoveAll, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
             <div className="upload__image-wrapper">
@@ -184,8 +184,8 @@ const onChange = (imageList: ImageListType, addUpdateIndex: number[] | undefined
                                     </button>
                                 </div>
                                 <label className="custom-file-container__custom-file"></label>
-                                <input type="file" className="custom-file-container__custom-file__custom-file-input" accept="image/*" />
-                                <input type="hidden" name="MAX_FILE_SIZE" value="10485760" />
+                                <input autoComplete="off" type="file" className="custom-file-container__custom-file__custom-file-input" accept="image/*" />
+                                <input autoComplete="off" type="hidden" name="MAX_FILE_SIZE" value="10485760" />
                                 <ImageUploading multiple value={images2} onChange={onChange2} maxNumber={maxNumber}>
                                     {({ imageList, onImageUpload, onImageRemoveAll, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
                                         <div className="upload__image-wrapper">
@@ -242,8 +242,8 @@ const onChange2 = (imageList: ImageListType, addUpdateIndex: number[] | undefine
         </button>
     </div>
     <label className="custom-file-container__custom-file"></label>
-    <input type="file" className="custom-file-container__custom-file__custom-file-input" accept="image/*" />
-    <input type="hidden" name="MAX_FILE_SIZE" value="10485760" />
+    <input autoComplete="off" type="file" className="custom-file-container__custom-file__custom-file-input" accept="image/*" />
+    <input autoComplete="off" type="hidden" name="MAX_FILE_SIZE" value="10485760" />
     <ImageUploading multiple value={images2} onChange={onChange2} maxNumber={maxNumber}>
         {({ imageList, onImageUpload, onImageRemoveAll, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
             <div className="upload__image-wrapper">

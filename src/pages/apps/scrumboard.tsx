@@ -409,7 +409,7 @@ const Scrumboard = () => {
                                             <div className="grid gap-5">
                                                 <div>
                                                     <label htmlFor="title">Name</label>
-                                                    <input id="title" value={params.title} onChange={changeValue} type="text" className="form-input mt-1" placeholder="Enter Name" />
+                                                    <input autoComplete="off" id="title" value={params.title} onChange={changeValue} type="text" className="form-input mt-1" placeholder="Enter Name" />
                                                 </div>
                                             </div>
 
@@ -447,11 +447,11 @@ const Scrumboard = () => {
                                         <div className="grid gap-5">
                                             <div>
                                                 <label htmlFor="taskTitle">Name</label>
-                                                <input id="title" value={paramsTask.title} onChange={addTaskData} type="text" className="form-input" placeholder="Enter Name" />
+                                                <input autoComplete="off" id="title" value={paramsTask.title} onChange={addTaskData} type="text" className="form-input" placeholder="Enter Name" />
                                             </div>
                                             <div>
                                                 <label htmlFor="taskTag">Tag</label>
-                                                <input id="tags" value={paramsTask.tags} onChange={addTaskData} type="text" className="form-input" placeholder="Enter Tag" />
+                                                <input autoComplete="off" id="tags" value={paramsTask.tags} onChange={addTaskData} type="text" className="form-input" placeholder="Enter Tag" />
                                             </div>
                                             <div>
                                                 <label htmlFor="taskdesc">Description</label>

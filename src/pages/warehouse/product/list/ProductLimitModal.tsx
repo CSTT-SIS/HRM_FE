@@ -98,14 +98,14 @@ const ProductLimitModal = ({ ...props }: Props) => {
                                             <Form className="space-y-5" >
                                                 <div className="mb-5">
                                                     <label htmlFor="minQuantity" > {t('min_quantity')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="minQuantity" type="number" id="minQuantity" placeholder={`${t('enter_min_quantity')}`} className="form-input" />
+                                                    <Field autoComplete="off" name="minQuantity" type="number" id="minQuantity" placeholder={`${t('enter_min_quantity')}`} className="form-input" />
                                                     {errors.minQuantity ? (
                                                         <div className="text-danger mt-1"> {errors.minQuantity} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="maxQuantity" > {t('max_quantity')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="maxQuantity" type="number" id="maxQuantity" placeholder={`${t('enter_max_quantity')}`} className="form-input" />
+                                                    <Field autoComplete="off" name="maxQuantity" type="number" id="maxQuantity" placeholder={`${t('enter_max_quantity')}`} className="form-input" />
                                                     {errors.maxQuantity ? (
                                                         <div className="text-danger mt-1"> {errors.maxQuantity} </div>
                                                     ) : null}

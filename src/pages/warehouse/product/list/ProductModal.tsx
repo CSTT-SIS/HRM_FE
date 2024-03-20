@@ -167,14 +167,14 @@ const ProductModal = ({ ...props }: Props) => {
                                             <Form className="space-y-5" >
                                                 <div className="mb-5">
                                                     <label htmlFor="name" > {t('name')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name')}`} className="form-input" />
+                                                    <Field autoComplete="off" name="name" type="text" id="name" placeholder={`${t('enter_name')}`} className="form-input" />
                                                     {errors.name ? (
                                                         <div className="text-danger mt-1"> {errors.name} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="code" > {t('code')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="code" type="text" id="code" placeholder={`${t('enter_code')}`} className="form-input" />
+                                                    <Field autoComplete="off" name="code" type="text" id="code" placeholder={`${t('enter_code')}`} className="form-input" />
                                                     {errors.code ? (
                                                         <div className="text-danger mt-1"> {errors.code} </div>
                                                     ) : null}
@@ -219,7 +219,7 @@ const ProductModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="description" > {t('description')} </label >
-                                                    <Field name="description" type="text" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
+                                                    <Field autoComplete="off" name="description" type="text" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
                                                     {errors.description ? (
                                                         <div className="text-danger mt-1"> {errors.description} </div>
                                                     ) : null}

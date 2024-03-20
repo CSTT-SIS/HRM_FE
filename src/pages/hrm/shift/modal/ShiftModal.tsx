@@ -126,7 +126,7 @@ const ShiftModal = ({ ...props }: Props) => {
 														{' '}
 														{t('code_shift')} <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field name="code_shift" type="text" id="code_shift" placeholder={`${t('fill_code_shift')}`} className="form-input" />
+													<Field autoComplete="off" name="code_shift" type="text" id="code_shift" placeholder={`${t('fill_code_shift')}`} className="form-input" />
 													{errors.code_shift ? <div className="mt-1 text-danger"> {errors.code_shift} </div> : null}
 												</div>
                                                 <div className="mb-5 w-1/2">
@@ -134,7 +134,7 @@ const ShiftModal = ({ ...props }: Props) => {
 														{' '}
 														{t('name_shift')} <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field name="name_shift" type="text" id="name_shift" placeholder={`${t('fill_name_shift')}`} className="form-input" />
+													<Field autoComplete="off" name="name_shift" type="text" id="name_shift" placeholder={`${t('fill_name_shift')}`} className="form-input" />
 													{errors.name_shift ? <div className="mt-1 text-danger"> {errors.name_shift} </div> : null}
 												</div>
                                                 </div>
@@ -157,7 +157,7 @@ const ShiftModal = ({ ...props }: Props) => {
 														{' '}
 														{t('work_coefficient')} <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field name="work_coefficient" type="number" id="work_coefficient" placeholder="" className="form-input" />
+													<Field autoComplete="off" name="work_coefficient" type="number" id="work_coefficient" placeholder="" className="form-input" />
 													{errors.work_coefficient ? <div className="mt-1 text-danger"> {errors.work_coefficient} </div> : null}
 												</div>
                                                 </div>
@@ -167,7 +167,7 @@ const ShiftModal = ({ ...props }: Props) => {
 														{' '}
 														{t('from_time')} <span style={{ color: 'red' }}>* </span>
 													</label>
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                             name="from_time"
                                                             render={({ field }: any) => (
                                                                 <Flatpickr
@@ -188,7 +188,7 @@ const ShiftModal = ({ ...props }: Props) => {
 														{' '}
 														{t('end_time')} <span style={{ color: 'red' }}>* </span>
 													</label>
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                             name="end_time"
                                                             render={({ field }: any) => (
                                                                 <Flatpickr
@@ -211,7 +211,7 @@ const ShiftModal = ({ ...props }: Props) => {
 														{' '}
 														{t('break_from_time')} <span style={{ color: 'red' }}>* </span>
 													</label>
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                             name="break_from_time"
                                                             render={({ field }: any) => (
                                                                 <Flatpickr
@@ -232,7 +232,7 @@ const ShiftModal = ({ ...props }: Props) => {
 														{' '}
 														{t('break_end_time')} <span style={{ color: 'red' }}>* </span>
 													</label>
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                             name="break_end_time"
                                                             render={({ field }: any) => (
                                                                 <Flatpickr
@@ -256,7 +256,7 @@ const ShiftModal = ({ ...props }: Props) => {
 														{' '}
 														{t('description')} <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field disabled name="time" type="text" id="time" placeholder="" className="form-input" />
+													<Field autoComplete="off" disabled name="time" type="text" id="time" placeholder="" className="form-input" />
 													{errors.time ? <div className="mt-1 text-danger"> {errors.time} </div> : null}
 												</div>
                                                 <div className="mb-5 w-1/2">
@@ -264,7 +264,7 @@ const ShiftModal = ({ ...props }: Props) => {
 														{' '}
 														{t('time_shift')} <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field disabled name="time" type="text" id="time" placeholder="" className="form-input" />
+													<Field autoComplete="off" disabled name="time" type="text" id="time" placeholder="" className="form-input" />
 													{errors.time ? <div className="mt-1 text-danger"> {errors.time} </div> : null}
 												</div>
                                                 </div>

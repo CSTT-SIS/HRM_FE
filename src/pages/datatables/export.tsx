@@ -730,7 +730,7 @@ const Export = () => {
                         </button>
                     </div>
 
-                    <input type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
+                    <input autoComplete="off" type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
                 </div>
                 <div className="datatables">
                     <DataTable

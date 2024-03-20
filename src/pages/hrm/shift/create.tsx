@@ -125,14 +125,14 @@ const AddNewShift = ({ ...props }: Props) => {
                                 </label>
                                 <div className="flex" style={{ alignItems: 'center', marginTop: '13px' }}>
                                     <label style={{ marginBottom: 0, marginRight: '10px' }}>
-                                        <Field type="radio" name="type_shift" value="Ca theo thời gian"
+                                        <Field autoComplete="off" type="radio" name="type_shift" value="Ca theo thời gian"
                                             checked={typeShift === "0"}
                                             onChange={(e: any) => handleChangeTypeShift(e, "0")}
                                             className="form-checkbox rounded-full" />
                                         {t('shift_base_time')}
                                     </label>
                                     <label style={{ marginBottom: 0 }}>
-                                        <Field type="radio" name="type_shift" value="Ca theo tổng số giờ"
+                                        <Field autoComplete="off" type="radio" name="type_shift" value="Ca theo tổng số giờ"
                                             checked={typeShift === "1"}
                                             onChange={(e: any) => handleChangeTypeShift(e, "1")}
                                             className="form-checkbox rounded-full" />
@@ -146,7 +146,7 @@ const AddNewShift = ({ ...props }: Props) => {
                                     {' '}
                                     {t('code_shift')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field name="code_shift" type="text" id="code_shift" placeholder={`${t('fill_code_shift')}`} className="form-input" />
+                                <Field autoComplete="off" name="code_shift" type="text" id="code_shift" placeholder={`${t('fill_code_shift')}`} className="form-input" />
                                 {submitCount ? errors.code_shift ? <div className="mt-1 text-danger"> {errors.code_shift} </div> : null : ''}
                             </div>
 
@@ -157,15 +157,15 @@ const AddNewShift = ({ ...props }: Props) => {
                                     {' '}
                                     {t('name_shift')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field name="name_shift" type="text" id="name_shift" placeholder={`${t('fill_name_shift')}`} className="form-input" />
+                                <Field autoComplete="off" name="name_shift" type="text" id="name_shift" placeholder={`${t('fill_name_shift')}`} className="form-input" />
                                 {submitCount ? errors.name_shift ? <div className="mt-1 text-danger"> {errors.name_shift} </div> : null : ''}
                             </div>
                             <div className="mb-5 w-1/2">
                                 <label htmlFor="work_coefficient" className='label'>
                                     {' '}
-                                    {t('work_coefficient')} 
+                                    {t('work_coefficient')}
                                 </label>
-                                <Field name="work_coefficient" type="number" id="work_coefficient" placeholder="" className="form-input" />
+                                <Field autoComplete="off" name="work_coefficient" type="number" id="work_coefficient" placeholder="" className="form-input" />
                             </div>
                         </div>
                         {typeShift === "0" && <> <div className='flex justify-between gap-5'>
@@ -210,7 +210,7 @@ const AddNewShift = ({ ...props }: Props) => {
                                 <div className="mb-5 w-1/2">
                                     <label htmlFor="break_from_time" className='label'>
                                         {' '}
-                                        {t('break_from_time')} 
+                                        {t('break_from_time')}
                                     </label>
                                     <Flatpickr
                                         options={{
@@ -227,7 +227,7 @@ const AddNewShift = ({ ...props }: Props) => {
                                 <div className="mb-5 w-1/2">
                                     <label htmlFor="break_end_time" className='label'>
                                         {' '}
-                                        {t('break_end_time')} 
+                                        {t('break_end_time')}
                                     </label>
                                     <Flatpickr
                                         options={{
@@ -247,9 +247,9 @@ const AddNewShift = ({ ...props }: Props) => {
                             <div className="mb-5 w-1/2">
                                 <label htmlFor="time" className='label'>
                                     {' '}
-                                    {t('description')} 
+                                    {t('description')}
                                 </label>
-                                <Field name="description" as="textarea" id="description" placeholder={t('fill_description')} className="form-input" />
+                                <Field autoComplete="off" name="description" as="textarea" id="description" placeholder={t('fill_description')} className="form-input" />
                             </div>
 
                             <div className="mb-5 w-1/2">
@@ -257,7 +257,7 @@ const AddNewShift = ({ ...props }: Props) => {
                                     {' '}
                                     {t('note')}
                                 </label>
-                                <Field name="note" as="textarea" id="note" placeholder={t('fill_note')} className="form-input" />
+                                <Field autoComplete="off" name="note" as="textarea" id="note" placeholder={t('fill_note')} className="form-input" />
                                 {errors.note ? <div className="mt-1 text-danger"> {errors.note} </div> : null}
                             </div>
                         </div>
@@ -267,7 +267,7 @@ const AddNewShift = ({ ...props }: Props) => {
                                     {' '}
                                     {t('time_shift')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field name="time" type="number" id="time" placeholder={t('fill_total_time')} className="form-input" />
+                                <Field autoComplete="off" name="time" type="number" id="time" placeholder={t('fill_total_time')} className="form-input" />
                                 {submitCount ? errors.time ? <div className="mt-1 text-danger"> {errors.time} </div> : null : ''}
                             </div>
 
@@ -275,11 +275,11 @@ const AddNewShift = ({ ...props }: Props) => {
                                 <label htmlFor="status" className='label'> {t('status')} < span style={{ color: 'red' }}>* </span></label >
                                 <div className="flex" style={{ alignItems: 'center', marginTop: '13px' }}>
                                     <label style={{ marginBottom: 0, marginRight: '10px' }}>
-                                        <Field type="radio" name="status" value="active" className="form-checkbox rounded-full" />
+                                        <Field autoComplete="off" type="radio" name="status" value="active" className="form-checkbox rounded-full" />
                                         {t('active')}
                                     </label>
                                     <label style={{ marginBottom: 0 }}>
-                                        <Field type="radio" name="status" value="inactive" className="form-checkbox rounded-full" />
+                                        <Field autoComplete="off" type="radio" name="status" value="inactive" className="form-checkbox rounded-full" />
                                         {t('inactive')}
                                     </label>
                                 </div>

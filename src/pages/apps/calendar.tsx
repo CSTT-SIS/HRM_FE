@@ -340,7 +340,7 @@ const Calendar = () => {
                                         <form className="space-y-5">
                                             <div>
                                                 <label htmlFor="title">Event Title :</label>
-                                                <input
+                                                <input autoComplete="off"
                                                     id="title"
                                                     type="text"
                                                     name="title"
@@ -355,7 +355,7 @@ const Calendar = () => {
 
                                             <div>
                                                 <label htmlFor="dateStart">From :</label>
-                                                <input
+                                                <input autoComplete="off"
                                                     id="start"
                                                     type="datetime-local"
                                                     name="start"
@@ -370,7 +370,7 @@ const Calendar = () => {
                                             </div>
                                             <div>
                                                 <label htmlFor="dateEnd">To :</label>
-                                                <input
+                                                <input autoComplete="off"
                                                     id="end"
                                                     type="datetime-local"
                                                     name="end"
@@ -398,7 +398,7 @@ const Calendar = () => {
                                                 <label>Badge:</label>
                                                 <div className="mt-3">
                                                     <label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-                                                        <input
+                                                        <input autoComplete="off"
                                                             type="radio"
                                                             className="form-radio"
                                                             name="type"
@@ -409,7 +409,7 @@ const Calendar = () => {
                                                         <span className="ltr:pl-2 rtl:pr-2">Work</span>
                                                     </label>
                                                     <label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-                                                        <input
+                                                        <input autoComplete="off"
                                                             type="radio"
                                                             className="form-radio text-info"
                                                             name="type"
@@ -420,7 +420,7 @@ const Calendar = () => {
                                                         <span className="ltr:pl-2 rtl:pr-2">Travel</span>
                                                     </label>
                                                     <label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-                                                        <input
+                                                        <input autoComplete="off"
                                                             type="radio"
                                                             className="form-radio text-success"
                                                             name="type"
@@ -431,7 +431,7 @@ const Calendar = () => {
                                                         <span className="ltr:pl-2 rtl:pr-2">Personal</span>
                                                     </label>
                                                     <label className="inline-flex cursor-pointer">
-                                                        <input
+                                                        <input autoComplete="off"
                                                             type="radio"
                                                             className="form-radio text-danger"
                                                             name="type"

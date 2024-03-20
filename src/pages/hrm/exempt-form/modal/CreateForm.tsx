@@ -163,7 +163,7 @@ const CreateForm = ({ ...props }: Props) => {
                             </div>
                             <div className="w-1/2">
                                 <label htmlFor="type" className='label'> {t('vehicle_registration_number')} < span style={{ color: 'red' }}>* </span></label >
-                                <Field
+                                <Field autoComplete="off"
                                     name="vehicleRegistrationNumber"
                                     type="text"
                                     id="vehicleRegistrationNumber"
@@ -178,7 +178,7 @@ const CreateForm = ({ ...props }: Props) => {
                         <div className='flex justify-between gap-5'>
                             <div className="w-1/2">
                                 <label htmlFor="description" className='label'> {t('description')}</label >
-                                <Field
+                                <Field autoComplete="off"
                                     name="description"
                                     as="textarea"
                                     id="description"
@@ -191,7 +191,7 @@ const CreateForm = ({ ...props }: Props) => {
                             </div>
                             <div className="w-1/2">
                                 <label htmlFor="damageLevel" className='label'> {t('damage_level')} </label >
-                                <Field
+                                <Field autoComplete="off"
                                     name="damageLevel"
                                     as="textarea"
                                     id="damageLevel"

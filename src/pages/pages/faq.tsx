@@ -44,7 +44,7 @@ const Faq = () => {
                     <p className="mb-9 text-center text-base font-semibold">Search instant answers & questions asked by popular users</p>
                     <form action="" method="" className="mb-6">
                         <div className="relative mx-auto max-w-[580px]">
-                            <input type="text" placeholder="Ask a question" className="form-input py-3 ltr:pr-[100px] rtl:pl-[100px]" />
+                            <input autoComplete="off" type="text" placeholder="Ask a question" className="form-input py-3 ltr:pr-[100px] rtl:pl-[100px]" />
                             <button type="button" className="btn btn-primary absolute top-1 shadow-none ltr:right-1 rtl:left-1">
                                 Search
                             </button>

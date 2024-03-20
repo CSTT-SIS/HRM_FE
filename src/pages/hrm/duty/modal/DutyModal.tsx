@@ -116,14 +116,14 @@ const DutyModal = ({ ...props }: Props) => {
                                             <Form className="space-y-5" >
                                                 <div className="mb-5">
                                                     <label htmlFor="name" > {t('name_duty')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name_duty')}`} className="form-input" />
+                                                    <Field autoComplete="off" name="name" type="text" id="name" placeholder={`${t('enter_name_duty')}`} className="form-input" />
                                                     {errors.name ? (
                                                         <div className="text-danger mt-1"> {errors.name} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="code" > {t('code_duty')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="code" type="text" id="code" placeholder={`${t('enter_code_duty')}`} className="form-input" />
+                                                    <Field autoComplete="off" name="code" type="text" id="code" placeholder={`${t('enter_code_duty')}`} className="form-input" />
                                                     {errors.code ? (
                                                         <div className="text-danger mt-1"> {errors.code} </div>
                                                     ) : null}
@@ -131,7 +131,7 @@ const DutyModal = ({ ...props }: Props) => {
                                                 <div className="mb-5 flex justify-between gap-4">
                                                     <div className="flex-1">
                                                         <label htmlFor="duty_group" > {t('duty_group')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Field as="select" name="duty_group" id="duty_group" className="form-input">
+                                                        <Field autoComplete="off" as="select" name="duty_group" id="duty_group" className="form-input">
                                                             <option value="active">Quản lý</option>
                                                             <option value="inActive">Nhân viên</option>
                                                         </Field>
@@ -142,7 +142,7 @@ const DutyModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="description" > {t('duty_description')}</label >
-                                                    <Field name="duty_description" as="textarea" id="duty_description" placeholder={`${t('enter_description')}`} className="form-input" />
+                                                    <Field autoComplete="off" name="duty_description" as="textarea" id="duty_description" placeholder={`${t('enter_description')}`} className="form-input" />
                                                     {errors.description ? (
                                                         <div className="text-danger mt-1"> {errors.description} </div>
                                                     ) : null}
@@ -150,7 +150,7 @@ const DutyModal = ({ ...props }: Props) => {
                                                 <div className="mb-5 flex justify-between gap-4">
                                                     <div className="flex-1">
                                                         <label htmlFor="status" > {t('status')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Field as="select" name="status" id="status"
+                                                        <Field autoComplete="off" as="select" name="status" id="status"
                                                         placeholder={t('enter_duty_status')}
                                                         className="form-input">
                                                             <option value="active">{t('active')}</option>

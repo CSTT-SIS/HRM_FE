@@ -130,7 +130,7 @@ const ExportModal = ({ ...props }: Props) => {
                                             <Form className="space-y-5" >
                                                 <div className="mb-5">
                                                     <label htmlFor="name" > {t('name_duty')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                         as="select"
                                                         name="name"
                                                         id="name"
@@ -150,7 +150,7 @@ const ExportModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="code" > {t('code_duty')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="code" type="text" id="code" placeholder={`${t('enter_code_duty')}`} className="form-input" />
+                                                    <Field autoComplete="off" name="code" type="text" id="code" placeholder={`${t('enter_code_duty')}`} className="form-input" />
                                                     {errors.code ? (
                                                         <div className="text-danger mt-1"> {`${errors.code}`} </div>
                                                     ) : null}

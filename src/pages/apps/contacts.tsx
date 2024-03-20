@@ -307,7 +307,7 @@ const Contacts = () => {
                         </div>
                     </div>
                     <div className="relative">
-                        <input type="text" placeholder="Search Contacts" className="peer form-input py-2 ltr:pr-11 rtl:pl-11" value={search} onChange={(e) => setSearch(e.target.value)} />
+                        <input autoComplete="off" type="text" placeholder="Search Contacts" className="peer form-input py-2 ltr:pr-11 rtl:pl-11" value={search} onChange={(e) => setSearch(e.target.value)} />
                         <button type="button" className="absolute top-1/2 -translate-y-1/2 peer-focus:text-primary ltr:right-[11px] rtl:left-[11px]">
                             <IconSearch className="mx-auto" />
                         </button>
@@ -484,19 +484,19 @@ const Contacts = () => {
                                         <form>
                                             <div className="mb-5">
                                                 <label htmlFor="name">Name</label>
-                                                <input id="name" type="text" placeholder="Enter Name" className="form-input" value={params.name} onChange={(e) => changeValue(e)} />
+                                                <input autoComplete="off" id="name" type="text" placeholder="Enter Name" className="form-input" value={params.name} onChange={(e) => changeValue(e)} />
                                             </div>
                                             <div className="mb-5">
                                                 <label htmlFor="email">Email</label>
-                                                <input id="email" type="email" placeholder="Enter Email" className="form-input" value={params.email} onChange={(e) => changeValue(e)} />
+                                                <input autoComplete="off" id="email" type="email" placeholder="Enter Email" className="form-input" value={params.email} onChange={(e) => changeValue(e)} />
                                             </div>
                                             <div className="mb-5">
                                                 <label htmlFor="number">Phone Number</label>
-                                                <input id="phone" type="text" placeholder="Enter Phone Number" className="form-input" value={params.phone} onChange={(e) => changeValue(e)} />
+                                                <input autoComplete="off" id="phone" type="text" placeholder="Enter Phone Number" className="form-input" value={params.phone} onChange={(e) => changeValue(e)} />
                                             </div>
                                             <div className="mb-5">
                                                 <label htmlFor="occupation">Occupation</label>
-                                                <input id="role" type="text" placeholder="Enter Occupation" className="form-input" value={params.role} onChange={(e) => changeValue(e)} />
+                                                <input autoComplete="off" id="role" type="text" placeholder="Enter Occupation" className="form-input" value={params.role} onChange={(e) => changeValue(e)} />
                                             </div>
                                             <div className="mb-5">
                                                 <label htmlFor="address">Address</label>

@@ -163,7 +163,7 @@ const WarehousePage = ({ ...props }: Props) => {
                         </button> */}
                     </div>
 
-                    {/* <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
+                    {/* <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
                 </div>
                 <div className="datatables">
                     <DataTable

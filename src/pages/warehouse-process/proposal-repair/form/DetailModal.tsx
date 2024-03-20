@@ -163,7 +163,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                     </div>
                                                     <div className="mb-5">
                                                         <label htmlFor="quantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Field
+                                                        <Field autoComplete="off"
                                                             name="quantity"
                                                             type="number"
                                                             id="quantity"
@@ -178,7 +178,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                         router.query.type === "PURCHASE" &&
                                                         <div className="mb-5">
                                                             <label htmlFor="price" > {t('price')} < span style={{ color: 'red' }}>* </span></label >
-                                                            <Field name="price" type="number" id="price" placeholder={`${t('enter_price')}`} className="form-input" />
+                                                            <Field autoComplete="off" name="price" type="number" id="price" placeholder={`${t('enter_price')}`} className="form-input" />
                                                             {errors.price ? (
                                                                 <div className="text-danger mt-1"> {`${errors.price}`} </div>
                                                             ) : null}
@@ -186,7 +186,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                     }
                                                     <div className="mb-5">
                                                         <label htmlFor="note" > {t('description')} </label >
-                                                        <Field
+                                                        <Field autoComplete="off"
                                                             name="note"
                                                             type="text"
                                                             id="note"

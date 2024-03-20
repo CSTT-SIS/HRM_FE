@@ -78,25 +78,25 @@ const Add = () => {
                             <label htmlFor="number" className="mb-0 flex-1 ltr:mr-2 rtl:ml-2">
                                 Invoice Number
                             </label>
-                            <input id="number" type="text" name="inv-num" className="form-input w-2/3 lg:w-[250px]" placeholder="#8801" />
+                            <input autoComplete="off" id="number" type="text" name="inv-num" className="form-input w-2/3 lg:w-[250px]" placeholder="#8801" />
                         </div>
                         <div className="mt-4 flex items-center">
                             <label htmlFor="invoiceLabel" className="mb-0 flex-1 ltr:mr-2 rtl:ml-2">
                                 Invoice Label
                             </label>
-                            <input id="invoiceLabel" type="text" name="inv-label" className="form-input w-2/3 lg:w-[250px]" placeholder="Enter Invoice Label" />
+                            <input autoComplete="off" id="invoiceLabel" type="text" name="inv-label" className="form-input w-2/3 lg:w-[250px]" placeholder="Enter Invoice Label" />
                         </div>
                         <div className="mt-4 flex items-center">
                             <label htmlFor="startDate" className="mb-0 flex-1 ltr:mr-2 rtl:ml-2">
                                 Invoice Date
                             </label>
-                            <input id="startDate" type="date" name="inv-date" className="form-input w-2/3 lg:w-[250px]" />
+                            <input autoComplete="off" id="startDate" type="date" name="inv-date" className="form-input w-2/3 lg:w-[250px]" />
                         </div>
                         <div className="mt-4 flex items-center">
                             <label htmlFor="dueDate" className="mb-0 flex-1 ltr:mr-2 rtl:ml-2">
                                 Due Date
                             </label>
-                            <input id="dueDate" type="date" name="due-date" className="form-input w-2/3 lg:w-[250px]" />
+                            <input autoComplete="off" id="dueDate" type="date" name="due-date" className="form-input w-2/3 lg:w-[250px]" />
                         </div>
                     </div>
                 </div>
@@ -109,25 +109,25 @@ const Add = () => {
                                 <label htmlFor="reciever-name" className="mb-0 w-1/3 ltr:mr-2 rtl:ml-2">
                                     Name
                                 </label>
-                                <input id="reciever-name" type="text" name="reciever-name" className="form-input flex-1" placeholder="Enter Name" />
+                                <input autoComplete="off" id="reciever-name" type="text" name="reciever-name" className="form-input flex-1" placeholder="Enter Name" />
                             </div>
                             <div className="mt-4 flex items-center">
                                 <label htmlFor="reciever-email" className="mb-0 w-1/3 ltr:mr-2 rtl:ml-2">
                                     Email
                                 </label>
-                                <input id="reciever-email" type="email" name="reciever-email" className="form-input flex-1" placeholder="Enter Email" />
+                                <input autoComplete="off" id="reciever-email" type="email" name="reciever-email" className="form-input flex-1" placeholder="Enter Email" />
                             </div>
                             <div className="mt-4 flex items-center">
                                 <label htmlFor="reciever-address" className="mb-0 w-1/3 ltr:mr-2 rtl:ml-2">
                                     Address
                                 </label>
-                                <input id="reciever-address" type="text" name="reciever-address" className="form-input flex-1" placeholder="Enter Address" />
+                                <input autoComplete="off" id="reciever-address" type="text" name="reciever-address" className="form-input flex-1" placeholder="Enter Address" />
                             </div>
                             <div className="mt-4 flex items-center">
                                 <label htmlFor="reciever-number" className="mb-0 w-1/3 ltr:mr-2 rtl:ml-2">
                                     Phone Number
                                 </label>
-                                <input id="reciever-number" type="text" name="reciever-number" className="form-input flex-1" placeholder="Enter Phone number" />
+                                <input autoComplete="off" id="reciever-number" type="text" name="reciever-number" className="form-input flex-1" placeholder="Enter Phone number" />
                             </div>
                         </div>
                         <div className="w-full lg:w-1/2">
@@ -136,25 +136,25 @@ const Add = () => {
                                 <label htmlFor="acno" className="mb-0 w-1/3 ltr:mr-2 rtl:ml-2">
                                     Account Number
                                 </label>
-                                <input id="acno" type="text" name="acno" className="form-input flex-1" placeholder="Enter Account Number" />
+                                <input autoComplete="off" id="acno" type="text" name="acno" className="form-input flex-1" placeholder="Enter Account Number" />
                             </div>
                             <div className="mt-4 flex items-center">
                                 <label htmlFor="bank-name" className="mb-0 w-1/3 ltr:mr-2 rtl:ml-2">
                                     Bank Name
                                 </label>
-                                <input id="bank-name" type="text" name="bank-name" className="form-input flex-1" placeholder="Enter Bank Name" />
+                                <input autoComplete="off" id="bank-name" type="text" name="bank-name" className="form-input flex-1" placeholder="Enter Bank Name" />
                             </div>
                             <div className="mt-4 flex items-center">
                                 <label htmlFor="swift-code" className="mb-0 w-1/3 ltr:mr-2 rtl:ml-2">
                                     SWIFT Number
                                 </label>
-                                <input id="swift-code" type="text" name="swift-code" className="form-input flex-1" placeholder="Enter SWIFT Number" />
+                                <input autoComplete="off" id="swift-code" type="text" name="swift-code" className="form-input flex-1" placeholder="Enter SWIFT Number" />
                             </div>
                             <div className="mt-4 flex items-center">
                                 <label htmlFor="iban-code" className="mb-0 w-1/3 ltr:mr-2 rtl:ml-2">
                                     IBAN Number
                                 </label>
-                                <input id="iban-code" type="text" name="iban-code" className="form-input flex-1" placeholder="Enter IBAN Number" />
+                                <input autoComplete="off" id="iban-code" type="text" name="iban-code" className="form-input flex-1" placeholder="Enter IBAN Number" />
                             </div>
                             <div className="mt-4 flex items-center">
                                 <label htmlFor="country" className="mb-0 w-1/3 ltr:mr-2 rtl:ml-2">
@@ -381,11 +381,11 @@ const Add = () => {
                                     return (
                                         <tr className="align-top" key={item.id}>
                                             <td>
-                                                <input type="text" className="form-input min-w-[200px]" placeholder="Enter Item Name" defaultValue={item.title} />
+                                                <input autoComplete="off" type="text" className="form-input min-w-[200px]" placeholder="Enter Item Name" defaultValue={item.title} />
                                                 <textarea className="form-textarea mt-4" placeholder="Enter Description" defaultValue={item.description}></textarea>
                                             </td>
                                             <td>
-                                                <input
+                                                <input autoComplete="off"
                                                     type="number"
                                                     className="form-input w-32"
                                                     placeholder="Quantity"
@@ -395,7 +395,7 @@ const Add = () => {
                                                 />
                                             </td>
                                             <td>
-                                                <input
+                                                <input autoComplete="off"
                                                     type="number"
                                                     className="form-input w-32"
                                                     placeholder="Price"
@@ -463,18 +463,18 @@ const Add = () => {
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                             <div>
                                 <label htmlFor="tax">Tax(%) </label>
-                                <input id="tax" type="number" name="tax" className="form-input" defaultValue={0} placeholder="Tax" />
+                                <input autoComplete="off" id="tax" type="number" name="tax" className="form-input" defaultValue={0} placeholder="Tax" />
                             </div>
                             <div>
                                 <label htmlFor="discount">Discount(%) </label>
-                                <input id="discount" type="number" name="discount" className="form-input" defaultValue={0} placeholder="Discount" />
+                                <input autoComplete="off" id="discount" type="number" name="discount" className="form-input" defaultValue={0} placeholder="Discount" />
                             </div>
                         </div>
                     </div>
                     <div className="mt-4">
                         <div>
                             <label htmlFor="shipping-charge">Shipping Charge($) </label>
-                            <input id="shipping-charge" type="number" name="shipping-charge" className="form-input" defaultValue={0} placeholder="Shipping Charge" />
+                            <input autoComplete="off" id="shipping-charge" type="number" name="shipping-charge" className="form-input" defaultValue={0} placeholder="Shipping Charge" />
                         </div>
                     </div>
                     <div className="mt-4">

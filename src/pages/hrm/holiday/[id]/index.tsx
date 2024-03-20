@@ -201,7 +201,7 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 									{t('holiday_title')}
 									<span style={{ color: 'red' }}> *</span>
 								</label>
-								<Field name="title" type="text" id="title" placeholder={t('fill_holiday_title')} className="form-input" />
+								<Field autoComplete="off" name="title" type="text" id="title" placeholder={t('fill_holiday_title')} className="form-input" />
 								{submitCount ? errors.title ? <div className="mt-1 text-danger"> {errors.title} </div> : null : ''}
 							</div>
 							<div className="flex-1">
@@ -263,7 +263,7 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 
 						<div className="mb-3">
 							<label htmlFor="description">{t('discription')}</label>
-							<Field id="description" as="textarea" rows="2" name="description" className="form-input" placeholder={t('fill_holiday_schedule_description')} />
+							<Field autoComplete="off" id="description" as="textarea" rows="2" name="description" className="form-input" placeholder={t('fill_holiday_schedule_description')} />
 						</div>
 						<div className="!mt-8 flex items-center justify-end">
 							<button type="button" className="btn cancel-button">

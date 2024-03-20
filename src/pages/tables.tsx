@@ -1678,7 +1678,7 @@ const tableData = [
                         <thead>
                             <tr>
                                 <th>
-                                    <input type="checkbox" className="form-checkbox" />
+                                    <input autoComplete="off" type="checkbox" className="form-checkbox" />
                                 </th>
                                 <th>Name</th>
                                 <th>Date</th>
@@ -1691,7 +1691,7 @@ const tableData = [
                                 return (
                                     <tr key={data.id}>
                                         <td>
-                                            <input type="checkbox" className="form-checkbox" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox" />
                                         </td>
                                         <td>
                                             <div className="whitespace-nowrap">{data.name}</div>
@@ -1791,7 +1791,7 @@ const tableData = [
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" className="form-checkbox" />
+                    <input autoComplete="off" type="checkbox" className="form-checkbox" />
                 </th>
                 <th>Name</th>
                 <th>Date</th>
@@ -1804,7 +1804,7 @@ const tableData = [
                 return (
                     <tr key={data.id}>
                         <td>
-                            <input type="checkbox" className="form-checkbox" />
+                            <input autoComplete="off" type="checkbox" className="form-checkbox" />
                         </td>
                         <td>
                             <div className="whitespace-nowrap">{data.name}</div>

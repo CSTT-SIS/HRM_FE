@@ -369,7 +369,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                 <div className='flex justify-between gap-5 mt-5 mb-5'>
                                                     <div className="w-1/2">
                                                         <label htmlFor="personRequest" className='label'> {t('person_request')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Field
+                                                        <Field autoComplete="off"
                                                             name="personRequest"
                                                             type="text"
                                                             id="personRequest"
@@ -383,7 +383,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                     </div>
                                                     <div className="w-1/2">
                                                         <label htmlFor="timeRequest" className='label'> {t('time_request')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Field
+                                                        <Field autoComplete="off"
                                                             name="timeRequest"
                                                             render={({ field }: any) => (
                                                                 <Flatpickr
@@ -428,7 +428,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                     </div>
                                                     <div className="w-1/2">
                                                         <label htmlFor="type" className='label'> {t('vehicle_registration_number')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Field
+                                                        <Field autoComplete="off"
                                                             name="vehicleRegistrationNumber"
                                                             type="text"
                                                             id="vehicleRegistrationNumber"
@@ -444,7 +444,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                 <div className='flex justify-between gap-5 mt-5'>
                                                     <div className="w-1/2">
                                                         <label htmlFor="customerName" className='label'> {t('name_customer')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Field
+                                                        <Field autoComplete="off"
                                                             name="customerName"
                                                             type="text"
                                                             id="customerName"
@@ -460,7 +460,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className='mt-5'>
                                                     <label htmlFor="description" className='label'> {t('description')}</label >
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                         name="description"
                                                         as="textarea"
                                                         id="description"
@@ -474,7 +474,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className='mt-5'>
                                                     <label htmlFor="damageLevel" className='label'> {t('damage_level')} </label >
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                         name="damageLevel"
                                                         as="textarea"
                                                         id="damageLevel"
@@ -488,7 +488,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className='mt-5'>
                                                     <label htmlFor="attachedImage" className='label'> {t('attached_image')} </label >
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                         name="attachedImage"
                                                         type="file"
                                                         id="attachedImage"
@@ -534,7 +534,7 @@ const DetailPage = ({ ...props }: Props) => {
                                             }
                                         </div>
 
-                                        {/* <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
+                                        {/* <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
                                     </div>
                                     <div className="datatables">
                                         <DataTable

@@ -185,7 +185,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="quantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                         name="quantity"
                                                         type="number"
                                                         id="quantity"
@@ -198,7 +198,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="note" > {t('description')} </label >
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                         name="note"
                                                         type="text"
                                                         id="note"

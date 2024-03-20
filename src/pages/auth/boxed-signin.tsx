@@ -142,7 +142,7 @@ const LoginBoxed = () => {
                                                 {t('username')}
                                             </label>
                                             <div className="relative text-white-dark">
-                                                <Field
+                                                <Field autoComplete="off"
                                                     name="userName"
                                                     data-testid="username"
                                                     id="userName"
@@ -164,7 +164,7 @@ const LoginBoxed = () => {
 
                                             </p>
                                             <div className="relative text-white-dark">
-                                                <Field
+                                                <Field autoComplete="off"
                                                     name="passWord"
                                                     data-testid="password"
                                                     id="passWord"

@@ -255,7 +255,7 @@ const Department = ({ ...props }: Props) => {
                             <span className="uppercase">Khóa công tổng hợp</span>
                             </button>
 
-                        {/* <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} /> */}
+                        {/* <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} /> */}
 
                     </div>
                 </div>

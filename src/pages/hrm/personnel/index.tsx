@@ -372,7 +372,7 @@ const Department = ({ ...props }: Props) => {
 								<span className="uppercase">{t('add')}</span>
 							</button>
 						</Link>
-						<input type="file" ref={fileInputRef} style={{ display: "none" }} />
+						<input autoComplete="off" type="file" ref={fileInputRef} style={{ display: "none" }} />
 
 						<button type="button" className=" m-1 button-table button-import" onClick={() => fileInputRef.current?.click()}>
                             <IconImportFile/>
@@ -383,7 +383,7 @@ const Department = ({ ...props }: Props) => {
 							<span className="uppercase">Xuất file excel</span>
 						</button>
 					</div>
-					<input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+					<input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
 
 				</div>
 				<div className="mb-5">

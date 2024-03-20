@@ -123,7 +123,7 @@ const OvertimeFormModal = ({ ...props }: Props) => {
 														{' '}
 														{t('name')} <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field name="name" type="text" id="name" placeholder={`${t('choose_name')}`} className="form-input" />
+													<Field autoComplete="off" name="name" type="text" id="name" placeholder={`${t('choose_name')}`} className="form-input" />
 													{errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null}
 												</div>
 												<div className="mb-5 w-1/2">
@@ -131,7 +131,7 @@ const OvertimeFormModal = ({ ...props }: Props) => {
 														{' '}
 														{t('position')} <span style={{ color: 'red' }}>* </span>
 													</label>
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                         name="position"
                                                         render={({ field }: any) => (
                                                             <>
@@ -155,7 +155,7 @@ const OvertimeFormModal = ({ ...props }: Props) => {
 														{' '}
 														{t('department')} <span style={{ color: 'red' }}>* </span>
 													</label>
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                         name="department"
                                                         render={({ field }: any) => (
                                                             <>
@@ -176,7 +176,7 @@ const OvertimeFormModal = ({ ...props }: Props) => {
 														{' '}
 														{t('submitday')} <span style={{ color: 'red' }}>* </span>
 													</label>
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                             name="submitday"
                                                             render={({ field }: any) => (
                                                                 <Flatpickr
@@ -199,7 +199,7 @@ const OvertimeFormModal = ({ ...props }: Props) => {
 														{' '}
 														{t('from_date')} <span style={{ color: 'red' }}>* </span>
 													</label>
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                             name="from_date"
                                                             render={({ field }: any) => (
                                                                 <Flatpickr
@@ -220,7 +220,7 @@ const OvertimeFormModal = ({ ...props }: Props) => {
 														{' '}
 														{t('end_date')} <span style={{ color: 'red' }}>* </span>
 													</label>
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                             name="end_date"
                                                             render={({ field }: any) => (
                                                                 <Flatpickr
@@ -243,7 +243,7 @@ const OvertimeFormModal = ({ ...props }: Props) => {
 														{' '}
 														{t('shift')} <span style={{ color: 'red' }}>* </span>
 													</label>
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                         name="shift"
                                                         render={({ field }: any) => (
                                                             <>
@@ -264,7 +264,7 @@ const OvertimeFormModal = ({ ...props }: Props) => {
 														{' '}
 														{t('overtime_time')} <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field name="overtime_time" type="number" id="overtime_time" placeholder={`${t('fill_overtime_time')}`} className="form-input" />
+													<Field autoComplete="off" name="overtime_time" type="number" id="overtime_time" placeholder={`${t('fill_overtime_time')}`} className="form-input" />
 													{errors.overtime_time ? <div className="mt-1 text-danger"> {errors.overtime_time} </div> : null}
 												</div>
                                                 </div>

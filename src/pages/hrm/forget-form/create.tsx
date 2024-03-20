@@ -186,7 +186,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                     {' '}
                                     {t('name_staff')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field disabled
+                                <Field autoComplete="off" disabled
                                     className="form-input"
                                     name="name"
                                     type="text"
@@ -200,7 +200,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                     {' '}
                                     {t('duty')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field
+                                <Field autoComplete="off"
                                     className="form-input"
                                     name="position"
                                     disabled
@@ -215,7 +215,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                     {' '}
                                     {t('department')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field
+                                <Field autoComplete="off"
                                     name="department"
                                     type="text"
                                     disabled
@@ -285,7 +285,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                     {' '}
                                     {t('shift')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field
+                                <Field autoComplete="off"
                                     name="shift"
                                     render={({ field }: any) => (
                                         <>
@@ -308,7 +308,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                     {' '}
                                     {t('checker_name')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field
+                                <Field autoComplete="off"
                                     className="form-input"
                                     name="name"
                                     render={({ field }: any) => (
@@ -339,7 +339,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                     {' '}
                                     {t('reason')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field name="reason" as="textarea" id="reason" placeholder={`${t('fill_reason')}`} className="form-input" />
+                                <Field autoComplete="off" name="reason" as="textarea" id="reason" placeholder={`${t('fill_reason')}`} className="form-input" />
                                 {submitCount ? errors.reason ? <div className="mt-1 text-danger"> {errors.reason} </div> : null : ''}
                             </div>
                         </div>

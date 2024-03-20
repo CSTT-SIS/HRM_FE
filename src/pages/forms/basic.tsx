@@ -46,7 +46,7 @@ const Basic = () => {
                     </div>
                     <div className="mb-5">
                         <form>
-                            <input type="text" placeholder="Some Text..." className="form-input" required />
+                            <input autoComplete="off" type="text" placeholder="Some Text..." className="form-input" required />
                             <button type="submit" className="btn btn-primary mt-6">
                                 Submit
                             </button>
@@ -55,7 +55,7 @@ const Basic = () => {
                     {codeArr.includes('code1') && (
                         <CodeHighlight>
                             <pre className="language-xml">{`<form>
-    <input type="text" placeholder="Some Text..." className="form-input" required />
+    <input autoComplete="off" type="text" placeholder="Some Text..." className="form-input" required />
     <button type="submit" className="btn btn-primary mt-6">
         Submit
     </button>
@@ -77,7 +77,7 @@ const Basic = () => {
                     </div>
                     <div className="mb-5">
                         <form>
-                            <input type="password" placeholder="Enter Password" className="form-input" required />
+                            <input autoComplete="off" type="password" placeholder="Enter Password" className="form-input" required />
                             <button type="submit" className="btn btn-primary mt-6">
                                 Submit
                             </button>
@@ -86,7 +86,7 @@ const Basic = () => {
                     {codeArr.includes('code2') && (
                         <CodeHighlight>
                             <pre className="language-xml">{`<form>
-    <input type="password" placeholder="Enter Password" className="form-input" required />
+    <input autoComplete="off" type="password" placeholder="Enter Password" className="form-input" required />
     <button type="submit" className="btn btn-primary mt-6">
         Submit
     </button>
@@ -108,7 +108,7 @@ const Basic = () => {
                     </div>
                     <div className="mb-5">
                         <form>
-                            <input type="email" placeholder="email@mail.com" className="form-input" required />
+                            <input autoComplete="off" type="email" placeholder="email@mail.com" className="form-input" required />
                             <button type="submit" className="btn btn-primary mt-6">
                                 Submit
                             </button>
@@ -117,7 +117,7 @@ const Basic = () => {
                     {codeArr.includes('code3') && (
                         <CodeHighlight>
                             <pre className="language-xml">{`<form>
-    <input type="email" placeholder="email@mail.com" className="form-input" required />
+    <input autoComplete="off" type="email" placeholder="email@mail.com" className="form-input" required />
     <button type="submit" className="btn btn-primary mt-6">
         Submit
     </button>
@@ -139,7 +139,7 @@ const Basic = () => {
                     </div>
                     <div className="mb-5">
                         <form>
-                            <input type="url" placeholder="https://dummyurl.com" className="form-input" required />
+                            <input autoComplete="off" type="url" placeholder="https://dummyurl.com" className="form-input" required />
                             <button type="submit" className="btn btn-primary mt-6">
                                 Submit
                             </button>
@@ -148,7 +148,7 @@ const Basic = () => {
                     {codeArr.includes('code4') && (
                         <CodeHighlight>
                             <pre className="language-xml">{`<form>
-    <input type="url" placeholder="https://dummyurl.com" className="form-input" required />
+    <input autoComplete="off" type="url" placeholder="https://dummyurl.com" className="form-input" required />
     <button type="submit" className="btn btn-primary mt-6">
         Submit
     </button>
@@ -169,7 +169,7 @@ const Basic = () => {
                     </div>
                     <div className="mb-5">
                         <form>
-                            <input type="tel" placeholder="6-(666)-111-7777" className="form-input" required />
+                            <input autoComplete="off" type="tel" placeholder="6-(666)-111-7777" className="form-input" required />
                             <button type="submit" className="btn btn-primary mt-6">
                                 Submit
                             </button>
@@ -178,7 +178,7 @@ const Basic = () => {
                     {codeArr.includes('code5') && (
                         <CodeHighlight>
                             <pre className="language-xml">{`<form>
-    <input type="tel" placeholder="6-(666)-111-7777" className="form-input" required />
+    <input autoComplete="off" type="tel" placeholder="6-(666)-111-7777" className="form-input" required />
     <button type="submit" className="btn btn-primary mt-6">
         Submit
     </button>
@@ -200,7 +200,7 @@ const Basic = () => {
                     </div>
                     <div className="mb-5">
                         <form>
-                            <input type="search" placeholder="Search..." className="form-input" required />
+                            <input autoComplete="off" type="search" placeholder="Search..." className="form-input" required />
                             <button type="button" className="btn btn-primary mt-6">
                                 Submit
                             </button>
@@ -209,7 +209,7 @@ const Basic = () => {
                     {codeArr.includes('code6') && (
                         <CodeHighlight>
                             <pre className="language-xml">{`<form>
-    <input type="search" placeholder="Search..." className="form-input" required />
+    <input autoComplete="off" type="search" placeholder="Search..." className="form-input" required />
     <button type="button" className="btn btn-primary mt-6">
         Submit
     </button>
@@ -231,13 +231,13 @@ const Basic = () => {
                     </div>
                     <div className="mb-5">
                         <form>
-                            <input type="range" className="w-full py-2.5" min="0" max="100" />
+                            <input autoComplete="off" type="range" className="w-full py-2.5" min="0" max="100" />
                         </form>
                     </div>
                     {codeArr.includes('code7') && (
                         <CodeHighlight>
                             <pre className="language-xml">{`<form>
-    <input type="range" className="w-full py-2.5" min="0" max="100" />
+    <input autoComplete="off" type="range" className="w-full py-2.5" min="0" max="100" />
 </form>`}</pre>
                         </CodeHighlight>
                     )}
@@ -257,14 +257,14 @@ const Basic = () => {
                     <div className="mb-5">
                         <form>
                             <label htmlFor="fullname">Full Name</label>
-                            <input id="fullname" type="text" placeholder="Enter Full Name" defaultValue="Alan Green" className="form-input" />
+                            <input autoComplete="off" id="fullname" type="text" placeholder="Enter Full Name" defaultValue="Alan Green" className="form-input" />
                         </form>
                     </div>
                     {codeArr.includes('code8') && (
                         <CodeHighlight>
                             <pre className="language-xml">{`<form>
     <label htmlFor="fullname">Full Name</label>
-    <input id="fullname" type="text" placeholder="Enter Full Name" defaultValue="Alan Green" className="form-input" />
+    <input autoComplete="off" id="fullname" type="text" placeholder="Enter Full Name" defaultValue="Alan Green" className="form-input" />
 </form>`}</pre>
                         </CodeHighlight>
                     )}
@@ -285,7 +285,7 @@ const Basic = () => {
                         <form className="space-y-5">
                             <div>
                                 <label htmlFor="ctnEmail">Email address</label>
-                                <input id="ctnEmail" type="email" placeholder="name@example.com" className="form-input" required />
+                                <input autoComplete="off" id="ctnEmail" type="email" placeholder="name@example.com" className="form-input" required />
                             </div>
                             <div>
                                 <label htmlFor="ctnSelect1">Example select</label>
@@ -311,7 +311,7 @@ const Basic = () => {
                             </div>
                             <div>
                                 <label htmlFor="ctnFile">Example file input</label>
-                                <input
+                                <input autoComplete="off"
                                     id="ctnFile"
                                     type="file"
                                     className="rtl:file-ml-5 form-input p-0 file:border-0 file:bg-primary/90 file:py-2 file:px-4 file:font-semibold file:text-white file:hover:bg-primary ltr:file:mr-5"
@@ -328,7 +328,7 @@ const Basic = () => {
                             <pre className="language-xml">{`<form className="space-y-5">
     <div>
         <label htmlFor="ctnEmail">Email address</label>
-        <input id="ctnEmail" type="email" placeholder="name@example.com" className="form-input" required />
+        <input autoComplete="off" id="ctnEmail" type="email" placeholder="name@example.com" className="form-input" required />
     </div>
     <div>
         <label htmlFor="ctnSelect1">Example select</label>
@@ -354,7 +354,7 @@ const Basic = () => {
     </div>
     <div>
         <label htmlFor="ctnFile">Example file input</label>
-        <input
+        <input autoComplete="off"
             id="ctnFile"
             type="file"
             className="form-input file:py-2 file:px-4 file:border-0 file:font-semibold p-0 file:bg-primary/90 ltr:file:mr-5 rtl:file-ml-5 file:text-white file:hover:bg-primary"
@@ -382,8 +382,8 @@ const Basic = () => {
                     <div className="mb-5">
                         <form>
                             <div className="grid grid-cols-1 justify-between gap-5 sm:flex">
-                                <input type="text" placeholder="Enter First Name" className="form-input" />
-                                <input type="text" placeholder="Enter Last Name" className="form-input" />
+                                <input autoComplete="off" type="text" placeholder="Enter First Name" className="form-input" />
+                                <input autoComplete="off" type="text" placeholder="Enter Last Name" className="form-input" />
                             </div>
                             <button type="button" className="btn btn-primary mt-6">
                                 Submit
@@ -394,8 +394,8 @@ const Basic = () => {
                         <CodeHighlight>
                             <pre className="language-xml">{`<form>
     <div className="grid grid-cols-1 sm:flex justify-between gap-5">
-        <input type="text" placeholder="Enter First Name" className="form-input" />
-        <input type="text" placeholder="Enter Last Name" className="form-input" />
+        <input autoComplete="off" type="text" placeholder="Enter First Name" className="form-input" />
+        <input autoComplete="off" type="text" placeholder="Enter Last Name" className="form-input" />
     </div>
     <button type="button" className="btn btn-primary mt-6">
         Submit
@@ -417,8 +417,8 @@ const Basic = () => {
                     <div className="mb-5">
                         <form>
                             <div className="grid grid-cols-1 justify-between gap-5 sm:flex">
-                                <input type="text" placeholder="Enter First Name" className="form-input" />
-                                <input type="text" placeholder="Enter Last Name" className="form-input" />
+                                <input autoComplete="off" type="text" placeholder="Enter First Name" className="form-input" />
+                                <input autoComplete="off" type="text" placeholder="Enter Last Name" className="form-input" />
                             </div>
                             <button type="button" className="btn btn-primary mt-6">
                                 Submit
@@ -429,8 +429,8 @@ const Basic = () => {
                         <CodeHighlight>
                             <pre className="language-xml">{`<form>
     <div className="grid grid-cols-1 sm:flex justify-between gap-5">
-        <input type="text" placeholder="Enter First Name" className="form-input" />
-        <input type="text" placeholder="Enter Last Name" className="form-input" />
+        <input autoComplete="off" type="text" placeholder="Enter First Name" className="form-input" />
+        <input autoComplete="off" type="text" placeholder="Enter Last Name" className="form-input" />
     </div>
     <button type="button" className="btn btn-primary mt-6">
         Submit
@@ -453,11 +453,11 @@ const Basic = () => {
                         <form className="space-y-5">
                             <div>
                                 <label htmlFor="groupFname">First Name</label>
-                                <input id="groupFname" type="text" placeholder="Enter First Name" className="form-input" />
+                                <input autoComplete="off" id="groupFname" type="text" placeholder="Enter First Name" className="form-input" />
                             </div>
                             <div>
                                 <label htmlFor="groupLname">Last Name</label>
-                                <input id="groupLname" type="text" placeholder="Enter Last Name" className="form-input" />
+                                <input autoComplete="off" id="groupLname" type="text" placeholder="Enter Last Name" className="form-input" />
                             </div>
                             <button type="button" className="btn btn-primary !mt-6">
                                 Submit
@@ -469,11 +469,11 @@ const Basic = () => {
                             <pre className="language-xml">{`<form className="space-y-5">
     <div>
         <label htmlFor="groupFname">First Name</label>
-        <input id="groupFname" type="text" placeholder="Enter First Name" className="form-input" />
+        <input autoComplete="off" id="groupFname" type="text" placeholder="Enter First Name" className="form-input" />
     </div>
     <div>
         <label htmlFor="groupLname">Last Name</label>
-        <input id="groupLname" type="text" placeholder="Enter Last Name" className="form-input" />
+        <input autoComplete="off" id="groupLname" type="text" placeholder="Enter Last Name" className="form-input" />
     </div>
     <button type="button" className="btn btn-primary !mt-6">
         Submit
@@ -495,9 +495,9 @@ const Basic = () => {
                     <div className="mb-5">
                         <form>
                             <div className="grid grid-cols-1 gap-2 md:grid-cols-3 lg:grid-cols-4">
-                                <input type="text" placeholder="Enter City" className="form-input lg:col-span-2" />
-                                <input type="text" placeholder="Enter State" className="form-input" />
-                                <input type="text" placeholder="Enter Zip" className="form-input" />
+                                <input autoComplete="off" type="text" placeholder="Enter City" className="form-input lg:col-span-2" />
+                                <input autoComplete="off" type="text" placeholder="Enter State" className="form-input" />
+                                <input autoComplete="off" type="text" placeholder="Enter Zip" className="form-input" />
                             </div>
                             <button type="button" className="btn btn-primary mt-6">
                                 Submit
@@ -508,9 +508,9 @@ const Basic = () => {
                         <CodeHighlight>
                             <pre className="language-xml">{`<form>
     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2">
-        <input type="text" placeholder="Enter City" className="form-input lg:col-span-2" />
-        <input type="text" placeholder="Enter State" className="form-input" />
-        <input type="text" placeholder="Enter Zip" className="form-input" />
+        <input autoComplete="off" type="text" placeholder="Enter City" className="form-input lg:col-span-2" />
+        <input autoComplete="off" type="text" placeholder="Enter State" className="form-input" />
+        <input autoComplete="off" type="text" placeholder="Enter Zip" className="form-input" />
     </div>
     <button type="button" className="btn btn-primary mt-6">
         Submit
@@ -534,7 +534,7 @@ const Basic = () => {
                     <div className="mb-5">
                         <form>
                             <div>
-                                <input type="text" placeholder="Enter First Name" className="form-input" />
+                                <input autoComplete="off" type="text" placeholder="Enter First Name" className="form-input" />
                                 <span className="text-xs text-white-dark">I am the helper text.</span>
                             </div>
                         </form>
@@ -543,7 +543,7 @@ const Basic = () => {
                         <CodeHighlight>
                             <pre className="language-xml">{`<form>
     <div>
-        <input type="text" placeholder="Enter First Name" className="form-input" />
+        <input autoComplete="off" type="text" placeholder="Enter First Name" className="form-input" />
         <span className="text-white-dark text-xs">I am the helper text.</span>
     </div>
 </form>`}</pre>
@@ -564,7 +564,7 @@ const Basic = () => {
                     <div className="mb-5">
                         <form>
                             <div>
-                                <input type="text" placeholder="Enter First Name" className="form-input mb-2" />
+                                <input autoComplete="off" type="text" placeholder="Enter First Name" className="form-input mb-2" />
                                 <span className="badge bg-primary text-xs hover:top-0">I am the helper text.</span>
                             </div>
                         </form>
@@ -573,7 +573,7 @@ const Basic = () => {
                         <CodeHighlight>
                             <pre className="language-xml">{`<form>
     <div>
-        <input type="text" placeholder="Enter First Name" className="form-input mb-2" />
+        <input autoComplete="off" type="text" placeholder="Enter First Name" className="form-input mb-2" />
         <span className="badge bg-primary text-xs hover:top-0">I am the helper text.</span>
     </div>
 </form>`}</pre>
@@ -594,7 +594,7 @@ const Basic = () => {
                     <div className="mb-5">
                         <form>
                             <div>
-                                <input type="text" placeholder="Enter First Name" className="form-input mb-2" />
+                                <input autoComplete="off" type="text" placeholder="Enter First Name" className="form-input mb-2" />
                                 <span className="badge block bg-primary text-xs hover:top-0">I am the helper text.</span>
                             </div>
                         </form>
@@ -603,7 +603,7 @@ const Basic = () => {
                         <CodeHighlight>
                             <pre className="language-xml">{`<form>
     <div>
-        <input type="text" placeholder="Enter First Name" className="form-input mb-2" />
+        <input autoComplete="off" type="text" placeholder="Enter First Name" className="form-input mb-2" />
         <span className="badge bg-primary block text-xs hover:top-0">I am the helper text.</span>
     </div>
 </form>`}</pre>
@@ -625,7 +625,7 @@ const Basic = () => {
                         <form>
                             <div>
                                 <label htmlFor="Txtpassword">Password</label>
-                                <input id="Txtpassword" type="password" placeholder="Enter Password" className="form-input w-3/5" />
+                                <input autoComplete="off" id="Txtpassword" type="password" placeholder="Enter Password" className="form-input w-3/5" />
                                 <span className="text-xs text-white-dark ltr:pl-2 rtl:pr-2">Min 8-20 char</span>
                             </div>
                         </form>
@@ -635,7 +635,7 @@ const Basic = () => {
                             <pre className="language-xml">{`<form>
     <div>
         <label htmlFor="Txtpassword">Password</label>
-        <input id="Txtpassword" type="password" placeholder="Enter Password" className="form-input w-3/5" />
+        <input autoComplete="off" id="Txtpassword" type="password" placeholder="Enter Password" className="form-input w-3/5" />
         <span className="text-xs text-white-dark ltr:pl-2 rtl:pr-2">Min 8-20 char</span>
     </div>
 </form>`}</pre>
@@ -659,15 +659,15 @@ const Basic = () => {
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                                 <div>
                                     <label htmlFor="inputLarge">Large Input</label>
-                                    <input id="inputLarge" type="text" placeholder="Large Input" className="form-input-lg form-input" />
+                                    <input autoComplete="off" id="inputLarge" type="text" placeholder="Large Input" className="form-input-lg form-input" />
                                 </div>
                                 <div>
                                     <label htmlFor="inputDefault">Default Input</label>
-                                    <input id="inputDefault" type="text" placeholder="Default Input" className="form-input" />
+                                    <input autoComplete="off" id="inputDefault" type="text" placeholder="Default Input" className="form-input" />
                                 </div>
                                 <div>
                                     <label htmlFor="inputSmall">Small Input</label>
-                                    <input id="inputSmall" type="text" placeholder="Small Input" className="form-input-sm form-input" />
+                                    <input autoComplete="off" id="inputSmall" type="text" placeholder="Small Input" className="form-input-sm form-input" />
                                 </div>
                             </div>
                         </form>
@@ -678,15 +678,15 @@ const Basic = () => {
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div>
             <label htmlFor="inputLarge">Large Input</label>
-            <input id="inputLarge" type="text" placeholder="Large Input" className="form-input form-input-lg" />
+            <input autoComplete="off" id="inputLarge" type="text" placeholder="Large Input" className="form-input form-input-lg" />
         </div>
         <div>
             <label htmlFor="inputDefault">Default Input</label>
-            <input id="inputDefault" type="text" placeholder="Default Input" className="form-input" />
+            <input autoComplete="off" id="inputDefault" type="text" placeholder="Default Input" className="form-input" />
         </div>
         <div>
             <label htmlFor="inputSmall">Small Input</label>
-            <input id="inputSmall" type="text" placeholder="Small Input" className="form-input form-input-sm" />
+            <input autoComplete="off" id="inputSmall" type="text" placeholder="Small Input" className="form-input form-input-sm" />
         </div>
     </div>
 </form>`}</pre>
@@ -780,15 +780,15 @@ const Basic = () => {
                         <form className="space-y-5">
                             <div className="items-center justify-between gap-5 sm:flex md:gap-20">
                                 <label htmlFor="hrLargeinput">Email</label>
-                                <input id="hrLargeinput" type="email" placeholder="name@example.com" className="form-input py-2.5 text-base" />
+                                <input autoComplete="off" id="hrLargeinput" type="email" placeholder="name@example.com" className="form-input py-2.5 text-base" />
                             </div>
                             <div className="items-center justify-between gap-5 sm:flex md:gap-20">
                                 <label htmlFor="hrDefaultinput">Email</label>
-                                <input id="hrDefaultinput" type="email" placeholder="name@example.com" className="form-input" />
+                                <input autoComplete="off" id="hrDefaultinput" type="email" placeholder="name@example.com" className="form-input" />
                             </div>
                             <div className="items-center justify-between gap-5 sm:flex md:gap-20">
                                 <label htmlFor="hrSmallinput">Email</label>
-                                <input id="hrSmallinput" type="email" placeholder="name@example.com" className="form-input py-1.5 text-xs" />
+                                <input autoComplete="off" id="hrSmallinput" type="email" placeholder="name@example.com" className="form-input py-1.5 text-xs" />
                             </div>
                         </form>
                     </div>
@@ -797,15 +797,15 @@ const Basic = () => {
                             <pre className="language-xml">{`<form className="space-y-5">
     <div className="sm:flex justify-between items-center gap-5 md:gap-20">
         <label htmlFor="hrLargeinput">Email</label>
-        <input id="hrLargeinput" type="email" placeholder="name@example.com" className="form-input py-2.5 text-base" />
+        <input autoComplete="off" id="hrLargeinput" type="email" placeholder="name@example.com" className="form-input py-2.5 text-base" />
     </div>
     <div className="sm:flex justify-between items-center gap-5 md:gap-20">
         <label htmlFor="hrDefaultinput">Email</label>
-        <input id="hrDefaultinput" type="email" placeholder="name@example.com" className="form-input" />
+        <input autoComplete="off" id="hrDefaultinput" type="email" placeholder="name@example.com" className="form-input" />
     </div>
     <div className="sm:flex justify-between items-center gap-5 md:gap-20">
         <label htmlFor="hrSmallinput">Email</label>
-        <input id="hrSmallinput" type="email" placeholder="name@example.com" className="form-input py-1.5 text-xs" />
+        <input autoComplete="off" id="hrSmallinput" type="email" placeholder="name@example.com" className="form-input py-1.5 text-xs" />
     </div>
 </form>`}</pre>
                         </CodeHighlight>
@@ -826,7 +826,7 @@ const Basic = () => {
                     <div className="mb-5">
                         <form>
                             <div>
-                                <input type="text" placeholder="Readonly input here…" className="form-input disabled:pointer-events-none" readOnly />
+                                <input autoComplete="off" type="text" placeholder="Readonly input here…" className="form-input disabled:pointer-events-none" readOnly />
                             </div>
                         </form>
                     </div>
@@ -834,7 +834,7 @@ const Basic = () => {
                         <CodeHighlight>
                             <pre className="language-xml">{`<form>
     <div>
-        <input type="text" placeholder="Readonly input here…" className="form-input disabled:pointer-events-none" readOnly />
+        <input autoComplete="off" type="text" placeholder="Readonly input here…" className="form-input disabled:pointer-events-none" readOnly />
     </div>
 </form>`}</pre>
                         </CodeHighlight>
@@ -858,7 +858,7 @@ const Basic = () => {
                                 <label htmlFor="disInput" className="text-white-dark">
                                     Disabled input
                                 </label>
-                                <input
+                                <input autoComplete="off"
                                     id="disInput"
                                     type="text"
                                     placeholder="Readonly input here…"
@@ -879,7 +879,7 @@ const Basic = () => {
                             </div>
                             <div>
                                 <label className="flex items-center">
-                                    <input type="checkbox" className="form-checkbox" disabled />
+                                    <input autoComplete="off" type="checkbox" className="form-checkbox" disabled />
                                     <span className="text-white-dark">{`Can't check this`}</span>
                                 </label>
                             </div>
@@ -895,7 +895,7 @@ const Basic = () => {
         <label htmlFor="disInput" className="text-white-dark">
             Disabled input
         </label>
-        <input
+        <input autoComplete="off"
             id="disInput"
             type="text"
             placeholder="Readonly input here…"
@@ -916,7 +916,7 @@ const Basic = () => {
     </div>
     <div>
         <label className="flex items-center">
-            <input type="checkbox" className="form-checkbox" disabled />
+            <input autoComplete="off" type="checkbox" className="form-checkbox" disabled />
             <span className="text-white-dark">Can't check this</span>
         </label>
     </div>
@@ -943,7 +943,7 @@ const Basic = () => {
                         <form>
                             <div>
                                 <label className="flex cursor-pointer items-center">
-                                    <input type="checkbox" className="form-checkbox" defaultChecked />
+                                    <input autoComplete="off" type="checkbox" className="form-checkbox" defaultChecked />
                                     <span className=" text-white-dark">Checkbox</span>
                                 </label>
                             </div>
@@ -954,7 +954,7 @@ const Basic = () => {
                             <pre className="language-xml">{`<form>
     <div>
         <label className="flex items-center cursor-pointer">
-            <input type="checkbox" className="form-checkbox" defaultChecked />
+            <input autoComplete="off" type="checkbox" className="form-checkbox" defaultChecked />
             <span className=" text-white-dark">Checkbox</span>
         </label>
     </div>
@@ -976,13 +976,13 @@ const Basic = () => {
                         <form className="space-y-5">
                             <div>
                                 <label className="flex cursor-pointer items-center">
-                                    <input type="radio" name="custom_radio2" className="form-radio" defaultChecked />
+                                    <input autoComplete="off" type="radio" name="custom_radio2" className="form-radio" defaultChecked />
                                     <span className="text-white-dark">Toggle this custom radio</span>
                                 </label>
                             </div>
                             <div>
                                 <label className="flex cursor-pointer items-center">
-                                    <input type="radio" name="custom_radio2" className="form-radio" />
+                                    <input autoComplete="off" type="radio" name="custom_radio2" className="form-radio" />
                                     <span className="text-white-dark">Or toggle this other custom radio</span>
                                 </label>
                             </div>
@@ -993,13 +993,13 @@ const Basic = () => {
                             <pre className="language-xml">{`<form className="space-y-5">
     <div>
         <label className="flex items-center cursor-pointer">
-            <input type="radio" name="custom_radio2" className="form-radio" defaultChecked />
+            <input autoComplete="off" type="radio" name="custom_radio2" className="form-radio" defaultChecked />
             <span className="text-white-dark">Toggle this custom radio</span>
         </label>
     </div>
     <div>
         <label className="flex items-center cursor-pointer">
-            <input type="radio" name="custom_radio2" className="form-radio" />
+            <input autoComplete="off" type="radio" name="custom_radio2" className="form-radio" />
             <span className="text-white-dark">Or toggle this other custom radio</span>
         </label>
     </div>
@@ -1021,13 +1021,13 @@ const Basic = () => {
                         <form className="space-y-5">
                             <div>
                                 <label className="flex items-center">
-                                    <input type="checkbox" className="form-checkbox" disabled />
+                                    <input autoComplete="off" type="checkbox" className="form-checkbox" disabled />
                                     <span className=" text-white-dark">Check this custom checkbox</span>
                                 </label>
                             </div>
                             <div>
                                 <label className="flex items-center">
-                                    <input type="radio" className="form-radio" disabled />
+                                    <input autoComplete="off" type="radio" className="form-radio" disabled />
                                     <span className="text-white-dark">Toggle this custom radio</span>
                                 </label>
                             </div>
@@ -1038,13 +1038,13 @@ const Basic = () => {
                             <pre className="language-xml">{`<form className="space-y-5">
     <div>
         <label className="flex items-center">
-            <input type="checkbox" className="form-checkbox" disabled />
+            <input autoComplete="off" type="checkbox" className="form-checkbox" disabled />
             <span className=" text-white-dark">Check this custom checkbox</span>
         </label>
     </div>
     <div>
         <label className="flex items-center">
-            <input type="radio" className="form-radio" disabled />
+            <input autoComplete="off" type="radio" className="form-radio" disabled />
             <span className="text-white-dark">Toggle this custom radio</span>
         </label>
     </div>

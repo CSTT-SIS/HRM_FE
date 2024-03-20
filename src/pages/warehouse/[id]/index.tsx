@@ -164,14 +164,14 @@ const ShelfPage = ({ ...props }: Props) => {
                             <div className='flex justify-between gap-5 mt-5 mb-5'>
                                 <div className="w-1/2">
                                     <label htmlFor="name" > {t('name_warehouse')} < span style={{ color: 'red' }}>* </span></label >
-                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name')}`} className="form-input" />
+                                    <Field autoComplete="off" name="name" type="text" id="name" placeholder={`${t('enter_name')}`} className="form-input" />
                                     {errors.name ? (
                                         <div className="text-danger mt-1"> {errors.name} </div>
                                     ) : null}
                                 </div>
                                 <div className="w-1/2">
                                     <label htmlFor="code" > {t('code_warehouse')} < span style={{ color: 'red' }}>* </span></label >
-                                    <Field name="code" type="text" id="code" placeholder={`${t('enter_code')}`} className="form-input" />
+                                    <Field autoComplete="off" name="code" type="text" id="code" placeholder={`${t('enter_code')}`} className="form-input" />
                                     {errors.code ? (
                                         <div className="text-danger mt-1"> {errors.code} </div>
                                     ) : null}
@@ -179,7 +179,7 @@ const ShelfPage = ({ ...props }: Props) => {
                             </div>
                             <div className="mb-5">
                                 <label htmlFor="description" > {t('description')} </label >
-                                <Field name="description" as="textarea" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
+                                <Field autoComplete="off" name="description" as="textarea" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
                                 {errors.description ? (
                                     <div className="text-danger mt-1"> {errors.description} </div>
                                 ) : null}
@@ -280,7 +280,7 @@ const ShelfPage = ({ ...props }: Props) => {
                                                     {t('add')}
                                                 </button>
                                             </div>
-                                            <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
+                                            <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
                                         </div>
                                         <div className="datatables">
                                             <DataTable

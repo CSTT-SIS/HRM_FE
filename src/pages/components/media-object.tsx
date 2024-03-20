@@ -917,7 +917,7 @@ const MediaObject = () => {
                     <div className="mb-5">
                         <div className="mb-5 flex">
                             <div className="ltr:mr-4 rtl:ml-4">
-                                <input type="checkbox" className="form-checkbox mt-1.5" defaultChecked />
+                                <input autoComplete="off" type="checkbox" className="form-checkbox mt-1.5" defaultChecked />
                             </div>
                             <div className="flex-1">
                                 <h4 className="text-lg font-semibold text-primary">Heading </h4>
@@ -929,7 +929,7 @@ const MediaObject = () => {
                         </div>
                         <div className="flex">
                             <div className="ltr:mr-4 rtl:ml-4">
-                                <input type="checkbox" className="form-checkbox mt-1.5" />
+                                <input autoComplete="off" type="checkbox" className="form-checkbox mt-1.5" />
                             </div>
                             <div className="flex-1">
                                 <h4 className="text-lg font-semibold text-primary">Heading </h4>
@@ -946,7 +946,7 @@ const MediaObject = () => {
                                 {`<div className="mb-5">
     <div className="flex mb-5">
         <div className="ltr:mr-4 rtl:ml-4">
-            <input type="checkbox" className="form-checkbox mt-1.5" defaultChecked />
+            <input autoComplete="off" type="checkbox" className="form-checkbox mt-1.5" defaultChecked />
         </div>
         <div className="flex-1">
             <h4 className="font-semibold text-lg text-primary">Heading </h4>
@@ -958,7 +958,7 @@ const MediaObject = () => {
     </div>
     <div className="flex">
         <div className="ltr:mr-4 rtl:ml-4">
-            <input type="checkbox" className="form-checkbox mt-1.5" />
+            <input autoComplete="off" type="checkbox" className="form-checkbox mt-1.5" />
         </div>
         <div className="flex-1">
             <h4 className="font-semibold text-lg text-primary">Heading </h4>
@@ -988,7 +988,7 @@ const MediaObject = () => {
                     <div className="mb-5">
                         <div className="mb-5 flex">
                             <div className="ltr:mr-4 rtl:ml-4">
-                                <input type="radio" className="form-radio mt-1.5" name="radio" defaultChecked />
+                                <input autoComplete="off" type="radio" className="form-radio mt-1.5" name="radio" defaultChecked />
                             </div>
                             <div className="flex-1">
                                 <h4 className="text-lg font-semibold text-primary">Heading </h4>
@@ -1000,7 +1000,7 @@ const MediaObject = () => {
                         </div>
                         <div className="flex">
                             <div className="ltr:mr-4 rtl:ml-4">
-                                <input type="radio" className="form-radio mt-1.5" name="radio" />
+                                <input autoComplete="off" type="radio" className="form-radio mt-1.5" name="radio" />
                             </div>
                             <div className="flex-1">
                                 <h4 className="text-lg font-semibold text-primary">Heading </h4>
@@ -1017,7 +1017,7 @@ const MediaObject = () => {
                                 {`<div className="mb-5">
     <div className="flex mb-5">
         <div className="ltr:mr-4 rtl:ml-4">
-            <input type="radio" className="form-radio mt-1.5" name="radio" defaultChecked />
+            <input autoComplete="off" type="radio" className="form-radio mt-1.5" name="radio" defaultChecked />
         </div>
         <div className="flex-1">
             <h4 className="font-semibold text-lg text-primary">Heading </h4>
@@ -1029,7 +1029,7 @@ const MediaObject = () => {
     </div>
     <div className="flex">
         <div className="ltr:mr-4 rtl:ml-4">
-            <input type="radio" className="form-radio mt-1.5" name="radio" />
+            <input autoComplete="off" type="radio" className="form-radio mt-1.5" name="radio" />
         </div>
         <div className="flex-1">
             <h4 className="font-semibold text-lg text-primary">Heading </h4>

@@ -470,7 +470,7 @@ const ExportPage = ({ ...props }: Props) => {
                                                     <div className='flex justify-between gap-5 mt-5 mb-5'>
                                                         <div className="w-1/2">
                                                             <label htmlFor="personRequest" className='label'> {t('person_request')} < span style={{ color: 'red' }}>* </span></label >
-                                                            <Field
+                                                            <Field autoComplete="off"
                                                                 name="personRequest"
                                                                 type="text"
                                                                 id="personRequest"
@@ -484,7 +484,7 @@ const ExportPage = ({ ...props }: Props) => {
                                                         </div>
                                                         <div className="w-1/2">
                                                             <label htmlFor="timeRequest" className='label'> {t('time_request')} < span style={{ color: 'red' }}>* </span></label >
-                                                            <Field
+                                                            <Field autoComplete="off"
                                                                 name="timeRequest"
                                                                 render={({ field }: any) => (
                                                                     <Flatpickr
@@ -601,7 +601,7 @@ const ExportPage = ({ ...props }: Props) => {
                                                     <div className='flex justify-between gap-5 mt-5 mb-5'>
                                                         <div className="w-1/2">
                                                             <label htmlFor="createdBy" className='label'>< span style={{ color: 'red' }}>* </span> {t('proposal_by')}</label >
-                                                            <Field
+                                                            <Field autoComplete="off"
                                                                 name="createdBy"
                                                                 id="createdBy"
                                                                 type="text"
@@ -616,7 +616,7 @@ const ExportPage = ({ ...props }: Props) => {
                                                     </div>
                                                     <div className="mt-5">
                                                         <label htmlFor="note" className='label'> {t('notes')}</label >
-                                                        <Field
+                                                        <Field autoComplete="off"
                                                             name="note"
                                                             as="textarea"
                                                             id="note"
@@ -661,7 +661,7 @@ const ExportPage = ({ ...props }: Props) => {
                                                 }
                                             </div>
 
-                                            {/* <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
+                                            {/* <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
                                         </div>
                                         <div className="datatables">
                                             <DataTable

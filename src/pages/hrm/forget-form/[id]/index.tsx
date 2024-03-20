@@ -215,7 +215,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                     {' '}
                                     {t('name_staff')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field type="text" name="name" id="name" disabled className="form-input" />
+                                <Field autoComplete="off" type="text" name="name" id="name" disabled className="form-input" />
 
                                 {submitCount ? (
                                     errors.name ? <div className="mt-1 text-danger">{errors.name}</div> : null
@@ -226,7 +226,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                     {' '}
                                     {t('duty')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field type="text" disabled name="position" id="position" className="form-input" />
+                                <Field autoComplete="off" type="text" disabled name="position" id="position" className="form-input" />
 
                                 {submitCount ? errors.position ? <div className="mt-1 text-danger"> {errors.position} </div> : null : ''}
                             </div>
@@ -237,7 +237,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                     {' '}
                                     {t('department')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field
+                                <Field autoComplete="off"
                                     name="department"
                                     className="form-input"
                                     disabled
@@ -305,7 +305,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                     {' '}
                                     {t('shift')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field as="select" name="shift" id="shift" className="form-input">
+                                <Field autoComplete="off" as="select" name="shift" id="shift" className="form-input">
                                     {listShift?.map((shift: any) => {
                                         return (
                                             <option key={shift.value} value={shift.value}>
@@ -323,7 +323,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                     {' '}
                                     {t('checker_name')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field
+                                <Field autoComplete="off"
                                     className="form-input"
                                     name="name"
                                     render={({ field }: any) => (
@@ -354,7 +354,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                     {' '}
                                     {t('reason')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field name="reason" as="textarea" id="reason" placeholder={`${t('fill_reason')}`} className="form-input" />
+                                <Field autoComplete="off" name="reason" as="textarea" id="reason" placeholder={`${t('fill_reason')}`} className="form-input" />
                                 {submitCount ? errors.reason ? <div className="mt-1 text-danger"> {errors.reason} </div> : null : ''}
                             </div>
 

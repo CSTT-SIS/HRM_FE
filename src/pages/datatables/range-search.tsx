@@ -599,7 +599,7 @@ const RangeSearch = () => {
                 <div className="mb-4.5 flex flex-col gap-5 md:flex-row md:items-center">
                     <div className="flex items-center gap-5">
                         <div className="flex-1 md:flex-auto">
-                            <input
+                            <input autoComplete="off"
                                 type="text"
                                 value={minAge}
                                 onChange={(e) => {
@@ -610,7 +610,7 @@ const RangeSearch = () => {
                             />
                         </div>
                         <div className="flex-1 md:flex-auto">
-                            <input
+                            <input autoComplete="off"
                                 type="text"
                                 value={maxAge}
                                 onChange={(e) => {
@@ -622,7 +622,7 @@ const RangeSearch = () => {
                         </div>
                     </div>
                     <div className="ltr:ml-auto rtl:mr-auto">
-                        <input type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
+                        <input autoComplete="off" type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
                     </div>
                 </div>
                 <div className="datatables">

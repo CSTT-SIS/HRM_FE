@@ -525,7 +525,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                     <div className='flex justify-between gap-5 mt-5 mb-5'>
                                                         <div className="w-1/2">
                                                             <label htmlFor="personRequest" className='label'> {t('person_request')} < span style={{ color: 'red' }}>* </span></label >
-                                                            <Field
+                                                            <Field autoComplete="off"
                                                                 name="personRequest"
                                                                 type="text"
                                                                 id="personRequest"
@@ -539,7 +539,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                         </div>
                                                         <div className="w-1/2">
                                                             <label htmlFor="timeRequest" className='label'> {t('time_request')} < span style={{ color: 'red' }}>* </span></label >
-                                                            <Field
+                                                            <Field autoComplete="off"
                                                                 name="timeRequest"
                                                                 render={({ field }: any) => (
                                                                     <Flatpickr
@@ -564,7 +564,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                     <div className='flex justify-between gap-5 mt-5'>
                                                         <div className="w-1/2">
                                                             <label htmlFor="name" className='label'> {t('name_order')} < span style={{ color: 'red' }}>* </span></label >
-                                                            <Field
+                                                            <Field autoComplete="off"
                                                                 name="name"
                                                                 type="text"
                                                                 id="name"
@@ -578,7 +578,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                         </div>
                                                         <div className="w-1/2">
                                                             <label htmlFor="code" className='label'> {t('code_order')} < span style={{ color: 'red' }}>* </span></label >
-                                                            <Field
+                                                            <Field autoComplete="off"
                                                                 name="code"
                                                                 type="text"
                                                                 id="code"
@@ -688,7 +688,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                     <div className='flex justify-between gap-5 mt-5'>
                                                         <div className="w-1/2">
                                                             <label htmlFor="estimatedDeliveryDate" className='label'> {t('estimated_delivery_date')} < span style={{ color: 'red' }}>* </span></label >
-                                                            <Field
+                                                            <Field autoComplete="off"
                                                                 name="estimatedDeliveryDate"
                                                                 render={({ field }: any) => (
                                                                     <Flatpickr
@@ -711,7 +711,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                         </div>
                                                         <div className="w-1/2">
                                                             <label htmlFor="provider" className='label'> {t('note')}</label >
-                                                            <Field
+                                                            <Field autoComplete="off"
                                                                 id="provider"
                                                                 as="textarea"
                                                                 rows="2"
@@ -759,7 +759,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                     </button>
                                                 }
                                             </div>
-                                            {/* <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
+                                            {/* <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
                                         </div>
                                         <div className="datatables">
                                             <DataTable

@@ -84,7 +84,7 @@ const Setting = () => {
                         </div>
                         <div className="mt-5 text-primary">
                             <label className="mb-0 inline-flex">
-                                <input type="checkbox" className="form-checkbox" checked={themeConfig.semidark} onChange={(e) => dispatch(toggleSemidark(e.target.checked))} />
+                                <input autoComplete="off" type="checkbox" className="form-checkbox" checked={themeConfig.semidark} onChange={(e) => dispatch(toggleSemidark(e.target.checked))} />
                                 <span>Semi Dark (Sidebar & Header)</span>
                             </label>
                         </div>
@@ -127,7 +127,7 @@ const Setting = () => {
                         <p className="text-xs text-white-dark">Sticky or Floating.</p>
                         <div className="mt-3 flex items-center gap-3 text-primary">
                             <label className="mb-0 inline-flex">
-                                <input
+                                <input autoComplete="off"
                                     type="radio"
                                     checked={themeConfig.navbar === 'navbar-sticky'}
                                     value="navbar-sticky"
@@ -137,7 +137,7 @@ const Setting = () => {
                                 <span>Sticky</span>
                             </label>
                             <label className="mb-0 inline-flex">
-                                <input
+                                <input autoComplete="off"
                                     type="radio"
                                     checked={themeConfig.navbar === 'navbar-floating'}
                                     value="navbar-floating"
@@ -147,7 +147,7 @@ const Setting = () => {
                                 <span>Floating</span>
                             </label>
                             <label className="mb-0 inline-flex">
-                                <input
+                                <input autoComplete="off"
                                     type="radio"
                                     checked={themeConfig.navbar === 'navbar-static'}
                                     value="navbar-static"

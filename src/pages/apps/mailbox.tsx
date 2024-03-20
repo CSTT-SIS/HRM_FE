@@ -1444,7 +1444,7 @@ const Mailbox = () => {
                             <div className="flex flex-wrap-reverse items-center justify-between gap-4 p-4">
                                 <div className="flex w-full items-center sm:w-auto">
                                     <div className="ltr:mr-4 rtl:ml-4">
-                                        <input
+                                        <input autoComplete="off"
                                             type="checkbox"
                                             className="form-checkbox"
                                             checked={checkAllCheckbox()}
@@ -1598,7 +1598,7 @@ const Mailbox = () => {
                                             <IconMenu />
                                         </button>
                                         <div className="group relative">
-                                            <input
+                                            <input autoComplete="off"
                                                 type="text"
                                                 className="peer form-input ltr:pr-8 rtl:pl-8"
                                                 placeholder="Search Mail"
@@ -1725,7 +1725,7 @@ const Mailbox = () => {
                                                             <div className="flex items-center whitespace-nowrap">
                                                                 <div className="ltr:mr-3 rtl:ml-3">
                                                                     {ids.includes(mail.id)}
-                                                                    <input
+                                                                    <input autoComplete="off"
                                                                         type="checkbox"
                                                                         id={`chk-${mail.id}`}
                                                                         value={mail.id}
@@ -1990,7 +1990,7 @@ const Mailbox = () => {
                             <div className="h-px bg-gradient-to-l from-indigo-900/20 via-black to-indigo-900/20 opacity-[0.1] dark:via-white"></div>
                             <form className="grid gap-6 p-6">
                                 <div>
-                                    <input
+                                    <input autoComplete="off"
                                         id="to"
                                         type="text"
                                         className="form-input"
@@ -2003,11 +2003,11 @@ const Mailbox = () => {
                                 </div>
 
                                 <div>
-                                    <input id="cc" type="text" className="form-input" placeholder="Enter Cc" defaultValue={params.cc} onChange={(e) => changeValue(e)} />
+                                    <input autoComplete="off" id="cc" type="text" className="form-input" placeholder="Enter Cc" defaultValue={params.cc} onChange={(e) => changeValue(e)} />
                                 </div>
 
                                 <div>
-                                    <input id="title" type="text" className="form-input" placeholder="Enter Subject" defaultValue={params.title} onChange={(e) => changeValue(e)} />
+                                    <input autoComplete="off" id="title" type="text" className="form-input" placeholder="Enter Subject" defaultValue={params.title} onChange={(e) => changeValue(e)} />
                                 </div>
 
                                 <div className="h-fit">
@@ -2027,7 +2027,7 @@ const Mailbox = () => {
                                 </div>
 
                                 <div>
-                                    <input
+                                    <input autoComplete="off"
                                         type="file"
                                         className="form-input p-0 file:border-0 file:bg-primary/90 file:px-4 file:py-2 file:font-semibold file:text-white file:hover:bg-primary ltr:file:mr-5 rtl:file:ml-5"
                                         multiple

@@ -124,7 +124,7 @@ const Buttongroups = () => {
                                         @
                                     </span>
                                 </div>
-                                <input type="text" placeholder="Input group example" className="form-input flex-1 ltr:rounded-l-none rtl:rounded-r-none" />
+                                <input autoComplete="off" type="text" placeholder="Input group example" className="form-input flex-1 ltr:rounded-l-none rtl:rounded-r-none" />
                             </div>
                         </div>
                     </div>
@@ -152,7 +152,7 @@ const Buttongroups = () => {
                 @
             </span>
         </div>
-        <input type="text" placeholder="Input group example" className="flex-1 form-input ltr:rounded-l-none rtl:rounded-r-none" />
+        <input autoComplete="off" type="text" placeholder="Input group example" className="flex-1 form-input ltr:rounded-l-none rtl:rounded-r-none" />
     </div>
 </div>;
 `}
