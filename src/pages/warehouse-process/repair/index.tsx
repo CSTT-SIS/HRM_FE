@@ -235,7 +235,7 @@ const RepairPage = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button data-testid="add-repair" type="button" className="m-1 button-table button-create" onClick={(e) => router.push(`/ warehouse - process / repair / create`)}>
+                        <button data-testid="add-repair" type="button" className="m-1 button-table button-create" onClick={(e) => router.push(`/warehouse-process/repair/create`)}>
                             <IconNewPlus />
                             <span className='uppercase'>{t('add')}</span>
                         </button>
