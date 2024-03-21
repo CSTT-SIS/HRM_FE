@@ -164,7 +164,10 @@ const OrderForm = ({ ...props }: Props) => {
         {
             accessor: 'proposals',
             title: 'Yêu cầu',
-            render: ({ proposals }: any) => <span>{proposals?.map((item: any, index: any) => { return proposals.length > index + 1 ? item.name + ", " : item.name })}</span>,
+            render: ({ proposals, repairRequests }: any) => <span>{
+                proposals?.map((item: any, index: any) => { return proposals.length > index + 1 ? item.name + ", " : item.name }) ||
+                repairRequests?.map((item: any, index: any) => { return repairRequests.length > index + 1 ? item.name + ", " : item.name })
+            }</span>,
         },
         {
             accessor: 'warehouse',

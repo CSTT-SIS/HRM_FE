@@ -242,10 +242,16 @@ const DetailPage = ({ ...props }: Props) => {
     }
 
     const handleOrder = (param: any) => {
+        const request: any = [];
+        if (param.warehouseId.label === "Gara") {
+            param.repairRequestId.map((item: any) => request.push({ type: "repairRequest", id: item.value }))
+        } else {
+            param.proposalIds.map((item: any) => request.push({ type: "proposal", id: item.value }))
+        }
         const query: any = {
             name: param.name,
-            requests: param.warehouseId.label === "Gara" ? param.repairRequestId.map((item: any) => { return (item.value) }) : param.proposalIds.map((item: any) => { return (item.value) }),
-            type: param.warehouseId.label === "Gara" ? "repairRequest" : "proposal",
+            requests: request,
+            type: "PURCHASE",
             code: param.code,
             estimatedDeliveryDate: moment(param.estimatedDeliveryDate).format('YYYY-MM-DD HH:mm:ss'),
             provider: param.provider,
@@ -254,22 +260,18 @@ const DetailPage = ({ ...props }: Props) => {
         if (data) {
             EditOrder({ id: data.id, ...query }).then(() => {
                 showMessage(`${t('edit_success')}`, 'success');
+                handleCancel();
             }).catch((err) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
         } else {
-            if (listDataDetail?.length === undefined || listDataDetail?.length === 0) {
-                showMessage(`${t('please_add_product')}`, 'error');
-                handleActive(2);
-            } else {
-                CreateOrder(query).then((res) => {
-                    handleDetail(res.data.id);
-                }).catch((err) => {
-                    showMessage(`${err?.response?.data?.message[0].error}`, 'error');
-                });
-            }
+            CreateOrder(query).then((res) => {
+                handleDetail(res.data.id);
+                handleCancel();
+            }).catch((err) => {
+                showMessage(`${err?.response?.data?.message[0].error}`, 'error');
+            });
         }
-        handleCancel();
     }
 
     const handleDetail = (id: any) => {
@@ -474,7 +476,8 @@ const DetailPage = ({ ...props }: Props) => {
         } else {
             setDataRepairDropdown([...dataRepairDropdown, ...dropdownRepair?.data])
         }
-    }, [dataRepairDropdown, dropdownRepair, repairPagination]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [repairPagination]);
 
     const handleMenuScrollToBottomRepair = () => {
         setTimeout(() => {
