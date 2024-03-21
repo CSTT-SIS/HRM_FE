@@ -1,0 +1,16 @@
+.org .item {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.org .ceo {
+  background-color: tomato;
+}
+
+.org .employee {
+  background-color: seagreen;
+}

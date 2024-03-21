@@ -19,9 +19,9 @@
 }
 
 .reactOrgChart .level-0 {
-    text-transform: uppercase !important;
-    width: 120px !important;
-    height: 64px !important;
+    /* text-transform: uppercase !important; */
+    width: 200px !important;
+    /* height: 64px !important; */
     font-size: 14px !important;
     padding: 16px;
     border-radius: 8px;
@@ -32,13 +32,17 @@
     text-align: center;
 }
 
+.avatar {
+    width: 50px!important;
+    /* height: 150px; */
+    border-radius: 50%;
+}
+
 .reactOrgChart .level-1 {
-    width: 64px !important;
-    height: 144px !important;
+    width: 180px !important;
     padding: 8px 4px 8px 4px;
     border-radius: 8px;
     gap: 10px;
-    text-transform: uppercase;
     font-size: 12px;
     font-weight: 700;
     line-height: 15px;
@@ -47,8 +51,8 @@
 }
 
 .reactOrgChart .level-2 {
-    width: 64px !important;
-    height: 120px !important;
+    width: 180px !important;
+    /* height: 120px !important; */
     padding: 8px 4px 8px 4px;
     border-radius: 8px;
     gap: 10px;
@@ -60,8 +64,21 @@
 }
 
 .reactOrgChart .level-3 {
-    width: 64px !important;
-    height: 106px !important;
+    width: 180px !important;
+    /* height: 106px !important; */
+    padding: 8px 4px 8px 4px;
+    border-radius: 8px;
+    gap: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 15px;
+    letter-spacing: 0em;
+    text-align: center;
+}
+
+.reactOrgChart .level-4 {
+    width: 180px !important;
+    /* height: 106px !important; */
     padding: 8px 4px 8px 4px;
     border-radius: 8px;
     gap: 10px;
@@ -677,4 +694,6 @@ input:disabled, textarea:disabled {
 .css-16xfy0z-control .css-olqui2-singleValue {
     color: black !important;
 }
+
+
 
