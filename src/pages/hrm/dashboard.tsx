@@ -83,7 +83,7 @@ const DashBoard = () => {
     const columnChart: any = {
         series: [
             {
-                name: 'Revenue',
+                name: 'Số lượng',
                 data: [76, 85, 101, 98],
             },
         ],
@@ -98,7 +98,7 @@ const DashBoard = () => {
                     show: false,
                 },
             },
-            colors: ['#805dca', '#e7515a'],
+            colors: ['#C8102E', '#FFCD00', '#9CD3EB', '#002868'],
             dataLabels: {
                 enabled: false,
             },
@@ -112,6 +112,7 @@ const DashBoard = () => {
                     horizontal: false,
                     columnWidth: '55%',
                     endingShape: 'rounded',
+                    distributed: true,
                 },
             },
             grid: {
@@ -121,6 +122,9 @@ const DashBoard = () => {
                         show: false,
                     },
                 },
+            },
+            legend: {
+                show: false
             },
             xaxis: {
                 categories: ['Phòng Hành chính', 'Phòng Kế toán', 'Phòng Kỹ thuật', 'Bộ phận bảo trì'],
@@ -162,7 +166,7 @@ const DashBoard = () => {
                     show: false,
                 },
             },
-            colors: ['#805dca', '#e7515a'],
+            colors: ['#C8102E', '#FFCD00', '#9CD3EB', '#002868', '#476704'],
             dataLabels: {
                 enabled: false,
             },
@@ -176,7 +180,12 @@ const DashBoard = () => {
                     horizontal: false,
                     columnWidth: '55%',
                     endingShape: 'rounded',
+                    distributed: true,
+
                 },
+            },
+            legend: {
+                show: false
             },
             grid: {
                 borderColor: isDark ? '#191e3a' : '#e0e6ed',
@@ -209,12 +218,16 @@ const DashBoard = () => {
         },
     };
     const barChart: any = {
-        series: [
-            {
-                name: '%',
-                data: [44, 55, 41],
-            },
-        ],
+        series: [{
+            name: 'Tốt',
+            data: [44, 55, 57, 56]
+        }, {
+            name: 'Đạt',
+            data: [76, 85, 101, 98]
+        }, {
+            name: 'Chưa đạt',
+            data: [35, 41, 36, 26]
+        }],
         options: {
             chart: {
                 height: 300,
@@ -233,9 +246,10 @@ const DashBoard = () => {
                 show: true,
                 width: 1,
             },
-            colors: ['#4361ee'],
+            colors: ['#002868', '#C8102E', '#FFCD00'],
+
             xaxis: {
-                categories: ['Tốt', 'Đạt', 'Chưa đạt'],
+                categories: ['Phòng Hành chính', 'Phòng Kế toán', 'Phòng Kỹ thuật', 'Bộ phận bảo trì'],
                 axisBorder: {
                     color: isDark ? '#191e3a' : '#e0e6ed',
                 },
@@ -247,13 +261,11 @@ const DashBoard = () => {
             grid: {
                 borderColor: isDark ? '#191e3a' : '#e0e6ed',
             },
-            plotOptions: {
-                bar: {
-                    horizontal: true,
-                },
-            },
             fill: {
                 opacity: 0.8,
+            },
+            legend: {
+                position: 'top',
             },
         },
     };
@@ -273,8 +285,23 @@ const DashBoard = () => {
             stroke: {
                 show: false,
             },
+            plotOptions: {
+                pie: {
+                    donut: {
+                        labels: {
+                            show: true,
+
+                            total: {
+                                showAlways: true,
+                                show: true,
+
+                            }
+                        }
+                    }
+                }
+            },
             labels: ['Chuyên viên', 'Quản lý', 'Trưởng bộ phận'],
-            colors: ['#4361ee', '#805dca', '#e2a03f'],
+            colors: ['#C8102E', '#FFCD00', '#002868'],
             responsive: [
                 {
                     breakpoint: 480,
@@ -290,7 +317,42 @@ const DashBoard = () => {
             },
         },
     };
-
+    const quaterChart: any = {
+        series: [44, 55, 13],
+        options: {
+            chart: {
+                width: 700,
+                type: 'pie',
+            },
+            grid: {
+                padding: {
+                    top: 0,
+                    bottom: -220,
+                }
+            },
+            plotOptions: {
+                pie: {
+                    startAngle: -90,
+                    endAngle: 0.1,
+                }
+            },
+            labels: ['Chuyên viên', 'Quản lý', 'Trưởng bộ phận'],
+            colors: ['#C8102E', '#FFCD00', '#002868'],
+            responsive: [
+                {
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            width: 300,
+                        },
+                    },
+                },
+            ],
+            legend: {
+                position: 'left',
+            },
+        },
+    };
     return (
         <div>
             <ul className="flex space-x-2 rtl:space-x-reverse mb-6">
@@ -304,67 +366,51 @@ const DashBoard = () => {
                 </li>
             </ul>
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                <div className="panel h-full xl:col-span-2">
-                    <div className="w-full sm:w-auto grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
-                        <button
-                            type="button"
-                            className={`btn btn-outline-primary flex`}
 
-                        >
-                            <IconCalendar className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                            Công
-                        </button>
-
-                        <button
-                            type="button"
-                            className={`btn btn-outline-warning flex`}
-
-                        >
-                            <IconUser className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                            Hồ sơ nhân sự
-                        </button>
-
-                        <button
-                            type="button"
-                            className={`btn btn-outline-success flex`}
-
-                        >
-                            <IconClock className="ltr:mr-2 rtl:ml-2" />
-                            Danh sách tăng ca
-                        </button>
-
-                        <button
-                            type="button"
-                            className={`btn btn-outline-danger flex`}
-
-                        >
-                            <IconTag className="ltr:mr-2 rtl:ml-2" />
-                            Danh sách quên chấm công
-                        </button>
+                <div className="panel  h-full xl:col-span-2">
+                    <div className="mb-5 flex items-center justify-between">
+                        <h5 className="text-lg font-semibold dark:text-white-light">Cơ cấu nhân sự</h5>
                     </div>
-                </div>
-                <div className="panel h-full p-0">
-                    <div className="flex p-5">
-                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10">
-                            <img className="h-7 w-7 rounded-full object-cover" src="/assets/images/flags/VI.svg" alt="flag"></img>
+                    <div className="w-full sm:w-auto grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
+
+                        <div className="flex border-r justify-around">
+                            <div className="flex shrink-0 items-center justify-center" style={{ width: '128px' }}>
+                                <img className="object-cover" src="/assets/images/vietnam.gif" alt="flag"></img>
+                            </div>
+                            <div className="font-semibold ltr:ml-3 rtl:mr-3">
+                                <h5 className="text-[#082819]" style={{ fontSize: '14px', fontWeight: '700' }}>VIỆT NAM</h5>
+                                <p className="text-[#C8102E]" style={{ fontSize: '40px', fontWeight: '700', lineHeight: '50px' }}>340</p>
+                                <h5 className="text-[#082819]" style={{ fontSize: '14px', fontWeight: '400' }}>Nhân sự</h5>
+
+                            </div>
                         </div>
-                        <div className="font-semibold ltr:ml-3 rtl:mr-3">
-                            <p className="text-xl dark:text-white-light">230 nhân sự</p>
-                            <h5 className="text-xs text-[#506690]">Việt Nam</h5>
+                        <div className="flex border-r justify-around">
+                            <div className="flex shrink-0 items-center justify-center" style={{ width: '128px' }}>
+                                <img className="object-cover" src="/assets/images/lao.gif" alt="flag"></img>
+                            </div>
+                            <div className="font-semibold ltr:ml-3 rtl:mr-3">
+                                <h5 className="text-[#082819]" style={{ fontSize: '14px', fontWeight: '700' }}>LÀO</h5>
+                                <p className="text-[#002868]" style={{ fontSize: '40px', fontWeight: '700', lineHeight: '50px' }}>340</p>
+                                <h5 className="text-[#082819]" style={{ fontSize: '14px', fontWeight: '400' }}>Nhân sự</h5>
+
+                            </div>
+                        </div>
+                        <div className="flex justify-around">
+                            <div className="flex shrink-0 items-center justify-center" style={{ width: '128px' }}>
+                                <img className="object-cover" src="/assets/images/quocte.gif" alt="flag"></img>
+                            </div>
+                            <div className="font-semibold ltr:ml-3 rtl:mr-3">
+                                <h5 className="text-[#082819]" style={{ fontSize: '14px', fontWeight: '700' }}>QUỐC TẾ</h5>
+                                <p className="text-[#476704]" style={{ fontSize: '40px', fontWeight: '700', lineHeight: '50px' }}>340</p>
+                                <h5 className="text-[#082819]" style={{ fontSize: '14px', fontWeight: '400' }}>Nhân sự</h5>
+
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div className="panel h-full p-0">
-                    <div className="flex p-5">
-                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary/10">
-                            <img className="h-7 w-7 rounded-full object-cover" src="/assets/images/flags/LO.svg" alt="flag"></img>
-
-                        </div>
-                        <div className="font-semibold ltr:ml-3 rtl:mr-3">
-                            <p className="text-xl dark:text-white-light">340 nhân sự</p>
-                            <h5 className="text-xs text-[#506690]">Lào</h5>
-                        </div>
+                    <div className="w-full h-4 bg-[#ebedf2] dark:bg-dark/40 rounded-full flex" style={{ height: '8px', marginTop: '20px' }}>
+                        <div className="bg-[#C8102E] h-4 rounded-full w-2/12 text-center text-white text-xs" style={{ height: '8px' }}></div>
+                        <div className="bg-[#002868] h-4 rounded-full w-6/12 text-center text-white text-xs" style={{ height: '8px' }}></div>
+                        <div className="bg-[#476704] h-4 rounded-full  w-4/12 text-center text-white text-xs" style={{ height: '8px' }}></div>
                     </div>
                 </div>
                 <div className="panel">
@@ -381,7 +427,7 @@ const DashBoard = () => {
                     </div>
                     <p>Tất cả đơn vị</p>
 
-                    <div className="mb-5">
+                    <div className="mb-5" style={{ zIndex: '9999999', position: "relative" }}>
                         {isMounted && <ReactApexChart series={donutChart.series} options={donutChart.options} className="rounded-lg bg-white dark:bg-black overflow-hidden" type="donut" height={300} width={"100%"} />}
                     </div>
                 </div>
@@ -390,7 +436,8 @@ const DashBoard = () => {
                         <h5 className="text-lg font-semibold dark:text-white">Tình trạng giải quyết công việc</h5>
                     </div>
                     <div className="mb-5">
-                        {isMounted && <ReactApexChart series={barChart.series} options={barChart.options} className="rounded-lg bg-white dark:bg-black" type="bar" height={300} width={'100%'} />}
+                        {isMounted && <ReactApexChart series={quaterChart.series} options={quaterChart.options} className="rounded-lg bg-white dark:bg-black overflow-hidden" type="pie" height={300} width={700} />}
+
                     </div>
                 </div>
                 <div className="panel">
@@ -398,50 +445,9 @@ const DashBoard = () => {
                         <h5 className="text-lg font-semibold dark:text-white-light">Thống kê nhiệm vụ theo phòng ban</h5>
                     </div>
                     <div className="mb-5">
-                        <div className="datatables">
-                            <DataTable
-                                highlightOnHover
-                                className="whitespace-nowrap table-hover custom_table"
-                                records={[{
-                                    department: "Phòng hành chính",
-                                    good: 10,
-                                    reached: 20,
-                                    not_reached: 15
-                                },
-                                {
-                                    department: "Phòng kế toán",
-                                    good: 11,
-                                    reached: 14,
-                                    not_reached: 22
-                                },
-                                {
-                                    department: "Phòng kỹ thuật",
-                                    good: 4,
-                                    reached: 16,
-                                    not_reached: 15
-                                },
-                                {
-                                    department: "Bộ phân bảo trì",
-                                    good: 23,
-                                    reached: 1,
-                                    not_reached: 1
-                                }]}
-                                columns={[
-                                    {
-                                        accessor: 'department',
-                                        title: '#',
-                                    },
-                                    { accessor: 'good', title: 'Tốt', sortable: false },
-                                    { accessor: 'reached', title: 'Đạt', sortable: false },
-                                    { accessor: 'not_reached', title: 'Chưa đạt', sortable: false },
-                                ]}
-                                totalRecords={10}
-                                recordsPerPage={10}
-                                minHeight={200}
-                                page={1}
-                                onPageChange={(p) => p.toString()}
-                            />
-                        </div>
+                        {isMounted && <ReactApexChart series={barChart.series} options={barChart.options} className="rounded-lg bg-white dark:bg-black" type="bar" height={300} width={'100%'} />}
+
+
                     </div>
                 </div>
                 <div className="panel">
