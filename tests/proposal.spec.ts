@@ -44,9 +44,9 @@ test.describe.serial('proposal CRUD', () => {
 
 		await expect(page).toHaveURL('/warehouse-process/proposal');
 
+		await page.waitForTimeout(1000);
 		await page.getByTestId('search-proposal-input').fill(text);
 		await page.waitForLoadState('networkidle');
-		await page.waitForTimeout(1000);
 
 		await page.getByTestId('edit-proposal-btn').first().waitFor({ state: 'visible' });
 		await page.waitForTimeout(1000);

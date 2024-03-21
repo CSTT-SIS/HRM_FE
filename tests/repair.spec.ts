@@ -46,9 +46,9 @@ test.describe.serial('repair CRUD', () => {
 
 		await expect(page).toHaveURL('/warehouse-process/repair');
 
+		await page.waitForTimeout(1000);
 		await page.getByTestId('search-repair-input').fill(text);
 		await page.waitForLoadState('networkidle');
-		await page.waitForTimeout(1000);
 
 		await page.getByTestId('edit-repair-btn').first().waitFor({ state: 'visible' });
 		await page.waitForTimeout(1000);
