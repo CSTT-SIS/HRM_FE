@@ -204,23 +204,24 @@ const WarehousingPage = ({ ...props }: Props) => {
                     </div>
                     {
                         records.status === "PENDING" &&
-                        <>
-                            <div className="w-[60px]">
-                                <button type="button" className='button-edit' onClick={() => handleDetail(records)}>
-                                    <IconNewEdit /><span>
-                                        {t('edit')}
-                                    </span>
-                                </button>
-                            </div>
-                            <div className="w-[80px]">
-                                <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
-                                    <IconNewTrash />
-                                    <span>
-                                        {t('delete')}
-                                    </span>
-                                </button>
-                            </div>
-                        </>
+                        <div className="w-[60px]">
+                            <button type="button" className='button-edit' onClick={() => handleDetail(records)}>
+                                <IconNewEdit /><span>
+                                    {t('edit')}
+                                </span>
+                            </button>
+                        </div>
+                    }
+                    {
+                        records.status === "HEAD_REJECTED" &&
+                        <div className="w-[80px]">
+                            <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                                <IconNewTrash />
+                                <span>
+                                    {t('delete')}
+                                </span>
+                            </button>
+                        </div>
                     }
                 </div>
             ),
