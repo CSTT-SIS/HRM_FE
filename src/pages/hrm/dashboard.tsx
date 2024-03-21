@@ -84,7 +84,7 @@ const DashBoard = () => {
         series: [
             {
                 name: 'Số lượng',
-                data: [76, 85, 101, 98],
+                data: [14, 50, 13, 23],
             },
         ],
         options: {
@@ -127,7 +127,7 @@ const DashBoard = () => {
                 show: false
             },
             xaxis: {
-                categories: ['Phòng Hành chính', 'Phòng Kế toán', 'Phòng Kỹ thuật', 'Bộ phận bảo trì'],
+                categories: ['Phòng Hành chính', 'Phòng Kế hoạch', 'Phòng Kỹ thuật', 'Khai thác'],
                 axisBorder: {
                     color: isDark ? '#191e3a' : '#e0e6ed',
                 },
@@ -270,7 +270,7 @@ const DashBoard = () => {
         },
     };
     const donutChart: any = {
-        series: [44, 55, 13],
+        series: [1143, 25, 3],
         options: {
             chart: {
                 height: 300,
@@ -284,6 +284,11 @@ const DashBoard = () => {
             },
             stroke: {
                 show: false,
+            },
+            grid: {
+                padding: {
+                    top: 10,
+                }
             },
             plotOptions: {
                 pie: {
@@ -300,7 +305,7 @@ const DashBoard = () => {
                     }
                 }
             },
-            labels: ['Chuyên viên', 'Quản lý', 'Trưởng bộ phận'],
+            labels: ['Nhân viên', 'Tổ trưởng', 'Trưởng phòng'],
             colors: ['#C8102E', '#FFCD00', '#002868'],
             responsive: [
                 {
@@ -313,7 +318,7 @@ const DashBoard = () => {
                 },
             ],
             legend: {
-                position: 'bottom',
+                position: 'top',
             },
         },
     };
@@ -379,7 +384,7 @@ const DashBoard = () => {
                             </div>
                             <div className="font-semibold ltr:ml-3 rtl:mr-3">
                                 <h5 className="text-[#082819]" style={{ fontSize: '14px', fontWeight: '700' }}>VIỆT NAM</h5>
-                                <p className="text-[#C8102E]" style={{ fontSize: '40px', fontWeight: '700', lineHeight: '50px' }}>340</p>
+                                <p className="text-[#C8102E]" style={{ fontSize: '40px', fontWeight: '700', lineHeight: '50px' }}>790</p>
                                 <h5 className="text-[#082819]" style={{ fontSize: '14px', fontWeight: '400' }}>Nhân sự</h5>
 
                             </div>
@@ -390,7 +395,7 @@ const DashBoard = () => {
                             </div>
                             <div className="font-semibold ltr:ml-3 rtl:mr-3">
                                 <h5 className="text-[#082819]" style={{ fontSize: '14px', fontWeight: '700' }}>LÀO</h5>
-                                <p className="text-[#002868]" style={{ fontSize: '40px', fontWeight: '700', lineHeight: '50px' }}>340</p>
+                                <p className="text-[#002868]" style={{ fontSize: '40px', fontWeight: '700', lineHeight: '50px' }}>426</p>
                                 <h5 className="text-[#082819]" style={{ fontSize: '14px', fontWeight: '400' }}>Nhân sự</h5>
 
                             </div>
@@ -401,16 +406,16 @@ const DashBoard = () => {
                             </div>
                             <div className="font-semibold ltr:ml-3 rtl:mr-3">
                                 <h5 className="text-[#082819]" style={{ fontSize: '14px', fontWeight: '700' }}>QUỐC TẾ</h5>
-                                <p className="text-[#476704]" style={{ fontSize: '40px', fontWeight: '700', lineHeight: '50px' }}>340</p>
+                                <p className="text-[#476704]" style={{ fontSize: '40px', fontWeight: '700', lineHeight: '50px' }}>10</p>
                                 <h5 className="text-[#082819]" style={{ fontSize: '14px', fontWeight: '400' }}>Nhân sự</h5>
 
                             </div>
                         </div>
                     </div>
                     <div className="w-full h-4 bg-[#ebedf2] dark:bg-dark/40 rounded-full flex" style={{ height: '8px', marginTop: '20px' }}>
-                        <div className="bg-[#C8102E] h-4 rounded-full w-2/12 text-center text-white text-xs" style={{ height: '8px' }}></div>
-                        <div className="bg-[#002868] h-4 rounded-full w-6/12 text-center text-white text-xs" style={{ height: '8px' }}></div>
-                        <div className="bg-[#476704] h-4 rounded-full  w-4/12 text-center text-white text-xs" style={{ height: '8px' }}></div>
+                        <div className="bg-[#C8102E] h-4 rounded-full w-7/12 text-center text-white text-xs" style={{ height: '8px' }}></div>
+                        <div className="bg-[#002868] h-4 rounded-full w-4/12 text-center text-white text-xs" style={{ height: '8px' }}></div>
+                        <div className="bg-[#476704] h-4 rounded-full  w-1/12 text-center text-white text-xs" style={{ height: '8px' }}></div>
                     </div>
                 </div>
                 <div className="panel">
