@@ -169,7 +169,7 @@ const RepairPage = ({ ...props }: Props) => {
                     {
                         records.status !== "HEAD_APPROVED" &&
                         <div className="w-[60px]">
-                            <button type="button" className='button-edit' onClick={() => handleDetail(records)}>
+                            <button data-testid="edit-repair-btn" type="button" className='button-edit' onClick={() => handleDetail(records)}>
                                 <IconNewEdit /><span>
                                     {t('edit')}
                                 </span>
@@ -193,7 +193,7 @@ const RepairPage = ({ ...props }: Props) => {
     ]
 
     const handleActive = (value: any) => {
-        setActive([value]);
+        setActive([active.includes(value) ? 0 : value]);
         localStorage.setItem('defaultFilterProposalOrder', value);
     };
 
@@ -208,13 +208,13 @@ const RepairPage = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" className="m-1 button-table button-create" onClick={(e) => router.push(`/warehouse-process/repair/create`)}>
+                        <button data-testid="add-repair" type="button" className="m-1 button-table button-create" onClick={(e) => router.push(`/warehouse-process/repair/create`)}>
                             <IconNewPlus />
                             <span className='uppercase'>{t('add')}</span>
                         </button>
                     </div>
 
-                    <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
+                    <input data-testId='search-repair-input' autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
                 </div>
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap gap-1">

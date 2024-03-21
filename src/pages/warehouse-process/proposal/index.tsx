@@ -30,6 +30,7 @@ import IconNewEdit from '@/components/Icon/IconNewEdit';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
 import IconNewEye from '@/components/Icon/IconNewEye';
 import IconNewPlus from '@/components/Icon/IconNewPlus';
+import { DropdownWarehouses } from '@/services/swr/dropdown.twr';
 
 interface Props {
     [key: string]: any;
@@ -46,6 +47,8 @@ const ProposalPage = ({ ...props }: Props) => {
 
     // get data
     const { data: proposal, pagination, mutate, isLoading } = Proposals({ sortBy: 'id.ASC', ...router.query });
+    const { data: warehouses, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({});
+
     useEffect(() => {
         if (proposal?.data.length <= 0 && pagination.page > 1) {
             router.push({
@@ -137,6 +140,11 @@ const ProposalPage = ({ ...props }: Props) => {
         // { accessor: 'type', title: 'Loại yêu cầu', sortable: false },
         { accessor: 'content', title: 'Nội dung', sortable: false },
         {
+            accessor: 'warehouse',
+            title: 'Kho',
+            render: ({ warehouse }: any) => <span>{warehouse?.name}</span>,
+        },
+        {
             accessor: 'status',
             title: 'Trạng thái',
             render: ({ status }: any) => <span>{status === "APPROVED" ? "Đã duyệt" : "Chưa duyệt"}</span>,
@@ -159,7 +167,7 @@ const ProposalPage = ({ ...props }: Props) => {
                     {
                         (records.status !== "HEAD_APPROVED" || records.status !== "HEAD_REJECTED") &&
                         <div className="w-[60px]">
-                            <button type="button" className='button-edit' onClick={() => handleDetail(records)}>
+                            <button data-testId="edit-proposal-btn" type="button" className='button-edit' onClick={() => handleDetail(records)}>
                                 <IconNewEdit /><span>
                                     {t('edit')}
                                 </span>
@@ -182,9 +190,21 @@ const ProposalPage = ({ ...props }: Props) => {
         },
     ]
 
-    const handleActive = (value: any) => {
-        setActive([value]);
-        localStorage.setItem('defaultFilterProposalOrder', value);
+
+    const handleActive = (item: any) => {
+        if (Number(localStorage.getItem('defaultFilterProposalOrder')) === item.value) {
+            setActive([0]);
+            localStorage.setItem('defaultFilterProposalOrder', "0");
+            router.push({
+                query: { warehouseId: '' }
+            })
+        } else {
+            router.push({
+                query: { warehouseId: item.value }
+            })
+            setActive([item.value]);
+            localStorage.setItem('defaultFilterProposalOrder', item.value);
+        }
     };
 
     return (
@@ -198,23 +218,23 @@ const ProposalPage = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" className="m-1 button-table button-create" onClick={(e) => router.push(`/warehouse-process/proposal/create`)}>
+                        <button data-testId="add-proposal" type="button" className="m-1 button-table button-create" onClick={(e) => router.push(`/warehouse-process/proposal/create`)}>
                             <IconNewPlus />
                             <span className='uppercase'>{t('add')}</span>
                         </button>
                     </div>
 
-                    <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
+                    <input data-testId="search-proposal-input" autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
                 </div>
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
-                    <div className="flex items-center flex-wrap gap-1">
-                        {/* <IconFilter /> */}
-                        {/* <span>Lọc nhanh :</span> */}
-                        <div className='flex items-center flex-wrap gap-2'>
-                            <div className={active.includes(1) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(1)}>Chưa duyệt</div>
-                            <div className={active.includes(2) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(2)}>Đã duyệt</div>
-                            <div className={active.includes(3) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(3)}>Không duyệt</div>
-                        </div>
+                    <div className='flex items-center flex-wrap gap-2'>
+                        {
+                            warehouses?.data.map((item: any, index: any) => {
+                                return (
+                                    <div key={index} className={active.includes(item.value) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(item)}>{item.label}</div>
+                                );
+                            })
+                        }
                     </div>
                 </div>
                 <div className="datatables">

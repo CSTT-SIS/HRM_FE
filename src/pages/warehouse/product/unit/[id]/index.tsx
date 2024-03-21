@@ -111,7 +111,7 @@ const UnitModal = ({ ...props }: Props) => {
                                 <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
                                     {t('cancel')}
                                 </button>
-                                <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" disabled={disabled}>
+                                <button data-testId="submit-btn" type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" disabled={disabled}>
                                     {data !== undefined ? t('update') : t('add')}
                                 </button>
                             </div>

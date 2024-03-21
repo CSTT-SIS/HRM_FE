@@ -31,6 +31,7 @@ import IconNewEdit from '@/components/Icon/IconNewEdit';
 import IconNewEye from '@/components/Icon/IconNewEye';
 import Link from 'next/link';
 import IconNewPlus from '@/components/Icon/IconNewPlus';
+import { DropdownWarehouses } from '@/services/swr/dropdown.twr';
 
 interface Props {
     [key: string]: any;
@@ -50,7 +51,7 @@ const OrderForm = ({ ...props }: Props) => {
 
     // get data
     const { data: orders, pagination, mutate } = Orders({ ...router.query });
-
+    const { data: warehouses, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({});
     useEffect(() => {
         dispatch(setPageTitle(`${t('Order')}`));
     });
@@ -161,9 +162,14 @@ const OrderForm = ({ ...props }: Props) => {
         { accessor: 'name', title: 'Tên đơn hàng', sortable: false },
         // { accessor: 'type', title: 'Loại phiếu', sortable: false },
         {
-            accessor: 'proposal',
+            accessor: 'proposals',
             title: 'Yêu cầu',
-            render: ({ proposal }: any) => <span>{proposal?.name}</span>,
+            render: ({ proposals }: any) => <span>{proposals?.map((item: any, index: any) => { return proposals.length > index + 1 ? item.name + ", " : item.name })}</span>,
+        },
+        {
+            accessor: 'warehouse',
+            title: 'Kho',
+            render: ({ warehouse }: any) => <span>{warehouse?.name}</span>,
         },
         {
             accessor: 'estimatedDeliveryDate',
@@ -217,9 +223,20 @@ const OrderForm = ({ ...props }: Props) => {
         },
     ]
 
-    const handleActive = (value: any) => {
-        setActive([value]);
-        localStorage.setItem('defaultFilterOrder', value);
+    const handleActive = (item: any) => {
+        if (Number(localStorage.getItem('defaultFilterOrder')) === item.value) {
+            setActive([0]);
+            localStorage.setItem('defaultFilterOrder', "0");
+            router.push({
+                query: { warehouseId: '' }
+            })
+        } else {
+            router.push({
+                query: { warehouseId: item.value }
+            })
+            setActive([item.value]);
+            localStorage.setItem('defaultFilterOrder', item.value);
+        }
     };
 
     useEffect(() => {
@@ -252,9 +269,13 @@ const OrderForm = ({ ...props }: Props) => {
                         {/* <IconFilter /> */}
                         {/* <span>lọc nhanh :</span> */}
                         <div className='flex items-center flex-wrap gap-2'>
-                            <div className={active.includes(1) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(1)}>Chưa duyệt</div>
-                            <div className={active.includes(2) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(2)}>Đã duyệt</div>
-                            <div className={active.includes(3) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(3)}>Không duyệt</div>
+                            {
+                                warehouses?.data.map((item: any, index: any) => {
+                                    return (
+                                        <div key={index} className={active.includes(item.value) ? 'border p-2 rounded bg-[#E9EBD5] text-[#476704] cursor-pointer' : 'border p-2 rounded cursor-pointer'} onClick={() => handleActive(item)}>{item.label}</div>
+                                    );
+                                })
+                            }
                         </div>
                     </div>
                 </div>
