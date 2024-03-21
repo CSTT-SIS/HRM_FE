@@ -285,6 +285,11 @@ const DashBoard = () => {
             stroke: {
                 show: false,
             },
+            grid: {
+                padding: {
+                    top: 10,
+                }
+            },
             plotOptions: {
                 pie: {
                     donut: {
@@ -313,7 +318,7 @@ const DashBoard = () => {
                 },
             ],
             legend: {
-                position: 'bottom',
+                position: 'top',
             },
         },
     };
