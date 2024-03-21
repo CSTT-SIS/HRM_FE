@@ -78,7 +78,6 @@
 		"swiper": "^8.4.7",
 		"swr": "^2.2.1",
 		"typescript": "4.9.4",
-		"yfiles": "^0.9.95",
 		"yup": "^0.32.11"
 	},
 	"devDependencies": {

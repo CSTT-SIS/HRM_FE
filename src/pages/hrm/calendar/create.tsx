@@ -1,6 +1,6 @@
 import IconX from '@/components/Icon/IconX';
 import { Dialog, Transition } from '@headlessui/react';
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
@@ -12,136 +12,32 @@ interface Props {
 }
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
+import { listAllHuman } from '@/services/apis/human.api';
+
 //FAKE DATA
-const getEmployeeOptions = () => {
-	const now = new Date();
-	const getMonth = (dt: Date, add: number = 0) => {
-		let month = dt.getMonth() + 1 + add;
-		const str = (month < 10 ? '0' + month : month).toString();
-		return str;
-		// return dt.getMonth() < 10 ? '0' + month : month;
-	};
-	return [
-		{
-			id: 1,
-			user: 'Bountafaibounnheuang',
-			title: 'Công việc 1',
-			start: now.getFullYear() + '-' + getMonth(now) + '-01T14:30:00',
-			end: now.getFullYear() + '-' + getMonth(now) + '-01T15:30:00',
-			className: 'danger',
-			description: 'Aenean fermentum quam vel sapien rutrum cursus. Vestibulum imperdiet finibus odio, nec tincidunt felis facilisis eu.',
-		},
-		{
-			id: 2,
-			user: 'Khampa Sirt',
-			title: 'Công việc 2',
-			start: now.getFullYear() + '-' + getMonth(now) + '-07T19:30:00',
-			end: now.getFullYear() + '-' + getMonth(now) + '-08T14:30:00',
-			className: 'primary',
-			description: 'Etiam a odio eget enim aliquet laoreet. Vivamus auctor nunc ultrices varius lobortis.',
-		},
-		{
-			id: 3,
-			user: 'Xaypayou',
-			title: 'Công việc 3',
-			start: now.getFullYear() + '-' + getMonth(now) + '-17T14:30:00',
-			end: now.getFullYear() + '-' + getMonth(now) + '-18T14:30:00',
-			className: 'info',
-			description: 'Proin et consectetur nibh. Mauris et mollis purus. Ut nec tincidunt lacus. Nam at rutrum justo, vitae egestas dolor.',
-		},
-		{
-			id: 4,
-			user: 'Suok Thi Da',
-			title: 'Công việc 4',
-			start: now.getFullYear() + '-' + getMonth(now) + '-12T10:30:00',
-			end: now.getFullYear() + '-' + getMonth(now) + '-13T10:30:00',
-			className: 'danger',
-			description: 'Mauris ut mauris aliquam, fringilla sapien et, dignissim nisl. Pellentesque ornare velit non mollis fringilla.',
-		},
-		{
-			id: 5,
-			user: 'Bount Yo',
-			title: 'Công việc 5',
-			start: now.getFullYear() + '-' + getMonth(now) + '-12T15:00:00',
-			end: now.getFullYear() + '-' + getMonth(now) + '-13T15:00:00',
-			className: 'info',
-			description: 'Integer fermentum bibendum elit in egestas. Interdum et malesuada fames ac ante ipsum primis in faucibus.',
-		},
-		{
-			id: 6,
-			user: 'Khăm sa vẳn',
-			title: 'Công việc 6',
-			start: now.getFullYear() + '-' + getMonth(now) + '-12T21:30:00',
-			end: now.getFullYear() + '-' + getMonth(now) + '-13T21:30:00',
-			className: 'success',
-			description:
-				'Curabitur facilisis vel elit sed dapibus. Nunc sagittis ex nec ante facilisis, sed sodales purus rhoncus. Donec est sapien, porttitor et feugiat sed, eleifend quis sapien. Sed sit amet maximus dolor.',
-		},
-		{
-			id: 7,
-			user: 'Toukta',
-			title: 'Công việc 7',
-			start: now.getFullYear() + '-' + getMonth(now) + '-12T05:30:00',
-			end: now.getFullYear() + '-' + getMonth(now) + '-13T05:30:00',
-			className: 'info',
-			description: ' odio lectus, porttitor molestie scelerisque blandit, hendrerit sed ex. Aenean malesuada iaculis erat, vitae blandit nisl accumsan ut.',
-		},
-		{
-			id: 8,
-			user: 'Phoutchana',
-			title: 'Công việc 8',
-			start: now.getFullYear() + '-' + getMonth(now) + '-12T20:00:00',
-			end: now.getFullYear() + '-' + getMonth(now) + '-13T20:00:00',
-			className: 'danger',
-			description: 'Sed purus urn"a", aliquam et pharetra ut, efficitur id mi. Pellentesque ut convallis velit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-		},
-		{
-			id: 9,
-			user: 'Sitthiphone',
-			title: 'Công việc 9',
-			start: now.getFullYear() + '-' + getMonth(now) + '-27T20:00:00',
-			end: now.getFullYear() + '-' + getMonth(now) + '-28T20:00:00',
-			className: 'success',
-			description: 'Sed purus urn"a", aliquam et pharetra ut, efficitur id mi. Pellentesque ut convallis velit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-		},
-		{
-			id: 10,
-			user: 'Khăm Pheng',
-			title: 'Công việc 10',
-			start: now.getFullYear() + '-' + getMonth(now, 1) + '-24T08:12:14',
-			end: now.getFullYear() + '-' + getMonth(now, 1) + '-27T22:20:20',
-			className: 'danger',
-			description: 'Sed purus urn"a", aliquam et pharetra ut, efficitur id mi. Pellentesque ut convallis velit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-		},
-		{
-			id: 11,
-			user: 'Vi lay phone',
-			title: 'Công việc 11',
-			start: now.getFullYear() + '-' + getMonth(now, -1) + '-13T08:12:14',
-			end: now.getFullYear() + '-' + getMonth(now, -1) + '-16T22:20:20',
-			className: 'primary',
-			description: 'Pellentesque ut convallis velit. Sed purus urn"a", aliquam et pharetra ut, efficitur id mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-		},
-		{
-			id: 13,
-			user: 'Seng phệt',
-			title: 'Công việc 13',
-			start: now.getFullYear() + '-' + getMonth(now, 1) + '-15T08:12:14',
-			end: now.getFullYear() + '-' + getMonth(now, 1) + '-18T22:20:20',
-			className: 'primary',
-			description: 'Pellentesque ut convallis velit. Sed purus urn"a", aliquam et pharetra ut, efficitur id mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-		},
-	].map((work) => ({
-		value: work.user,
-		label: work.user,
-	}));
-};
 
 const AddWorkScheduleModal = ({ ...props }: Props) => {
+    const [listHuman, setListHuman] = useState<any>();
+    useEffect(() => {
+        listAllHuman({
+            page: 1,
+            perPage: 1000
+        }).then((res) => {
+            console.log(res);
+            setListHuman(res.data?.map((human: any) => {
+                return {
+                    value: human.id,
+                    label: human.fullName
+                }
+            }));
+        }).catch((err) => {
+            console.log(err);
+        });
+    }, []);
 	const { t } = useTranslation();
 	const SubmittedForm = Yup.object().shape({
-		user: new Yup.ArraySchema().required(`${t('please_select_the_staff')}`),
-		title: Yup.string().required(`${t('please_fill_title_work_schedule')}`),
+		userId: new Yup.ArraySchema().required(`${t('please_select_the_staff')}`),
+		content: Yup.string().required(`${t('please_fill_content_work_schedule')}`),
 		start: Yup.date().required(`${t('please_fill_work_start_date')}`),
 		end: Yup.date().required(`${t('please_fill_work_end_date')}`),
 	});
@@ -150,7 +46,7 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 
 		<div className="p-5">
 			<div className='flex justify-between header-page-bottom pb-4 mb-4'>
-				<h1 className='page-title'>{t('add_calendar')}</h1>
+				<h1 className='page-content'>{t('add_calendar')}</h1>
 				<Link href="/hrm/calendar">
 					<button type="button" className="btn btn-primary btn-sm m-1 back-button" >
 						<IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
@@ -162,9 +58,8 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 			</div>
 			<Formik
 				initialValues={{
-					id: params ? `${params?.id}` : '',
-					user: params ? `${params?.user}` : [],
-					title: params ? `${params?.title}` : '',
+					userId: params ? `${params?.userId}` : [],
+					content: params ? `${params?.content}` : '',
 					start: params ? `${params?.start}` : '',
 					end: params ? `${params?.end}` : '',
 					type: params ? `${params?.type}` : '',
@@ -180,42 +75,31 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 						<div className="mb-3 flex gap-2">
 
 							<div className="flex-1">
-								<label htmlFor="title">
+								<label htmlFor="content">
 									{t('calendar_title')}
 									<span style={{ color: 'red' }}> *</span>
 								</label>
-								<Field autoComplete="off" name="title" type="text" id="title" placeholder={t('fill_calendar_title')} className="form-input" />
-								{submitCount ? errors.title ? <div className="mt-1 text-danger"> {errors.title} </div> : null : ''}
+								<Field autoComplete="off" name="content" type="text" id="content" placeholder={t('fill_calendar_title')} className="form-input" />
+								{submitCount ? errors.content ? <div className="mt-1 text-danger"> {errors.content} </div> : null : ''}
 							</div>
 							<div className="flex-1">
-								<label htmlFor="user">
+								<label htmlFor="userId">
 									{t('participants')}
 									<span style={{ color: 'red' }}> *</span>
 								</label>
 
 								<Select
-									name="user"
-									id='user'
-									options={getEmployeeOptions()}
+									name="userId"
+									id='userId'
+									options={listHuman}
 									isMulti
 									isSearchable
 									placeholder={`${t('choose_participants')}`}
 									onChange={e => {
-										setFieldValue('user', e)
+										setFieldValue('userId', e?.map((user: any) => user.value));
 									}}
 								/>
-
-
-								{/* <Field autoComplete="off" as="select" name="user" id="user" className="form-input"
-                                                    isMultiple="true"
-                                                    placeholder="test">
-														{getEmployeeOptions().map((employee) => (
-															<option key={employee.value} value={employee.value}>
-																{employee.label}
-															</option>
-														))}
-													</Field> */}
-								{submitCount ? errors.user ? <div className="mt-1 text-danger"> {errors.user} </div> : null : ''}
+								{submitCount ? errors.userId ? <div className="mt-1 text-danger"> {errors.userId} </div> : null : ''}
 							</div>
 						</div>
 

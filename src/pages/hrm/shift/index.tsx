@@ -26,13 +26,11 @@ import { useRouter } from 'next/router';
 import ShiftModal from './modal/ShiftModal';
 import shiftList from './shift.json';
 // json
-import IconFolderMinus from '@/components/Icon/IconFolderMinus';
-import IconDownload from '@/components/Icon/IconDownload';
-import IconEye from '@/components/Icon/IconEye';
-import IconNewEye from '@/components/Icon/IconNewEye';
 import IconNewEdit from '@/components/Icon/IconNewEdit';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
 import IconNewPlus from '@/components/Icon/IconNewPlus';
+import { Shifts } from '@/services/swr/shift.twr';
+import { deleteShift } from '@/services/apis/shift.api';
 
 interface Props {
     [key: string]: any;
@@ -73,6 +71,10 @@ const Duty = ({ ...props }: Props) => {
             label: `${t('shift_base_total_time')}`
         }
     ]
+
+        // get data
+    const { data: unit, pagination, mutate } = Shifts({ sortBy: 'id.ASC', ...router.query });
+
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const data = localStorage.getItem('shiftList');
@@ -83,12 +85,6 @@ const Duty = ({ ...props }: Props) => {
             }
         }
     }, [])
-
-    useEffect(() => {
-        setTotal(getStorge?.length);
-        setPageSize(PAGE_SIZES_DEFAULT);
-        setRecordsData(getStorge?.filter((item: any, index: any) => { return index <= 9 && page === 1 ? item : index >= 10 && index <= (page * 9) ? item : null }));
-    }, [getStorge, getStorge?.length, page])
 
     useEffect(() => {
         setShowLoader(false);
@@ -119,26 +115,44 @@ const Duty = ({ ...props }: Props) => {
 				reverseButtons: true,
             })
             .then((result) => {
-                if (result.value) {
-                    const value = getStorge.filter((item: any) => { return (item.id !== data.id) });
-                    localStorage.setItem('shiftList', JSON.stringify(value));
-                    setGetStorge(value);
-                    showMessage(`${t('delete_shift_success')}`, 'success')
+                 if (result.value) {
+                    deleteShift({ id }).then(() => {
+                        mutate();
+                        showMessage(`${t('delete_shift_success')}`, 'success');
+                    }).catch((err) => {
+                        showMessage(`${err?.response?.data?.message}`, 'error');
+                    });
                 }
             });
     };
 
-    const handleSearch = (e: any) => {
-        if (e.target.value === "") {
-            setRecordsData(getStorge);
-        } else {
-            setRecordsData(
-                getStorge.filter((item: any) => {
-                    return item.name.toLowerCase().includes(e.target.value.toLowerCase())
-                })
-            )
-        }
+    const handleSearch = (param: any) => {
+        router.replace(
+            {
+                pathname: router.pathname,
+                query: {
+                    ...router.query,
+                    search: param
+                },
+            }
+        );
     }
+        const handleChangePage = (page: number, pageSize: number) => {
+        router.replace(
+            {
+                pathname: router.pathname,
+                query: {
+                    ...router.query,
+                    page: page,
+                    perPage: pageSize,
+                },
+            },
+            undefined,
+            { shallow: true },
+        );
+        return pageSize;
+    };
+
     const handleDetail = (data: any) => {
         setData(data);
     };
@@ -273,17 +287,17 @@ const Duty = ({ ...props }: Props) => {
                         </div>
                 </div>
                 <div className="datatables">
-                    <DataTable
+                      <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover custom_table"
-                        records={recordsData}
+                        records={unit?.data}
                         columns={columns}
-                        totalRecords={total}
-                        recordsPerPage={pageSize}
-                        page={page}
-                        onPageChange={(p) => setPage(p)}
+                        totalRecords={pagination?.totalRecords}
+                        recordsPerPage={pagination?.perPage}
+                        page={pagination?.page}
+                        onPageChange={(p) => handleChangePage(p, pagination?.perPage)}
                         recordsPerPageOptions={PAGE_SIZES}
-                        onRecordsPerPageChange={setPageSize}
+                        onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
                         sortStatus={sortStatus}
                         onSortStatusChange={setSortStatus}
                         minHeight={200}
