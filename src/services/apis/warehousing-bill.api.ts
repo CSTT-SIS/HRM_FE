@@ -37,6 +37,11 @@ export const WarehousingBillEditDetail = (body: any) => {
 	return callApi(endpoint, 'PATCH', body);
 };
 
+export const WarehousingBillDeleteDetail = (body: any) => {
+	const endpoint = `/warehousing-bill/${body.id}/remove-detail/${body.detailId}`;
+	return callApi(endpoint, 'PATCH', body);
+};
+
 export const WarehousingBillAddDetails = (body: any) => {
 	const endpoint = `/warehousing-bill/${body.id}/add-details`;
 	return callApi(endpoint, 'POST', body);

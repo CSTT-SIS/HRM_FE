@@ -6,6 +6,12 @@ export const GetProduct = (body: any) => {
 	const endpoint = `/product/${body.id}`;
 	return callApi(endpoint, 'GET', null);
 };
+
+export const GetQuantity = (body: any) => {
+	const endpoint = `/product/${body.id}/quantity`;
+	return callApi(endpoint, 'GET', null);
+};
+
 export const CreateProduct = (body: any) => {
 	const endpoint = '/product';
 	return callApi(endpoint, 'POST', body);

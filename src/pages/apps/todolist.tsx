@@ -776,7 +776,7 @@ const Todolist = () => {
                                     <IconMenu />
                                 </button>
                                 <div className="group relative flex-1">
-                                    <input
+                                    <input autoComplete="off"
                                         type="text"
                                         className="peer form-input ltr:!pr-10 rtl:!pl-10"
                                         placeholder="Search Task..."
@@ -825,7 +825,7 @@ const Todolist = () => {
                                             return (
                                                 <tr className={`group cursor-pointer ${task.status === 'complete' ? 'bg-white-light/30 dark:bg-[#1a2941] ' : ''}`} key={task.id}>
                                                     <td className="w-1">
-                                                        <input
+                                                        <input autoComplete="off"
                                                             type="checkbox"
                                                             id={`chk-${task.id}`}
                                                             className="form-checkbox"
@@ -1070,7 +1070,7 @@ const Todolist = () => {
                                             <form>
                                                 <div className="mb-5">
                                                     <label htmlFor="title">Title</label>
-                                                    <input id="title" type="text" placeholder="Enter Task Title" className="form-input" value={params.title} onChange={(e) => changeValue(e)} />
+                                                    <input autoComplete="off" id="title" type="text" placeholder="Enter Task Title" className="form-input" value={params.title} onChange={(e) => changeValue(e)} />
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="assignee">Assignee</label>

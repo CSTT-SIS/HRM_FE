@@ -192,7 +192,7 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 														Nhân viên
 														<span style={{ color: 'red' }}> *</span>
 													</label>
-													<Field as="select" name="user" id="user" className="form-input">
+													<Field autoComplete="off" as="select" name="user" id="user" className="form-input">
 														<option value="">Chọn nhân viên</option>
 														{getEmployeeOptions().map((employee) => (
 															<option key={employee.value} value={employee.value}>
@@ -207,26 +207,26 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 														Tiêu đề lịch nghỉ lễ
 														<span style={{ color: 'red' }}> *</span>
 													</label>
-													<Field name="title" type="text" id="title" placeholder="Nhập tiêu đề lịch nghỉ lễ" className="form-input" />
+													<Field autoComplete="off" name="title" type="text" id="title" placeholder="Nhập tiêu đề lịch nghỉ lễ" className="form-input" />
 													{errors.title ? <div className="mt-1 text-danger"> {errors.title} </div> : null}
 												</div>
 												<div className="mb-3">
 													<label htmlFor="dateStart">
 														Giờ bắt đầu <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field id="start" type="datetime-local" name="start" className="form-input" placeholder="Giờ bắt đầu" min={minStartDate} />
+													<Field autoComplete="off" id="start" type="datetime-local" name="start" className="form-input" placeholder="Giờ bắt đầu" min={minStartDate} />
 													{errors.start ? <div className="mt-1 text-danger"> {errors.start} </div> : null}
 												</div>
 												<div className="mb-3">
 													<label htmlFor="dateEnd">
 														Giờ kết thúc <span style={{ color: 'red' }}>* </span>
 													</label>
-													<Field id="end" type="datetime-local" name="end" className="form-input" placeholder="Giờ kết thúc" min={minEndDate} />
+													<Field autoComplete="off" id="end" type="datetime-local" name="end" className="form-input" placeholder="Giờ kết thúc" min={minEndDate} />
 													{errors.end ? <div className="mt-1 text-danger"> {errors.end} </div> : null}
 												</div>
 												<div className="mb-3">
 													<label htmlFor="description">Mô tả ngày lễ</label>
-													<Field id="description" as="textarea" rows="5" name="description" className="form-input" placeholder="Nhập mô tả ngày lễ" />
+													<Field autoComplete="off" id="description" as="textarea" rows="5" name="description" className="form-input" placeholder="Nhập mô tả ngày lễ" />
 												</div>
 												<div>
 													<div className="!mt-8 flex items-center justify-end">

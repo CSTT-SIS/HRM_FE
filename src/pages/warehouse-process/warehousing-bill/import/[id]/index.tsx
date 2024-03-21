@@ -9,7 +9,7 @@ import { setPageTitle } from '@/store/themeConfigSlice';
 import { DataTableSortStatus, DataTable } from 'mantine-datatable';
 import { useDispatch } from 'react-redux';
 import { WarehousingBillDetail, WarehousingBillListRequest } from '@/services/swr/warehousing-bill.twr';
-import { CreateWarehousingBill, EditWarehousingBill, GetWarehousingBill, WarehousingBillAddDetails, WarehousingBillFinish } from '@/services/apis/warehousing-bill.api';
+import { CreateWarehousingBill, EditWarehousingBill, GetWarehousingBill, WarehousingBillAddDetails, WarehousingBillDeleteDetail, WarehousingBillFinish } from '@/services/apis/warehousing-bill.api';
 import { Field, Form, Formik } from 'formik';
 import AnimateHeight from 'react-animate-height';
 import Select from 'react-select';
@@ -24,8 +24,11 @@ import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import IconTrashLines from '@/components/Icon/IconTrashLines';
 import Swal from 'sweetalert2';
-import DetailModal from '../form/DetailModal';
+import DetailModal from '../modal/DetailModal';
 import IconPlus from '@/components/Icon/IconPlus';
+import IconNewEdit from '@/components/Icon/IconNewEdit';
+import IconNewTrash from '@/components/Icon/IconNewTrash';
+import TallyModal from '../../TallyModal';
 
 interface Props {
     [key: string]: any;
@@ -42,6 +45,7 @@ const ExportPage = ({ ...props }: Props) => {
     const [dataDetail, setDataDetail] = useState<any>();
     const [listDataDetail, setListDataDetail] = useState<any>([]);
     const [openModal, setOpenModal] = useState(false);
+    const [openModalTally, setOpenModalTally] = useState(false);
     const [query, setQuery] = useState<any>();
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
@@ -108,18 +112,23 @@ const ExportPage = ({ ...props }: Props) => {
                 })
                 .then((result) => {
                     if (result.value) {
-                        // DeleteOrderDetail({ id: router.query.id, itemId: id }).then(() => {
-                        //     mutate();
-                        //     showMessage(`${t('delete_product_success')}`, 'success');
-                        // }).catch((err) => {
-                        //     showMessage(`${err?.response?.data?.message}`, 'error');
-                        // });
+                        WarehousingBillDeleteDetail({ id: router.query.id, detailId: id }).then(() => {
+                            mutate();
+                            showMessage(`${t('delete_product_success')}`, 'success');
+                        }).catch((err) => {
+                            showMessage(`${err?.response?.data?.message}`, 'error');
+                        });
                     }
                 });
         } else {
             setListDataDetail(listDataDetail.filter((item: any) => item.id !== id))
         }
     };
+
+    const handleTally = (data: any) => {
+        setOpenModalTally(true);
+        setDataDetail(data);
+    }
 
     const columns = [
         {
@@ -133,7 +142,14 @@ const ExportPage = ({ ...props }: Props) => {
             render: ({ product }: any) => <span>{product?.name}</span>,
             sortable: false
         },
-        { accessor: 'proposalQuantity', title: 'số lượng', sortable: false },
+        {
+            accessor: 'quantity',
+            title: 'số lượng yêu cầu',
+            render: (records: any) => (<>{records.quantity || records.proposalQuantity}</>),
+            sortable: false
+        },
+        { accessor: 'actualQuantity', title: 'số lượng thực tế', sortable: false },
+        { accessor: 'expirationDate', title: 'Ngày hết hạn', sortable: false },
         { accessor: 'note', title: 'Ghi chú', sortable: false },
         {
             accessor: 'action',
@@ -143,19 +159,32 @@ const ExportPage = ({ ...props }: Props) => {
                 <div className="flex items-center w-max mx-auto gap-2">
                     {
                         router.query.type === "PENDING" && disable &&
-                        <button className='bg-[#C5E7AF] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleEdit(records)}>
-                            <IconPencil /> <span>{`${t('enter_quantity')}`}</span>
-                        </button>
+                        <div className="w-[60px]">
+                            <button type="button" className='button-edit' onClick={() => handleTally(records)}>
+                                <IconNewEdit /><span>
+                                    {t('tally')}
+                                </span>
+                            </button>
+                        </div>
                     }
                     {
                         !disable &&
                         <>
-                            <button className='bg-[#9CD3EB] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleEdit(records)}>
-                                <IconPencil /> <span>{`${t('edit')}`}</span>
-                            </button>
-                            <button className='bg-[#E43940] flex justify-between gap-1 p-1 rounded text-[#F5F5F5]' type="button" onClick={() => handleDelete(records)}>
-                                <IconTrashLines />  <span>{`${t('delete')}`}</span>
-                            </button>
+                            <div className="w-[60px]">
+                                <button type="button" className='button-edit' onClick={() => handleEdit(records)}>
+                                    <IconNewEdit /><span>
+                                        {t('edit')}
+                                    </span>
+                                </button>
+                            </div>
+                            <div className="w-[80px]">
+                                <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                                    <IconNewTrash />
+                                    <span>
+                                        {t('delete')}
+                                    </span>
+                                </button>
+                            </div>
                         </>
                     }
                 </div>
@@ -380,7 +409,7 @@ const ExportPage = ({ ...props }: Props) => {
                                                     <div className='flex justify-between gap-5 mt-5 mb-5'>
                                                         <div className="w-1/2">
                                                             <label htmlFor="personRequest" className='label'> {t('person_request')} < span style={{ color: 'red' }}>* </span></label >
-                                                            <Field
+                                                            <Field autoComplete="off"
                                                                 name="personRequest"
                                                                 type="text"
                                                                 id="personRequest"
@@ -394,7 +423,7 @@ const ExportPage = ({ ...props }: Props) => {
                                                         </div>
                                                         <div className="w-1/2">
                                                             <label htmlFor="timeRequest" className='label'> {t('time_request')} < span style={{ color: 'red' }}>* </span></label >
-                                                            <Field
+                                                            <Field autoComplete="off"
                                                                 name="timeRequest"
                                                                 render={({ field }: any) => (
                                                                     <Flatpickr
@@ -463,7 +492,7 @@ const ExportPage = ({ ...props }: Props) => {
 
                                                         <div className="w-1/2">
                                                             <label htmlFor="createdBy" className='label'>< span style={{ color: 'red' }}>* </span> {t('proposal_by')}</label >
-                                                            <Field
+                                                            <Field autoComplete="off"
                                                                 name="createdBy"
                                                                 id="createdBy"
                                                                 type="text"
@@ -478,10 +507,10 @@ const ExportPage = ({ ...props }: Props) => {
                                                     </div>
                                                     <div className="mt-5">
                                                         <label htmlFor="note" className='label'> {t('notes')}</label >
-                                                        <Field
+                                                        <Field autoComplete="off"
                                                             name="note"
                                                             as="textarea"
-                                                            id="note"
+                                                            id="description"
                                                             placeholder={`${t('enter_note')}`}
                                                             className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
                                                             disabled={disable}
@@ -515,19 +544,19 @@ const ExportPage = ({ ...props }: Props) => {
                                             <div className="flex items-center flex-wrap">
                                                 {
                                                     !disable &&
-                                                    <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
+                                                    <button data-testId='modal-import-btn' type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
                                                         <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                                                         {t('add_product_list')}
                                                     </button>
                                                 }
                                             </div>
 
-                                            {/* <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
+                                            {/* <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
                                         </div>
                                         <div className="datatables">
                                             <DataTable
                                                 highlightOnHover
-                                                className="whitespace-nowrap table-hover"
+                                                className="whitespace-nowrap table-hover custom_table"
                                                 records={listDataDetail}
                                                 columns={columns}
                                                 sortStatus={sortStatus}
@@ -545,6 +574,13 @@ const ExportPage = ({ ...props }: Props) => {
                                         listData={listDataDetail}
                                         setListData={setListDataDetail}
                                     />
+                                    <TallyModal
+                                        openModal={openModalTally}
+                                        setOpenModal={setOpenModalTally}
+                                        data={dataDetail}
+                                        setData={setDataDetail}
+                                        orderDetailMutate={mutate}
+                                    />
                                 </AnimateHeight>
                             </div>
                         </div>
@@ -555,7 +591,7 @@ const ExportPage = ({ ...props }: Props) => {
                                     <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
                                         {t('cancel')}
                                     </button>
-                                    <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleSubmit()}>
+                                    <button data-testId='submit-btn' type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleSubmit()}>
                                         {router.query.id !== "create" ? t('update') : t('save')}
                                     </button>
                                 </>

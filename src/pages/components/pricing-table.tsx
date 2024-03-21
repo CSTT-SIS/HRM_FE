@@ -254,7 +254,7 @@ const PricingTable = () => {
                                 <span className={`${!yearlyPrice ? 'text-primary' : 'text-white-dark'}`}>Monthly</span>
 
                                 <label className="relative h-6 w-12">
-                                    <input
+                                    <input autoComplete="off"
                                         id="custom_switch_checkbox1"
                                         type="checkbox"
                                         className="custom_switch peer absolute top-0 z-10 h-full w-full cursor-pointer opacity-0 ltr:left-0 rtl:right-0"
@@ -335,7 +335,7 @@ const PricingTable = () => {
             <span className={\`\${!yearlyPrice ? 'text-primary' : 'text-white-dark'}\`}>Monthly</span>
 
             <label className="w-12 h-6 relative">
-                <input
+                <input autoComplete="off"
                     id="custom_switch_checkbox1"
                     type="checkbox"
                     className="custom_switch absolute ltr:left-0 rtl:right-0 top-0 w-full h-full opacity-0 z-10 cursor-pointer peer"

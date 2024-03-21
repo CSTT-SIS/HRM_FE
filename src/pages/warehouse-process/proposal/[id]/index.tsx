@@ -87,9 +87,13 @@ const DetailPage = ({ ...props }: Props) => {
             } : "",
             personRequest: data?.createdBy ? data?.createdBy.fullName : JSON.parse(localStorage.getItem('profile') || "").fullName,
             timeRequest: data?.createdAt ? data?.createdAt : moment().format("YYYY-MM-DD hh:mm"),
+            warehouseId: data ? {
+                value: `${data?.warehouse?.id}`,
+                label: `${data?.warehouse?.name}`,
+            }
+                : '',
         })
     }, [data, router]);
-
     useEffect(() => {
         if (Number(router.query.id)) {
             setQuery({ id: router.query.id, ...router.query })
@@ -195,13 +199,13 @@ const DetailPage = ({ ...props }: Props) => {
     ]
 
     const handleCancel = () => {
-        router.push(`/warehouse-process/proposal-supply`)
+        router.push(`/warehouse-process/proposal`)
     };
 
     const handleChangeComplete = (id: any) => {
         ProposalPending(id).then(() => {
             showMessage(`${t('update_success')}`, 'success');
-            router.push("/warehouse-process/proposal-supply")
+            router.push("/warehouse-process/proposal")
         }).catch((err) => {
             showMessage(`${err?.response?.data?.message}`, 'error');
         });
@@ -220,13 +224,16 @@ const DetailPage = ({ ...props }: Props) => {
             name: param.name,
             type: "SUPPLY",
             content: param.content,
-            departmentId: Number(param?.departmentId?.value)
+            departmentId: Number(param?.departmentId?.value),
+            warehouseId: Number(param?.warehouseId?.value)
         };
 
         if (data) {
             EditProposal({ id: data?.id, ...query }).then((res) => {
                 showMessage(`${t('edit_success')}`, 'success');
-                handleChangeComplete({ id: data?.id })
+                if (data.status !== "PENDING") {
+                    handleChangeComplete({ id: data?.id })
+                }
             }).catch((err) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
@@ -238,7 +245,7 @@ const DetailPage = ({ ...props }: Props) => {
                 CreateProposal(query).then((res) => {
                     handleDetail(res.data.id);
                 }).catch((err) => {
-                    showMessage(`${err?.response?.data?.message}`, 'error');
+                    showMessage(`${err?.response?.data?.message[0].error}`, 'error');
                 });
             }
         }
@@ -308,7 +315,7 @@ const DetailPage = ({ ...props }: Props) => {
             )}
             <div className='flex justify-between header-page-bottom pb-4 mb-4'>
                 <h1 className='page-title'>{t('proposal_supply')}</h1>
-                <Link href="/warehouse-process/proposal-supply">
+                <Link href="/warehouse-process/proposal">
                     <div className="btn btn-primary btn-sm m-1 back-button h-9" >
                         <IconBack />
                         <span>
@@ -348,7 +355,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                 <div className='flex justify-between gap-5 mt-5 mb-5'>
                                                     <div className="w-1/2">
                                                         <label htmlFor="personRequest" className='label'> {t('person_request')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Field
+                                                        <Field autoComplete="off"
                                                             name="personRequest"
                                                             type="text"
                                                             id="personRequest"
@@ -362,7 +369,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                     </div>
                                                     <div className="w-1/2">
                                                         <label htmlFor="timeRequest" className='label'> {t('time_request')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Field
+                                                        <Field autoComplete="off"
                                                             name="timeRequest"
                                                             render={({ field }: any) => (
                                                                 <Flatpickr
@@ -387,7 +394,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                 <div className='flex justify-between gap-5 mt-5'>
                                                     <div className=" w-1/2">
                                                         <label htmlFor="name" className='label'> {t('name_proposal')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Field
+                                                        <Field autoComplete="off"
                                                             name="name"
                                                             type="text"
                                                             id="name"
@@ -442,7 +449,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className='mt-5'>
                                                     <label htmlFor="type" className='label'> {t('content')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                         name="content"
                                                         as="textarea"
                                                         id="content"
@@ -482,14 +489,14 @@ const DetailPage = ({ ...props }: Props) => {
                                         <div className="flex items-center flex-wrap">
                                             {
                                                 !disable &&
-                                                <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
+                                                <button data-testId="modal-proposal-btn" type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
                                                     <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                                                     {t('add_product_list')}
                                                 </button>
                                             }
                                         </div>
 
-                                        {/* <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
+                                        {/* <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
                                     </div>
                                     <div className="datatables">
                                         <DataTable
@@ -521,7 +528,7 @@ const DetailPage = ({ ...props }: Props) => {
                             <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
                                 {t('cancel')}
                             </button>
-                            <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleSubmit()}>
+                            <button data-testId="submit-btn" type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleSubmit()}>
                                 {router.query.id !== "create" ? t('update') : t('save')}
                             </button>
                         </div>

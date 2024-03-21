@@ -36,7 +36,7 @@ const LoginBoxed = () => {
             })
             .then(() => {
                 Profile().then((res) => localStorage.setItem('profile', JSON.stringify(res.data)))
-                const returnUrl = (router.query.returnUrl as string) ?? '/';
+                const returnUrl = (router.query.returnUrl as string) ?? '/hrm/dashboard';
                 router.push(returnUrl).finally(() => {
                     setTimeout(() => {
                         showMessage(`${t('sign_in_success')}`, 'success');
@@ -142,7 +142,7 @@ const LoginBoxed = () => {
                                                 {t('username')}
                                             </label>
                                             <div className="relative text-white-dark">
-                                                <Field
+                                                <Field autoComplete="off"
                                                     name="userName"
                                                     data-testid="username"
                                                     id="userName"
@@ -164,7 +164,7 @@ const LoginBoxed = () => {
 
                                             </p>
                                             <div className="relative text-white-dark">
-                                                <Field
+                                                <Field autoComplete="off"
                                                     name="passWord"
                                                     data-testid="password"
                                                     id="passWord"

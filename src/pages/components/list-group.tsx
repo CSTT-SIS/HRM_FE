@@ -313,21 +313,21 @@ const ListGroup = () => {
                     <div className="mb-5">
                         <div className="flex flex-col rounded-md border border-white-light dark:border-[#1b2e4b]">
                             <div className="flex space-x-4 border-b border-white-light px-4 py-2.5 hover:bg-[#eee] rtl:space-x-reverse dark:border-[#1b2e4b] dark:hover:bg-[#eee]/10">
-                                <input id="tack_checkbox1" type="checkbox" className="form-checkbox" />
+                                <input autoComplete="off" id="tack_checkbox1" type="checkbox" className="form-checkbox" />
                                 <label htmlFor="tack_checkbox1" className="mb-0 cursor-pointer">
                                     List groups are a flexible and powerful component for displaying simple.
                                     <span className="badge my-auto bg-secondary hover:top-0 ltr:ml-3 rtl:mr-3">Project</span>
                                 </label>
                             </div>
                             <div className="group flex space-x-4 border-b border-white-light bg-primary px-4 py-2.5 text-white shadow-[0_1px_15px_1px_rgba(67,97,238,0.15)] hover:bg-[#eee] hover:text-black rtl:space-x-reverse dark:border-[#1b2e4b] dark:hover:bg-[#eee]/10 dark:hover:text-white">
-                                <input id="tack_checkbox2" type="checkbox" className="form-checkbox checked:border-white-light dark:checked:border-[#253B5C]" />
+                                <input autoComplete="off" id="tack_checkbox2" type="checkbox" className="form-checkbox checked:border-white-light dark:checked:border-[#253B5C]" />
                                 <label htmlFor="tack_checkbox2" className="mb-0 cursor-pointer">
                                     List groups are a flexible and powerful component for displaying simple.
                                     <span className="badge my-auto bg-info hover:top-0 ltr:ml-3 rtl:mr-3">Urgent</span>
                                 </label>
                             </div>
                             <div className="flex space-x-4 px-4 py-2.5 hover:bg-[#eee] rtl:space-x-reverse dark:hover:bg-[#eee]/10">
-                                <input id="tack_checkbox3" type="checkbox" className="form-checkbox" />
+                                <input autoComplete="off" id="tack_checkbox3" type="checkbox" className="form-checkbox" />
                                 <label htmlFor="tack_checkbox3" className="mb-0 cursor-pointer">
                                     List groups are a flexible and powerful component for displaying simple.
                                     <span className="badge my-auto bg-success hover:top-0 ltr:ml-3 rtl:mr-3">Success</span>
@@ -341,21 +341,21 @@ const ListGroup = () => {
                                 {`<div className="mb-5">
     <div className="flex flex-col rounded-md border border-white-light dark:border-[#1b2e4b]">
         <div className="flex space-x-4 rtl:space-x-reverse border-b border-white-light dark:border-[#1b2e4b] px-4 py-2.5 hover:bg-[#eee] dark:hover:bg-[#eee]/10">
-            <input id="tack_checkbox1" type="checkbox" className="form-checkbox" />
+            <input autoComplete="off" id="tack_checkbox1" type="checkbox" className="form-checkbox" />
             <label htmlFor="tack_checkbox1" className="mb-0 cursor-pointer">
                 List groups are a flexible and powerful component for displaying simple.
                 <span className="badge bg-secondary my-auto ltr:ml-3 rtl:mr-3 hover:top-0">Project</span>
             </label>
         </div>
         <div className="flex space-x-4 rtl:space-x-reverse border-b border-white-light dark:border-[#1b2e4b] px-4 py-2.5 bg-primary text-white shadow-[0_1px_15px_1px_rgba(67,97,238,0.15)] hover:bg-[#eee] dark:hover:bg-[#eee]/10 hover:text-black dark:hover:text-white group">
-            <input id="tack_checkbox2" type="checkbox" className="form-checkbox dark:checked:border-[#253B5C] checked:border-white-light" />
+            <input autoComplete="off" id="tack_checkbox2" type="checkbox" className="form-checkbox dark:checked:border-[#253B5C] checked:border-white-light" />
             <label htmlFor="tack_checkbox2" className="mb-0 cursor-pointer">
                 List groups are a flexible and powerful component for displaying simple.
                 <span className="badge bg-info my-auto ltr:ml-3 rtl:mr-3 hover:top-0">Urgent</span>
             </label>
         </div>
         <div className="flex space-x-4 rtl:space-x-reverse px-4 py-2.5 hover:bg-[#eee] dark:hover:bg-[#eee]/10">
-            <input id="tack_checkbox3" type="checkbox" className="form-checkbox" />
+            <input autoComplete="off" id="tack_checkbox3" type="checkbox" className="form-checkbox" />
             <label htmlFor="tack_checkbox3" className="mb-0 cursor-pointer">
                 List groups are a flexible and powerful component for displaying simple.
                 <span className="badge bg-success my-auto ltr:ml-3 rtl:mr-3 hover:top-0">Success</span>

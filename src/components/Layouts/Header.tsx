@@ -228,7 +228,7 @@ const Header = () => {
 								onSubmit={() => setSearch(false)}
 							>
 								<div className="relative">
-									<input
+									<input autoComplete="off"
 										type="text"
 										className="peer form-input bg-gray-100 placeholder:tracking-widest ltr:pl-9 ltr:pr-9 rtl:pl-9 rtl:pr-9 sm:bg-transparent ltr:sm:pr-4 rtl:sm:pl-4"
 										placeholder={`${t('search')}`}

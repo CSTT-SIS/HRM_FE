@@ -133,7 +133,7 @@ const CategoryModal = ({ ...props }: Props) => {
 										{' '}
 										{t('name_category')} <span style={{ color: 'red' }}>* </span>
 									</label>
-									<Field name="name" type="text" id="name" placeholder={`${t('enter_name')}`} className="form-input" />
+									<Field autoComplete="off" name="name" type="text" id="name" placeholder={`${t('enter_name')}`} className="form-input" />
 									{submitCount && errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null}
 								</div>
 								<div className="w-1/2">
@@ -158,7 +158,7 @@ const CategoryModal = ({ ...props }: Props) => {
 							</div>
 							<div className="">
 								<label htmlFor="description"> {t('description')} </label>
-								<Field name="description" type="text" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
+								<Field autoComplete="off" name="description" type="text" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
 								{submitCount && errors.description ? <div className="mt-1 text-danger"> {errors.description} </div> : null}
 							</div>
 							<div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">

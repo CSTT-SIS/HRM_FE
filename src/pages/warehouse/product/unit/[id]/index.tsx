@@ -94,14 +94,14 @@ const UnitModal = ({ ...props }: Props) => {
                             <div className='flex justify-between gap-5'>
                                 <div className="w-1/2">
                                     <label htmlFor="name" > {t('name') + " dvt"} < span style={{ color: 'red' }}>* </span></label >
-                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name')}`} className="form-input" />
+                                    <Field autoComplete="off" name="name" type="text" id="name" placeholder={`${t('enter_name')}`} className="form-input" />
                                     {submitCount && errors.name ? (
                                         <div className="text-danger mt-1"> {errors.name} </div>
                                     ) : null}
                                 </div>
                                 <div className="w-1/2">
                                     <label htmlFor="description" > {t('description')} </label >
-                                    <Field name="description" type="text" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
+                                    <Field autoComplete="off" name="description" type="text" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
                                     {submitCount && errors.description ? (
                                         <div className="text-danger mt-1"> {errors.description} </div>
                                     ) : null}
@@ -111,7 +111,7 @@ const UnitModal = ({ ...props }: Props) => {
                                 <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
                                     {t('cancel')}
                                 </button>
-                                <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" disabled={disabled}>
+                                <button data-testId="submit-btn" type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" disabled={disabled}>
                                     {data !== undefined ? t('update') : t('add')}
                                 </button>
                             </div>

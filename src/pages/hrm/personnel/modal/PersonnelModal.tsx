@@ -140,7 +140,7 @@ const PersonnelModal = ({ ...props }: Props) => {
 																					{' '}
 																					{t('code_staff')} <span style={{ color: 'red' }}>* </span>
 																				</label>
-																				<Field name="code" type="text" id="code" placeholder={`${t('enter_code_staff')}`} className="form-input" />
+																				<Field autoComplete="off" name="code" type="text" id="code" placeholder={`${t('enter_code_staff')}`} className="form-input" />
 																				{errors.code ? <div className="mt-1 text-danger"> {errors.code} </div> : null}
 																			</div>
 																			<div className="mb-5 w-1/2">
@@ -148,7 +148,7 @@ const PersonnelModal = ({ ...props }: Props) => {
 																					{' '}
 																					{t('name_staff')} <span style={{ color: 'red' }}>* </span>
 																				</label>
-																				<Field name="name" type="text" id="name" placeholder={`${t('enter_name_staff')}`} className="form-input" />
+																				<Field autoComplete="off" name="name" type="text" id="name" placeholder={`${t('enter_name_staff')}`} className="form-input" />
 																				{errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null}
 																			</div>
 																		</div>
@@ -158,7 +158,7 @@ const PersonnelModal = ({ ...props }: Props) => {
 																					{' '}
 																					{t('surname_middle')} <span style={{ color: 'red' }}>* </span>
 																				</label>
-																				<Field name="surname" type="text" id="surname" placeholder={t('enter_surname_middle')} className="form-input" />
+																				<Field autoComplete="off" name="surname" type="text" id="surname" placeholder={t('enter_surname_middle')} className="form-input" />
 																				{errors.surname ? <div className="mt-1 text-danger"> {errors.surname} </div> : null}
 																			</div>
 																			<div className="mb-5 w-1/2">
@@ -166,7 +166,7 @@ const PersonnelModal = ({ ...props }: Props) => {
 																					{' '}
 																					Email <span style={{ color: 'red' }}>* </span>
 																				</label>
-																				<Field name="email" type="text" id="email" placeholder={t('enter_email')} className="form-input" />
+																				<Field autoComplete="off" name="email" type="text" id="email" placeholder={t('enter_email')} className="form-input" />
 																				{errors.email ? <div className="mt-1 text-danger"> {errors.email} </div> : null}
 																			</div>
 																		</div>
@@ -176,7 +176,7 @@ const PersonnelModal = ({ ...props }: Props) => {
 																					{' '}
 																					{t('phone_number')} <span style={{ color: 'red' }}>* </span>
 																				</label>
-																				<Field name="phone" type="text" id="phone" placeholder={t('enter_phone_number')} className="form-input" />
+																				<Field autoComplete="off" name="phone" type="text" id="phone" placeholder={t('enter_phone_number')} className="form-input" />
 																				{errors.phone ? <div className="mt-1 text-danger"> {errors.phone} </div> : null}
 																			</div>
 																			<div className="mb-5 w-1/2">
@@ -184,7 +184,7 @@ const PersonnelModal = ({ ...props }: Props) => {
 																					{' '}
 																					{t('username')}<span style={{ color: 'red' }}>* </span>
 																				</label>
-																				<Field name="userName" type="text" id="userName" placeholder={t('enter_user_name')} className="form-input" />
+																				<Field autoComplete="off" name="userName" type="text" id="userName" placeholder={t('enter_user_name')} className="form-input" />
 																				{errors.userName ? <div className="mt-1 text-danger"> {errors.userName} </div> : null}
 																			</div>
 																		</div>
@@ -215,7 +215,7 @@ const PersonnelModal = ({ ...props }: Props) => {
 																					{' '}
 																					{t('other_name')}<span style={{ color: 'red' }}>* </span>
 																				</label>
-																				<Field name="othername" type="text" id="othername" placeholder={t('enter_other_name')} className="form-input" />
+																				<Field autoComplete="off" name="othername" type="text" id="othername" placeholder={t('enter_other_name')} className="form-input" />
 																				{errors.othername ? <div className="mt-1 text-danger"> {errors.othername} </div> : null}
 																			</div>
 																			<div className="mb-5 w-1/2">
@@ -223,7 +223,7 @@ const PersonnelModal = ({ ...props }: Props) => {
 																					{' '}
 																					{t('date_of_birth')} <span style={{ color: 'red' }}>* </span>
 																				</label>
-																				<Field name="dateofbirth" type="text" id="dateofbirth" placeholder={t('enter_date_of_birth')} className="form-input" />
+																				<Field autoComplete="off" name="dateofbirth" type="text" id="dateofbirth" placeholder={t('enter_date_of_birth')} className="form-input" />
 																				{errors.dateofbirth ? <div className="mt-1 text-danger"> {errors.dateofbirth} </div> : null}
 																			</div>
 																		</div>
@@ -244,7 +244,7 @@ const PersonnelModal = ({ ...props }: Props) => {
 																					{' '}
 																					{t('id_number')} <span style={{ color: 'red' }}>* </span>
 																				</label>
-																				<Field name="IDnumber" type="text" id="IDnumber" placeholder={t('enter_id_number')} className="form-input" />
+																				<Field autoComplete="off" name="IDnumber" type="text" id="IDnumber" placeholder={t('enter_id_number')} className="form-input" />
 																				{errors.IDnumber ? <div className="mt-1 text-danger"> {errors.IDnumber} </div> : null}
 																			</div>
 																		</div>
@@ -254,7 +254,7 @@ const PersonnelModal = ({ ...props }: Props) => {
 																					{' '}
 																					{t('date_of_issue')}<span style={{ color: 'red' }}>* </span>
 																				</label>
-																				<Field name="dateissue" type="text" id="dateissue" placeholder={t('enter_date_of_issue')} className="form-input" />
+																				<Field autoComplete="off" name="dateissue" type="text" id="dateissue" placeholder={t('enter_date_of_issue')} className="form-input" />
 																				{errors.dateissue ? <div className="mt-1 text-danger"> {errors.dateissue} </div> : null}
 																			</div>
 																			<div className="mb-5 w-1/2">
@@ -262,7 +262,7 @@ const PersonnelModal = ({ ...props }: Props) => {
 																					{' '}
 																					{t('address_issue')}<span style={{ color: 'red' }}>* </span>
 																				</label>
-																				<Field name="IDnumber" type="text" id="IDnumber" placeholder={t('enter_address_issue')} className="form-input" />
+																				<Field autoComplete="off" name="IDnumber" type="text" id="IDnumber" placeholder={t('enter_address_issue')} className="form-input" />
 																				{errors.IDnumber ? <div className="mt-1 text-danger"> {errors.IDnumber} </div> : null}
 																			</div>
 																		</div>

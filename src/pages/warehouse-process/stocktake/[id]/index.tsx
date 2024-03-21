@@ -424,7 +424,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                     <div className='flex justify-between gap-5'>
                                                         <div className="w-1/2">
                                                             <label htmlFor="name" className='label'> {t('name')} < span style={{ color: 'red' }}>* </span></label >
-                                                            <Field
+                                                            <Field autoComplete="off"
                                                                 name="name"
                                                                 type="text"
                                                                 id="name"
@@ -460,7 +460,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                     <div className='flex justify-between gap-5 mt-5'>
                                                         <div className="w-1/2">
                                                             <label htmlFor="startDate" className='label'> {t('start_date')} < span style={{ color: 'red' }}>* </span></label >
-                                                            <Field
+                                                            <Field autoComplete="off"
                                                                 name="startDate"
                                                                 render={({ field }: any) =>
                                                                 (<Flatpickr
@@ -483,7 +483,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                         </div>
                                                         <div className="w-1/2">
                                                             <label htmlFor="endDate" className='label'> {t('end_date')} < span style={{ color: 'red' }}>* </span></label >
-                                                            <Field
+                                                            <Field autoComplete="off"
                                                                 name="endDate"
                                                                 render={({ field }: any) => (
                                                                     <Flatpickr
@@ -529,7 +529,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                         </div>
                                                         <div className="w-1/2">
                                                             <label htmlFor="description" className='label'> {t('description')}</label >
-                                                            <Field
+                                                            <Field autoComplete="off"
                                                                 name="description"
                                                                 as="textarea"
                                                                 id="description"
@@ -577,7 +577,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                             }
                                                         </div>
 
-                                                        {/* <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
+                                                        {/* <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
                                                     </div>
                                                     <div className="datatables">
                                                         <DataTable

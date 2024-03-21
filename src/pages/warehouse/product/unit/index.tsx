@@ -26,6 +26,7 @@ import IconTrashLines from '@/components/Icon/IconTrashLines';
 import UnitModal from './UnitModal';
 import IconNewEdit from '@/components/Icon/IconNewEdit';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
+import IconNewPlus from '@/components/Icon/IconNewPlus';
 
 
 interface Props {
@@ -64,7 +65,7 @@ const ProductUnitPage = ({ ...props }: Props) => {
     const handleDelete = ({ id, name }: any) => {
         const swalDeletes = Swal.mixin({
             customClass: {
-                confirmButton: 'btn btn-secondary',
+                confirmButton: 'btn btn-secondary testid-confirm-btn',
                 cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
                 popup: 'confirm-delete',
             },
@@ -138,14 +139,14 @@ const ProductUnitPage = ({ ...props }: Props) => {
             render: (records: any) => (
                 <div className="flex justify-start gap-2">
                     <div className="w-[60px]">
-                        <button type="button" className='button-edit' onClick={() => handleEdit(records)}>
+                        <button data-testId="edit-unit-btn" type="button" className='button-edit' onClick={() => handleEdit(records)}>
                             <IconNewEdit /><span>
                                 {t('edit')}
                             </span>
                         </button>
                     </div>
                     <div className="w-[80px]">
-                        <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                        <button data-testId="delete-unit-btn" type="button" className='button-delete' onClick={() => handleDelete(records)}>
                             <IconNewTrash />
                             <span>
                                 {t('delete')}
@@ -168,13 +169,13 @@ const ProductUnitPage = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" onClick={(e) => router.push(`/warehouse/product/unit/create`)} className="btn btn-primary btn-sm m-1 custom-button">
-                            <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                            {t('add')}
+                        <button data-testId="add-unit" type="button" className="m-1 button-table button-create" onClick={(e) => router.push(`/warehouse/product/unit/create`)}>
+                            <IconNewPlus />
+                            <span className='uppercase'>{t('add')}</span>
                         </button>
                     </div>
 
-                    <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
+                    <input data-testid="search-unit-input" autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
                 </div>
                 <div className="datatables">
                     <DataTable

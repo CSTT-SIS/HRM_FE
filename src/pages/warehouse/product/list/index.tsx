@@ -26,6 +26,7 @@ import ProductModal from './ProductModal';
 import ProductLimitModal from './ProductLimitModal';
 import IconNewEdit from '@/components/Icon/IconNewEdit';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
+import IconNewPlus from '@/components/Icon/IconNewPlus';
 
 interface Props {
     [key: string]: any;
@@ -181,14 +182,13 @@ const ProductCategoryPage = ({ ...props }: Props) => {
             <title>product</title>
             <div className="panel mt-6">
                 <div className="mb-4.5 flex flex-col justify-between gap-5 md:flex-row md:items-center">
-                    <div className="flex flex-wrap items-center">
-                        <button data-testid="add-product" type="button" onClick={(e) => router.push('/warehouse/product/list/create')} className="btn btn-primary btn-sm custom-button m-1">
-                            <IconPlus className="h-5 w-5 ltr:mr-2 rtl:ml-2" />
-                            {t('add')}
+                    <div className="flex items-center flex-wrap">
+                        <button data-testid="add-product" type="button" className="m-1 button-table button-create" onClick={(e) => router.push(`/warehouse/product/list/create`)}>
+                            <IconNewPlus />
+                            <span className='uppercase'>{t('add')}</span>
                         </button>
                     </div>
-
-                    <input type="text" data-testid="search-product-input" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
+                    <input autoComplete="off" type="text" data-testid="search-product-input" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
                 </div>
                 <div className="datatables">
                     <DataTable

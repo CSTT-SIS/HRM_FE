@@ -11,7 +11,6 @@ import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
 import { AddProposalDetail, EditProposalDetail } from '@/services/apis/proposal.api';
 import { DropdownProducts } from '@/services/swr/dropdown.twr';
-import { WarehousingBillAddDetail, WarehousingBillEditDetail } from '@/services/apis/warehousing-bill.api';
 
 interface Props {
     [key: string]: any;
@@ -26,7 +25,7 @@ const DetailModal = ({ ...props }: Props) => {
 
     const SubmittedForm = Yup.object().shape({
         productId: new Yup.ObjectSchema().required(`${t('please_fill_product')}`),
-        proposalQuantity: Yup.string().required(`${t('please_fill_quantity')}`),
+        quantity: Yup.string().required(`${t('please_fill_quantity')}`),
     });
 
     const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ page: page });
@@ -35,19 +34,19 @@ const DetailModal = ({ ...props }: Props) => {
         if (Number(router.query.id)) {
             const query = {
                 productId: Number(param.productId.value),
-                proposalQuantity: Number(param.proposalQuantity),
+                quantity: Number(param.quantity),
                 note: param.note,
                 // price: param?.price ? param?.price : 0
             };
             if (props?.data) {
-                WarehousingBillEditDetail({ id: router.query.id, detailId: props?.data?.id, ...query }).then(() => {
+                EditProposalDetail({ id: router.query.id, detailId: props?.data?.id, ...query }).then(() => {
                     handleCancel();
                     showMessage(`${t('edit_success')}`, 'success');
                 }).catch((err) => {
                     showMessage(`${err?.response?.data?.message}`, 'error');
                 });
             } else {
-                WarehousingBillAddDetail({ id: router.query.id, ...query }).then(() => {
+                AddProposalDetail({ id: router.query.id, ...query }).then(() => {
                     handleCancel();
                     showMessage(`${t('create_success')}`, 'success');
                 }).catch((err) => {
@@ -62,7 +61,7 @@ const DetailModal = ({ ...props }: Props) => {
                     id: param.productId.value
                 },
                 productId: Number(param.productId.value),
-                proposalQuantity: Number(param.proposalQuantity),
+                quantity: Number(param.quantity),
                 note: param.note,
                 // price: param?.price ? param?.price : 0
             };
@@ -84,13 +83,13 @@ const DetailModal = ({ ...props }: Props) => {
     const handleCancel = () => {
         props.setOpenModal(false);
         // props.setData();
-        props.orderDetailMutate();
+        props.proposalDetailMutate();
         setInitialValue({});
     };
 
     useEffect(() => {
         setInitialValue({
-            proposalQuantity: props?.data ? `${props?.data?.proposalQuantity}` : "",
+            quantity: props?.data ? `${props?.data?.quantity}` : "",
             productId: props?.data ? {
                 value: `${props?.data?.product?.id}`,
                 label: `${props?.data?.product?.name}`
@@ -143,19 +142,19 @@ const DetailModal = ({ ...props }: Props) => {
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <Dialog.Panel className="panel w-full max-w-lg overflow-hidden rounded-2xl border-0 p-0 text-[#476704] dark:text-white-dark">
+                            <Dialog.Panel className="panel w-full max-w-lg overflow-hidden rounded-lg border-0 p-0 text-black dark:text-white-dark">
                                 <button
                                     type="button"
                                     onClick={() => handleCancel()}
-                                    className="absolute top-4 ltr:right-4 rtl:left-4 dark:hover:text-gray-600"
+                                    className="absolute top-4 text-gray-400 outline-none hover:text-gray-800 ltr:right-4 rtl:left-4 dark:hover:text-gray-600"
                                 >
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {props.data === undefined ? t('add_product_list') : t('edit_product')}
+                                    {/* {props.data === undefined ? t('add_detail') : t('edit_detail')} */}
                                 </div>
                                 <div>
-                                    <div className="p-5 pl-10 pr-10">
+                                    <div className="p-5">
                                         <Formik
                                             initialValues={initialValue}
                                             validationSchema={SubmittedForm}
@@ -189,41 +188,28 @@ const DetailModal = ({ ...props }: Props) => {
                                                         </div>
                                                     </div>
                                                     <div className="mb-5">
-                                                        <label htmlFor="inventory" > {t('inventory_number')} </label >
-                                                        <Field
-                                                            name="inventory"
+                                                        <label htmlFor="quantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <Field autoComplete="off"
+                                                            name="quantity"
                                                             type="number"
-                                                            id="inventory"
-                                                            className={"form-input bg-[#f2f2f2]"}
-                                                            disabled={true}
-                                                        />
-                                                        {submitCount && errors.inventory ? (
-                                                            <div className="text-danger mt-1"> {`${errors.inventory}`} </div>
-                                                        ) : null}
-                                                    </div>
-                                                    <div className="mb-5">
-                                                        <label htmlFor="proposalQuantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Field
-                                                            name="proposalQuantity"
-                                                            type="number"
-                                                            id="proposalQuantity"
+                                                            id="quantity"
                                                             placeholder={`${t('enter_quantity')}`}
                                                             className="form-input"
                                                         />
-                                                        {submitCount && errors.proposalQuantity ? (
-                                                            <div className="text-danger mt-1"> {`${errors.proposalQuantity}`} </div>
+                                                        {submitCount && errors.quantity ? (
+                                                            <div className="text-danger mt-1"> {`${errors.quantity}`} </div>
                                                         ) : null}
                                                     </div>
                                                     {/* <div className="mb-5">
                                                         <label htmlFor="price" > {t('price')} </label >
-                                                        <Field name="price" type="number" id="price" placeholder={`${t('enter_price')}`} className="form-input" />
+                                                        <Field autoComplete="off" name="price" type="number" id="price" placeholder={`${t('enter_price')}`} className="form-input" />
                                                         {submitCount && errors.price ? (
                                                             <div className="text-danger mt-1"> {`${errors.price}`} </div>
                                                         ) : null}
                                                     </div> */}
                                                     <div className="mb-5">
                                                         <label htmlFor="note" > {t('description')} </label >
-                                                        <Field
+                                                        <Field autoComplete="off"
                                                             name="note"
                                                             type="text"
                                                             id="note"
@@ -234,11 +220,11 @@ const DetailModal = ({ ...props }: Props) => {
                                                             <div className="text-danger mt-1"> {`${errors.note}`} </div>
                                                         ) : null}
                                                     </div>
-                                                    <div className="p-[15px] flex items-center justify-center ltr:text-right rtl:text-left">
+                                                    <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left">
                                                         <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
                                                             {t('cancel')}
                                                         </button>
-                                                        <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+                                                        <button data-testId="submit-modal-btn" type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
                                                             {props.data !== undefined ? t('update') : t('add_new')}
                                                         </button>
                                                     </div>

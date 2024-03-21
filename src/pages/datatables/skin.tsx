@@ -689,7 +689,7 @@ const Skin = () => {
             <div className="panel">
                 <div className="mb-5 flex items-center justify-between">
                     <h5 className="text-lg font-semibold dark:text-white-light">Skin: Striped</h5>
-                    <input type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
+                    <input autoComplete="off" type="text" className="form-input w-auto" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
                 </div>
                 <div className="datatables">
                     <DataTable
@@ -719,7 +719,7 @@ const Skin = () => {
             <div className="panel">
                 <div className="mb-5 flex items-center justify-between">
                     <h5 className="text-lg font-semibold dark:text-white-light">Skin: Hover</h5>
-                    <input type="text" className="form-input w-auto" placeholder="Search..." value={search1} onChange={(e) => setSearch1(e.target.value)} />
+                    <input autoComplete="off" type="text" className="form-input w-auto" placeholder="Search..." value={search1} onChange={(e) => setSearch1(e.target.value)} />
                 </div>
                 <div className="datatables">
                     <DataTable
@@ -749,7 +749,7 @@ const Skin = () => {
             <div className="panel">
                 <div className="mb-5 flex items-center justify-between">
                     <h5 className="text-lg font-semibold dark:text-white-light">Skin: Bordered</h5>
-                    <input type="text" className="form-input w-auto" placeholder="Search..." value={search2} onChange={(e) => setSearch2(e.target.value)} />
+                    <input autoComplete="off" type="text" className="form-input w-auto" placeholder="Search..." value={search2} onChange={(e) => setSearch2(e.target.value)} />
                 </div>
                 <div className="datatables">
                     <DataTable
@@ -778,7 +778,7 @@ const Skin = () => {
             <div className="panel">
                 <div className="mb-5 flex items-center justify-between">
                     <h5 className="text-lg font-semibold dark:text-white-light">Skin: Compact</h5>
-                    <input type="text" className="form-input w-auto" placeholder="Search..." value={search3} onChange={(e) => setSearch3(e.target.value)} />
+                    <input autoComplete="off" type="text" className="form-input w-auto" placeholder="Search..." value={search3} onChange={(e) => setSearch3(e.target.value)} />
                 </div>
                 <div className="datatables">
                     <DataTable
@@ -807,7 +807,7 @@ const Skin = () => {
             <div className="panel">
                 <div className="mb-5 flex items-center justify-between">
                     <h5 className="text-lg font-semibold dark:text-white-light">Skin: All</h5>
-                    <input type="text" className="form-input w-auto" placeholder="Search..." value={search4} onChange={(e) => setSearch4(e.target.value)} />
+                    <input autoComplete="off" type="text" className="form-input w-auto" placeholder="Search..." value={search4} onChange={(e) => setSearch4(e.target.value)} />
                 </div>
                 <div className="datatables">
                     <DataTable

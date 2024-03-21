@@ -137,42 +137,42 @@ const TimekeepingModal = ({ ...props }: Props) => {
                                             <Form className="space-y-5" >
                                                 <div className="mb-5">
                                                     <label htmlFor="name">Số công hưởng lương <span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="name" type="number" id="name" placeholder="Nhập số công hưởng lương" className="form-input" />
+                                                    <Field autoComplete="off" name="name" type="number" id="name" placeholder="Nhập số công hưởng lương" className="form-input" />
                                                     {errors.name ? (
                                                         <div className="text-danger mt-1"> {errors.name} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="code" >Số công đi làm thực tế < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="" type="number" id="code" placeholder="Nhập số công đi làm thực tế" className="form-input" />
+                                                    <Field autoComplete="off" name="" type="number" id="code" placeholder="Nhập số công đi làm thực tế" className="form-input" />
                                                     {errors.code ? (
                                                         <div className="text-danger mt-1"> {errors.code} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="code" >Giờ vào < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="code" type="time" id="code" placeholder={`${t('enter_code_timekeeping')}`} className="form-input" />
+                                                    <Field autoComplete="off" name="code" type="time" id="code" placeholder={`${t('enter_code_timekeeping')}`} className="form-input" />
                                                     {errors.code ? (
                                                         <div className="text-danger mt-1"> {errors.code} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="code" >Giờ ra < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="code" type="time" id="code" placeholder={`${t('enter_code_timekeeping')}`} className="form-input" />
+                                                    <Field autoComplete="off" name="code" type="time" id="code" placeholder={`${t('enter_code_timekeeping')}`} className="form-input" />
                                                     {errors.code ? (
                                                         <div className="text-danger mt-1"> {errors.code} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="code" >Đi muộn (phút) < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="" type="number" id="code" placeholder="" className="form-input" />
+                                                    <Field autoComplete="off" name="" type="number" id="code" placeholder="" className="form-input" />
                                                     {errors.code ? (
                                                         <div className="text-danger mt-1"> {errors.code} </div>
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="code" >Đi sớm (phút) < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field name="" type="number" id="code" placeholder="" className="form-input" />
+                                                    <Field autoComplete="off" name="" type="number" id="code" placeholder="" className="form-input" />
                                                     {errors.code ? (
                                                         <div className="text-danger mt-1"> {errors.code} </div>
                                                     ) : null}

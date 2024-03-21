@@ -51,43 +51,43 @@ const CheckboxRadio = () => {
                                 <div className="space-y-2">
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox" defaultChecked />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox" defaultChecked />
                                             <span>Primary</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox text-success" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox text-success" />
                                             <span>Success</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox text-secondary" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox text-secondary" />
                                             <span>Secondary</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox text-danger" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox text-danger" />
                                             <span>Danger</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox text-warning" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox text-warning" />
                                             <span>Warning</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox text-info" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox text-info" />
                                             <span>Info</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox text-dark" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox text-dark" />
                                             <span>Dark</span>
                                         </label>
                                     </div>
@@ -96,37 +96,37 @@ const CheckboxRadio = () => {
                             {codeArr.includes('code1') && (
                                 <CodeHighlight>
                                     <pre className="language-xml">{`<label className="inline-flex">
-    <input type="checkbox" className="form-checkbox" defaultChecked />
+    <input autoComplete="off" type="checkbox" className="form-checkbox" defaultChecked />
     <span>Primary</span>
 </label>
 
 <label className="inline-flex">
-    <input type="checkbox" className="form-checkbox text-success" />
+    <input autoComplete="off" type="checkbox" className="form-checkbox text-success" />
     <span>Success</span>
 </label>
 
 <label className="inline-flex">
-    <input type="checkbox" className="form-checkbox text-secondary" />
+    <input autoComplete="off" type="checkbox" className="form-checkbox text-secondary" />
     <span>Secondary</span>
 </label>
 
 <label className="inline-flex">
-    <input type="checkbox" className="form-checkbox text-danger" />
+    <input autoComplete="off" type="checkbox" className="form-checkbox text-danger" />
     <span>Danger</span>
 </label>
 
 <label className="inline-flex">
-    <input type="checkbox" className="form-checkbox text-warning" />
+    <input autoComplete="off" type="checkbox" className="form-checkbox text-warning" />
     <span>Warning</span>
 </label>
 
 <label className="inline-flex">
-    <input type="checkbox" className="form-checkbox text-info" />
+    <input autoComplete="off" type="checkbox" className="form-checkbox text-info" />
     <span>Info</span>
 </label>
 
 <label className="inline-flex">
-    <input type="checkbox" className="form-checkbox text-dark" />
+    <input autoComplete="off" type="checkbox" className="form-checkbox text-dark" />
     <span>Dark</span>
 </label>`}</pre>
                                 </CodeHighlight>
@@ -146,43 +146,43 @@ const CheckboxRadio = () => {
                                 <div className="space-y-2">
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox rounded-full" defaultChecked />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox rounded-full" defaultChecked />
                                             <span>Primary</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox rounded-full text-success" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox rounded-full text-success" />
                                             <span>Success</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox rounded-full text-secondary" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox rounded-full text-secondary" />
                                             <span>Secondary</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox rounded-full text-danger" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox rounded-full text-danger" />
                                             <span>Danger</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox rounded-full text-warning" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox rounded-full text-warning" />
                                             <span>Warning</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox rounded-full text-info" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox rounded-full text-info" />
                                             <span>Info</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox rounded-full text-dark" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox rounded-full text-dark" />
                                             <span>Dark</span>
                                         </label>
                                     </div>
@@ -191,37 +191,37 @@ const CheckboxRadio = () => {
                             {codeArr.includes('code2') && (
                                 <CodeHighlight>
                                     <pre className="language-xml">{`<label className="inline-flex">
-    <input type="checkbox" className="form-checkbox rounded-full" defaultChecked />
+    <input autoComplete="off" type="checkbox" className="form-checkbox rounded-full" defaultChecked />
     <span>Primary</span>
 </label>
 
 <label className="inline-flex">
-    <input type="checkbox" className="form-checkbox text-success rounded-full" />
+    <input autoComplete="off" type="checkbox" className="form-checkbox text-success rounded-full" />
     <span>Success</span>
 </label>
 
 <label className="inline-flex">
-    <input type="checkbox" className="form-checkbox text-secondary rounded-full" />
+    <input autoComplete="off" type="checkbox" className="form-checkbox text-secondary rounded-full" />
     <span>Secondary</span>
 </label>
 
 <label className="inline-flex">
-    <input type="checkbox" className="form-checkbox text-danger rounded-full" />
+    <input autoComplete="off" type="checkbox" className="form-checkbox text-danger rounded-full" />
     <span>Danger</span>
 </label>
 
 <label className="inline-flex">
-    <input type="checkbox" className="form-checkbox text-warning rounded-full" />
+    <input autoComplete="off" type="checkbox" className="form-checkbox text-warning rounded-full" />
     <span>Warning</span>
 </label>
 
 <label className="inline-flex">
-    <input type="checkbox" className="form-checkbox text-info rounded-full" />
+    <input autoComplete="off" type="checkbox" className="form-checkbox text-info rounded-full" />
     <span>Info</span>
 </label>
 
 <label className="inline-flex">
-    <input type="checkbox" className="form-checkbox text-dark rounded-full" />
+    <input autoComplete="off" type="checkbox" className="form-checkbox text-dark rounded-full" />
     <span>Dark</span>
 </label>`}</pre>
                                 </CodeHighlight>
@@ -241,43 +241,43 @@ const CheckboxRadio = () => {
                                 <div className="space-y-2">
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox outline-primary" defaultChecked />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox outline-primary" defaultChecked />
                                             <span>Primary</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox outline-success" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox outline-success" />
                                             <span>Success</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox outline-secondary" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox outline-secondary" />
                                             <span>Secondary</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox outline-danger" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox outline-danger" />
                                             <span>Danger</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox outline-warning" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox outline-warning" />
                                             <span>Warning</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox outline-info" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox outline-info" />
                                             <span>Info</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox outline-dark" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox outline-dark" />
                                             <span>Dark</span>
                                         </label>
                                     </div>
@@ -286,37 +286,37 @@ const CheckboxRadio = () => {
                             {codeArr.includes('code3') && (
                                 <CodeHighlight>
                                     <pre className="language-xml">{`<label className="inline-flex">
-    <input type="checkbox" className="form-checkbox outline-primary" defaultChecked />
+    <input autoComplete="off" type="checkbox" className="form-checkbox outline-primary" defaultChecked />
     <span>Primary</span>
 </label>
 
 <label className="inline-flex">
-    <input type="checkbox" className="form-checkbox outline-success" />
+    <input autoComplete="off" type="checkbox" className="form-checkbox outline-success" />
     <span>Success</span>
 </label>
 
 <label className="inline-flex">
-    <input type="checkbox" className="form-checkbox outline-secondary" />
+    <input autoComplete="off" type="checkbox" className="form-checkbox outline-secondary" />
     <span>Secondary</span>
 </label>
 
 <label className="inline-flex">
-    <input type="checkbox" className="form-checkbox outline-danger" />
+    <input autoComplete="off" type="checkbox" className="form-checkbox outline-danger" />
     <span>Danger</span>
 </label>
 
 <label className="inline-flex">
-    <input type="checkbox" className="form-checkbox outline-warning" />
+    <input autoComplete="off" type="checkbox" className="form-checkbox outline-warning" />
     <span>Warning</span>
 </label>
 
 <label className="inline-flex">
-    <input type="checkbox" className="form-checkbox outline-info" />
+    <input autoComplete="off" type="checkbox" className="form-checkbox outline-info" />
     <span>Info</span>
 </label>
 
 <label className="inline-flex">
-    <input type="checkbox" className="form-checkbox outline-dark" />
+    <input autoComplete="off" type="checkbox" className="form-checkbox outline-dark" />
     <span>Dark</span>
 </label>`}</pre>
                                 </CodeHighlight>
@@ -336,43 +336,43 @@ const CheckboxRadio = () => {
                                 <div className="space-y-2">
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox rounded-full outline-primary" defaultChecked />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox rounded-full outline-primary" defaultChecked />
                                             <span>Primary</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox rounded-full outline-success" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox rounded-full outline-success" />
                                             <span>Success</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox rounded-full outline-secondary" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox rounded-full outline-secondary" />
                                             <span>Secondary</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox rounded-full outline-danger" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox rounded-full outline-danger" />
                                             <span>Danger</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox rounded-full outline-warning" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox rounded-full outline-warning" />
                                             <span>Warning</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox rounded-full outline-info" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox rounded-full outline-info" />
                                             <span>Info</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="checkbox" className="form-checkbox rounded-full outline-dark" />
+                                            <input autoComplete="off" type="checkbox" className="form-checkbox rounded-full outline-dark" />
                                             <span>Dark</span>
                                         </label>
                                     </div>
@@ -381,37 +381,37 @@ const CheckboxRadio = () => {
                             {codeArr.includes('code4') && (
                                 <CodeHighlight>
                                     <pre className="language-xml">{`<label className="inline-flex">
-    <input type="checkbox" className="form-checkbox outline-primary rounded-full" defaultChecked />
+    <input autoComplete="off" type="checkbox" className="form-checkbox outline-primary rounded-full" defaultChecked />
     <span>Primary</span>
 </label>
 
 <label className="inline-flex">
-    <input type="checkbox" className="form-checkbox outline-success rounded-full" />
+    <input autoComplete="off" type="checkbox" className="form-checkbox outline-success rounded-full" />
     <span>Success</span>
 </label>
 
 <label className="inline-flex">
-    <input type="checkbox" className="form-checkbox outline-secondary rounded-full" />
+    <input autoComplete="off" type="checkbox" className="form-checkbox outline-secondary rounded-full" />
     <span>Secondary</span>
 </label>
 
 <label className="inline-flex">
-    <input type="checkbox" className="form-checkbox outline-danger rounded-full" />
+    <input autoComplete="off" type="checkbox" className="form-checkbox outline-danger rounded-full" />
     <span>Danger</span>
 </label>
 
 <label className="inline-flex">
-    <input type="checkbox" className="form-checkbox outline-warning rounded-full" />
+    <input autoComplete="off" type="checkbox" className="form-checkbox outline-warning rounded-full" />
     <span>Warning</span>
 </label>
 
 <label className="inline-flex">
-    <input type="checkbox" className="form-checkbox outline-info rounded-full" />
+    <input autoComplete="off" type="checkbox" className="form-checkbox outline-info rounded-full" />
     <span>Info</span>
 </label>
 
 <label className="inline-flex">
-    <input type="checkbox" className="form-checkbox outline-dark rounded-full" />
+    <input autoComplete="off" type="checkbox" className="form-checkbox outline-dark rounded-full" />
     <span>Dark</span>
 </label>`}</pre>
                                 </CodeHighlight>
@@ -432,43 +432,43 @@ const CheckboxRadio = () => {
                                     <div className="space-y-2">
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox" defaultChecked />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox" defaultChecked />
                                                 <span className="peer-checked:text-primary">Primary</span>
                                             </label>
                                         </div>
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox text-success" />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox text-success" />
                                                 <span className="peer-checked:text-success">Success</span>
                                             </label>
                                         </div>
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox text-secondary" />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox text-secondary" />
                                                 <span className="peer-checked:text-secondary">Secondary</span>
                                             </label>
                                         </div>
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox text-danger" />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox text-danger" />
                                                 <span className="peer-checked:text-danger">Danger</span>
                                             </label>
                                         </div>
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox text-warning" />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox text-warning" />
                                                 <span className="peer-checked:text-warning">Warning</span>
                                             </label>
                                         </div>
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox text-info" />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox text-info" />
                                                 <span className="peer-checked:text-info">Info</span>
                                             </label>
                                         </div>
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox text-dark" />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox text-dark" />
                                                 <span className="peer-checked:text-dark">Dark</span>
                                             </label>
                                         </div>
@@ -476,43 +476,43 @@ const CheckboxRadio = () => {
                                     <div className="space-y-2">
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox outline-primary" defaultChecked />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox outline-primary" defaultChecked />
                                                 <span className="peer-checked:text-primary">Primary</span>
                                             </label>
                                         </div>
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox outline-success" />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox outline-success" />
                                                 <span className="peer-checked:text-success">Success</span>
                                             </label>
                                         </div>
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox outline-secondary" />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox outline-secondary" />
                                                 <span className="peer-checked:text-secondary">Secondary</span>
                                             </label>
                                         </div>
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox outline-danger" />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox outline-danger" />
                                                 <span className="peer-checked:text-danger">Danger</span>
                                             </label>
                                         </div>
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox outline-warning" />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox outline-warning" />
                                                 <span className="peer-checked:text-warning">Warning</span>
                                             </label>
                                         </div>
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox outline-info" />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox outline-info" />
                                                 <span className="peer-checked:text-info">Info</span>
                                             </label>
                                         </div>
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox outline-dark" />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox outline-dark" />
                                                 <span className="peer-checked:text-dark">Dark</span>
                                             </label>
                                         </div>
@@ -523,74 +523,74 @@ const CheckboxRadio = () => {
                                 <CodeHighlight>
                                     <pre className="language-xml">{`{/*default*/}
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox peer" defaultChecked />
+<input autoComplete="off" type="checkbox" className="form-checkbox peer" defaultChecked />
 <span className="peer-checked:text-primary">Primary</span>
 </label>
 
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox text-success peer" />
+<input autoComplete="off" type="checkbox" className="form-checkbox text-success peer" />
 <span className="peer-checked:text-success">Success</span>
 </label>
 
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox text-secondary peer" />
+<input autoComplete="off" type="checkbox" className="form-checkbox text-secondary peer" />
 <span className="peer-checked:text-secondary">Secondary</span>
 </label>
 
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox text-danger peer" />
+<input autoComplete="off" type="checkbox" className="form-checkbox text-danger peer" />
 <span className="peer-checked:text-danger">Danger</span>
 </label>
 
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox text-warning peer" />
+<input autoComplete="off" type="checkbox" className="form-checkbox text-warning peer" />
 <span className="peer-checked:text-warning">Warning</span>
 </label>
 
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox text-info peer" />
+<input autoComplete="off" type="checkbox" className="form-checkbox text-info peer" />
 <span className="peer-checked:text-info">Info</span>
 </label>
 
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox text-dark peer" />
+<input autoComplete="off" type="checkbox" className="form-checkbox text-dark peer" />
 <span className="peer-checked:text-dark">Dark</span>
 </label>
 
 {/*outline*/}
 <div>
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox outline-primary peer" defaultChecked />
+<input autoComplete="off" type="checkbox" className="form-checkbox outline-primary peer" defaultChecked />
 <span className="peer-checked:text-primary">Primary</span>
 </label>
 
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox outline-success peer" />
+<input autoComplete="off" type="checkbox" className="form-checkbox outline-success peer" />
 <span className="peer-checked:text-success">Success</span>
 </label>
 
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox outline-secondary peer" />
+<input autoComplete="off" type="checkbox" className="form-checkbox outline-secondary peer" />
 <span className="peer-checked:text-secondary">Secondary</span>
 </label>
 
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox outline-danger peer" />
+<input autoComplete="off" type="checkbox" className="form-checkbox outline-danger peer" />
 <span className="peer-checked:text-danger">Danger</span>
 </label>
 
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox outline-warning peer" />
+<input autoComplete="off" type="checkbox" className="form-checkbox outline-warning peer" />
 <span className="peer-checked:text-warning">Warning</span>
 </label>
 
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox outline-info peer" />
+<input autoComplete="off" type="checkbox" className="form-checkbox outline-info peer" />
 <span className="peer-checked:text-info">Info</span>
 </label>
 
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox outline-dark peer" />
+<input autoComplete="off" type="checkbox" className="form-checkbox outline-dark peer" />
 <span className="peer-checked:text-dark">Dark</span>
 </label>`}</pre>
                                 </CodeHighlight>
@@ -611,43 +611,43 @@ const CheckboxRadio = () => {
                                     <div className="space-y-2">
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox rounded-full" defaultChecked />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox rounded-full" defaultChecked />
                                                 <span className="peer-checked:text-primary">Primary</span>
                                             </label>
                                         </div>
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox rounded-full text-success" />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox rounded-full text-success" />
                                                 <span className="peer-checked:text-success">Success</span>
                                             </label>
                                         </div>
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox rounded-full text-secondary" />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox rounded-full text-secondary" />
                                                 <span className="peer-checked:text-secondary">Secondary</span>
                                             </label>
                                         </div>
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox rounded-full text-danger" />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox rounded-full text-danger" />
                                                 <span className="peer-checked:text-danger">Danger</span>
                                             </label>
                                         </div>
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox rounded-full text-warning" />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox rounded-full text-warning" />
                                                 <span className="peer-checked:text-warning">Warning</span>
                                             </label>
                                         </div>
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox rounded-full text-info" />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox rounded-full text-info" />
                                                 <span className="peer-checked:text-info">Info</span>
                                             </label>
                                         </div>
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox rounded-full text-dark" />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox rounded-full text-dark" />
                                                 <span className="peer-checked:text-dark">Dark</span>
                                             </label>
                                         </div>
@@ -655,43 +655,43 @@ const CheckboxRadio = () => {
                                     <div className="space-y-2">
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox rounded-full outline-primary" defaultChecked />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox rounded-full outline-primary" defaultChecked />
                                                 <span className="peer-checked:text-primary">Primary</span>
                                             </label>
                                         </div>
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox rounded-full outline-success" />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox rounded-full outline-success" />
                                                 <span className="peer-checked:text-success">Success</span>
                                             </label>
                                         </div>
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox rounded-full outline-secondary" />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox rounded-full outline-secondary" />
                                                 <span className="peer-checked:text-secondary">Secondary</span>
                                             </label>
                                         </div>
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox rounded-full outline-danger" />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox rounded-full outline-danger" />
                                                 <span className="peer-checked:text-danger">Danger</span>
                                             </label>
                                         </div>
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox rounded-full outline-warning" />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox rounded-full outline-warning" />
                                                 <span className="peer-checked:text-warning">Warning</span>
                                             </label>
                                         </div>
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox rounded-full outline-info" />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox rounded-full outline-info" />
                                                 <span className="peer-checked:text-info">Info</span>
                                             </label>
                                         </div>
                                         <div>
                                             <label className="inline-flex">
-                                                <input type="checkbox" className="peer form-checkbox rounded-full outline-dark" />
+                                                <input autoComplete="off" type="checkbox" className="peer form-checkbox rounded-full outline-dark" />
                                                 <span className="peer-checked:text-dark">Dark</span>
                                             </label>
                                         </div>
@@ -702,74 +702,74 @@ const CheckboxRadio = () => {
                                 <CodeHighlight>
                                     <pre className="language-xml">{`{/*default*/}
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox rounded-full peer" defaultChecked />
+<input autoComplete="off" type="checkbox" className="form-checkbox rounded-full peer" defaultChecked />
 <span className="peer-checked:text-primary">Primary</span>
 </label>
 
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox text-success rounded-full peer" />
+<input autoComplete="off" type="checkbox" className="form-checkbox text-success rounded-full peer" />
 <span className="peer-checked:text-success">Success</span>
 </label>
 
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox text-secondary rounded-full peer" />
+<input autoComplete="off" type="checkbox" className="form-checkbox text-secondary rounded-full peer" />
 <span className="peer-checked:text-secondary">Secondary</span>
 </label>
 
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox text-danger rounded-full peer" />
+<input autoComplete="off" type="checkbox" className="form-checkbox text-danger rounded-full peer" />
 <span className="peer-checked:text-danger">Danger</span>
 </label>
 
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox text-warning rounded-full peer" />
+<input autoComplete="off" type="checkbox" className="form-checkbox text-warning rounded-full peer" />
 <span className="peer-checked:text-warning">Warning</span>
 </label>
 
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox text-info rounded-full peer" />
+<input autoComplete="off" type="checkbox" className="form-checkbox text-info rounded-full peer" />
 <span className="peer-checked:text-info">Info</span>
 </label>
 
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox text-dark rounded-full peer" />
+<input autoComplete="off" type="checkbox" className="form-checkbox text-dark rounded-full peer" />
 <span className="peer-checked:text-dark">Dark</span>
 </label>
 
 {/*outline*/}
 <div>
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox outline-primary rounded-full peer" defaultChecked />
+<input autoComplete="off" type="checkbox" className="form-checkbox outline-primary rounded-full peer" defaultChecked />
 <span className="peer-checked:text-primary">Primary</span>
 </label>
 
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox outline-success rounded-full peer" />
+<input autoComplete="off" type="checkbox" className="form-checkbox outline-success rounded-full peer" />
 <span className="peer-checked:text-success">Success</span>
 </label>
 
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox outline-secondary rounded-full peer" />
+<input autoComplete="off" type="checkbox" className="form-checkbox outline-secondary rounded-full peer" />
 <span className="peer-checked:text-secondary">Secondary</span>
 </label>
 
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox outline-danger rounded-full peer" />
+<input autoComplete="off" type="checkbox" className="form-checkbox outline-danger rounded-full peer" />
 <span className="peer-checked:text-danger">Danger</span>
 </label>
 
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox outline-warning rounded-full peer" />
+<input autoComplete="off" type="checkbox" className="form-checkbox outline-warning rounded-full peer" />
 <span className="peer-checked:text-warning">Warning</span>
 </label>
 
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox outline-info rounded-full peer" />
+<input autoComplete="off" type="checkbox" className="form-checkbox outline-info rounded-full peer" />
 <span className="peer-checked:text-info">Info</span>
 </label>
 
 <label className="inline-flex">
-<input type="checkbox" className="form-checkbox outline-dark rounded-full peer" />
+<input autoComplete="off" type="checkbox" className="form-checkbox outline-dark rounded-full peer" />
 <span className="peer-checked:text-dark">Dark</span>
 </label>`}</pre>
                                 </CodeHighlight>
@@ -795,43 +795,43 @@ const CheckboxRadio = () => {
                                 <div className="space-y-2">
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="default_radio" className="form-radio" defaultChecked />
+                                            <input autoComplete="off" type="radio" name="default_radio" className="form-radio" defaultChecked />
                                             <span>Primary</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="default_radio" className="form-radio text-success" />
+                                            <input autoComplete="off" type="radio" name="default_radio" className="form-radio text-success" />
                                             <span>Success</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="default_radio" className="form-radio text-secondary" />
+                                            <input autoComplete="off" type="radio" name="default_radio" className="form-radio text-secondary" />
                                             <span>Secondary</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="default_radio" className="form-radio text-danger" />
+                                            <input autoComplete="off" type="radio" name="default_radio" className="form-radio text-danger" />
                                             <span>Danger</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="default_radio" className="form-radio text-warning" />
+                                            <input autoComplete="off" type="radio" name="default_radio" className="form-radio text-warning" />
                                             <span>Warning</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="default_radio" className="form-radio text-info" />
+                                            <input autoComplete="off" type="radio" name="default_radio" className="form-radio text-info" />
                                             <span>Info</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="default_radio" className="form-radio text-dark" />
+                                            <input autoComplete="off" type="radio" name="default_radio" className="form-radio text-dark" />
                                             <span>Dark</span>
                                         </label>
                                     </div>
@@ -840,37 +840,37 @@ const CheckboxRadio = () => {
                             {codeArr.includes('code7') && (
                                 <CodeHighlight>
                                     <pre className="language-xml">{`<label className="inline-flex">
-    <input type="radio" name="default_radio" className="form-radio" defaultChecked />
+    <input autoComplete="off" type="radio" name="default_radio" className="form-radio" defaultChecked />
     <span>Primary</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="default_radio" className="form-radio text-success" />
+    <input autoComplete="off" type="radio" name="default_radio" className="form-radio text-success" />
     <span>Success</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="default_radio" className="form-radio text-secondary" />
+    <input autoComplete="off" type="radio" name="default_radio" className="form-radio text-secondary" />
     <span>Secondary</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="default_radio" className="form-radio text-danger" />
+    <input autoComplete="off" type="radio" name="default_radio" className="form-radio text-danger" />
     <span>Danger</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="default_radio" className="form-radio text-warning" />
+    <input autoComplete="off" type="radio" name="default_radio" className="form-radio text-warning" />
     <span>Warning</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="default_radio" className="form-radio text-info" />
+    <input autoComplete="off" type="radio" name="default_radio" className="form-radio text-info" />
     <span>Info</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="default_radio" className="form-radio text-dark" />
+    <input autoComplete="off" type="radio" name="default_radio" className="form-radio text-dark" />
     <span>Dark</span>
 </label>`}</pre>
                                 </CodeHighlight>
@@ -890,43 +890,43 @@ const CheckboxRadio = () => {
                                 <div className="space-y-2">
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="square_radio" className="form-radio rounded-none" defaultChecked />
+                                            <input autoComplete="off" type="radio" name="square_radio" className="form-radio rounded-none" defaultChecked />
                                             <span>Primary</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="square_radio" className="form-radio rounded-none text-success" />
+                                            <input autoComplete="off" type="radio" name="square_radio" className="form-radio rounded-none text-success" />
                                             <span>Success</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="square_radio" className="form-radio rounded-none text-secondary" />
+                                            <input autoComplete="off" type="radio" name="square_radio" className="form-radio rounded-none text-secondary" />
                                             <span>Secondary</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="square_radio" className="form-radio rounded-none text-danger" />
+                                            <input autoComplete="off" type="radio" name="square_radio" className="form-radio rounded-none text-danger" />
                                             <span>Danger</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="square_radio" className="form-radio rounded-none text-warning" />
+                                            <input autoComplete="off" type="radio" name="square_radio" className="form-radio rounded-none text-warning" />
                                             <span>Warning</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="square_radio" className="form-radio rounded-none text-info" />
+                                            <input autoComplete="off" type="radio" name="square_radio" className="form-radio rounded-none text-info" />
                                             <span>Info</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="square_radio" className="form-radio rounded-none text-dark" />
+                                            <input autoComplete="off" type="radio" name="square_radio" className="form-radio rounded-none text-dark" />
                                             <span>Dark</span>
                                         </label>
                                     </div>
@@ -935,37 +935,37 @@ const CheckboxRadio = () => {
                             {codeArr.includes('code8') && (
                                 <CodeHighlight>
                                     <pre className="language-xml">{`<label className="inline-flex">
-    <input type="radio" name="square_radio" className="form-radio rounded-none" defaultChecked />
+    <input autoComplete="off" type="radio" name="square_radio" className="form-radio rounded-none" defaultChecked />
     <span>Primary</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="square_radio" className="form-radio text-success rounded-none" />
+    <input autoComplete="off" type="radio" name="square_radio" className="form-radio text-success rounded-none" />
     <span>Success</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="square_radio" className="form-radio text-secondary rounded-none" />
+    <input autoComplete="off" type="radio" name="square_radio" className="form-radio text-secondary rounded-none" />
     <span>Secondary</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="square_radio" className="form-radio text-danger rounded-none" />
+    <input autoComplete="off" type="radio" name="square_radio" className="form-radio text-danger rounded-none" />
     <span>Danger</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="square_radio" className="form-radio text-warning rounded-none" />
+    <input autoComplete="off" type="radio" name="square_radio" className="form-radio text-warning rounded-none" />
     <span>Warning</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="square_radio" className="form-radio text-info rounded-none" />
+    <input autoComplete="off" type="radio" name="square_radio" className="form-radio text-info rounded-none" />
     <span>Info</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="square_radio" className="form-radio text-dark rounded-none" />
+    <input autoComplete="off" type="radio" name="square_radio" className="form-radio text-dark rounded-none" />
     <span>Dark</span>
 </label>`}</pre>
                                 </CodeHighlight>
@@ -985,43 +985,43 @@ const CheckboxRadio = () => {
                                 <div className="space-y-2">
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="outline_radio" className="form-radio outline-primary" defaultChecked />
+                                            <input autoComplete="off" type="radio" name="outline_radio" className="form-radio outline-primary" defaultChecked />
                                             <span>Primary</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="outline_radio" className="form-radio outline-success" />
+                                            <input autoComplete="off" type="radio" name="outline_radio" className="form-radio outline-success" />
                                             <span>Success</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="outline_radio" className="form-radio outline-secondary" />
+                                            <input autoComplete="off" type="radio" name="outline_radio" className="form-radio outline-secondary" />
                                             <span>Secondary</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="outline_radio" className="form-radio outline-danger" />
+                                            <input autoComplete="off" type="radio" name="outline_radio" className="form-radio outline-danger" />
                                             <span>Danger</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="outline_radio" className="form-radio outline-warning" />
+                                            <input autoComplete="off" type="radio" name="outline_radio" className="form-radio outline-warning" />
                                             <span>Warning</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="outline_radio" className="form-radio outline-info" />
+                                            <input autoComplete="off" type="radio" name="outline_radio" className="form-radio outline-info" />
                                             <span>Info</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="outline_radio" className="form-radio outline-dark" />
+                                            <input autoComplete="off" type="radio" name="outline_radio" className="form-radio outline-dark" />
                                             <span>Dark</span>
                                         </label>
                                     </div>
@@ -1030,37 +1030,37 @@ const CheckboxRadio = () => {
                             {codeArr.includes('code9') && (
                                 <CodeHighlight>
                                     <pre className="language-xml">{`<label className="inline-flex">
-    <input type="radio" name="outline_radio" className="form-radio outline-primary" defaultChecked />
+    <input autoComplete="off" type="radio" name="outline_radio" className="form-radio outline-primary" defaultChecked />
     <span>Primary</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="outline_radio" className="form-radio outline-success" />
+    <input autoComplete="off" type="radio" name="outline_radio" className="form-radio outline-success" />
     <span>Success</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="outline_radio" className="form-radio outline-secondary" />
+    <input autoComplete="off" type="radio" name="outline_radio" className="form-radio outline-secondary" />
     <span>Secondary</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="outline_radio" className="form-radio outline-danger" />
+    <input autoComplete="off" type="radio" name="outline_radio" className="form-radio outline-danger" />
     <span>Danger</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="outline_radio" className="form-radio outline-warning" />
+    <input autoComplete="off" type="radio" name="outline_radio" className="form-radio outline-warning" />
     <span>Warning</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="outline_radio" className="form-radio outline-info" />
+    <input autoComplete="off" type="radio" name="outline_radio" className="form-radio outline-info" />
     <span>Info</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="outline_radio" className="form-radio outline-dark" />
+    <input autoComplete="off" type="radio" name="outline_radio" className="form-radio outline-dark" />
     <span>Dark</span>
 </label>`}</pre>
                                 </CodeHighlight>
@@ -1080,43 +1080,43 @@ const CheckboxRadio = () => {
                                 <div className="space-y-2">
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="default_text_color" className="peer form-radio" defaultChecked />
+                                            <input autoComplete="off" type="radio" name="default_text_color" className="peer form-radio" defaultChecked />
                                             <span className="peer-checked:text-primary">Primary</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="default_text_color" className="peer form-radio text-success" />
+                                            <input autoComplete="off" type="radio" name="default_text_color" className="peer form-radio text-success" />
                                             <span className="peer-checked:text-success">Success</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="default_text_color" className="peer form-radio text-secondary" />
+                                            <input autoComplete="off" type="radio" name="default_text_color" className="peer form-radio text-secondary" />
                                             <span className="peer-checked:text-secondary">Secondary</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="default_text_color" className="peer form-radio text-danger" />
+                                            <input autoComplete="off" type="radio" name="default_text_color" className="peer form-radio text-danger" />
                                             <span className="peer-checked:text-danger">Danger</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="default_text_color" className="peer form-radio text-warning" />
+                                            <input autoComplete="off" type="radio" name="default_text_color" className="peer form-radio text-warning" />
                                             <span className="peer-checked:text-warning">Warning</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="default_text_color" className="peer form-radio text-info" />
+                                            <input autoComplete="off" type="radio" name="default_text_color" className="peer form-radio text-info" />
                                             <span className="peer-checked:text-info">Info</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="default_text_color" className="peer form-radio text-dark" />
+                                            <input autoComplete="off" type="radio" name="default_text_color" className="peer form-radio text-dark" />
                                             <span className="peer-checked:text-dark">Dark</span>
                                         </label>
                                     </div>
@@ -1125,37 +1125,37 @@ const CheckboxRadio = () => {
                             {codeArr.includes('code10') && (
                                 <CodeHighlight>
                                     <pre className="language-xml">{`<label className="inline-flex">
-    <input type="radio" name="default_text_color" className="form-radio peer" defaultChecked />
+    <input autoComplete="off" type="radio" name="default_text_color" className="form-radio peer" defaultChecked />
     <span className="peer-checked:text-primary">Primary</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="default_text_color" className="form-radio text-success peer" />
+    <input autoComplete="off" type="radio" name="default_text_color" className="form-radio text-success peer" />
     <span className="peer-checked:text-success">Success</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="default_text_color" className="form-radio text-secondary peer" />
+    <input autoComplete="off" type="radio" name="default_text_color" className="form-radio text-secondary peer" />
     <span className="peer-checked:text-secondary">Secondary</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="default_text_color" className="form-radio text-danger peer" />
+    <input autoComplete="off" type="radio" name="default_text_color" className="form-radio text-danger peer" />
     <span className="peer-checked:text-danger">Danger</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="default_text_color" className="form-radio text-warning peer" />
+    <input autoComplete="off" type="radio" name="default_text_color" className="form-radio text-warning peer" />
     <span className="peer-checked:text-warning">Warning</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="default_text_color" className="form-radio text-info peer" />
+    <input autoComplete="off" type="radio" name="default_text_color" className="form-radio text-info peer" />
     <span className="peer-checked:text-info">Info</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="default_text_color" className="form-radio text-dark peer" />
+    <input autoComplete="off" type="radio" name="default_text_color" className="form-radio text-dark peer" />
     <span className="peer-checked:text-dark">Dark</span>
 </label>`}</pre>
                                 </CodeHighlight>
@@ -1175,43 +1175,43 @@ const CheckboxRadio = () => {
                                 <div className="space-y-2">
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="square_text_radio" className="peer form-radio rounded-none" defaultChecked />
+                                            <input autoComplete="off" type="radio" name="square_text_radio" className="peer form-radio rounded-none" defaultChecked />
                                             <span className="peer-checked:text-primary">Primary</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="square_text_radio" className="peer form-radio rounded-none text-success" />
+                                            <input autoComplete="off" type="radio" name="square_text_radio" className="peer form-radio rounded-none text-success" />
                                             <span className="peer-checked:text-success">Success</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="square_text_radio" className="peer form-radio rounded-none text-secondary" />
+                                            <input autoComplete="off" type="radio" name="square_text_radio" className="peer form-radio rounded-none text-secondary" />
                                             <span className="peer-checked:text-secondary">Secondary</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="square_text_radio" className="peer form-radio rounded-none text-danger" />
+                                            <input autoComplete="off" type="radio" name="square_text_radio" className="peer form-radio rounded-none text-danger" />
                                             <span className="peer-checked:text-danger">Danger</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="square_text_radio" className="peer form-radio rounded-none text-warning" />
+                                            <input autoComplete="off" type="radio" name="square_text_radio" className="peer form-radio rounded-none text-warning" />
                                             <span className="peer-checked:text-warning">Warning</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="square_text_radio" className="peer form-radio rounded-none text-info" />
+                                            <input autoComplete="off" type="radio" name="square_text_radio" className="peer form-radio rounded-none text-info" />
                                             <span className="peer-checked:text-info">Info</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="square_text_radio" className="peer form-radio rounded-none text-dark" />
+                                            <input autoComplete="off" type="radio" name="square_text_radio" className="peer form-radio rounded-none text-dark" />
                                             <span className="peer-checked:text-dark">Dark</span>
                                         </label>
                                     </div>
@@ -1220,37 +1220,37 @@ const CheckboxRadio = () => {
                             {codeArr.includes('code11') && (
                                 <CodeHighlight>
                                     <pre className="language-xml">{`<label className="inline-flex">
-    <input type="radio" name="square_text_radio" className="form-radio rounded-none peer" defaultChecked />
+    <input autoComplete="off" type="radio" name="square_text_radio" className="form-radio rounded-none peer" defaultChecked />
     <span className="peer-checked:text-primary">Primary</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="square_text_radio" className="form-radio text-success rounded-none peer" />
+    <input autoComplete="off" type="radio" name="square_text_radio" className="form-radio text-success rounded-none peer" />
     <span className="peer-checked:text-success">Success</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="square_text_radio" className="form-radio text-secondary rounded-none peer" />
+    <input autoComplete="off" type="radio" name="square_text_radio" className="form-radio text-secondary rounded-none peer" />
     <span className="peer-checked:text-secondary">Secondary</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="square_text_radio" className="form-radio text-danger rounded-none peer" />
+    <input autoComplete="off" type="radio" name="square_text_radio" className="form-radio text-danger rounded-none peer" />
     <span className="peer-checked:text-danger">Danger</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="square_text_radio" className="form-radio text-warning rounded-none peer" />
+    <input autoComplete="off" type="radio" name="square_text_radio" className="form-radio text-warning rounded-none peer" />
     <span className="peer-checked:text-warning">Warning</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="square_text_radio" className="form-radio text-info rounded-none peer" />
+    <input autoComplete="off" type="radio" name="square_text_radio" className="form-radio text-info rounded-none peer" />
     <span className="peer-checked:text-info">Info</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="square_text_radio" className="form-radio text-dark rounded-none peer" />
+    <input autoComplete="off" type="radio" name="square_text_radio" className="form-radio text-dark rounded-none peer" />
     <span className="peer-checked:text-dark">Dark</span>
 </label>`}</pre>
                                 </CodeHighlight>
@@ -1270,43 +1270,43 @@ const CheckboxRadio = () => {
                                 <div className="space-y-2">
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="classic_text_radio" className="peer form-radio outline-primary" defaultChecked />
+                                            <input autoComplete="off" type="radio" name="classic_text_radio" className="peer form-radio outline-primary" defaultChecked />
                                             <span className="peer-checked:text-primary">Primary</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="classic_text_radio" className="peer form-radio outline-success" />
+                                            <input autoComplete="off" type="radio" name="classic_text_radio" className="peer form-radio outline-success" />
                                             <span className="peer-checked:text-success">Success</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="classic_text_radio" className="peer form-radio outline-secondary" />
+                                            <input autoComplete="off" type="radio" name="classic_text_radio" className="peer form-radio outline-secondary" />
                                             <span className="peer-checked:text-secondary">Secondary</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="classic_text_radio" className="peer form-radio outline-danger" />
+                                            <input autoComplete="off" type="radio" name="classic_text_radio" className="peer form-radio outline-danger" />
                                             <span className="peer-checked:text-danger">Danger</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="classic_text_radio" className="peer form-radio outline-warning" />
+                                            <input autoComplete="off" type="radio" name="classic_text_radio" className="peer form-radio outline-warning" />
                                             <span className="peer-checked:text-warning">Warning</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="classic_text_radio" className="peer form-radio outline-info" />
+                                            <input autoComplete="off" type="radio" name="classic_text_radio" className="peer form-radio outline-info" />
                                             <span className="peer-checked:text-info">Info</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label className="inline-flex">
-                                            <input type="radio" name="classic_text_radio" className="peer form-radio outline-dark" />
+                                            <input autoComplete="off" type="radio" name="classic_text_radio" className="peer form-radio outline-dark" />
                                             <span className="peer-checked:text-dark">Dark</span>
                                         </label>
                                     </div>
@@ -1315,37 +1315,37 @@ const CheckboxRadio = () => {
                             {codeArr.includes('code12') && (
                                 <CodeHighlight>
                                     <pre className="language-xml">{`<label className="inline-flex">
-    <input type="radio" name="classic_text_radio" className="form-radio outline-primary peer" defaultChecked />
+    <input autoComplete="off" type="radio" name="classic_text_radio" className="form-radio outline-primary peer" defaultChecked />
     <span className="peer-checked:text-primary">Primary</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="classic_text_radio" className="form-radio outline-success peer" />
+    <input autoComplete="off" type="radio" name="classic_text_radio" className="form-radio outline-success peer" />
     <span className="peer-checked:text-success">Success</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="classic_text_radio" className="form-radio outline-secondary peer" />
+    <input autoComplete="off" type="radio" name="classic_text_radio" className="form-radio outline-secondary peer" />
     <span className="peer-checked:text-secondary">Secondary</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="classic_text_radio" className="form-radio outline-danger peer" />
+    <input autoComplete="off" type="radio" name="classic_text_radio" className="form-radio outline-danger peer" />
     <span className="peer-checked:text-danger">Danger</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="classic_text_radio" className="form-radio outline-warning peer" />
+    <input autoComplete="off" type="radio" name="classic_text_radio" className="form-radio outline-warning peer" />
     <span className="peer-checked:text-warning">Warning</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="classic_text_radio" className="form-radio outline-info peer" />
+    <input autoComplete="off" type="radio" name="classic_text_radio" className="form-radio outline-info peer" />
     <span className="peer-checked:text-info">Info</span>
 </label>
 
 <label className="inline-flex">
-    <input type="radio" name="classic_text_radio" className="form-radio outline-dark peer" />
+    <input autoComplete="off" type="radio" name="classic_text_radio" className="form-radio outline-dark peer" />
     <span className="peer-checked:text-dark">Dark</span>
 </label>`}</pre>
                                 </CodeHighlight>

@@ -123,14 +123,14 @@ const DetailDuty = ({ ...props }: Props) => {
                         <div className="flex justify-between gap-5">
                             <div className="mb-5 w-1/2">
                                 <label htmlFor="name" className='label'> {t('name_duty')} < span style={{ color: 'red' }}>* </span></label >
-                                <Field name="name" type="text" id="name" placeholder={`${t('enter_name_duty')}`} className="form-input" />
+                                <Field autoComplete="off" name="name" type="text" id="name" placeholder={`${t('enter_name_duty')}`} className="form-input" />
                                 {submitCount ? errors.name ? (
                                     <div className="text-danger mt-1"> {errors.name} </div>
                                 ) : null : ''}
                             </div>
                             <div className="mb-5 w-1/2">
                                 <label htmlFor="code" className='label'> {t('code_duty')} < span style={{ color: 'red' }}>* </span></label >
-                                <Field name="code" type="text" id="code" placeholder={`${t('enter_code_duty')}`} className="form-input" />
+                                <Field autoComplete="off" name="code" type="text" id="code" placeholder={`${t('enter_code_duty')}`} className="form-input" />
                                 {submitCount ? errors.code ? (
                                     <div className="text-danger mt-1"> {errors.code} </div>
                                 ) : null : ''}
@@ -159,11 +159,11 @@ const DetailDuty = ({ ...props }: Props) => {
                                 <label htmlFor="status" className='label'> {t('status')} < span style={{ color: 'red' }}>* </span></label >
                                 <div className="flex" style={{ alignItems: 'center', marginTop: '13px' }}>
                                     <label style={{ marginBottom: 0, marginRight: '10px' }}>
-                                        <Field type="radio" name="status" value="active" className="form-checkbox rounded-full" />
+                                        <Field autoComplete="off" type="radio" name="status" value="active" className="form-checkbox rounded-full" />
                                         {t('active')}
                                     </label>
                                     <label style={{ marginBottom: 0 }}>
-                                        <Field type="radio" name="status" value="inactive" className="form-checkbox rounded-full" />
+                                        <Field autoComplete="off" type="radio" name="status" value="inactive" className="form-checkbox rounded-full" />
                                         {t('inactive')}
                                     </label>
                                 </div>
@@ -175,7 +175,7 @@ const DetailDuty = ({ ...props }: Props) => {
                         </div>
                         <div className="mb-5">
                             <label htmlFor="description" className='label'> {t('description')}</label >
-                            <Field name="duty_description" as="textarea" id="duty_description" placeholder={`${t('enter_description')}`} className="form-input" />
+                            <Field autoComplete="off" name="duty_description" as="textarea" id="duty_description" placeholder={`${t('enter_description')}`} className="form-input" />
                             {submitCount ? errors.description ? (
                                 <div className="text-danger mt-1"> {errors.description} </div>
                             ) : null : ''}

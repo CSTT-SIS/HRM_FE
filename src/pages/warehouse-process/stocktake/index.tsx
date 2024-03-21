@@ -32,6 +32,7 @@ import IconNewEdit from '@/components/Icon/IconNewEdit';
 import IconNewEye from '@/components/Icon/IconNewEye';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
 import Link from 'next/link';
+import IconNewPlus from '@/components/Icon/IconNewPlus';
 
 interface Props {
     [key: string]: any;
@@ -250,13 +251,13 @@ const StocktakePage = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" onClick={(e) => router.push(`/warehouse-process/stocktake/create?status=DRAFT`)} className="btn btn-primary btn-sm m-1 custom-button" >
-                            <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                            {t('add')}
+                        <button type="button" className="m-1 button-table button-create" onClick={(e) => router.push(`/warehouse-process/stocktake/create?status=DRAFT`)}>
+                            <IconNewPlus />
+                            <span className='uppercase'>{t('add')}</span>
                         </button>
                     </div>
 
-                    <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
+                    <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
                 </div>
                 <div className="datatables">
                     <DataTable

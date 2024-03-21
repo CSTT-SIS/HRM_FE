@@ -190,7 +190,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="quantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                         name="quantity"
                                                         type="number"
                                                         id="quantity"
@@ -203,7 +203,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="brokenPart" > {t('broken_part')} </label >
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                         name="brokenPart"
                                                         type="text"
                                                         id="brokenPart"
@@ -216,10 +216,10 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="description" > {t('description')}</label >
-                                                    <Field
+                                                    <Field autoComplete="off"
                                                         name="description"
                                                         type="text"
-                                                        id="description"
+                                                        id="note"
                                                         placeholder={`${t('enter_description')}`}
                                                         className="form-input"
                                                     />
@@ -231,7 +231,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                     <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
                                                         {t('cancel')}
                                                     </button>
-                                                    <button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+                                                    <button data-testId='submit-modal-btn' type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
                                                         {props.data !== undefined ? t('update') : t('add_new')}
                                                     </button>
                                                 </div>

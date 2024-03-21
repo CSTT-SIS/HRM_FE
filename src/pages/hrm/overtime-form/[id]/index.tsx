@@ -214,7 +214,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                     {' '}
                                     {t('name_staff')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field disabled as="select" name="name" id="name" className="form-input">
+                                <Field autoComplete="off" disabled as="select" name="name" id="name" className="form-input">
                                     {listPersonnel?.map((person: any) => {
                                         return (
                                             <option key={person.value} value={person.value}>
@@ -233,7 +233,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                     {' '}
                                     {t('duty')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field disabled as="select" name="position" id="position" className="form-input">
+                                <Field autoComplete="off" disabled as="select" name="position" id="position" className="form-input">
                                     {listDuty?.map((duty: any) => {
                                         return (
                                             <option key={duty.value} value={duty.value}>
@@ -324,7 +324,7 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
                                     {' '}
                                     {t('shift')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field as="select" name="shift" id="shift" className="form-input">
+                                <Field autoComplete="off" as="select" name="shift" id="shift" className="form-input">
                                     {listShift?.map((shift: any) => {
                                         return (
                                             <option key={shift.value} value={shift.value}>

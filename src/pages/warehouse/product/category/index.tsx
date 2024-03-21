@@ -26,6 +26,7 @@ import IconTrashLines from '@/components/Icon/IconTrashLines';
 import CategoryModal from './CategoryModal';
 import IconNewEdit from '@/components/Icon/IconNewEdit';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
+import IconNewPlus from '@/components/Icon/IconNewPlus';
 
 interface Props {
     [key: string]: any;
@@ -168,14 +169,14 @@ const ProductCategoryPage = ({ ...props }: Props) => {
             <title>category</title>
             <div className="panel mt-6">
                 <div className="mb-4.5 flex flex-col justify-between gap-5 md:flex-row md:items-center">
-                    <div className="flex flex-wrap items-center">
-                        <button type="button" data-testId="add-category" onClick={(e) => router.push(`/warehouse/product/category/create`)} className="btn btn-primary btn-sm custom-button m-1">
-                            <IconPlus className="h-5 w-5 ltr:mr-2 rtl:ml-2" />
-                            {t('add')}
+                    <div className="flex items-center flex-wrap">
+                        <button data-testId="add-category" type="button" className="m-1 button-table button-create" onClick={(e) => router.push(`/warehouse/product/category/create`)}>
+                            <IconNewPlus />
+                            <span className='uppercase'>{t('add')}</span>
                         </button>
                     </div>
 
-                    <input type="text" data-testid="search-category-input" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
+                    <input autoComplete="off" type="text" data-testid="search-category-input" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
                 </div>
                 <div className="datatables">
                     <DataTable

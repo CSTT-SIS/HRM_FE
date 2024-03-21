@@ -12,6 +12,7 @@ import Select, { components } from 'react-select';
 import { AddProposalDetail, EditProposalDetail } from '@/services/apis/proposal.api';
 import { DropdownProducts } from '@/services/swr/dropdown.twr';
 import { WarehousingBillAddDetail, WarehousingBillEditDetail } from '@/services/apis/warehousing-bill.api';
+import { GetQuantity } from '@/services/apis/product.api';
 
 interface Props {
     [key: string]: any;
@@ -31,53 +32,58 @@ const DetailModal = ({ ...props }: Props) => {
 
     const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ page: page });
 
-    const handleProposal = (param: any) => {
-        if (Number(router.query.id)) {
-            const query = {
-                productId: Number(param.productId.value),
-                proposalQuantity: Number(param.proposalQuantity),
-                note: param.note,
-                // price: param?.price ? param?.price : 0
-            };
-            if (props?.data) {
-                WarehousingBillEditDetail({ id: router.query.id, detailId: props?.data?.id, ...query }).then(() => {
-                    handleCancel();
-                    showMessage(`${t('edit_success')}`, 'success');
-                }).catch((err) => {
-                    showMessage(`${err?.response?.data?.message}`, 'error');
-                });
-            } else {
-                WarehousingBillAddDetail({ id: router.query.id, ...query }).then(() => {
-                    handleCancel();
-                    showMessage(`${t('create_success')}`, 'success');
-                }).catch((err) => {
-                    showMessage(`${err?.response?.data?.message}`, 'error');
-                });
-            }
+    const handleProposal = (param: any, resetForm: any) => {
+        if (param.inventory < param.proposalQuantity) {
+            showMessage(`${t('inventory_not_enough')}`, 'error');
         } else {
-            const query = {
-                id: props.listData ? props.listData.length + 1 : 0,
-                product: {
-                    name: param.productId.label,
-                    id: param.productId.value
-                },
-                productId: Number(param.productId.value),
-                proposalQuantity: Number(param.proposalQuantity),
-                note: param.note,
-                // price: param?.price ? param?.price : 0
-            };
-            if (props?.data?.id) {
-                const filteredItems = props.listData.filter((item: any) => item.id !== props.data.id)
-                props.setListData([...filteredItems, query])
-                props.setData(query);
-            } else {
-                if (props.listData && props.listData.length > 0) {
-                    props.setListData([...props.listData, query])
+            if (Number(router.query.id)) {
+                const query = {
+                    productId: Number(param.productId.value),
+                    proposalQuantity: Number(param.proposalQuantity),
+                    note: param.note,
+                    // price: param?.price ? param?.price : 0
+                };
+                if (props?.data) {
+                    WarehousingBillEditDetail({ id: router.query.id, detailId: props?.data?.id, ...query }).then(() => {
+                        handleCancel();
+                        showMessage(`${t('edit_success')}`, 'success');
+                    }).catch((err) => {
+                        showMessage(`${err?.response?.data?.message}`, 'error');
+                    });
                 } else {
-                    props.setListData([query])
+                    WarehousingBillAddDetail({ id: router.query.id, ...query }).then(() => {
+                        handleCancel();
+                        showMessage(`${t('create_success')}`, 'success');
+                    }).catch((err) => {
+                        showMessage(`${err?.response?.data?.message}`, 'error');
+                    });
                 }
+            } else {
+                const query = {
+                    id: props.listData ? props.listData.length + 1 : 0,
+                    product: {
+                        name: param.productId.label,
+                        id: param.productId.value
+                    },
+                    productId: Number(param.productId.value),
+                    proposalQuantity: Number(param.proposalQuantity),
+                    note: param.note,
+                    // price: param?.price ? param?.price : 0
+                };
+                if (props?.data?.id) {
+                    const filteredItems = props.listData.filter((item: any) => item.id !== props.data.id)
+                    props.setListData([...filteredItems, query])
+                    props.setData(query);
+                } else {
+                    if (props.listData && props.listData.length > 0) {
+                        props.setListData([...props.listData, query])
+                    } else {
+                        props.setListData([query])
+                    }
+                }
+                handleCancel();
+                resetForm();
             }
-            handleCancel();
         }
     }
 
@@ -88,6 +94,7 @@ const DetailModal = ({ ...props }: Props) => {
         setInitialValue({});
     };
 
+
     useEffect(() => {
         setInitialValue({
             proposalQuantity: props?.data ? `${props?.data?.proposalQuantity}` : "",
@@ -95,11 +102,11 @@ const DetailModal = ({ ...props }: Props) => {
                 value: `${props?.data?.product?.id}`,
                 label: `${props?.data?.product?.name}`
             } : "",
-            note: props?.data ? `${props?.data?.note}` : "",
+            note: props?.data?.note ? `${props?.data?.note}` : "",
+            inventory: props?.data?.product ? `${props?.data?.product.quantity}` : "",
             // price: props?.data ? props?.data.price : ""
         })
     }, [props?.data]);
-
 
     useEffect(() => {
         if (productPagination?.page === undefined) return;
@@ -115,6 +122,14 @@ const DetailModal = ({ ...props }: Props) => {
         setTimeout(() => {
             setPage(productPagination?.page + 1);
         }, 1000);
+    }
+
+    const handleQuantity = (param: any, setFieldValue: any) => {
+        GetQuantity({ id: param.value }).then((res) => {
+            setFieldValue('inventory', res.data)
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
     }
 
     return (
@@ -160,8 +175,7 @@ const DetailModal = ({ ...props }: Props) => {
                                             initialValues={initialValue}
                                             validationSchema={SubmittedForm}
                                             onSubmit={async (values, { resetForm }) => {
-                                                await handleProposal(values)
-                                                resetForm()
+                                                await handleProposal(values, resetForm)
                                             }}
                                             enableReinitialize
                                         >
@@ -179,8 +193,9 @@ const DetailModal = ({ ...props }: Props) => {
                                                                 isLoading={productLoading}
                                                                 maxMenuHeight={160}
                                                                 value={values?.productId}
-                                                                onChange={e => {
+                                                                onChange={(e: any) => {
                                                                     setFieldValue('productId', e)
+                                                                    handleQuantity(e, setFieldValue);
                                                                 }}
                                                             />
                                                             {submitCount && errors.productId ? (
@@ -191,6 +206,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                     <div className="mb-5">
                                                         <label htmlFor="inventory" > {t('inventory_number')} </label >
                                                         <Field
+                                                            autoComplete="off"
                                                             name="inventory"
                                                             type="number"
                                                             id="inventory"
@@ -204,6 +220,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                     <div className="mb-5">
                                                         <label htmlFor="proposalQuantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
                                                         <Field
+                                                            autoComplete="off"
                                                             name="proposalQuantity"
                                                             type="number"
                                                             id="proposalQuantity"
@@ -216,7 +233,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                     </div>
                                                     {/* <div className="mb-5">
                                                         <label htmlFor="price" > {t('price')} </label >
-                                                        <Field name="price" type="number" id="price" placeholder={`${t('enter_price')}`} className="form-input" />
+                                                        <Field autoComplete="off" name="price" type="number" id="price" placeholder={`${t('enter_price')}`} className="form-input" />
                                                         {submitCount && errors.price ? (
                                                             <div className="text-danger mt-1"> {`${errors.price}`} </div>
                                                         ) : null}
@@ -224,6 +241,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                     <div className="mb-5">
                                                         <label htmlFor="note" > {t('description')} </label >
                                                         <Field
+                                                            autoComplete="off"
                                                             name="note"
                                                             type="text"
                                                             id="note"

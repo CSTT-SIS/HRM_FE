@@ -156,7 +156,7 @@ const RoleDetailPage = ({ ...props }: Props) => {
                                 </div>
                                 <div className="mb-5" >
                                     <label htmlFor="name" > {t('name_role')} < span style={{ color: 'red' }}>* </span></label >
-                                    <Field
+                                    <Field autoComplete="off"
                                         name="name"
                                         type="text"
                                         id="name"
@@ -169,7 +169,7 @@ const RoleDetailPage = ({ ...props }: Props) => {
                                 </div>
                                 <div className="mb-5">
                                     <label htmlFor="description" > {t('description')}</label >
-                                    <Field
+                                    <Field autoComplete="off"
                                         name="description"
                                         component="textarea"
                                         id="description"
@@ -182,7 +182,7 @@ const RoleDetailPage = ({ ...props }: Props) => {
                                 <div className='flex items-center justify-between flex-row border-b-2 border-current leading-10 py-2'>
                                     <div className="text-2xl">{t('permission')}</div>
                                     <label className='flex items-center justify-between'>
-                                        <Field
+                                        <Field autoComplete="off"
                                             className="mr-2"
                                             type="checkbox"
                                             onChange={(e: any) => handleCheckAll(e)}
@@ -201,7 +201,7 @@ const RoleDetailPage = ({ ...props }: Props) => {
                                                         dataPermission[key].map((item: any) => {
                                                             return (
                                                                 <label key={item} className='basis-1/4'>
-                                                                    <Field
+                                                                    <Field autoComplete="off"
                                                                         className="mr-2"
                                                                         type="checkbox"
                                                                         name="permissionIds"

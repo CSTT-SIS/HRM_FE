@@ -306,7 +306,7 @@ const [date4, setDate4] = useState<any>('13:45');
                                     <span className="inline-block rounded border border-white-light py-1 px-2 text-primary dark:border-dark">{range1}</span>
                                     <span>%</span>
                                 </div>
-                                <input type="range" className="w-full py-2.5" value={range1} min={0} max={100} onChange={(e) => setRange1(e.target.value)} />
+                                <input autoComplete="off" type="range" className="w-full py-2.5" value={range1} min={0} max={100} onChange={(e) => setRange1(e.target.value)} />
                             </div>
                             {codeArr.includes('code5') && (
                                 <CodeHighlight>
@@ -318,7 +318,7 @@ const [range1, setRange1] = useState<any>('0');
      <span className="inline-block py-1 px-2 rounded text-primary border border-white-light dark:border-dark">{range1}</span>
      <span>%</span>
  </div>
- <input type="range" className="w-full py-2.5" value={range1} min={0} max={100} onChange={(e) => setRange1(e.target.value)} />
+ <input autoComplete="off" type="range" className="w-full py-2.5" value={range1} min={0} max={100} onChange={(e) => setRange1(e.target.value)} />
 </div>`}</pre>
                                 </CodeHighlight>
                             )}
@@ -340,7 +340,7 @@ const [range1, setRange1] = useState<any>('0');
                                     <span className="inline-block rounded border border-white-light py-1 px-2 text-primary dark:border-dark">{range2}</span>
                                     <span>%</span>
                                 </div>
-                                <input type="range" className="w-full py-2.5" min="0" max="100" value={range2} onChange={(e) => setRange2(e.target.value)} />
+                                <input autoComplete="off" type="range" className="w-full py-2.5" min="0" max="100" value={range2} onChange={(e) => setRange2(e.target.value)} />
                             </div>
                             {codeArr.includes('code6') && (
                                 <CodeHighlight>
@@ -352,7 +352,7 @@ const [range2, setRange2] = useState<any>('0');
      <span className="inline-block py-1 px-2 rounded text-primary border border-white-light dark:border-dark">{range2}</span>
      <span>%</span>
  </div>
- <input type="range" className="w-full py-2.5" min="0" max="100" value={range2} onChange={(e) => setRange2(e.target.value)} />
+ <input autoComplete="off" type="range" className="w-full py-2.5" min="0" max="100" value={range2} onChange={(e) => setRange2(e.target.value)} />
 </div>`}</pre>
                                 </CodeHighlight>
                             )}
@@ -370,7 +370,7 @@ const [range2, setRange2] = useState<any>('0');
                                 </button>
                             </div>
                             <div className="mb-5">
-                                <input type="range" className="w-full py-2.5" min="0" max="100" value={range3} onChange={(e) => setRange3(e.target.value)} />
+                                <input autoComplete="off" type="range" className="w-full py-2.5" min="0" max="100" value={range3} onChange={(e) => setRange3(e.target.value)} />
                                 <div className="font-bold">
                                     <span className="inline-block rounded border border-white-light py-1 px-2 text-primary dark:border-dark">{range3}</span>
                                     <span>%</span>
@@ -382,7 +382,7 @@ const [range2, setRange2] = useState<any>('0');
 const [range3, setRange3] = useState<any>('0');
 
 <div>
- <input type="range" className="w-full py-2.5" min="0" max="100" value={range3} onChange={(e) => setRange3(e.target.value)} />
+ <input autoComplete="off" type="range" className="w-full py-2.5" min="0" max="100" value={range3} onChange={(e) => setRange3(e.target.value)} />
  <div className="font-bold">
      <span className="inline-block py-1 px-2 rounded text-primary border border-white-light dark:border-dark">{range3}</span>
      <span>%</span>
@@ -404,7 +404,7 @@ const [range3, setRange3] = useState<any>('0');
                                 </button>
                             </div>
                             <div className="mb-5">
-                                <input type="range" className="w-full py-2.5" min="0" max="100" value={range4} onChange={(e) => setRange4(e.target.value)} />
+                                <input autoComplete="off" type="range" className="w-full py-2.5" min="0" max="100" value={range4} onChange={(e) => setRange4(e.target.value)} />
                                 <div className="font-bold ltr:text-right rtl:text-left">
                                     <span className="inline-block rounded border border-white-light py-1 px-2 text-primary dark:border-dark">{range4}</span>
                                     <span>%</span>
@@ -416,7 +416,7 @@ const [range3, setRange3] = useState<any>('0');
 const [range4, setRange4] = useState<any>('0');
 
 <div>
- <input type="range" className="w-full py-2.5" min="0" max="100" value={range4} onChange={(e) => setRange4(e.target.value)} />
+ <input autoComplete="off" type="range" className="w-full py-2.5" min="0" max="100" value={range4} onChange={(e) => setRange4(e.target.value)} />
  <div className="font-bold ltr:text-right rtl:text-left">
      <span className="inline-block py-1 px-2 rounded text-primary border border-white-light dark:border-dark">{range4}</span>
      <span>%</span>
@@ -465,7 +465,7 @@ const [range4, setRange4] = useState<any>('0');
                                         </select>
                                     </div>
                                     <div>
-                                        <input type="number" className="form-input" min="0" max="100" value={parseInt(inputEnd)} onChange={(e) => setInputEnd(e.target.value)} />
+                                        <input autoComplete="off" type="number" className="form-input" min="0" max="100" value={parseInt(inputEnd)} onChange={(e) => setInputEnd(e.target.value)} />
                                     </div>
                                 </div>
                             </div>
@@ -493,7 +493,7 @@ const slider1Update = (range: any) => {
          </select>
      </div>
      <div>
-         <input type="number" className="form-input" min="0" max="100" value={parseInt(inputEnd)} onChange={(e) => setInputEnd(e.target.value)} />
+         <input autoComplete="off" type="number" className="form-input" min="0" max="100" value={parseInt(inputEnd)} onChange={(e) => setInputEnd(e.target.value)} />
      </div>
  </div>
 </div>`}</pre>

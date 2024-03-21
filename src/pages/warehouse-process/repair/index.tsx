@@ -29,6 +29,7 @@ import IconNewTrash from '@/components/Icon/IconNewTrash';
 import IconNewEdit from '@/components/Icon/IconNewEdit';
 import IconNewEye from '@/components/Icon/IconNewEye';
 import Link from 'next/link';
+import IconNewPlus from '@/components/Icon/IconNewPlus';
 
 interface Props {
     [key: string]: any;
@@ -168,7 +169,7 @@ const RepairPage = ({ ...props }: Props) => {
                     {
                         records.status !== "HEAD_APPROVED" &&
                         <div className="w-[60px]">
-                            <button type="button" className='button-edit' onClick={() => handleDetail(records)}>
+                            <button data-testid="edit-repair-btn" type="button" className='button-edit' onClick={() => handleDetail(records)}>
                                 <IconNewEdit /><span>
                                     {t('edit')}
                                 </span>
@@ -192,7 +193,7 @@ const RepairPage = ({ ...props }: Props) => {
     ]
 
     const handleActive = (value: any) => {
-        setActive([value]);
+        setActive([active.includes(value) ? 0 : value]);
         localStorage.setItem('defaultFilterProposalOrder', value);
     };
 
@@ -207,13 +208,13 @@ const RepairPage = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" onClick={(e) => router.push(`/warehouse-process/repair/create`)} className="btn btn-primary btn-sm m-1 custom-button" >
-                            <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                            {t('add')}
+                        <button data-testid="add-repair" type="button" className="m-1 button-table button-create" onClick={(e) => router.push(`/warehouse-process/repair/create`)}>
+                            <IconNewPlus />
+                            <span className='uppercase'>{t('add')}</span>
                         </button>
                     </div>
 
-                    <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
+                    <input data-testId='search-repair-input' autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
                 </div>
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap gap-1">

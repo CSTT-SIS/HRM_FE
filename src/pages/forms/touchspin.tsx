@@ -74,7 +74,7 @@ const TouchSpin = () => {
                                 >
                                     <IconMinus className="w-5 h-5" />
                                 </button>
-                                <input
+                                <input autoComplete="off"
                                     type="number"
                                     placeholder="55"
                                     className="form-input rounded-none text-center"
@@ -108,7 +108,7 @@ const [value1, setValue1] = useState<any>(0);
     >
         <svg> ... </svg>
     </button>
-    <input
+    <input autoComplete="off"
         type="number"
         placeholder="55"
         className="form-input rounded-none text-center"
@@ -151,7 +151,7 @@ const [value1, setValue1] = useState<any>(0);
                                 >
                                     <IconMinus className="w-5 h-5" />
                                 </button>
-                                <input type="number" placeholder="5" step="5" min="0" max="50" readOnly className="form-input rounded-none text-center" value={value2} />
+                                <input autoComplete="off" type="number" placeholder="5" step="5" min="0" max="50" readOnly className="form-input rounded-none text-center" value={value2} />
                                 <button
                                     type="button"
                                     className="flex items-center justify-center border border-l-0 border-primary bg-primary px-3 font-semibold text-white ltr:rounded-r-md rtl:rounded-l-md"
@@ -176,7 +176,7 @@ const [value2, setValue2] = useState<any>(0);
     >
         <svg> ... </svg>
     </button>
-    <input type="number" placeholder="5" step="5" min="0" max="50" readOnly className="form-input rounded-none text-center" value={value2} />
+    <input autoComplete="off" type="number" placeholder="5" step="5" min="0" max="50" readOnly className="form-input rounded-none text-center" value={value2} />
     <button
         type="button"
         className="bg-primary text-white flex justify-center items-center ltr:rounded-r-md rtl:rounded-l-md px-3 font-semibold border border-l-0 border-primary"
@@ -210,7 +210,7 @@ const [value2, setValue2] = useState<any>(0);
                                 >
                                     <IconMinus className="w-5 h-5" />
                                 </button>
-                                <input type="number" placeholder="_ _" className="form-input rounded-none text-center" min="0" max="20" readOnly value={value3} />
+                                <input autoComplete="off" type="number" placeholder="_ _" className="form-input rounded-none text-center" min="0" max="20" readOnly value={value3} />
                                 <button
                                     type="button"
                                     className="flex items-center justify-center border border-l-0 border-primary bg-primary px-3 font-semibold text-white ltr:rounded-r-md rtl:rounded-l-md"
@@ -235,7 +235,7 @@ const [value3, setValue3] = useState<any>(0);
     >
         <svg> ... </svg>
     </button>
-    <input type="number" placeholder="_ _" className="form-input rounded-none text-center" min="0" max="20" readOnly value={value3} />
+    <input autoComplete="off" type="number" placeholder="_ _" className="form-input rounded-none text-center" min="0" max="20" readOnly value={value3} />
     <button
         type="button"
         className="bg-primary text-white flex justify-center items-center ltr:rounded-r-md rtl:rounded-l-md px-3 font-semibold border border-l-0 border-primary"
@@ -271,7 +271,7 @@ const [value3, setValue3] = useState<any>(0);
                                 >
                                     <IconMinus className="w-5 h-5" />
                                 </button>
-                                <input id="sizeLarge" type="number" placeholder="55" className="form-input-lg form-input rounded-none text-center" min="0" max="25" readOnly value={value4} />
+                                <input autoComplete="off" id="sizeLarge" type="number" placeholder="55" className="form-input-lg form-input rounded-none text-center" min="0" max="25" readOnly value={value4} />
                                 <button
                                     type="button"
                                     className="flex items-center justify-center border border-l-0 border-primary bg-primary px-3 font-semibold text-white ltr:rounded-r-md rtl:rounded-l-md"
@@ -293,7 +293,7 @@ const [value3, setValue3] = useState<any>(0);
                                 >
                                     <IconMinus className="w-5 h-5" />
                                 </button>
-                                <input type="number" placeholder="55" className="form-input rounded-none text-center" min="0" max="25" readOnly value={value5} />
+                                <input autoComplete="off" type="number" placeholder="55" className="form-input rounded-none text-center" min="0" max="25" readOnly value={value5} />
                                 <button
                                     type="button"
                                     className="flex items-center justify-center border border-l-0 border-primary bg-primary px-3 font-semibold text-white ltr:rounded-r-md rtl:rounded-l-md"
@@ -315,7 +315,7 @@ const [value3, setValue3] = useState<any>(0);
                                 >
                                     <IconMinus className="w-5 h-5" />
                                 </button>
-                                <input id="sizeSmall" type="number" placeholder="55" className="form-input-sm form-input rounded-none text-center" min="0" max="25" readOnly value={value6} />
+                                <input autoComplete="off" id="sizeSmall" type="number" placeholder="55" className="form-input-sm form-input rounded-none text-center" min="0" max="25" readOnly value={value6} />
                                 <button
                                     type="button"
                                     className="flex items-center justify-center border border-l-0 border-primary bg-primary px-3 font-semibold text-white ltr:rounded-r-md rtl:rounded-l-md"
@@ -343,7 +343,7 @@ const [value6, setValue6] = useState<any>(0);
     >
         <svg> ... </svg>
     </button>
-    <input id="sizeLarge" type="number" placeholder="55" className="form-input form-input-lg rounded-none text-center" min="0" max="25" readOnly value={value4} />
+    <input autoComplete="off" id="sizeLarge" type="number" placeholder="55" className="form-input form-input-lg rounded-none text-center" min="0" max="25" readOnly value={value4} />
     <button
         type="button"
         className="bg-primary text-white flex justify-center items-center ltr:rounded-r-md rtl:rounded-l-md px-3 font-semibold border border-l-0 border-primary"
@@ -362,7 +362,7 @@ const [value6, setValue6] = useState<any>(0);
     >
         <svg> ... </svg>
     </button>
-    <input type="number" placeholder="55" className="form-input rounded-none text-center" min="0" max="25" readOnly value={value5} />
+    <input autoComplete="off" type="number" placeholder="55" className="form-input rounded-none text-center" min="0" max="25" readOnly value={value5} />
     <button
         type="button"
         className="bg-primary text-white flex justify-center items-center ltr:rounded-r-md rtl:rounded-l-md px-3 font-semibold border border-l-0 border-primary"
@@ -381,7 +381,7 @@ const [value6, setValue6] = useState<any>(0);
     >
         <svg> ... </svg>
     </button>
-    <input id="sizeSmall" type="number" placeholder="55" className="form-input form-input-sm rounded-none text-center" min="0" max="25" readOnly value={value6} />
+    <input autoComplete="off" id="sizeSmall" type="number" placeholder="55" className="form-input form-input-sm rounded-none text-center" min="0" max="25" readOnly value={value6} />
     <button
         type="button"
         className="bg-primary text-white flex justify-center items-center ltr:rounded-r-md rtl:rounded-l-md px-3 font-semibold border border-l-0 border-primary"
@@ -415,7 +415,7 @@ const [value6, setValue6] = useState<any>(0);
                                 >
                                     <IconMinus className="w-5 h-5" />
                                 </button>
-                                <input type="number" placeholder="55" className="form-input rounded-none text-center" min="0" max="25" readOnly value={value7} />
+                                <input autoComplete="off" type="number" placeholder="55" className="form-input rounded-none text-center" min="0" max="25" readOnly value={value7} />
                                 <button
                                     type="button"
                                     className="flex items-center justify-center border border-l-0 border-primary bg-primary px-3 font-semibold text-white ltr:rounded-r-md rtl:rounded-l-md"
@@ -440,7 +440,7 @@ const [value7, setValue7] = useState<any>(0);
     >
         <svg> ... </svg>
     </button>
-    <input type="number" placeholder="55" className="form-input rounded-none text-center" min="0" max="25" readOnly value={value7} />
+    <input autoComplete="off" type="number" placeholder="55" className="form-input rounded-none text-center" min="0" max="25" readOnly value={value7} />
     <button
         type="button"
         className="bg-primary text-white flex justify-center items-center ltr:rounded-r-md rtl:rounded-l-md px-3 font-semibold border border-l-0 border-primary"
@@ -474,7 +474,7 @@ const [value7, setValue7] = useState<any>(0);
                                 >
                                     <IconMinus className="w-5 h-5" />
                                 </button>
-                                <input type="text" placeholder="55" className="form-input rounded-none px-2 text-center" min="0" max="25" readOnly value={value8} />
+                                <input autoComplete="off" type="text" placeholder="55" className="form-input rounded-none px-2 text-center" min="0" max="25" readOnly value={value8} />
                                 <button
                                     type="button"
                                     className="flex items-center justify-center rounded-b-md border border-t-0 border-primary bg-primary p-3 font-semibold text-white"
@@ -499,7 +499,7 @@ const [value8, setValue8] = useState<any>(0);
     >
         <svg> ... </svg>
     </button>
-    <input type="text" placeholder="55" className="form-input rounded-none text-center px-2" min="0" max="25" readOnly value={value8} />
+    <input autoComplete="off" type="text" placeholder="55" className="form-input rounded-none text-center px-2" min="0" max="25" readOnly value={value8} />
     <button
         type="button"
         className="bg-primary text-white flex justify-center items-center rounded-b-md p-3 font-semibold border border-t-0 border-primary"
@@ -534,7 +534,7 @@ const [value8, setValue8] = useState<any>(0);
                                     >
                                         <IconMinus className="w-5 h-5" />
                                     </button>
-                                    <input type="text" placeholder="Sunday" className="form-input rounded-none text-center" min="0" max="6" readOnly value={day} />
+                                    <input autoComplete="off" type="text" placeholder="Sunday" className="form-input rounded-none text-center" min="0" max="6" readOnly value={day} />
                                     <button
                                         type="button"
                                         className="flex items-center justify-center border border-l-0 border-primary bg-primary px-3 font-semibold text-white ltr:rounded-r-md rtl:rounded-l-md"
@@ -565,7 +565,7 @@ const dayFormatter = (day: number) => {
     >
         <svg> ... </svg>
     </button>
-    <input type="text" placeholder="Sunday" className="form-input rounded-none text-center" min="0" max="6" readOnly value={day} />
+    <input autoComplete="off" type="text" placeholder="Sunday" className="form-input rounded-none text-center" min="0" max="6" readOnly value={day} />
     <button
         type="button"
         className="bg-primary text-white flex justify-center items-center ltr:rounded-r-md rtl:rounded-l-md px-3 font-semibold border border-l-0 border-primary"
@@ -599,7 +599,7 @@ const dayFormatter = (day: number) => {
                                     >
                                         <IconMinus className="w-5 h-5" />
                                     </button>
-                                    <input type="number" placeholder="55" className="form-input rounded-none text-center" min="0" max="25" readOnly value={value10} />
+                                    <input autoComplete="off" type="number" placeholder="55" className="form-input rounded-none text-center" min="0" max="25" readOnly value={value10} />
                                     <button
                                         type="button"
                                         className="flex items-center justify-center border border-l-0 border-warning bg-warning px-3 font-semibold text-white ltr:rounded-r-md rtl:rounded-l-md"
@@ -623,7 +623,7 @@ const [value10, setValue10] = useState<any>(0);
     >
         <svg> ... </svg>
     </button>
-    <input type="number" placeholder="55" className="form-input rounded-none text-center" min="0" max="25" readOnly value={value10} />
+    <input autoComplete="off" type="number" placeholder="55" className="form-input rounded-none text-center" min="0" max="25" readOnly value={value10} />
     <button
         type="button"
         className="bg-warning text-white flex justify-center items-center ltr:rounded-r-md rtl:rounded-l-md px-3 font-semibold border border-l-0 border-warning"

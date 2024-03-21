@@ -56,7 +56,7 @@ const TimekeepingHistory = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
-   
+
     const router = useRouter();
     const [showLoader, setShowLoader] = useState(true);
     const [page, setPage] = useState<any>(PAGE_NUMBER_DEFAULT);
@@ -208,7 +208,7 @@ const TimekeepingHistory = ({ ...props }: Props) => {
             )}
             <div className="panel mt-6">
                 <div className="flex md:items-end justify-end md:flex-row flex-col mb-4.5 gap-5">
-                        <input type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                        <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
                 </div>
                 <div className="datatables">
                     <DataTable

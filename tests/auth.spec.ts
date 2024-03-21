@@ -10,7 +10,7 @@ test('should login success with valid credentials', async ({ page }) => {
 
 	await page.waitForLoadState('networkidle');
 
-	await expect(page).toHaveURL('/');
+	await expect(page).toHaveURL('/hrm/dashboard');
 });
 
 test('should login failed with invalid credentials', async ({ page }) => {

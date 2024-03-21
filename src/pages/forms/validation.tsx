@@ -111,7 +111,7 @@ const Validation = () => {
                                     <Form className="space-y-5">
                                         <div className={submitCount ? (errors.fullName ? 'has-error' : 'has-success') : ''}>
                                             <label htmlFor="fullName">Full Name </label>
-                                            <Field name="fullName" type="text" id="fullName" placeholder="Enter Full Name" className="form-input" />
+                                            <Field autoComplete="off" name="fullName" type="text" id="fullName" placeholder="Enter Full Name" className="form-input" />
 
                                             {submitCount ? errors.fullName ? <div className="mt-1 text-danger">{errors.fullName}</div> : <div className="mt-1 text-success">Looks Good!</div> : ''}
                                         </div>
@@ -164,7 +164,7 @@ const SubmittedForm = Yup.object().shape({
         <Form className="space-y-5">
             <div className={submitCount ? (errors.fullName ? 'has-error' : 'has-success') : ''}>
                 <label htmlFor="fullName">Full Name </label>
-                <Field name="fullName" type="text" id="fullName" placeholder="Enter Full Name" className="form-input" />
+                <Field autoComplete="off" name="fullName" type="text" id="fullName" placeholder="Enter Full Name" className="form-input" />
 
                 {submitCount ? errors.fullName ? <div className="text-danger mt-1">{errors.fullName}</div> : <div className="text-success mt-1">Looks Good!</div> : ''}
             </div>
@@ -209,7 +209,7 @@ const SubmittedForm = Yup.object().shape({
                                     <Form className="space-y-5">
                                         <div className={submitCount ? (errors.email ? 'has-error' : 'has-success') : ''}>
                                             <label htmlFor="Email">Email</label>
-                                            <Field name="email" type="text" id="Email" placeholder="Enter Email" className="form-input" />
+                                            <Field autoComplete="off" name="email" type="text" id="Email" placeholder="Enter Email" className="form-input" />
 
                                             {submitCount ? errors.email ? <div className="mt-1 text-danger">{errors.email}</div> : <div className="mt-1 text-success">Looks Good!</div> : ''}
                                         </div>
@@ -263,7 +263,7 @@ const SubmittedForm = Yup.object().shape({
         <Form className="space-y-5">
             <div className={submitCount ? (errors.email ? 'has-error' : 'has-success') : ''}>
                 <label htmlFor="Email">Email</label>
-                <Field name="email" type="text" id="Email" placeholder="Enter Email" className="form-input" />
+                <Field autoComplete="off" name="email" type="text" id="Email" placeholder="Enter Email" className="form-input" />
 
                 {submitCount ? errors.email ? <div className="text-danger mt-1">{errors.email}</div> : <div className="text-success mt-1">Looks Good!</div> : ''}
             </div>
@@ -306,7 +306,7 @@ const SubmittedForm = Yup.object().shape({
                                 {({ errors, submitCount, touched }) => (
                                     <Form className="space-y-5">
                                         <div className={submitCount ? (errors.select ? 'has-error' : 'has-success') : ''}>
-                                            <Field as="select" name="select" className="form-select">
+                                            <Field autoComplete="off" as="select" name="select" className="form-select">
                                                 <option value="">Open this select menu</option>
                                                 <option value="One">One</option>
                                                 <option value="Two">Two</option>
@@ -370,7 +370,7 @@ const SubmittedForm = Yup.object().shape({
     {({ errors, submitCount, touched }) => (
         <Form className="space-y-5">
             <div className={submitCount ? (errors.select ? 'has-error' : 'has-success') : ''}>
-                <Field as="select" name="select" className="form-select">
+                <Field autoComplete="off" as="select" name="select" className="form-select">
                     <option value="">Open this select menu</option>
                     <option value="One">One</option>
                     <option value="Two">Two</option>
@@ -434,7 +434,7 @@ const SubmittedForm = Yup.object().shape({
                                         <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
                                             <div className={submitCount ? (errors.firstname ? 'has-error' : 'has-success') : ''}>
                                                 <label htmlFor="firstname">First Name </label>
-                                                <Field name="firstname" type="text" id="firstname" placeholder="Enter First Name" className="form-input" />
+                                                <Field autoComplete="off" name="firstname" type="text" id="firstname" placeholder="Enter First Name" className="form-input" />
 
                                                 {submitCount ? (
                                                     errors.firstname ? (
@@ -449,7 +449,7 @@ const SubmittedForm = Yup.object().shape({
 
                                             <div className={submitCount ? (errors.lastname ? 'has-error' : 'has-success') : ''}>
                                                 <label htmlFor="fullName">Last Name </label>
-                                                <Field name="lastname" type="text" id="lastname" placeholder="Enter Last Name" className="form-input" />
+                                                <Field autoComplete="off" name="lastname" type="text" id="lastname" placeholder="Enter Last Name" className="form-input" />
 
                                                 {submitCount ? errors.lastname ? <div className="mt-1 text-danger">{errors.lastname}</div> : <div className="mt-1 text-success">Looks Good!</div> : ''}
                                             </div>
@@ -460,7 +460,7 @@ const SubmittedForm = Yup.object().shape({
                                                     <div className="flex items-center justify-center border border-white-light bg-[#eee] px-3 font-semibold ltr:rounded-l-md ltr:border-r-0 rtl:rounded-r-md rtl:border-l-0 dark:border-[#17263c] dark:bg-[#1b2e4b]">
                                                         @
                                                     </div>
-                                                    <Field name="username" type="text" id="username" placeholder="Enter Username" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+                                                    <Field autoComplete="off" name="username" type="text" id="username" placeholder="Enter Username" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
                                                 </div>
                                                 {submitCount ? errors.username ? <div className="mt-1 text-danger">{errors.username}</div> : <div className="mt-1 text-success">Looks Good!</div> : ''}
                                             </div>
@@ -468,27 +468,27 @@ const SubmittedForm = Yup.object().shape({
                                         <div className="grid grid-cols-1 gap-5 md:grid-cols-4">
                                             <div className={`md:col-span-2 ${submitCount ? (errors.city ? 'has-error' : 'has-success') : ''}`}>
                                                 <label htmlFor="customeCity">City</label>
-                                                <Field name="city" type="text" id="city" placeholder="Enter City" className="form-input" />
+                                                <Field autoComplete="off" name="city" type="text" id="city" placeholder="Enter City" className="form-input" />
 
                                                 {submitCount ? errors.city ? <div className="mt-1 text-danger">{errors.city}</div> : <div className="mt-1 text-success">Looks Good!</div> : ''}
                                             </div>
 
                                             <div className={submitCount ? (errors.state ? 'has-error' : 'has-success') : ''}>
                                                 <label htmlFor="customeState">State</label>
-                                                <Field name="state" type="text" id="customeState" placeholder="Enter State" className="form-input" />
+                                                <Field autoComplete="off" name="state" type="text" id="customeState" placeholder="Enter State" className="form-input" />
                                                 {submitCount ? errors.state ? <div className="mt-1 text-danger">{errors.state}</div> : <div className="mt-1 text-success">Looks Good!</div> : ''}
                                             </div>
 
                                             <div className={submitCount ? (errors.zip ? 'has-error' : 'has-success') : ''}>
                                                 <label htmlFor="customeZip">Zip</label>
-                                                <Field name="zip" type="text" id="customeZip" placeholder="Enter Zip" className="form-input" />
+                                                <Field autoComplete="off" name="zip" type="text" id="customeZip" placeholder="Enter Zip" className="form-input" />
                                                 {submitCount ? errors.zip ? <div className="mt-1 text-danger">{errors.zip}</div> : <div className="mt-1 text-success">Looks Good!</div> : ''}
                                             </div>
                                         </div>
 
                                         <div className={submitCount ? (errors.agree ? 'has-error' : 'has-success') : ''}>
                                             <div className="flex">
-                                                <Field name="agree" id="agree" type="checkbox" className="form-checkbox" />
+                                                <Field autoComplete="off" name="agree" id="agree" type="checkbox" className="form-checkbox" />
                                                 {values.agree}
                                                 <label htmlFor="agree" className="font-semibold text-white-dark">
                                                     Agree to terms and conditions
@@ -559,7 +559,7 @@ const submitForm4 = Yup.object().shape({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 <div className={submitCount ? (errors.firstname ? 'has-error' : 'has-success') : ''}>
                     <label htmlFor="firstname">First Name </label>
-                    <Field name="firstname" type="text" id="firstname" placeholder="Enter First Name" className="form-input" />
+                    <Field autoComplete="off" name="firstname" type="text" id="firstname" placeholder="Enter First Name" className="form-input" />
 
                     {submitCount ? (
                         errors.firstname ? (
@@ -574,7 +574,7 @@ const submitForm4 = Yup.object().shape({
 
                 <div className={submitCount ? (errors.lastname ? 'has-error' : 'has-success') : ''}>
                     <label htmlFor="fullName">Last Name </label>
-                    <Field name="lastname" type="text" id="lastname" placeholder="Enter Last Name" className="form-input" />
+                    <Field autoComplete="off" name="lastname" type="text" id="lastname" placeholder="Enter Last Name" className="form-input" />
 
                     {submitCount ? errors.lastname ? <div className="text-danger mt-1">{errors.lastname}</div> : <div className="text-success mt-1">Looks Good!</div> : ''}
                 </div>
@@ -585,7 +585,7 @@ const submitForm4 = Yup.object().shape({
                         <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
                             @
                         </div>
-                        <Field name="username" type="text" id="username" placeholder="Enter Username" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+                        <Field autoComplete="off" name="username" type="text" id="username" placeholder="Enter Username" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
                     </div>
                     {submitCount ? errors.username ? <div className="text-danger mt-1">{errors.username}</div> : <div className="text-success mt-1">Looks Good!</div> : ''}
                 </div>
@@ -593,27 +593,27 @@ const submitForm4 = Yup.object().shape({
             <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
                 <div className={\`md:col-span-2 \${submitCount ? (errors.city ? 'has-error' : 'has-success') : ''}\`}>
                     <label htmlFor="customeCity">City</label>
-                    <Field name="city" type="text" id="city" placeholder="Enter City" className="form-input" />
+                    <Field autoComplete="off" name="city" type="text" id="city" placeholder="Enter City" className="form-input" />
 
                     {submitCount ? errors.city ? <div className="text-danger mt-1">{errors.city}</div> : <div className="text-success mt-1">Looks Good!</div> : ''}
                 </div>
 
                 <div className={submitCount ? (errors.state ? 'has-error' : 'has-success') : ''}>
                     <label htmlFor="customeState">State</label>
-                    <Field name="state" type="text" id="customeState" placeholder="Enter State" className="form-input" />
+                    <Field autoComplete="off" name="state" type="text" id="customeState" placeholder="Enter State" className="form-input" />
                     {submitCount ? errors.state ? <div className="text-danger mt-1">{errors.state}</div> : <div className="text-success mt-1">Looks Good!</div> : ''}
                 </div>
 
                 <div className={submitCount ? (errors.zip ? 'has-error' : 'has-success') : ''}>
                     <label htmlFor="customeZip">Zip</label>
-                    <Field name="zip" type="text" id="customeZip" placeholder="Enter Zip" className="form-input" />
+                    <Field autoComplete="off" name="zip" type="text" id="customeZip" placeholder="Enter Zip" className="form-input" />
                     {submitCount ? errors.zip ? <div className="text-danger mt-1">{errors.zip}</div> : <div className="text-success mt-1">Looks Good!</div> : ''}
                 </div>
             </div>
 
             <div className={submitCount ? (errors.agree ? 'has-error' : 'has-success') : ''}>
             <div className="flex">
-                <Field name="agree" id="agree" type="checkbox" className="form-checkbox" />
+                <Field autoComplete="off" name="agree" id="agree" type="checkbox" className="form-checkbox" />
                 {values.agree}
                 <label htmlFor="agree" className="text-white-dark font-semibold">
                     Agree to terms and conditions
@@ -662,11 +662,11 @@ const submitForm4 = Yup.object().shape({
                                 <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
                                     <div>
                                         <label htmlFor="browserFname">First Name</label>
-                                        <input id="browserFname" type="text" placeholder="Enter First Name" className="form-input" required />
+                                        <input autoComplete="off" id="browserFname" type="text" placeholder="Enter First Name" className="form-input" required />
                                     </div>
                                     <div>
                                         <label htmlFor="browserLname">Last name</label>
-                                        <input id="browserLname" type="text" placeholder="Enter Last name" className="form-input" required />
+                                        <input autoComplete="off" id="browserLname" type="text" placeholder="Enter Last name" className="form-input" required />
                                     </div>
                                     <div>
                                         <label htmlFor="browserEmail">Username</label>
@@ -674,26 +674,26 @@ const submitForm4 = Yup.object().shape({
                                             <div className="flex items-center justify-center border border-white-light bg-[#eee] px-3 font-semibold ltr:rounded-l-md ltr:border-r-0 rtl:rounded-r-md rtl:border-l-0 dark:border-[#17263c] dark:bg-[#1b2e4b]">
                                                 @
                                             </div>
-                                            <input id="browserEmail" type="text" placeholder="Enter Username" className="form-input ltr:rounded-l-none rtl:rounded-r-none" required />
+                                            <input autoComplete="off" id="browserEmail" type="text" placeholder="Enter Username" className="form-input ltr:rounded-l-none rtl:rounded-r-none" required />
                                         </div>
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-1 gap-5 md:grid-cols-4">
                                     <div className="md:col-span-2">
                                         <label htmlFor="browserCity">City</label>
-                                        <input id="browserCity" type="text" placeholder="Enter City" className="form-input" required />
+                                        <input autoComplete="off" id="browserCity" type="text" placeholder="Enter City" className="form-input" required />
                                     </div>
                                     <div>
                                         <label htmlFor="browserState">State</label>
-                                        <input id="browserState" type="text" placeholder="Enter State" className="form-input" required />
+                                        <input autoComplete="off" id="browserState" type="text" placeholder="Enter State" className="form-input" required />
                                     </div>
                                     <div>
                                         <label htmlFor="browserZip">Zip</label>
-                                        <input id="browserZip" type="text" placeholder="Enter Zip" className="form-input" required />
+                                        <input autoComplete="off" id="browserZip" type="text" placeholder="Enter Zip" className="form-input" required />
                                     </div>
                                 </div>
                                 <div className="mt-1 flex cursor-pointer items-center">
-                                    <input type="checkbox" id="agree1" className="form-checkbox" required />
+                                    <input autoComplete="off" type="checkbox" id="agree1" className="form-checkbox" required />
                                     <label htmlFor="agree1" className="mb-0 font-semibold text-white-dark">
                                         Agree to terms and conditions
                                     </label>
@@ -730,11 +730,11 @@ const submitForm = () => {
     <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         <div>
             <label htmlFor="browserFname">First Name</label>
-            <input id="browserFname" type="text" placeholder="Enter First Name" className="form-input" required />
+            <input autoComplete="off" id="browserFname" type="text" placeholder="Enter First Name" className="form-input" required />
         </div>
         <div>
             <label htmlFor="browserLname">Last name</label>
-            <input id="browserLname" type="text" placeholder="Enter Last name" className="form-input" required />
+            <input autoComplete="off" id="browserLname" type="text" placeholder="Enter Last name" className="form-input" required />
         </div>
         <div>
             <label htmlFor="browserEmail">Username</label>
@@ -742,26 +742,26 @@ const submitForm = () => {
                 <div className="bg-[#eee] flex justify-center items-center ltr:rounded-l-md rtl:rounded-r-md px-3 font-semibold border ltr:border-r-0 rtl:border-l-0 border-white-light dark:border-[#17263c] dark:bg-[#1b2e4b]">
                     @
                 </div>
-                <input id="browserEmail" type="text" placeholder="Enter Username" className="form-input ltr:rounded-l-none rtl:rounded-r-none" required />
+                <input autoComplete="off" id="browserEmail" type="text" placeholder="Enter Username" className="form-input ltr:rounded-l-none rtl:rounded-r-none" required />
             </div>
         </div>
     </div>
     <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
         <div className="md:col-span-2">
             <label htmlFor="browserCity">City</label>
-            <input id="browserCity" type="text" placeholder="Enter City" className="form-input" required />
+            <input autoComplete="off" id="browserCity" type="text" placeholder="Enter City" className="form-input" required />
         </div>
         <div>
             <label htmlFor="browserState">State</label>
-            <input id="browserState" type="text" placeholder="Enter State" className="form-input" required />
+            <input autoComplete="off" id="browserState" type="text" placeholder="Enter State" className="form-input" required />
         </div>
         <div>
             <label htmlFor="browserZip">Zip</label>
-            <input id="browserZip" type="text" placeholder="Enter Zip" className="form-input" required />
+            <input autoComplete="off" id="browserZip" type="text" placeholder="Enter Zip" className="form-input" required />
         </div>
     </div>
     <div className="flex items-center cursor-pointer mt-1">
-        <input type="checkbox" id="agree1 className="form-checkbox" required />
+        <input autoComplete="off" type="checkbox" id="agree1 className="form-checkbox" required />
         <label htmlFor="agree1" className="text-white-dark font-semibold mb-0">Agree to terms and conditions</label>
     </div>
     <button type="submit" className="btn btn-primary !mt-6">
@@ -802,7 +802,7 @@ const submitForm = () => {
                                         <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
                                             <div className={submitCount ? (errors.firstname ? 'has-error' : 'has-success') : ''}>
                                                 <label htmlFor="firstname">First Name </label>
-                                                <Field name="firstname" type="text" id="firstname" placeholder="Enter First Name" className="form-input mb-2" />
+                                                <Field autoComplete="off" name="firstname" type="text" id="firstname" placeholder="Enter First Name" className="form-input mb-2" />
 
                                                 {submitCount ? (
                                                     errors.firstname ? (
@@ -817,7 +817,7 @@ const submitForm = () => {
 
                                             <div className={submitCount ? (errors.lastname ? 'has-error' : 'has-success') : ''}>
                                                 <label htmlFor="lastName">Last name </label>
-                                                <Field name="lastname" type="text" id="lastname" placeholder="Enter Last Name" className="form-input mb-2" />
+                                                <Field autoComplete="off" name="lastname" type="text" id="lastname" placeholder="Enter Last Name" className="form-input mb-2" />
 
                                                 {submitCount ? (
                                                     errors.lastname ? (
@@ -837,7 +837,7 @@ const submitForm = () => {
                                                         @
                                                     </div>
 
-                                                    <Field name="username" type="text" id="username" placeholder="Enter Username" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+                                                    <Field autoComplete="off" name="username" type="text" id="username" placeholder="Enter Username" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
                                                 </div>
                                                 <div className="mt-2">
                                                     {submitCount ? (
@@ -855,7 +855,7 @@ const submitForm = () => {
                                         <div className="grid grid-cols-1 gap-5 md:grid-cols-4">
                                             <div className={`md:col-span-2 ${submitCount ? (errors.city ? 'has-error' : 'has-success') : ''}`}>
                                                 <label htmlFor="customeCity">City</label>
-                                                <Field name="city" type="text" id="city" placeholder="Enter City" className="form-input mb-2" />
+                                                <Field autoComplete="off" name="city" type="text" id="city" placeholder="Enter City" className="form-input mb-2" />
 
                                                 {submitCount ? (
                                                     errors.city ? (
@@ -870,7 +870,7 @@ const submitForm = () => {
 
                                             <div className={submitCount ? (errors.state ? 'has-error' : 'has-success') : ''}>
                                                 <label htmlFor="customeState">State</label>
-                                                <Field name="state" type="text" id="customeState" placeholder="Enter State" className="form-input mb-2" />
+                                                <Field autoComplete="off" name="state" type="text" id="customeState" placeholder="Enter State" className="form-input mb-2" />
                                                 {submitCount ? (
                                                     errors.state ? (
                                                         <div className="inline-block rounded bg-danger py-1 px-2 text-white">{errors.state}</div>
@@ -884,7 +884,7 @@ const submitForm = () => {
 
                                             <div className={submitCount ? (errors.zip ? 'has-error' : 'has-success') : ''}>
                                                 <label htmlFor="customeZip">Zip</label>
-                                                <Field name="zip" type="text" id="customeZip" placeholder="Enter Zip" className="form-input mb-2" />
+                                                <Field autoComplete="off" name="zip" type="text" id="customeZip" placeholder="Enter Zip" className="form-input mb-2" />
                                                 {submitCount ? (
                                                     errors.zip ? (
                                                         <div className="inline-block rounded bg-danger py-1 px-2 text-white">{errors.zip}</div>
@@ -899,7 +899,7 @@ const submitForm = () => {
 
                                         <div className={submitCount ? (errors.agree ? 'has-error' : 'has-success') : ''}>
                                             <div className="flex">
-                                                <Field name="agree" id="agree2" type="checkbox" className="form-checkbox" />
+                                                <Field autoComplete="off" name="agree" id="agree2" type="checkbox" className="form-checkbox" />
                                                 <label htmlFor="agree2" className="font-semibold text-white-dark">
                                                     Agree to terms and conditions
                                                 </label>
@@ -971,7 +971,7 @@ const submitForm4 = Yup.object().shape({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 <div className={submitCount ? (errors.firstname ? 'has-error' : 'has-success') : ''}>
                     <label htmlFor="firstname">First Name </label>
-                    <Field name="firstname" type="text" id="firstname" placeholder="Enter First Name" className="form-input mb-2" />
+                    <Field autoComplete="off" name="firstname" type="text" id="firstname" placeholder="Enter First Name" className="form-input mb-2" />
 
                     {submitCount ? (
                         errors.firstname ? (
@@ -986,7 +986,7 @@ const submitForm4 = Yup.object().shape({
 
                 <div className={submitCount ? (errors.lastname ? 'has-error' : 'has-success') : ''}>
                     <label htmlFor="lastName">Last name </label>
-                    <Field name="lastname" type="text" id="lastname" placeholder="Enter Last Name" className="form-input mb-2" />
+                    <Field autoComplete="off" name="lastname" type="text" id="lastname" placeholder="Enter Last Name" className="form-input mb-2" />
 
                     {submitCount ? (
                         errors.lastname ? (
@@ -1006,7 +1006,7 @@ const submitForm4 = Yup.object().shape({
                             @
                         </div>
 
-                        <Field name="username" type="text" id="username" placeholder="Enter Username" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
+                        <Field autoComplete="off" name="username" type="text" id="username" placeholder="Enter Username" className="form-input ltr:rounded-l-none rtl:rounded-r-none" />
                     </div>
                     <div className="mt-2">
                         {submitCount ? (
@@ -1024,7 +1024,7 @@ const submitForm4 = Yup.object().shape({
             <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
                 <div className={\`md:col-span-2 \${submitCount ? (errors.city ? 'has-error' : 'has-success') : ''}\`}>
                     <label htmlFor="customeCity">City</label>
-                    <Field name="city" type="text" id="city" placeholder="Enter City" className="form-input mb-2" />
+                    <Field autoComplete="off" name="city" type="text" id="city" placeholder="Enter City" className="form-input mb-2" />
 
                     {submitCount ? (
                         errors.city ? (
@@ -1039,7 +1039,7 @@ const submitForm4 = Yup.object().shape({
 
                 <div className={submitCount ? (errors.state ? 'has-error' : 'has-success') : ''}>
                     <label htmlFor="customeState">State</label>
-                    <Field name="state" type="text" id="customeState" placeholder="Enter State" className="form-input mb-2" />
+                    <Field autoComplete="off" name="state" type="text" id="customeState" placeholder="Enter State" className="form-input mb-2" />
                     {submitCount ? (
                         errors.state ? (
                             <div className="text-white bg-danger py-1 px-2 rounded inline-block">{errors.state}</div>
@@ -1053,7 +1053,7 @@ const submitForm4 = Yup.object().shape({
 
                 <div className={submitCount ? (errors.zip ? 'has-error' : 'has-success') : ''}>
                     <label htmlFor="customeZip">Zip</label>
-                    <Field name="zip" type="text" id="customeZip" placeholder="Enter Zip" className="form-input mb-2" />
+                    <Field autoComplete="off" name="zip" type="text" id="customeZip" placeholder="Enter Zip" className="form-input mb-2" />
                     {submitCount ? (
                         errors.zip ? (
                             <div className="text-white bg-danger py-1 px-2 rounded inline-block">{errors.zip}</div>
@@ -1068,7 +1068,7 @@ const submitForm4 = Yup.object().shape({
 
             <div className={submitCount ? (errors.agree ? 'has-error' : 'has-success') : ''}>
                 <div className="flex">
-                    <Field name="agree" id="agree2" type="checkbox" className="form-checkbox" />
+                    <Field autoComplete="off" name="agree" id="agree2" type="checkbox" className="form-checkbox" />
                     <label htmlFor="agree2" className="text-white-dark font-semibold">
                         Agree to terms and conditions
                     </label>

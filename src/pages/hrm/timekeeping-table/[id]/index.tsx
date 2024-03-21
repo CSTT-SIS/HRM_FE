@@ -194,7 +194,7 @@ const EditPersonel = ({ ...props }: Props) => {
                                                         {' '}
                                                         {t('code_staff')}
                                                     </label>
-                                                    <Field name="code" type="text" id="code" placeholder={`${t('enter_code_staff')}`} className="form-input" disabled />
+                                                    <Field autoComplete="off" name="code" type="text" id="code" placeholder={`${t('enter_code_staff')}`} className="form-input" disabled />
                                                 </div>
 
                                                 <div className="mb-5 w-1/2">
@@ -202,7 +202,7 @@ const EditPersonel = ({ ...props }: Props) => {
                                                         {' '}
                                                         {t('name_staff')}
                                                     </label>
-                                                    <Field name="name" type="text" id="name" placeholder={`${t('enter_name_staff')}`} className="form-input" disabled />
+                                                    <Field autoComplete="off" name="name" type="text" id="name" placeholder={`${t('enter_name_staff')}`} className="form-input" disabled />
                                                 </div>
                                             </div>
                                             <div className='flex justify-between gap-5'>
@@ -211,14 +211,14 @@ const EditPersonel = ({ ...props }: Props) => {
                                                         {' '}
                                                         Số công chuẩn
                                                     </label>
-                                                    <Field name="standard_working_hours" type="text" id="standard_working_hours"  className="form-input" disabled/>
+                                                    <Field autoComplete="off" name="standard_working_hours" type="text" id="standard_working_hours"  className="form-input" disabled/>
                                                 </div>
                                                 <div className="mb-5 w-1/2">
                                                     <label htmlFor="regular_workday_hours" className='label'>
                                                         {' '}
                                                         Công ngày thường
                                                     </label>
-                                                    <Field name="regular_workday_hours" type="text" id="regular_workday_hours" className="form-input" disabled/>
+                                                    <Field autoComplete="off" name="regular_workday_hours" type="text" id="regular_workday_hours" className="form-input" disabled/>
 
                                                 </div>
                                             </div>
@@ -228,7 +228,7 @@ const EditPersonel = ({ ...props }: Props) => {
                                                         {' '}
                                                         Công ngày nghỉ
                                                     </label>
-                                                    <Field name="non_working_day_hours" type="text" id="non_working_day_hours" className="form-input" disabled/>
+                                                    <Field autoComplete="off" name="non_working_day_hours" type="text" id="non_working_day_hours" className="form-input" disabled/>
 
                                                 </div>
                                                 <div className="mb-5 w-1/2">
@@ -236,7 +236,7 @@ const EditPersonel = ({ ...props }: Props) => {
                                                         {' '}
                                                         Công ngày lễ
                                                     </label>
-                                                    <Field name="holiday_hours" type="text" id="holiday_hours"className="form-input" disabled/>
+                                                    <Field autoComplete="off" name="holiday_hours" type="text" id="holiday_hours"className="form-input" disabled/>
                                                 </div>
                                             </div>
                                             <div className='flex justify-between gap-5'>
@@ -245,7 +245,7 @@ const EditPersonel = ({ ...props }: Props) => {
                                                         {' '}
                                                         Làm thêm giờ hưởng lương
                                                     </label>
-                                                    <Field name="overtime_with_pay" type="text" id="overtime_with_pay"  className="form-input" disabled/>
+                                                    <Field autoComplete="off" name="overtime_with_pay" type="text" id="overtime_with_pay"  className="form-input" disabled/>
 
                                                 </div>
                                                 <div className="mb-5 w-1/2">
@@ -253,7 +253,7 @@ const EditPersonel = ({ ...props }: Props) => {
                                                         {' '}
                                                         Nghỉ phép
                                                     </label>
-                                                    <Field name="leave_of_absence" type="text" id="leave_of_absence"  className="form-input" disabled/>
+                                                    <Field autoComplete="off" name="leave_of_absence" type="text" id="leave_of_absence"  className="form-input" disabled/>
                                                 </div>
                                             </div>
                                             <div className='flex justify-between gap-5'>
@@ -262,14 +262,14 @@ const EditPersonel = ({ ...props }: Props) => {
                                                         {' '}
                                                         Nghỉ lễ
                                                     </label>
-                                                    <Field name="holiday_leave" type="text" id="holiday_leave" className="form-input" disabled/>
+                                                    <Field autoComplete="off" name="holiday_leave" type="text" id="holiday_leave" className="form-input" disabled/>
                                                 </div>
                                                 <div className="mb-5 w-1/2">
                                                     <label htmlFor="business_trip" className='label'>
                                                         {' '}
                                                         Công tác
                                                     </label>
-                                                    <Field name="business_trip" type="text" id="business_trip"  className="form-input" disabled/>
+                                                    <Field autoComplete="off" name="business_trip" type="text" id="business_trip"  className="form-input" disabled/>
 
                                                 </div>
                                             </div>
@@ -279,7 +279,7 @@ const EditPersonel = ({ ...props }: Props) => {
                                                         {' '}
                                                         Tổng công thực tế
                                                     </label>
-                                                    <Field name="total_hours_worked" type="text" id="total_hours_worked"  className="form-input" disabled/>
+                                                    <Field autoComplete="off" name="total_hours_worked" type="text" id="total_hours_worked"  className="form-input" disabled/>
                                                 </div>
 
                                             </div>
