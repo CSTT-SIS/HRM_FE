@@ -669,7 +669,7 @@ const DetailPage = ({ ...props }: Props) => {
                             <button type="button" className="btn btn-outline-danger cancel-button w-28" onClick={() => handleReject()}>
                                 {t('reject')}
                             </button>
-                            <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleApprove()}>
+                            <button data-testId='submit-approve-btn' type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleApprove()}>
                                 {t('approve')}
                             </button>
                         </div>

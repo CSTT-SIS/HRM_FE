@@ -164,7 +164,7 @@ const ProposalPage = ({ ...props }: Props) => {
                 <div className="flex justify-start gap-2">
                     <div className="w-[80px]">
                         <Link href={`/warehouse-process/proposal/${records.id}?status=${true}&&type=approve`}>
-                            <button type='button' className='button-detail'>
+                            <button data-testId="detail-proposal-btn" type='button' className='button-detail'>
                                 <IconNewEye /> <span>{t('detail')}</span>
                             </button>
                         </Link>
