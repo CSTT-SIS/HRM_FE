@@ -21,6 +21,7 @@ const fillModal = async (page: Page, text: string) => {
 test.describe.serial('proposal CRUD', () => {
 	const text = makeRamdomText(5);
 	const editText = text + 'edit';
+	const searchText = 'search=' + text;
 	test('01. Create', async ({ page }) => {
 		await page.goto('/warehouse-process/proposal');
 
@@ -47,6 +48,9 @@ test.describe.serial('proposal CRUD', () => {
 		await page.waitForTimeout(1000);
 		await page.getByTestId('search-proposal-input').fill(text);
 		await page.waitForLoadState('networkidle');
+
+        await page.waitForTimeout(1000);
+		await expect(page).toHaveURL(`/warehouse-process/proposal?${searchText}`);
 
 		await page.getByTestId('edit-proposal-btn').first().waitFor({ state: 'visible' });
 		await page.waitForTimeout(1000);

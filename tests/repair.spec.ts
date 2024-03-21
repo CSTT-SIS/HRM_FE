@@ -23,6 +23,7 @@ const fillModal = async (page: Page, text: string) => {
 test.describe.serial('repair CRUD', () => {
 	const text = makeRamdomText(5);
 	const editText = text + 'edit';
+	const searchText = 'search=' + text;
 	test('01. Create', async ({ page }) => {
 		await page.goto('/warehouse-process/repair');
 
@@ -49,6 +50,9 @@ test.describe.serial('repair CRUD', () => {
 		await page.waitForTimeout(1000);
 		await page.getByTestId('search-repair-input').fill(text);
 		await page.waitForLoadState('networkidle');
+
+		await page.waitForTimeout(1000);
+		await expect(page).toHaveURL(`/warehouse-process/repair?${searchText}`);
 
 		await page.getByTestId('edit-repair-btn').first().waitFor({ state: 'visible' });
 		await page.waitForTimeout(1000);
