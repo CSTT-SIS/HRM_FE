@@ -50,7 +50,7 @@ const OrderForm = ({ ...props }: Props) => {
 
 
     // get data
-    const { data: orders, pagination, mutate } = Orders({ ...router.query });
+    const { data: orders, pagination, mutate } = Orders({ ...router.query, warehouseId: active.includes(0) ? "" : active });
     const { data: warehouses, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({});
     useEffect(() => {
         dispatch(setPageTitle(`${t('Order')}`));
