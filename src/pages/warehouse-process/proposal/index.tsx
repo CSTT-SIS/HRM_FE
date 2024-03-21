@@ -147,7 +147,12 @@ const ProposalPage = ({ ...props }: Props) => {
         {
             accessor: 'status',
             title: 'Trạng thái',
-            render: ({ status }: any) => <span>{status === "APPROVED" ? "Đã duyệt" : "Chưa duyệt"}</span>,
+            render: ({ status }: any) =>
+                <span className={`badge uppercase bg-${(status === "COMPLETED" || status === "HEAD_APPROVED" || status === "MANAGER_APPROVED") ? "success" : (status === "HEAD_REJECTED" || status === "HEAD_REJECTED") ? "danger" : "warning"}`}>{
+                    (status === "COMPLETED" || status === "HEAD_APPROVED") ? "Đã duyệt" :
+                        (status === "HEAD_REJECTED") ? "Không duyệt" :
+                            "Chưa duyệt"
+                }</span>,
             sortable: false
         },
         {
@@ -159,7 +164,7 @@ const ProposalPage = ({ ...props }: Props) => {
                 <div className="flex justify-start gap-2">
                     <div className="w-[80px]">
                         <Link href={`/warehouse-process/proposal/${records.id}?status=${true}&&type=approve`}>
-                            <button type='button' className='button-detail'>
+                            <button data-testId="detail-proposal-btn" type='button' className='button-detail'>
                                 <IconNewEye /> <span>{t('detail')}</span>
                             </button>
                         </Link>

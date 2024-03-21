@@ -219,7 +219,7 @@ const ExportPage = ({ ...props }: Props) => {
         warehouseId: new Yup.ObjectSchema().required(`${t('please_fill_warehouse')}`),
     });
 
-    const { data: orders, pagination: orderPagination, isLoading: orderLoading } = DropdownOrder({ page: pageOder });
+    const { data: orders, pagination: orderPagination, isLoading: orderLoading } = DropdownOrder({ page: pageOder, isCreatedBill: true });
     const { data: warehouses, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({ page: pageWarehouse });
     const { data: listRequest } = WarehousingBillListRequest({ id: router.query.proposalId });
 

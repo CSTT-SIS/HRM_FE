@@ -21,7 +21,7 @@ import * as Yup from 'yup';
 import Select, { components } from 'react-select';
 import IconBack from '@/components/Icon/IconBack';
 import { DropdownDepartment, DropdownWarehouses } from '@/services/swr/dropdown.twr';
-import DetailModal from '../form/DetailModal';
+import DetailModal from '../modal/DetailModal';
 import moment from 'moment';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
@@ -539,7 +539,7 @@ const DetailPage = ({ ...props }: Props) => {
                             <button type="button" className="btn btn-outline-danger cancel-button w-28" onClick={() => handleReject()}>
                                 {t('reject')}
                             </button>
-                            <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleApprove()}>
+                            <button data-testId="submit-approve-btn" type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleApprove()}>
                                 {t('approve')}
                             </button>
                         </div>

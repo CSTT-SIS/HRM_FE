@@ -241,10 +241,10 @@ const ExportPage = ({ ...props }: Props) => {
         warehouseId: new Yup.ObjectSchema().required(`${t('please_fill_warehouse')}`),
     });
 
-    const { data: proposals, pagination: proposalPagination, isLoading: proposalLoading } = DropdownProposals({ page: pageProposal, type: "SUPPLY" });
+    const { data: proposals, pagination: proposalPagination, isLoading: proposalLoading } = DropdownProposals({ page: pageProposal, type: "SUPPLY", isCreatedBill: true, status: "HEAD_APPROVED" });
     const { data: warehouses, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({ page: pageWarehouse });
     const { data: listRequest } = WarehousingBillListRequest({ id: router.query.proposalId });
-    const { data: dropdownRepair, pagination: repairPagination, isLoading: repairLoading } = DropdownRepair({ page: pageRepair })
+    const { data: dropdownRepair, pagination: repairPagination, isLoading: repairLoading } = DropdownRepair({ page: pageRepair, isCreatedBill: true, status: "HEAD_APPROVED" })
 
     useEffect(() => {
         if (router.query.proposalId) {

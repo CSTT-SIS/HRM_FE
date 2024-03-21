@@ -52,6 +52,8 @@ const DetailPage = ({ ...props }: Props) => {
     const [dataRepairDropdown, setDataRepairDropdown] = useState<any>([]);
     const [pageRepair, setPageRepair] = useState<any>(1);
     const [entity, setEntity] = useState<any>("");
+    const [searchP, setSearchP] = useState<any>();
+    const [searchR, setSearchR] = useState<any>();
 
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().required(`${t('please_fill_name')}`),
@@ -65,9 +67,9 @@ const DetailPage = ({ ...props }: Props) => {
 
     // get data
     const { data: orderDetails, pagination, mutate, isLoading } = OrderDetails({ ...query });
-    const { data: proposals, pagination: proposalPagiantion, isLoading: proposalLoading } = DropdownProposals({ page: pageProposal });
+    const { data: proposals, pagination: proposalPagiantion, isLoading: proposalLoading } = DropdownProposals({ page: pageProposal, search: searchP, isCreatedOrder: true, status: "HEAD_APPROVED" });
     const { data: warehouses, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({});
-    const { data: dropdownRepair, pagination: repairPagination, isLoading: repairLoading } = DropdownRepair({ page: pageRepair })
+    const { data: dropdownRepair, pagination: repairPagination, isLoading: repairLoading } = DropdownRepair({ page: pageRepair, search: searchR, isCreatedOrder: true, status: "HEAD_APPROVED" })
 
     useEffect(() => {
         dispatch(setPageTitle(`${t('Order')}`));
@@ -176,6 +178,14 @@ const DetailPage = ({ ...props }: Props) => {
         );
     }
 
+    const handleSearchP = (param: any) => {
+        setSearchP(param)
+    }
+
+    const handleSearchR = (param: any) => {
+        setSearchR(param)
+    }
+
     const handleChangePage = (page: number, pageSize: number) => {
         router.replace(
             {
@@ -242,10 +252,16 @@ const DetailPage = ({ ...props }: Props) => {
     }
 
     const handleOrder = (param: any) => {
+        const request: any = [];
+        if (param.warehouseId.label === "Gara") {
+            param.repairRequestId.map((item: any) => request.push({ type: "repairRequest", id: item.value }))
+        } else {
+            param.proposalIds.map((item: any) => request.push({ type: "proposal", id: item.value }))
+        }
         const query: any = {
             name: param.name,
-            requests: param.warehouseId.label === "Gara" ? param.repairRequestId.map((item: any) => { return (item.value) }) : param.proposalIds.map((item: any) => { return (item.value) }),
-            type: param.warehouseId.label === "Gara" ? "repairRequest" : "proposal",
+            requests: request,
+            type: "PURCHASE",
             code: param.code,
             estimatedDeliveryDate: moment(param.estimatedDeliveryDate).format('YYYY-MM-DD HH:mm:ss'),
             provider: param.provider,
@@ -254,29 +270,25 @@ const DetailPage = ({ ...props }: Props) => {
         if (data) {
             EditOrder({ id: data.id, ...query }).then(() => {
                 showMessage(`${t('edit_success')}`, 'success');
+                handleCancel();
             }).catch((err) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
         } else {
-            if (listDataDetail?.length === undefined || listDataDetail?.length === 0) {
-                showMessage(`${t('please_add_product')}`, 'error');
-                handleActive(2);
-            } else {
-                CreateOrder(query).then((res) => {
-                    handleDetail(res.data.id);
-                }).catch((err) => {
-                    showMessage(`${err?.response?.data?.message[0].error}`, 'error');
-                });
-            }
+            CreateOrder(query).then((res) => {
+                handleDetail(res.data.id);
+                handleCancel();
+            }).catch((err) => {
+                showMessage(`${err?.response?.data?.message[0].error}`, 'error');
+            });
         }
-        handleCancel();
     }
 
     const handleDetail = (id: any) => {
         AddOrderDetails({
             id: id, details: listDataDetail
         }).then(() => {
-            handleChangeComplete({ id: id, message: "create_success" });
+            handleCancel();
         }).catch((err) => {
             showMessage(`${err?.response?.data?.message}`, 'error');
         });
@@ -474,7 +486,8 @@ const DetailPage = ({ ...props }: Props) => {
         } else {
             setDataRepairDropdown([...dataRepairDropdown, ...dropdownRepair?.data])
         }
-    }, [dataRepairDropdown, dropdownRepair, repairPagination]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [repairPagination]);
 
     const handleMenuScrollToBottomRepair = () => {
         setTimeout(() => {
@@ -633,6 +646,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                                         onMenuScrollToBottom={handleMenuScrollToBottomRepair}
                                                                         isLoading={repairLoading}
                                                                         maxMenuHeight={160}
+                                                                        onInputChange={(e) => handleSearchR(e)}
                                                                         value={values?.repairRequestId}
                                                                         isMulti
                                                                         onChange={e => {
@@ -656,6 +670,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                                         onMenuOpen={() => { setPageProposal(1) }}
                                                                         onMenuScrollToBottom={handleMenuScrollToBottomProposal}
                                                                         isLoading={proposalLoading}
+                                                                        onInputChange={(e) => handleSearchP(e)}
                                                                         maxMenuHeight={160}
                                                                         value={values?.proposalIds}
                                                                         isMulti
@@ -698,8 +713,10 @@ const DetailPage = ({ ...props }: Props) => {
                                                             <Field
                                                                 autoComplete="off"
                                                                 name="estimatedDeliveryDate"
+                                                                id="estimatedDeliveryDate"
                                                                 render={({ field }: any) => (
                                                                     <Flatpickr
+                                                                        data-testId='date'
                                                                         data-enable-time
                                                                         placeholder={`${t('YYYY-MM-DD | hh:mm')}`}
                                                                         options={{
@@ -762,7 +779,7 @@ const DetailPage = ({ ...props }: Props) => {
                                             <div className="flex items-center flex-wrap">
                                                 {
                                                     !disable &&
-                                                    <button type="button" onClick={e => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
+                                                    <button data-testId='modal-order-btn' type="button" onClick={e => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
                                                         <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                                                         {t('add_product_list')}
                                                     </button>
@@ -800,7 +817,7 @@ const DetailPage = ({ ...props }: Props) => {
                                 <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
                                     {t('cancel')}
                                 </button>
-                                <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleSubmit()}>
+                                <button data-testId='submit-btn' type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleSubmit()}>
                                     {router.query.id !== "create" ? t('update') : t('save')}
                                 </button>
                             </div>

@@ -172,7 +172,12 @@ const WarehousingPage = ({ ...props }: Props) => {
         {
             accessor: 'status',
             title: 'Trạng thái',
-            render: ({ status }: any) => <span>{status === "COMPLETED" ? "Đã duyệt" : "Chưa duyệt"}</span>,
+            render: ({ status }: any) =>
+                <span className={`badge uppercase bg-${(status === "COMPLETED" || status === "HEAD_APPROVED" || status === "MANAGER_APPROVED") ? "success" : (status === "HEAD_REJECTED" || status === "HEAD_REJECTED") ? "danger" : "warning"}`}>{
+                    (status === "COMPLETED" || status === "HEAD_APPROVED") ? "Đã duyệt" :
+                        (status === "HEAD_REJECTED") ? "Không duyệt" :
+                            "Chưa duyệt"
+                }</span>,
             sortable: false
         },
         // { accessor: 'note', title: 'Ghi chú', sortable: false },
@@ -192,23 +197,24 @@ const WarehousingPage = ({ ...props }: Props) => {
                     </div>
                     {
                         records.status === "PENDING" &&
-                        <>
-                            <div className="w-[60px]">
-                                <button data-testId='edit-import-btn' type="button" className='button-edit' onClick={() => handleDetail(records)}>
-                                    <IconNewEdit /><span>
-                                        {t('edit')}
-                                    </span>
-                                </button>
-                            </div>
-                            <div className="w-[80px]">
-                                <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
-                                    <IconNewTrash />
-                                    <span>
-                                        {t('delete')}
-                                    </span>
-                                </button>
-                            </div>
-                        </>
+                        <div className="w-[60px]">
+                            <button data-testId='edit-import-btn' type="button" className='button-edit' onClick={() => handleDetail(records)}>
+                                <IconNewEdit /><span>
+                                    {t('edit')}
+                                </span>
+                            </button>
+                        </div>
+                    }
+                    {
+                        records.status === "HEAD_REJECTED" &&
+                        <div className="w-[80px]">
+                            <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                                <IconNewTrash />
+                                <span>
+                                    {t('delete')}
+                                </span>
+                            </button>
+                        </div>
                     }
                 </div>
             ),

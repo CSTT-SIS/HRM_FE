@@ -41,14 +41,30 @@ const RepairPage = ({ ...props }: Props) => {
     const { t } = useTranslation();
     const router = useRouter();
     const [active, setActive] = useState<any>([1]);
+    const [status, setStatus] = useState<any>();
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
     // get data
-    const { data: repairs, pagination, mutate, isLoading } = Repairs({ ...router.query });
+    const { data: repairs, pagination, mutate, isLoading } = Repairs({
+        ...router.query,
+        status: status
+    });
 
     useEffect(() => {
-        dispatch(setPageTitle(`${t('Repair')}`));
+        if (active.includes(1)) {
+            setStatus(["IN_PROGRESS"])
+        } else if (active.includes(2)) {
+            setStatus("GARAGE_RECEIVED&status=HEAD_APPROVED&status=COMPLETED")
+        } else if (active.includes(3)) {
+            setStatus(["HEAD_REJECTED"])
+        } else {
+            setStatus("")
+        }
+    }, [active])
+
+    useEffect(() => {
+        dispatch(setPageTitle(`${t('Repair')} `));
     });
 
     useEffect(() => {
@@ -76,21 +92,21 @@ const RepairPage = ({ ...props }: Props) => {
         swalDeletes
             .fire({
                 icon: 'question',
-                title: `${t('delete_order')}`,
-                text: `${t('delete')} ${name}`,
+                title: `${t('delete_order')} `,
+                text: `${t('delete')} ${name} `,
                 padding: '2em',
                 showCancelButton: true,
-                cancelButtonText: `${t('cancel')}`,
-                confirmButtonText: `${t('confirm')}`,
+                cancelButtonText: `${t('cancel')} `,
+                confirmButtonText: `${t('confirm')} `,
                 reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
                     DeleteRepair({ id }).then(() => {
                         mutate();
-                        showMessage(`${t('delete_success')}`, 'success');
+                        showMessage(`${t('delete_success')} `, 'success');
                     }).catch((err) => {
-                        showMessage(`${err?.response?.data?.message}`, 'error');
+                        showMessage(`${err?.response?.data?.message} `, 'error');
                     });
                 }
             });
@@ -149,7 +165,12 @@ const RepairPage = ({ ...props }: Props) => {
         {
             accessor: 'status',
             title: 'Trạng thái',
-            render: ({ status }: any) => <span>{status === "COMPLETED" ? "Đã duyệt" : "Chưa duyệt"}</span>,
+            render: ({ status }: any) =>
+                <span className={`badge uppercase bg-${(status === "COMPLETED" || status === "HEAD_APPROVED" || status === "MANAGER_APPROVED") ? "success" : (status === "HEAD_REJECTED" || status === "HEAD_REJECTED") ? "danger" : "warning"} `}>{
+                    (status === "COMPLETED" || status === "HEAD_APPROVED") ? "Đã duyệt" :
+                        (status === "HEAD_REJECTED") ? "Không duyệt" :
+                            "Chưa duyệt"
+                }</span>,
             sortable: false
         },
         {
@@ -161,7 +182,7 @@ const RepairPage = ({ ...props }: Props) => {
                 <div className="flex justify-start gap-2">
                     <div className="w-[80px]">
                         <Link href={`/warehouse-process/repair/${records.id}?status=${true}&&type=approve`}>
-                            <button type='button' className='button-detail'>
+                            <button data-testId='detail-repair-btn' type='button' className='button-detail'>
                                 <IconNewEye /> <span>{t('detail')}</span>
                             </button>
                         </Link>
@@ -194,8 +215,14 @@ const RepairPage = ({ ...props }: Props) => {
 
     const handleActive = (value: any) => {
         setActive([active.includes(value) ? 0 : value]);
-        localStorage.setItem('defaultFilterProposalOrder', value);
+        localStorage.setItem('defaultFilterRepair', active.includes(value) ? 0 : value);
     };
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            setActive([Number(localStorage.getItem('defaultFilterRepair'))])
+        }
+    }, [router])
 
     return (
         <div>
@@ -214,7 +241,7 @@ const RepairPage = ({ ...props }: Props) => {
                         </button>
                     </div>
 
-                    <input data-testId='search-repair-input' autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
+                    <input data-testId='search-repair-input' autoComplete="off" className="form-input w-auto" placeholder={`${t('search')} `} onChange={(e) => handleSearch(e.target.value)} />
                 </div>
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap gap-1">
@@ -240,7 +267,7 @@ const RepairPage = ({ ...props }: Props) => {
                         sortStatus={sortStatus}
                         onSortStatusChange={setSortStatus}
                         minHeight={200}
-                        paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
+                        paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })} `}
                     />
                 </div>
             </div>
