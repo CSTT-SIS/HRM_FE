@@ -135,19 +135,22 @@ const ShelfPage = ({ ...props }: Props) => {
             }
             if (data) {
                 EditWarehouse({ id: data.id, ...query }).then(() => {
-                    // handleCancel();
+                    handleCancel();
                     showMessage(`${t('edit_warehouse_success')}`, 'success');
                 }).catch((err) => {
                     showMessage(`${t('edit_warehouse_error')}`, 'error');
                 });
             } else {
                 CreateWarehouse(query).then(() => {
-                    // handleCancel();
+                    handleCancel();
                     showMessage(`${t('create_warehouse_success')}`, 'success');
                 }).catch((err) => {
                     showMessage(`${t('create_warehouse_error')}`, 'error');
                 });
             }
+        }
+        const handleCancel = () => {
+            router.push('/warehouse')
         }
         return (
             <div className="p-5">

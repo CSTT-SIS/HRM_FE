@@ -22,6 +22,7 @@ import WarehouseModal from './modal/WarehouseModal';
 import { DeleteWarehouse } from '@/services/apis/warehouse.api';
 import Link from 'next/link';
 import IconNewEye from '@/components/Icon/IconNewEye';
+import IconNewPlus from '@/components/Icon/IconNewPlus';
 
 
 interface Props {
@@ -157,10 +158,10 @@ const WarehousePage = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        {/* <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
-                            <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                            {t('add')}
-                        </button> */}
+                        <button type="button" className="m-1 button-table button-create" onClick={(e) => router.push(`/warehouse/create`)}>
+                            <IconNewPlus />
+                            <span className='uppercase'>{t('add')}</span>
+                        </button>
                     </div>
 
                     {/* <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} /> */}
@@ -171,16 +172,16 @@ const WarehousePage = ({ ...props }: Props) => {
                         className="whitespace-nowrap table-hover custom_table"
                         records={warehouse?.data}
                         columns={columns}
-                        // totalRecords={pagination?.totalRecords}
-                        // recordsPerPage={pagination?.perPage}
-                        // page={pagination?.page}
-                        // onPageChange={(p) => handleChangePage(p, pagination?.perPage)}
-                        // recordsPerPageOptions={PAGE_SIZES}
-                        // onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
+                        totalRecords={pagination?.totalRecords}
+                        recordsPerPage={pagination?.perPage}
+                        page={pagination?.page}
+                        onPageChange={(p) => handleChangePage(p, pagination?.perPage)}
+                        recordsPerPageOptions={PAGE_SIZES}
+                        onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
                         sortStatus={sortStatus}
                         onSortStatusChange={setSortStatus}
                         minHeight={200}
-                    // paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
+                        paginationText={({ from, to, totalRecords }) => `${t('Showing_from_to_of_totalRecords_entries', { from: from, to: to, totalRecords: totalRecords })}`}
                     />
                 </div>
             </div>

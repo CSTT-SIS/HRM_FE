@@ -50,7 +50,7 @@ const OrderForm = ({ ...props }: Props) => {
 
 
     // get data
-    const { data: orders, pagination, mutate } = Orders({ ...router.query });
+    const { data: orders, pagination, mutate } = Orders({ ...router.query, warehouseId: active.includes(0) ? "" : active });
     const { data: warehouses, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({});
     useEffect(() => {
         dispatch(setPageTitle(`${t('Order')}`));
@@ -164,7 +164,10 @@ const OrderForm = ({ ...props }: Props) => {
         {
             accessor: 'proposals',
             title: 'Yêu cầu',
-            render: ({ proposals }: any) => <span>{proposals?.map((item: any, index: any) => { return proposals.length > index + 1 ? item.name + ", " : item.name })}</span>,
+            render: ({ proposals, repairRequests }: any) => <span>{
+                proposals?.map((item: any, index: any) => { return proposals.length > index + 1 ? item.name + ", " : item.name }) ||
+                repairRequests?.map((item: any, index: any) => { return repairRequests.length > index + 1 ? item.name + ", " : item.name })
+            }</span>,
         },
         {
             accessor: 'warehouse',
@@ -180,8 +183,16 @@ const OrderForm = ({ ...props }: Props) => {
             accessor: 'status',
             title: 'Trạng thái',
             sortable: false,
-            render: ({ status }: any) => <span>{status === "COMPLETED" ? "Đã duyệt" : "Chưa duyệt"}</span>,
-
+            render: ({ status }: any) => {
+                console.log("🚀 ~ OrderForm ~ status:", status)
+                return (
+                    <span className={`badge uppercase bg-${(status === "COMPLETED" || status === "HEAD_APPROVED" || status === "MANAGER_APPROVED") ? "success" : (status === "HEAD_REJECTED" || status === "HEAD_REJECTED") ? "danger" : "warning"}`}>{
+                        (status === "COMPLETED" || status === "HEAD_APPROVED" || status === "MANAGER_APPROVED") ? "Đã duyệt" :
+                            (status === "HEAD_REJECTED" || status === "MANAGER_REJECTED") ? "Không duyệt" :
+                                "Chưa duyệt"
+                    }</span>
+                )
+            },
         },
         {
             accessor: 'action',
@@ -192,7 +203,7 @@ const OrderForm = ({ ...props }: Props) => {
                 <div className="flex justify-start gap-2">
                     <div className="w-[80px]">
                         <Link href={`/warehouse-process/order/${records.id}?status=${true}&&type=${records.status}`}>
-                            <button type='button' className='button-detail'>
+                            <button data-testId='detail-order-btn' type='button' className='button-detail'>
                                 <IconNewEye /> <span>{t('detail')}</span>
                             </button>
                         </Link>
@@ -200,7 +211,7 @@ const OrderForm = ({ ...props }: Props) => {
                     {
                         records.status === "PENDING" &&
                         <div className="w-[60px]">
-                            <button type="button" className='button-edit' onClick={() => handleDetail(records)}>
+                            <button data-testId='edit-order-btn' type="button" className='button-edit' onClick={() => handleDetail(records)}>
                                 <IconNewEdit /><span>
                                     {t('edit')}
                                 </span>
@@ -208,7 +219,7 @@ const OrderForm = ({ ...props }: Props) => {
                         </div>
                     }
                     {
-                        records.status === "CANCELLED" &&
+                        (records?.status === "HEAD_REJECTED" || records?.status === "MANAGER_REJECTED") &&
                         <div className="w-[80px]">
                             <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
                                 <IconNewTrash />
@@ -256,7 +267,7 @@ const OrderForm = ({ ...props }: Props) => {
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button type="button" className="m-1 button-table button-create" onClick={(e) => router.push(`/warehouse-process/order/create`)}>
+                        <button data-testId='add-order' type="button" className="m-1 button-table button-create" onClick={(e) => router.push(`/warehouse-process/order/create`)}>
                             <IconNewPlus />
                             <span className='uppercase'>{t('add')}</span>
                         </button>
