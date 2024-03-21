@@ -347,7 +347,6 @@ const DetailPage = ({ ...props }: Props) => {
                 setStatusRepair(true);
             } else {
                 GetRepairDetail({ id: item }).then((res) => {
-                    console.log("🚀 ~ GetRepairDetail ~ res:", res)
                     if (listDataDetail?.length > 0) {
                         setListDataDetail([...listDataDetail, ...res.data]);
                     } else {
