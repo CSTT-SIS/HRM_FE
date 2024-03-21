@@ -52,6 +52,8 @@ const DetailPage = ({ ...props }: Props) => {
     const [dataRepairDropdown, setDataRepairDropdown] = useState<any>([]);
     const [pageRepair, setPageRepair] = useState<any>(1);
     const [entity, setEntity] = useState<any>("");
+    const [searchP, setSearchP] = useState<any>();
+    const [searchR, setSearchR] = useState<any>();
 
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().required(`${t('please_fill_name')}`),
@@ -65,9 +67,9 @@ const DetailPage = ({ ...props }: Props) => {
 
     // get data
     const { data: orderDetails, pagination, mutate, isLoading } = OrderDetails({ ...query });
-    const { data: proposals, pagination: proposalPagiantion, isLoading: proposalLoading } = DropdownProposals({ page: pageProposal });
+    const { data: proposals, pagination: proposalPagiantion, isLoading: proposalLoading } = DropdownProposals({ page: pageProposal, search: searchP, isCreatedOrder: true, status: "HEAD_APPROVED" });
     const { data: warehouses, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({});
-    const { data: dropdownRepair, pagination: repairPagination, isLoading: repairLoading } = DropdownRepair({ page: pageRepair })
+    const { data: dropdownRepair, pagination: repairPagination, isLoading: repairLoading } = DropdownRepair({ page: pageRepair, search: searchR, isCreatedOrder: true, status: "HEAD_APPROVED" })
 
     useEffect(() => {
         dispatch(setPageTitle(`${t('Order')}`));
@@ -176,6 +178,14 @@ const DetailPage = ({ ...props }: Props) => {
         );
     }
 
+    const handleSearchP = (param: any) => {
+        setSearchP(param)
+    }
+
+    const handleSearchR = (param: any) => {
+        setSearchR(param)
+    }
+
     const handleChangePage = (page: number, pageSize: number) => {
         router.replace(
             {
@@ -278,7 +288,7 @@ const DetailPage = ({ ...props }: Props) => {
         AddOrderDetails({
             id: id, details: listDataDetail
         }).then(() => {
-            handleChangeComplete({ id: id, message: "create_success" });
+            handleCancel();
         }).catch((err) => {
             showMessage(`${err?.response?.data?.message}`, 'error');
         });
@@ -636,6 +646,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                                         onMenuScrollToBottom={handleMenuScrollToBottomRepair}
                                                                         isLoading={repairLoading}
                                                                         maxMenuHeight={160}
+                                                                        onInputChange={(e) => handleSearchR(e)}
                                                                         value={values?.repairRequestId}
                                                                         isMulti
                                                                         onChange={e => {
@@ -659,6 +670,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                                         onMenuOpen={() => { setPageProposal(1) }}
                                                                         onMenuScrollToBottom={handleMenuScrollToBottomProposal}
                                                                         isLoading={proposalLoading}
+                                                                        onInputChange={(e) => handleSearchP(e)}
                                                                         maxMenuHeight={160}
                                                                         value={values?.proposalIds}
                                                                         isMulti
@@ -701,8 +713,10 @@ const DetailPage = ({ ...props }: Props) => {
                                                             <Field
                                                                 autoComplete="off"
                                                                 name="estimatedDeliveryDate"
+                                                                id="estimatedDeliveryDate"
                                                                 render={({ field }: any) => (
                                                                     <Flatpickr
+                                                                        data-testId='date'
                                                                         data-enable-time
                                                                         placeholder={`${t('YYYY-MM-DD | hh:mm')}`}
                                                                         options={{
@@ -765,7 +779,7 @@ const DetailPage = ({ ...props }: Props) => {
                                             <div className="flex items-center flex-wrap">
                                                 {
                                                     !disable &&
-                                                    <button type="button" onClick={e => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
+                                                    <button data-testId='modal-order-btn' type="button" onClick={e => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
                                                         <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
                                                         {t('add_product_list')}
                                                     </button>
@@ -803,7 +817,7 @@ const DetailPage = ({ ...props }: Props) => {
                                 <button type="button" className="btn btn-outline-danger cancel-button" onClick={() => handleCancel()}>
                                     {t('cancel')}
                                 </button>
-                                <button type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleSubmit()}>
+                                <button data-testId='submit-btn' type="button" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={() => handleSubmit()}>
                                     {router.query.id !== "create" ? t('update') : t('save')}
                                 </button>
                             </div>

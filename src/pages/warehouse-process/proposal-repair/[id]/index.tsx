@@ -13,7 +13,6 @@ import Tippy from '@tippyjs/react';
 import { DataTableSortStatus, DataTable } from 'mantine-datatable';
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
-import ProposalForm from '../form/ProposalForm';
 import HandleDetailModal from '../form/DetailModal';
 import IconPlus from '@/components/Icon/IconPlus';
 
@@ -175,7 +174,7 @@ const DetailPage = ({ ...props }: Props) => {
                     <IconLoading />
                 </div>
             )}
-            <ProposalForm />
+            {/* <ProposalForm /> */}
 
             <div className="p-5 panel">
                 <div className='flex justify-between header-page-bottom pb-4 mb-4'>

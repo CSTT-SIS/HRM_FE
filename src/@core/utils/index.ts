@@ -20,7 +20,7 @@ export const deleteNullInObject = (obj: any) => {
 export const getEndpoint = (endpoint: string, queries?: any) => {
 	queries = deleteNullInObject(queries);
 	const queriesStr = new URLSearchParams(queries).toString();
-	return endpoint + '?' + queriesStr;
+	return endpoint + '?' + decodeURIComponent(queriesStr);
 };
 
 export const mergeClassName = (...classNames: (string | any)[]) => classNames.filter(notNull).join(' ');

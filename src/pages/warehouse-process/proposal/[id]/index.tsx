@@ -21,7 +21,7 @@ import * as Yup from 'yup';
 import Select, { components } from 'react-select';
 import IconBack from '@/components/Icon/IconBack';
 import { DropdownDepartment, DropdownWarehouses } from '@/services/swr/dropdown.twr';
-import DetailModal from '../form/DetailModal';
+import DetailModal from '../modal/DetailModal';
 import moment from 'moment';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
