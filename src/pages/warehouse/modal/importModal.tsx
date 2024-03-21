@@ -196,7 +196,7 @@ const ImportModal = ({ ...props }: Props) => {
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
-                                                    <label htmlFor="expiredDate" className='label'> {t('expired_date')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <label htmlFor="expiredDate" className='label'> {t('expired_date')}</label >
                                                     <Field
                                                         autoComplete="off"
                                                         name="expiredDate"
