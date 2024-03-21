@@ -166,7 +166,7 @@ const RepairPage = ({ ...props }: Props) => {
                 <div className="flex justify-start gap-2">
                     <div className="w-[80px]">
                         <Link href={`/warehouse-process/repair/${records.id}?status=${true}&&type=approve`}>
-                            <button type='button' className='button-detail'>
+                            <button data-testId='detail-repair-btn' type='button' className='button-detail'>
                                 <IconNewEye /> <span>{t('detail')}</span>
                             </button>
                         </Link>

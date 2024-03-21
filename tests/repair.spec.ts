@@ -24,6 +24,8 @@ test.describe.serial('repair CRUD', () => {
 	const text = makeRamdomText(5);
 	const editText = text + 'edit';
 	const searchText = 'search=' + text;
+    const searchEditText = 'search=' + editText;
+
 	test('01. Create', async ({ page }) => {
 		await page.goto('/warehouse-process/repair');
 
@@ -80,10 +82,39 @@ test.describe.serial('repair CRUD', () => {
 		await page.waitForTimeout(1000);
 		await page.getByTestId('search-repair-input').fill(editText);
 		await page.waitForLoadState('networkidle');
+
 		await page.waitForTimeout(1000);
+		await page.goto(`/warehouse-process/repair?${searchEditText}`);
 
 		await page.getByTestId('edit-repair-btn').first().waitFor({ state: 'visible' });
 		await page.waitForTimeout(1000);
 		await expect(page.getByTestId('edit-repair-btn')).toBeVisible();
+	});
+
+	test('03. Approve', async ({ page }) => {
+		await page.goto('/warehouse-process/repair');
+
+		await page.waitForTimeout(1000);
+		await page.getByTestId('search-repair-input').fill(editText);
+		await page.waitForLoadState('networkidle');
+
+		await page.getByTestId('detail-repair-btn').first().click();
+		await page.waitForLoadState('networkidle');
+
+		await page.getByTestId('submit-approve-btn').click();
+
+		await page.waitForLoadState('networkidle');
+		await expect(page).toHaveURL('/warehouse-process/repair');
+
+		await page.waitForTimeout(1000);
+		await page.getByTestId('search-repair-input').fill(editText);
+		await page.waitForLoadState('networkidle');
+
+        await page.waitForTimeout(1000);
+		await page.goto(`/warehouse-process/repair?${searchEditText}`);
+
+		await page.getByTestId('detail-repair-btn').first().waitFor({ state: 'visible' });
+		await page.waitForTimeout(1000);
+		await expect(page.getByTestId('detail-repair-btn')).toBeVisible();
 	});
 });
