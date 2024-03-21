@@ -21,61 +21,67 @@ const fillModal = async (page: Page, text: string) => {
 test.describe.serial('proposal CRUD', () => {
 	const text = makeRamdomText(5);
 	const editText = text + 'edit';
-	// test('01. Create', async ({ page }) => {
-	// 	await page.goto('/warehouse-process/proposal');
+	const searchText = 'search=' + text;
+	test('01. Create', async ({ page }) => {
+		await page.goto('/warehouse-process/proposal');
 
-	// 	await page.getByTestId('add-proposal').click();
-	// 	await page.waitForLoadState('networkidle');
+		await page.getByTestId('add-proposal').click();
+		await page.waitForLoadState('networkidle');
 
-	// 	await expect(page).toHaveURL('/warehouse-process/proposal/create');
+		await expect(page).toHaveURL('/warehouse-process/proposal/create');
 
-	// 	await fillForm(page, text);
-	// 	await page.getByTestId('modal-proposal-btn').click();
+		await fillForm(page, text);
+		await page.getByTestId('modal-proposal-btn').click();
 
-	// 	await fillModal(page, text);
-	// 	await page.waitForTimeout(1000);
+		await fillModal(page, text);
+		await page.waitForTimeout(1000);
 
-	// 	await page.getByTestId('submit-modal-btn').click();
-	// 	await page.waitForTimeout(1000);
+		await page.getByTestId('submit-modal-btn').click();
+		await page.waitForTimeout(1000);
 
-	// 	await page.getByTestId('submit-btn').click();
+		await page.getByTestId('submit-btn').click();
 
-	// 	await page.waitForLoadState('networkidle');
+		await page.waitForLoadState('networkidle');
 
-	// 	await expect(page).toHaveURL('/warehouse-process/proposal');
+		await expect(page).toHaveURL('/warehouse-process/proposal');
 
-	// 	await page.getByTestId('search-proposal-input').fill(text);
-	// 	await page.waitForLoadState('networkidle');
+		await page.waitForTimeout(1000);
+		await page.getByTestId('search-proposal-input').fill(text);
+		await page.waitForLoadState('networkidle');
 
-	// 	await page.getByTestId('edit-proposal-btn').first().waitFor({ state: 'visible' });
-	// 	await page.waitForTimeout(1000);
-	// 	await expect(page.getByTestId('edit-proposal-btn')).toBeVisible();
-	// });
+		await page.waitForTimeout(1000);
+		await page.goto(`/warehouse-process/proposal?${searchText}`);
 
-	// test('02. Edit', async ({ page }) => {
-	// 	await page.goto('/warehouse-process/proposal');
+		await page.getByTestId('edit-proposal-btn').first().waitFor({ state: 'visible' });
+		await page.waitForTimeout(1000);
+		await expect(page.getByTestId('edit-proposal-btn')).toBeVisible();
+	});
 
-	// 	await page.waitForTimeout(1000);
-	// 	await page.getByTestId('search-proposal-input').fill(text);
-	// 	await page.waitForLoadState('networkidle');
+	test('02. Edit', async ({ page }) => {
+		await page.goto('/warehouse-process/proposal');
 
-	// 	await page.getByTestId('edit-proposal-btn').first().click();
-	// 	await page.waitForLoadState('networkidle');
+		await page.waitForTimeout(1000);
+		await page.getByTestId('search-proposal-input').fill(text);
+		await page.waitForLoadState('networkidle');
 
-	// 	await fillForm(page, editText);
-	// 	await page.waitForTimeout(1000);
+		await page.getByTestId('edit-proposal-btn').first().click();
+		await page.waitForLoadState('networkidle');
 
-	// 	await page.getByTestId('submit-btn').click();
+		await fillForm(page, editText);
+		await page.waitForTimeout(1000);
 
-	// 	await page.waitForLoadState('networkidle');
-	// 	await expect(page).toHaveURL('/warehouse-process/proposal');
+		await page.getByTestId('submit-btn').click();
 
-	// 	await page.waitForTimeout(1000);
-	// 	await page.getByTestId('search-proposal-input').fill(editText);
-	// 	await page.waitForLoadState('networkidle');
+		await page.waitForLoadState('networkidle');
+		await expect(page).toHaveURL('/warehouse-process/proposal');
 
-	// 	await page.getByTestId('edit-proposal-btn').first().waitFor({ state: 'visible' });
-	// 	await page.waitForTimeout(1000);
-	// 	await expect(page.getByTestId('edit-proposal-btn')).toBeVisible();
-	// });
+		await page.waitForTimeout(1000);
+		await page.getByTestId('search-proposal-input').fill(editText);
+		await page.waitForLoadState('networkidle');
+		await page.waitForTimeout(1000);
+
+		await page.getByTestId('edit-proposal-btn').first().waitFor({ state: 'visible' });
+		await page.waitForTimeout(1000);
+		await expect(page.getByTestId('edit-proposal-btn')).toBeVisible();
+	});
 });

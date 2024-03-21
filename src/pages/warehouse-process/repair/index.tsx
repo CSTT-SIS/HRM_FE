@@ -149,7 +149,12 @@ const RepairPage = ({ ...props }: Props) => {
         {
             accessor: 'status',
             title: 'Trạng thái',
-            render: ({ status }: any) => <span>{status === "COMPLETED" ? "Đã duyệt" : "Chưa duyệt"}</span>,
+            render: ({ status }: any) =>
+                <span className={`badge uppercase bg-${(status === "COMPLETED" || status === "HEAD_APPROVED" || status === "MANAGER_APPROVED") ? "success" : (status === "HEAD_REJECTED" || status === "HEAD_REJECTED") ? "danger" : "warning"}`}>{
+                    (status === "COMPLETED" || status === "HEAD_APPROVED") ? "Đã duyệt" :
+                        (status === "HEAD_REJECTED") ? "Không duyệt" :
+                            "Chưa duyệt"
+                }</span>,
             sortable: false
         },
         {
@@ -214,7 +219,7 @@ const RepairPage = ({ ...props }: Props) => {
                         </button>
                     </div>
 
-                    <input data-testId='search-repair-input' autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
+                    <input data-testId='search-repair-input' autoComplete="off" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
                 </div>
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap gap-1">

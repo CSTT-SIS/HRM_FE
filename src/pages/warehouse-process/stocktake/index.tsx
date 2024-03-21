@@ -167,8 +167,18 @@ const StocktakePage = ({ ...props }: Props) => {
             title: 'Ngày kết thúc',
             render: ({ EndDate }: any) => <span>{moment(EndDate).format("DD/MM/YYYY")}</span>,
         },
-        { accessor: 'description', title: 'Ghi chú', sortable: false },
-        { accessor: 'status', title: 'Trạng thái', sortable: false },
+        // { accessor: 'description', title: 'Ghi chú', sortable: false },
+        {
+            accessor: 'status',
+            title: 'Trạng thái',
+            render: ({ status }: any) =>
+                <span className={`badge uppercase bg-${(status === "COMPLETED" || status === "HEAD_APPROVED" || status === "MANAGER_APPROVED") ? "success" : (status === "HEAD_REJECTED" || status === "HEAD_REJECTED") ? "danger" : "warning"}`}>{
+                    (status === "COMPLETED" || status === "HEAD_APPROVED") ? "Đã duyệt" :
+                        (status === "HEAD_REJECTED") ? "Không duyệt" :
+                            "Chưa duyệt"
+                }</span>,
+            sortable: false
+        },
         {
             accessor: 'action',
             title: 'Thao tác',
