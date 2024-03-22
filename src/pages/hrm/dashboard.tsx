@@ -98,7 +98,7 @@ const DashBoard = () => {
                     show: false,
                 },
             },
-            colors: ['#C8102E', '#FFCD00', '#9CD3EB', '#002868'],
+            colors: ['#002868', '#002868'],
             dataLabels: {
                 enabled: false,
             },
@@ -112,7 +112,6 @@ const DashBoard = () => {
                     horizontal: false,
                     columnWidth: '55%',
                     endingShape: 'rounded',
-                    distributed: true,
                 },
             },
             grid: {
@@ -312,7 +311,7 @@ const DashBoard = () => {
                     breakpoint: 480,
                     options: {
                         chart: {
-                            width: 200,
+                            width: 300,
                         },
                     },
                 },
@@ -326,22 +325,10 @@ const DashBoard = () => {
         series: [44, 55, 13],
         options: {
             chart: {
-                width: 700,
+                height: 300,
                 type: 'pie',
             },
-            grid: {
-                padding: {
-                    top: 0,
-                    bottom: -220,
-                }
-            },
-            plotOptions: {
-                pie: {
-                    startAngle: -90,
-                    endAngle: 0.1,
-                }
-            },
-            labels: ['Chuyên viên', 'Quản lý', 'Trưởng bộ phận'],
+            labels: ['Tốt', 'Đạt', 'Chưa đạt'],
             colors: ['#C8102E', '#FFCD00', '#002868'],
             responsive: [
                 {
@@ -413,9 +400,9 @@ const DashBoard = () => {
                         </div>
                     </div>
                     <div className="w-full h-4 bg-[#ebedf2] dark:bg-dark/40 rounded-full flex" style={{ height: '8px', marginTop: '20px' }}>
-                        <div className="bg-[#C8102E] h-4 rounded-full w-7/12 text-center text-white text-xs" style={{ height: '8px' }}></div>
-                        <div className="bg-[#002868] h-4 rounded-full w-4/12 text-center text-white text-xs" style={{ height: '8px' }}></div>
-                        <div className="bg-[#476704] h-4 rounded-full  w-1/12 text-center text-white text-xs" style={{ height: '8px' }}></div>
+                        <div className="bg-[#C8102E] h-4 rounded-full text-center text-white text-xs" style={{ height: '8px', width: '64%' }}></div>
+                        <div className="bg-[#002868] h-4 rounded-full text-center text-white text-xs" style={{ height: '8px', width: '35%' }}></div>
+                        <div className="bg-[#476704] h-4 rounded-full  text-center text-white text-xs" style={{ height: '8px', width: '1%' }}></div>
                     </div>
                 </div>
                 <div className="panel">
@@ -441,7 +428,7 @@ const DashBoard = () => {
                         <h5 className="text-lg font-semibold dark:text-white">Tình trạng giải quyết công việc</h5>
                     </div>
                     <div className="mb-5">
-                        {isMounted && <ReactApexChart series={quaterChart.series} options={quaterChart.options} className="rounded-lg bg-white dark:bg-black overflow-hidden" type="pie" height={300} width={700} />}
+                        {isMounted && <ReactApexChart series={quaterChart.series} options={quaterChart.options} className="rounded-lg bg-white dark:bg-black overflow-hidden" type="pie" height={300} width={'100%'} />}
 
                     </div>
                 </div>
