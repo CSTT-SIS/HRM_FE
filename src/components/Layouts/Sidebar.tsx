@@ -151,8 +151,8 @@ const Sidebar = () => {
             >
                 <div className="h-full bg-white dark:bg-black">
                     <div className="flex items-center justify-between px-4 py-3">
-                        <Link href="/" className="main-logo flex shrink-0 items-center">
-                            <img id="logo" className="ml-[5px] w-8 flex-none" src="/assets/images/favicon.png" alt="logo" />
+                        <Link href="/hrm/dashboard" className="main-logo flex shrink-0 items-center">
+                            <img id="logo" className="ml-[5px] w-8 flex-none" src="/assets/images/favicon.jpg" alt="logo" />
                         </Link>
 
                         <button
@@ -304,7 +304,7 @@ const Sidebar = () => {
                                                                 </div>
                                                             </Link>
                                                         </li> */}
-                                                        <li className="nav-item">
+                                                        {/* <li className="nav-item">
                                                             <Link href="#" className="group final-level-menu">
                                                                 <div className="flex items-center">
                                                                     <IconMenuStatistic className="shrink-0 group-hover:!text-primary" />
@@ -319,7 +319,7 @@ const Sidebar = () => {
                                                                     <span className="text-black ltr:pl-3 rtl:pr-3 dark:text-[#506690] dark:group-hover:text-white-dark">{t('notification')}</span>
                                                                 </div>
                                                             </Link>
-                                                        </li>
+                                                        </li> */}
                                                     </ul>
                                                 </li>
 
