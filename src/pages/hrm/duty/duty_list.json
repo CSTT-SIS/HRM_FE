@@ -1,58 +1,50 @@
 [
     {
+        "id": 0,
+        "name": "Tổng giám đốc",
+        "code": "TGĐ",
+        "duty_group": "Quản lý",
+        "description": "Phụ trách chung",
+        "status": "active"
+    },
+    {
         "id": 1,
-        "name": "Trưởng phòng",
-        "code": "TP",
+        "name": "Phó tổng giám đốc",
+        "code": "PTGĐ",
         "duty_group": "Quản lý",
         "description": "Phụ trách chung",
         "status": "active"
     },
     {
         "id": 2,
-        "name": "Phó Trưởng phòng",
-        "code": "PTP",
+        "name": "Phó giám đốc thường trực",
+        "code": "PGĐTT",
         "duty_group": "Quản lý",
         "description": "Phụ trách chung",
         "status": "active"
     },
     {
         "id": 3,
-        "name": "Trưởng bộ phận",
-        "code": "TB",
+        "name": "Phó tổng giám đốc điều hành",
+        "code": "PTGĐĐH",
         "duty_group": "Quản lý",
         "description": "Phụ trách quản lý bộ phận",
         "status": "active"
     },
     {
         "id": 6,
-        "name": "Nhân viên hành chính",
-        "code": "NV-HC",
-        "duty_group": "Nhân viên",
+        "name": "Phó tổng giám đốc sản xuất",
+        "code": "PTGĐSX",
+        "duty_group": "Quản lý",
         "description": "Xử lý tài liệu hồ sơ",
         "status": "active"
     },
     {
         "id": 7,
-        "name": "Nhân viên bảo trì",
+        "name": "Phó giám đốc nhà máy",
         "code": "NV-SC",
-        "duty_group": "Nhân viên",
-        "description": "Bảo trì xe, máy",
-        "status": "active"
-    },
-    {
-        "id": 8,
-        "name": "Lái xe",
-        "code": "NV-TK",
-        "duty_group": "Nhân viên",
-        "description": "Lái xe theo kế hoạch",
-        "status": "active"
-    },
-    {
-        "id": 5,
-        "name": "Lái máy",
-        "code": "TT",
-        "duty_group": "Nhân viên",
-        "description": "Lái máy theo kế hoạch",
-        "status": "active"
+        "duty_group": "Quản lý",
+        "description": "Phụ trách quản lý bộ phận",
+    "status": "active"
     }
 ]

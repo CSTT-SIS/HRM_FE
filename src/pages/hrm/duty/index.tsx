@@ -50,16 +50,23 @@ const Duty = ({ ...props }: Props) => {
 
     const [openModal, setOpenModal] = useState(false);
     //get data
-    const { data: position, pagination, mutate} = Positions({
+    const { data: position, pagination, mutate } = Positions({
         sortBy: 'id.ASC',
-     ...router.query
+        ...router.query
     })
 
-    // useEffect(() => {
-    //     setTotal(getStorge?.length);
-    //     setPageSize(PAGE_SIZES_DEFAULT);
-    //     setRecordsData(getStorge?.filter((item: any, index: any) => { return index <= 9 && page === 1 ? item : index >= 10 && index <= (page * 9) ? item : null }));
-    // }, [getStorge, getStorge?.length, page])
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            setGetStorge(duty_list);
+            localStorage.setItem('duty_list', JSON.stringify(duty_list));
+        }
+    }, [])
+
+    useEffect(() => {
+        setTotal(getStorge?.length);
+        setPageSize(PAGE_SIZES_DEFAULT);
+        setRecordsData(getStorge?.filter((item: any, index: any) => { return index <= 9 && page === 1 ? item : index >= 10 && index <= (page * 9) ? item : null }));
+    }, [getStorge, getStorge?.length, page])
 
     useEffect(() => {
         setShowLoader(false);
@@ -89,23 +96,23 @@ const Duty = ({ ...props }: Props) => {
 
     const handleDelete = (data: any) => {
         const swalDeletes = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-secondary',
-				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-				popup: 'confirm-delete',
-			},
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'confirm-delete',
+            },
             imageUrl: '/assets/images/delete_popup.png',
-			buttonsStyling: false,
-		});
+            buttonsStyling: false,
+        });
         swalDeletes
             .fire({
                 title: `${t('delete_duty')}`,
-				html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.name}?`,
+                html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.name}?`,
                 padding: '2em',
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
                 confirmButtonText: `${t('confirm')}`,
-				reverseButtons: true,
+                reverseButtons: true,
             })
             .then((result) => {
                 if (result.value) {
@@ -150,23 +157,23 @@ const Duty = ({ ...props }: Props) => {
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="mx-auto flex items-center gap-2 justify-center">
-                <div className="w-[60px]">
-                <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
-                <IconNewEdit /><span>
-                        {t('edit')}
+                    <div className="w-[60px]">
+                        <button type="button" className='button-edit' onClick={() => handleEdit(records)}>
+                            <IconNewEdit /><span>
+                                {t('edit')}
                             </span>
-                </button>
-                </div>
-                <div className="w-[80px]">
-                <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
-                <IconNewTrash />
-                        <span>
-                        {t('delete')}
+                        </button>
+                    </div>
+                    <div className="w-[80px]">
+                        <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                            <IconNewTrash />
+                            <span>
+                                {t('delete')}
                             </span>
-                </button>
-                </div>
+                        </button>
+                    </div>
 
-            </div>
+                </div>
             ),
         },
     ]
@@ -183,10 +190,10 @@ const Duty = ({ ...props }: Props) => {
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
                         <Link href="/hrm/duty/create">
-                        <button type="button" className=" m-1 button-table button-create" >
-								<IconNewPlus/>
-								<span className="uppercase">{t('add')}</span>
-							</button>
+                            <button type="button" className=" m-1 button-table button-create" >
+                                <IconNewPlus />
+                                <span className="uppercase">{t('add')}</span>
+                            </button>
                         </Link>
 
                         {/* <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
@@ -204,14 +211,14 @@ const Duty = ({ ...props }: Props) => {
                     <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover custom_table"
-                        records={position?.data}
+                        records={recordsData}
                         columns={columns}
-                        totalRecords={pagination?.totalRecords}
-                        recordsPerPage={pagination?.perPage}
-                        page={pagination?.page}
-                         onPageChange={(p) => handleChangePage(p, pagination?.perPage)}
+                        totalRecords={total}
+                        recordsPerPage={pageSize}
+                        page={page}
+                        onPageChange={(p) => setPage(p)}
                         recordsPerPageOptions={PAGE_SIZES}
-                        onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
+                        onRecordsPerPageChange={setPageSize}
                         sortStatus={sortStatus}
                         onSortStatusChange={setSortStatus}
                         minHeight={200}
