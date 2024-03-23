@@ -245,7 +245,7 @@ const DashBoard = () => {
                 show: true,
                 width: 1,
             },
-            colors: ['#002868', '#C8102E', '#FFCD00'],
+            colors: ['#002868', '#FFCD00', '#C8102E'],
 
             xaxis: {
                 categories: ['Phòng Hành chính', 'Phòng Kế toán', 'Phòng Kỹ thuật', 'Bộ phận bảo trì'],
@@ -329,7 +329,7 @@ const DashBoard = () => {
                 type: 'pie',
             },
             labels: ['Tốt', 'Đạt', 'Chưa đạt'],
-            colors: ['#C8102E', '#FFCD00', '#002868'],
+            colors: ['#002868', '#FFCD00', '#C8102E'],
             responsive: [
                 {
                     breakpoint: 480,
