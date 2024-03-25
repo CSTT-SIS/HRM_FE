@@ -1,16 +1,6 @@
-.org .item {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-}
-
-.org .ceo {
-  background-color: tomato;
-}
-
-.org .employee {
-  background-color: seagreen;
-}
+@import "../node_modules/@syncfusion/ej2-diagrams/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-react-diagrams/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-base/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-popups/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-splitbuttons/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-navigations/styles/material.css";

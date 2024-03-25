@@ -215,7 +215,7 @@ li.menu>button.active {
 
 #logo {
     width: 97.33px;
-    height: 64px;
+    /* height: 64px; */
 }
 
 #expandButton {
