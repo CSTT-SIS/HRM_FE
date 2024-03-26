@@ -261,14 +261,16 @@ const DetailPage = ({ ...props }: Props) => {
     }
 
     const handleRepair = (param: any) => {
-        const query = {
+        const query: any = {
             vehicleRegistrationNumber: param.vehicleRegistrationNumber,
             repairById: Number(param.repairById.value),
             description: param.description,
             damageLevel: param.damageLevel,
             customerName: param.customerName,
-            imageIds: path.map((item: any) => { return (item.id) })
         };
+        if (dataPath) {
+            query.imageIds = path.map((item: any) => { return (item.id) })
+        }
         if (data) {
             EditRepair({ id: router.query?.id, ...query }).then((res) => {
                 showMessage(`${t('edit_success')}`, 'success');
