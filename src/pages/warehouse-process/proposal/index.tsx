@@ -46,7 +46,7 @@ const ProposalPage = ({ ...props }: Props) => {
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
     // get data
-    const { data: proposal, pagination, mutate, isLoading } = Proposals({ sortBy: 'id.ASC', ...router.query });
+    const { data: proposal, pagination, mutate, isLoading } = Proposals({ sortBy: "id.DESC", ...router.query });
     const { data: warehouses, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({});
 
     useEffect(() => {

@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setPageTitle } from '@/store/themeConfigSlice';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
-import { ProposalType, Warehouses } from '@/services/swr/statistic.twr';
+import { ProposalType } from '@/services/swr/statistic.twr';
 import { IRootState } from '@/store';
 import dynamic from 'next/dynamic';
+import { Warehouses } from '@/services/swr/warehouse.twr';
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
     ssr: false,
 });
