@@ -30,6 +30,7 @@ import DetailModal from '../modal/DetailModal';
 import IconNewEye from '@/components/Icon/IconNewEye';
 import { PAGE_SIZES } from '@/utils/constants';
 import HistoryModal from '../modal/HistoryModal';
+import { Upload } from '@/services/apis/upload.api';
 
 interface Props {
     [key: string]: any;
@@ -56,7 +57,7 @@ const DetailPage = ({ ...props }: Props) => {
     const [listDataDetail, setListDataDetail] = useState<any>();
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
     const formRef = useRef<any>();
-
+    const fileRef = useRef<any>();
     // get data
     const { data: repairDetails, pagination, mutate, isLoading } = RepairDetails({ ...query });
     const { data: users, pagination: paginationUser, isLoading: userLoading } = DropdownUsers({ page: page });
@@ -227,14 +228,6 @@ const DetailPage = ({ ...props }: Props) => {
         router.push("/warehouse-process/repair");
     };
 
-    const handleChangeComplete = (id: any) => {
-        RepairInprogress(id).then(() => {
-            router.push("/warehouse-process/repair");
-            showMessage(`${t('update_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
-    }
     useEffect(() => {
         setInitialValue({
             vehicleRegistrationNumber: data ? `${data?.vehicle?.registrationNumber}` : "",
@@ -248,8 +241,8 @@ const DetailPage = ({ ...props }: Props) => {
             timeRequest: data?.createdAt ? data?.createdAt : moment().format("YYYY-MM-DD hh:mm"),
             customerName: data ? `${data?.customerName}` : ""
         })
+        setPath(data?.images);
     }, [data]);
-
 
     useEffect(() => {
         if (paginationUser?.page === undefined) return;
@@ -273,7 +266,8 @@ const DetailPage = ({ ...props }: Props) => {
             repairById: Number(param.repairById.value),
             description: param.description,
             damageLevel: param.damageLevel,
-            customerName: param.customerName
+            customerName: param.customerName,
+            imageIds: path.map((item: any) => { return (item.id) })
         };
         if (data) {
             EditRepair({ id: router.query?.id, ...query }).then((res) => {
@@ -283,27 +277,24 @@ const DetailPage = ({ ...props }: Props) => {
                 showMessage(`${err?.response?.data?.message}`, 'error');
             });
         } else {
-            if (listDataDetail?.length === undefined || listDataDetail?.length === 0) {
-                showMessage(`${t('please_add_product')}`, 'error');
-                handleActive(2);
-            } else {
-                CreateRepair(query).then((res) => {
-                    handleDetail(res.data.id)
-                }).catch((err) => {
-                    showMessage(`${err?.response?.data?.message[0].error}`, 'error');
-                });
-            }
+            CreateRepair(query).then((res) => {
+                handleDetail(res.data.id)
+            }).catch((err) => {
+                showMessage(`${err?.response?.data?.message[0].error}`, 'error');
+            });
         }
-        handleCancel();
     }
 
     const handleDetail = (id: any) => {
-        AddRepairDetails({ id: id, details: listDataDetail }).then(() => {
-            // handleChangeComplete({ id: id });
+        if (listDataDetail?.length > 0) {
+            AddRepairDetails({ id: id, details: listDataDetail }).then(() => {
+                handleCancel();
+            }).catch((err) => {
+                showMessage(`${err?.response?.data?.message}`, 'error');
+            });
+        } else {
             handleCancel();
-        }).catch((err) => {
-            showMessage(`${err?.response?.data?.message}`, 'error');
-        });
+        }
     }
 
     const handleActive = (value: any) => {
@@ -353,6 +344,29 @@ const DetailPage = ({ ...props }: Props) => {
         if (formRef.current) {
             formRef.current.handleSubmit()
         }
+    }
+
+    const [path, setPath] = useState<any>([]);
+    const [dataPath, setDataPath] = useState<any>();
+
+    useEffect(() => {
+        setPath([...path.filter((item: any) => item !== undefined), dataPath]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dataPath]);
+
+    const handleChange = async (event: any) => {
+        await Object.keys(event.target.files).map((item: any) => {
+            const formData = new FormData();
+            formData.append('file', event.target.files[item]);
+            formData.append('fileName', event.target.files[item].name);
+            Upload(formData)
+                .then((res) => {
+                    setDataPath({ id: res.data.id, path: res.data.path });
+                    return
+                }).catch((err) => {
+                    showMessage(`${err?.response?.data?.message}`, 'error');
+                });
+        })
     }
 
     return (
@@ -528,18 +542,36 @@ const DetailPage = ({ ...props }: Props) => {
                                                     ) : null}
                                                 </div>
                                                 <div className='mt-5'>
-                                                    <label htmlFor="attachedImage" className='label'> {t('attached_image')} </label >
+                                                    <label htmlFor="imageIds" className='label'> {t('attached_image')} </label >
                                                     <Field
+                                                        innerRef={fileRef}
                                                         autoComplete="off"
-                                                        name="attachedImage"
+                                                        name="imageIds"
                                                         type="file"
-                                                        id="attachedImage"
+                                                        id="imageIds"
                                                         className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
                                                         disabled={disable}
+                                                        multiple
+                                                        onChange={(e: any) => handleChange(e)}
                                                     />
-                                                    {submitCount && errors.attachedImage ? (
-                                                        <div className="text-danger mt-1"> {`${errors.attachedImage}`} </div>
+                                                    {submitCount && errors.imageIds ? (
+                                                        <div className="text-danger mt-1"> {`${errors.imageIds}`} </div>
                                                     ) : null}
+                                                </div>
+                                                <div className="grid grid-cols-3 mt-2 gap-4 p-10 border rounded">
+                                                    {
+                                                        path.map((item: any) => {
+                                                            return (
+                                                                <>
+                                                                    {
+                                                                        item?.path &&
+                                                                        // eslint-disable-next-line @next/next/no-img-element
+                                                                        <img key={item} src={`${process.env.NEXT_PUBLIC_BE_URL}${item?.path}`} alt="img" />
+                                                                    }
+                                                                </>
+                                                            );
+                                                        })
+                                                    }
                                                 </div>
                                             </div>
                                             {

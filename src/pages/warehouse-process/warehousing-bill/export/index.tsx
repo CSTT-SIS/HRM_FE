@@ -52,7 +52,7 @@ const WarehousingPage = ({ ...props }: Props) => {
 
 
     // get data
-    const { data: warehousing, pagination, mutate } = WarehousingBill({ ...router.query, type: "EXPORT", warehouseId: active.includes(0) ? "" : active });
+    const { data: warehousing, pagination, mutate } = WarehousingBill({ ...router.query, type: "EXPORT", warehouseId: active.includes(0) ? "" : active, sortBy: "id.DESC" });
     const { data: warehouses, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({ page: pageWarehouse });
 
 

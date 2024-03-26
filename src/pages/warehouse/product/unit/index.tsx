@@ -47,7 +47,7 @@ const ProductUnitPage = ({ ...props }: Props) => {
 
 
     // get data
-    const { data: unit, pagination, mutate } = Units({ sortBy: 'id.ASC', ...router.query });
+    const { data: unit, pagination, mutate } = Units({ sortBy: "id.DESC", ...router.query });
 
     useEffect(() => {
         dispatch(setPageTitle(`${t('unit')}`));

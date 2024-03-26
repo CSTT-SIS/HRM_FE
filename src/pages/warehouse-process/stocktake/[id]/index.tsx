@@ -1,4 +1,4 @@
-import { useEffect, Fragment, useState, SetStateAction } from 'react';
+import { useEffect, Fragment, useState, SetStateAction, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Dialog, Transition } from '@headlessui/react';
@@ -34,6 +34,7 @@ import { DropdownUsers, DropdownWarehouses } from '@/services/swr/dropdown.twr';
 import moment from 'moment';
 import { GetProduct } from '@/services/apis/product.api';
 import IconListCheck from '@/components/Icon/IconListCheck';
+import { Upload } from '@/services/apis/upload.api';
 
 interface Props {
     [key: string]: any;
@@ -61,6 +62,7 @@ const DetailPage = ({ ...props }: Props) => {
     const [dataDetail, setDataDetail] = useState<any>();
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
     const [warehouseId, setWarehouseId] = useState<any>();
+    const fileRef = useRef<any>();
 
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().required(`${t('please_fill_name')}`),
@@ -302,7 +304,8 @@ const DetailPage = ({ ...props }: Props) => {
             description: param.description,
             startDate: moment(param.startDate).format("YYYY-MM-DD hh:mm:ss"),
             endDate: moment(param.endDate).format("YYYY-MM-DD hh:mm:ss"),
-            participants: param.participants.map((item: any) => { return (item.value) })
+            participants: param.participants.map((item: any) => { return (item.value) }),
+            attachmentIds: path.map((item: any) => { return (item.id) })
         };
         if (data) {
             EditStocktake({ id: router.query?.id, ...query }).then(() => {
@@ -348,6 +351,7 @@ const DetailPage = ({ ...props }: Props) => {
         if (data?.warehouse?.length > 0) {
             setWarehouseId(data?.warehouse?.id)
         }
+        setPath(data?.attachments);
     }, [data]);
 
     const handleDetail = async (id: any) => {
@@ -375,6 +379,29 @@ const DetailPage = ({ ...props }: Props) => {
         }).catch((err) => {
             showMessage(`${err?.response?.data?.message}`, 'error');
         });
+    }
+
+    const [path, setPath] = useState<any>([]);
+    const [dataPath, setDataPath] = useState<any>();
+
+    useEffect(() => {
+        setPath([...path.filter((item: any) => item !== undefined), dataPath]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dataPath]);
+
+    const handleChange = async (event: any) => {
+        await Object.keys(event.target.files).map((item: any) => {
+            const formData = new FormData();
+            formData.append('file', event.target.files[item]);
+            formData.append('fileName', event.target.files[item].name);
+            Upload(formData)
+                .then((res) => {
+                    setDataPath({ id: res.data.id, path: res.data.path });
+                    return
+                }).catch((err) => {
+                    showMessage(`${err?.response?.data?.message}`, 'error');
+                });
+        })
     }
 
     return (
@@ -544,6 +571,38 @@ const DetailPage = ({ ...props }: Props) => {
                                                                 <div className="text-danger mt-1"> {`${errors.description}`} </div>
                                                             ) : null}
                                                         </div>
+                                                    </div>
+                                                    <div className='mt-5'>
+                                                        <label htmlFor="attachmentIds" className='label'> {t('attached_file')} </label >
+                                                        <Field
+                                                            innerRef={fileRef}
+                                                            autoComplete="off"
+                                                            name="attachmentIds"
+                                                            type="file"
+                                                            id="attachmentIds"
+                                                            className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                            disabled={disable}
+                                                            multiple
+                                                            onChange={(e: any) => handleChange(e)}
+                                                        />
+                                                        {submitCount && errors.attachmentIds ? (
+                                                            <div className="text-danger mt-1"> {`${errors.attachmentIds}`} </div>
+                                                        ) : null}
+                                                    </div>
+                                                    <div className="grid grid-cols-3 mt-2 gap-4 p-10 border rounded">
+                                                        {
+                                                            path.map((item: any) => {
+                                                                return (
+                                                                    <>
+                                                                        {
+                                                                            item?.path &&
+                                                                            // eslint-disable-next-line @next/next/no-img-element
+                                                                            <img key={item} src={`${process.env.NEXT_PUBLIC_BE_URL}${item?.path}`} alt="img" />
+                                                                        }
+                                                                    </>
+                                                                );
+                                                            })
+                                                        }
                                                     </div>
                                                 </div>
                                             </AnimateHeight>

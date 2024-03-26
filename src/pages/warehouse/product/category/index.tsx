@@ -44,7 +44,7 @@ const ProductCategoryPage = ({ ...props }: Props) => {
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
     // get data
-    const { data: category, pagination, mutate } = ProductCategorys({ sortBy: 'id.ASC', ...router.query });
+    const { data: category, pagination, mutate } = ProductCategorys({ sortBy: "id.DESC", ...router.query });
     useEffect(() => {
         dispatch(setPageTitle(`${t('category')}`));
     });

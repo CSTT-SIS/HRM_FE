@@ -48,7 +48,8 @@ const RepairPage = ({ ...props }: Props) => {
     // get data
     const { data: repairs, pagination, mutate, isLoading } = Repairs({
         ...router.query,
-        status: status
+        status: status,
+        sortBy: "id.DESC"
     });
 
     useEffect(() => {
