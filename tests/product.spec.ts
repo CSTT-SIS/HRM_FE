@@ -19,7 +19,7 @@ const fillProductForm = async (page: Page, text: string) => {
 test.describe.serial('Product CRUD', () => {
 	const text = makeRamdomText(5);
 	const editText = text + 'edit';
-	test.skip('01. Create', async ({ page }) => {
+	test('01. Create', async ({ page }) => {
 		await page.goto('/warehouse/product/list');
 
 		await page.getByTestId('add-product').click();
@@ -42,7 +42,7 @@ test.describe.serial('Product CRUD', () => {
 		await expect(page.getByTestId('edit-product-btn')).toBeVisible();
 	});
 
-	test.skip('02. Edit', async ({ page }) => {
+	test('02. Edit', async ({ page }) => {
 		await page.goto('/warehouse/product/list');
 
 		await page.getByTestId('search-product-input').fill(text);
@@ -65,7 +65,7 @@ test.describe.serial('Product CRUD', () => {
 		await expect(page.getByTestId('edit-product-btn')).toBeVisible();
 	});
 
-	test.skip('03. Delete', async ({ page }) => {
+	test('03. Delete', async ({ page }) => {
 		await page.goto('/warehouse/product/list');
 
 		await page.getByTestId('search-product-input').fill(editText);
