@@ -1,151 +1,84 @@
 import IconX from '@/components/Icon/IconX';
 import { Dialog, Transition } from '@headlessui/react';
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import { Field, Form, Formik } from 'formik';
 import IconBack from '@/components/Icon/IconBack';
 import Link from 'next/link';
 import Select from 'react-select';
+import Flatpickr from 'react-flatpickr';
+import 'flatpickr/dist/flatpickr.css';
+import { listAllHuman } from '@/services/apis/human.api';
+import { createCalendar } from '@/services/apis/calendar.api';
+import dayjs from "dayjs";
+import { showMessage } from '@/@core/utils';
+
 interface Props {
 	[key: string]: any;
 }
-import Flatpickr from 'react-flatpickr';
-import 'flatpickr/dist/flatpickr.css';
+
 //FAKE DATA
-const getEmployeeOptions = () => {
-	const now = new Date();
-	const getMonth = (dt: Date, add: number = 0) => {
-		let month = dt.getMonth() + 1 + add;
-		const str = (month < 10 ? '0' + month : month).toString();
-		return str;
-		// return dt.getMonth() < 10 ? '0' + month : month;
-	};
-	return [
-		{
-			id: 1,
-			user: 'Bountafaibounnheuang',
-			title: 'Công việc 1',
-			start: now.getFullYear() + '-' + getMonth(now) + '-01T14:30:00',
-			end: now.getFullYear() + '-' + getMonth(now) + '-01T15:30:00',
-			className: 'danger',
-			description: 'Aenean fermentum quam vel sapien rutrum cursus. Vestibulum imperdiet finibus odio, nec tincidunt felis facilisis eu.',
-		},
-		{
-			id: 2,
-			user: 'Khampa Sirt',
-			title: 'Công việc 2',
-			start: now.getFullYear() + '-' + getMonth(now) + '-07T19:30:00',
-			end: now.getFullYear() + '-' + getMonth(now) + '-08T14:30:00',
-			className: 'primary',
-			description: 'Etiam a odio eget enim aliquet laoreet. Vivamus auctor nunc ultrices varius lobortis.',
-		},
-		{
-			id: 3,
-			user: 'Xaypayou',
-			title: 'Công việc 3',
-			start: now.getFullYear() + '-' + getMonth(now) + '-17T14:30:00',
-			end: now.getFullYear() + '-' + getMonth(now) + '-18T14:30:00',
-			className: 'info',
-			description: 'Proin et consectetur nibh. Mauris et mollis purus. Ut nec tincidunt lacus. Nam at rutrum justo, vitae egestas dolor.',
-		},
-		{
-			id: 4,
-			user: 'Suok Thi Da',
-			title: 'Công việc 4',
-			start: now.getFullYear() + '-' + getMonth(now) + '-12T10:30:00',
-			end: now.getFullYear() + '-' + getMonth(now) + '-13T10:30:00',
-			className: 'danger',
-			description: 'Mauris ut mauris aliquam, fringilla sapien et, dignissim nisl. Pellentesque ornare velit non mollis fringilla.',
-		},
-		{
-			id: 5,
-			user: 'Bount Yo',
-			title: 'Công việc 5',
-			start: now.getFullYear() + '-' + getMonth(now) + '-12T15:00:00',
-			end: now.getFullYear() + '-' + getMonth(now) + '-13T15:00:00',
-			className: 'info',
-			description: 'Integer fermentum bibendum elit in egestas. Interdum et malesuada fames ac ante ipsum primis in faucibus.',
-		},
-		{
-			id: 6,
-			user: 'Khăm sa vẳn',
-			title: 'Công việc 6',
-			start: now.getFullYear() + '-' + getMonth(now) + '-12T21:30:00',
-			end: now.getFullYear() + '-' + getMonth(now) + '-13T21:30:00',
-			className: 'success',
-			description:
-				'Curabitur facilisis vel elit sed dapibus. Nunc sagittis ex nec ante facilisis, sed sodales purus rhoncus. Donec est sapien, porttitor et feugiat sed, eleifend quis sapien. Sed sit amet maximus dolor.',
-		},
-		{
-			id: 7,
-			user: 'Toukta',
-			title: 'Công việc 7',
-			start: now.getFullYear() + '-' + getMonth(now) + '-12T05:30:00',
-			end: now.getFullYear() + '-' + getMonth(now) + '-13T05:30:00',
-			className: 'info',
-			description: ' odio lectus, porttitor molestie scelerisque blandit, hendrerit sed ex. Aenean malesuada iaculis erat, vitae blandit nisl accumsan ut.',
-		},
-		{
-			id: 8,
-			user: 'Phoutchana',
-			title: 'Công việc 8',
-			start: now.getFullYear() + '-' + getMonth(now) + '-12T20:00:00',
-			end: now.getFullYear() + '-' + getMonth(now) + '-13T20:00:00',
-			className: 'danger',
-			description: 'Sed purus urn"a", aliquam et pharetra ut, efficitur id mi. Pellentesque ut convallis velit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-		},
-		{
-			id: 9,
-			user: 'Sitthiphone',
-			title: 'Công việc 9',
-			start: now.getFullYear() + '-' + getMonth(now) + '-27T20:00:00',
-			end: now.getFullYear() + '-' + getMonth(now) + '-28T20:00:00',
-			className: 'success',
-			description: 'Sed purus urn"a", aliquam et pharetra ut, efficitur id mi. Pellentesque ut convallis velit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-		},
-		{
-			id: 10,
-			user: 'Khăm Pheng',
-			title: 'Công việc 10',
-			start: now.getFullYear() + '-' + getMonth(now, 1) + '-24T08:12:14',
-			end: now.getFullYear() + '-' + getMonth(now, 1) + '-27T22:20:20',
-			className: 'danger',
-			description: 'Sed purus urn"a", aliquam et pharetra ut, efficitur id mi. Pellentesque ut convallis velit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-		},
-		{
-			id: 11,
-			user: 'Vi lay phone',
-			title: 'Công việc 11',
-			start: now.getFullYear() + '-' + getMonth(now, -1) + '-13T08:12:14',
-			end: now.getFullYear() + '-' + getMonth(now, -1) + '-16T22:20:20',
-			className: 'primary',
-			description: 'Pellentesque ut convallis velit. Sed purus urn"a", aliquam et pharetra ut, efficitur id mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-		},
-		{
-			id: 13,
-			user: 'Seng phệt',
-			title: 'Công việc 13',
-			start: now.getFullYear() + '-' + getMonth(now, 1) + '-15T08:12:14',
-			end: now.getFullYear() + '-' + getMonth(now, 1) + '-18T22:20:20',
-			className: 'primary',
-			description: 'Pellentesque ut convallis velit. Sed purus urn"a", aliquam et pharetra ut, efficitur id mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-		},
-	].map((work) => ({
-		value: work.user,
-		label: work.user,
-	}));
-};
 
 const AddWorkScheduleModal = ({ ...props }: Props) => {
+    const [listHuman, setListHuman] = useState<any>();
+    useEffect(() => {
+        listAllHuman({
+            page: 1,
+            perPage: 1000
+        }).then((res) => {
+            setListHuman(res.data?.map((human: any) => {
+                return {
+                    value: human.id,
+                    label: human.fullName
+                }
+            }));
+        }).catch((err) => {
+            console.log(err);
+        });
+    }, []);
 	const { t } = useTranslation();
 	const SubmittedForm = Yup.object().shape({
-		user: new Yup.ArraySchema().required(`${t('please_select_the_staff')}`),
+		userIds: Yup.array().typeError(`${t('please_select_the_staff')}`),
 		title: Yup.string().required(`${t('please_fill_title_work_schedule')}`),
-		start: Yup.date().required(`${t('please_fill_work_start_date')}`),
-		end: Yup.date().required(`${t('please_fill_work_end_date')}`),
+		startDate: Yup.date().typeError(`${t('please_fill_work_start_date')}`),
+		endDate: Yup.date().typeError(`${t('please_fill_work_end_date')}`),
+        description: Yup.string(),
+        level: Yup.string().required(`${t('please_select_work_level')}`)
 	});
 	const { isAddWorkScheduleModal, setIsAddWokScheduleModal, params, minStartDate, minEndDate, saveWorkSchedule, handleDelete } = props;
+    const handleAddWorkSchedule = (data: any) => {
+        console.log("data", data)
+        let level_
+        switch (data.level) {
+            case "primary":
+                level_= 1;
+                break;
+            case "info":
+                level_= 2;
+                break;
+            case "success":
+                level_= 3;
+                break;
+            case "danger":
+                level_= 4;
+                break;
+            default:
+                level_= 1;
+                break;
+        }
+        const dataSubmit = {
+            ...data,
+            level: level_
+        };
+
+        createCalendar(dataSubmit).then(() => {
+                showMessage(`${t('create_work_schedule_success')}`, 'success');
+            }).catch((err) => {
+                showMessage(`${t('create_work_schedule_error')}`, 'error');
+            });
+
+    }
 	return (
 
 		<div className="p-5">
@@ -162,20 +95,19 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 			</div>
 			<Formik
 				initialValues={{
-					id: params ? `${params?.id}` : '',
-					user: params ? `${params?.user}` : [],
+					userIds: params ? `${params?.userIds}` : null,
 					title: params ? `${params?.title}` : '',
-					start: params ? `${params?.start}` : '',
-					end: params ? `${params?.end}` : '',
-					type: params ? `${params?.type}` : '',
+					startDate: params ? `${params?.startDate}` : null,
+					endDate: params ? `${params?.endDate}` : null,
+					level: params ? `${params?.level}` : null,
 					description: params ? `${params?.description}` : '',
 				}}
 				validationSchema={SubmittedForm}
 				onSubmit={(values) => {
-					saveWorkSchedule(values);
+					handleAddWorkSchedule(values);
 				}}
 			>
-				{({ errors, touched, submitCount, setFieldValue }) => (
+				{({ errors, touched, submitCount, setFieldValue, values }) => (
 					<Form className="space-y-5">
 						<div className="mb-3 flex gap-2">
 
@@ -188,40 +120,29 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 								{submitCount ? errors.title ? <div className="mt-1 text-danger"> {errors.title} </div> : null : ''}
 							</div>
 							<div className="flex-1">
-								<label htmlFor="user">
+								<label htmlFor="userIds">
 									{t('participants')}
 									<span style={{ color: 'red' }}> *</span>
 								</label>
 
 								<Select
-									name="user"
-									id='user'
-									options={getEmployeeOptions()}
+									name="userIds"
+									id='userIds'
+									options={listHuman}
 									isMulti
 									isSearchable
 									placeholder={`${t('choose_participants')}`}
 									onChange={e => {
-										setFieldValue('user', e)
+										setFieldValue('userIds', e?.map((user: any) => user.value));
 									}}
 								/>
-
-
-								{/* <Field autoComplete="off" as="select" name="user" id="user" className="form-input"
-                                                    isMultiple="true"
-                                                    placeholder="test">
-														{getEmployeeOptions().map((employee) => (
-															<option key={employee.value} value={employee.value}>
-																{employee.label}
-															</option>
-														))}
-													</Field> */}
-								{submitCount ? errors.user ? <div className="mt-1 text-danger"> {errors.user} </div> : null : ''}
+								{submitCount ? errors.userIds ? <div className="mt-1 text-danger"> {errors.userIds} </div> : null : ''}
 							</div>
 						</div>
 
 						<div className="mb-3 flex gap-2">
 							<div className='flex-1'>
-								<label htmlFor="dateStart">
+								<label htmlFor="startDate">
 									{t('from_time')}<span style={{ color: 'red' }}>* </span>
 								</label>
 								<Flatpickr
@@ -231,14 +152,18 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 										time_24hr: true
 
 									}}
+                                    onChange={(e: any) => {
+                                        if (e?.length > 0) {
+                                        setFieldValue("startDate", dayjs(e[0]).toISOString());
+                                        }
+                                    }}
 									placeholder={`${t('choose_from_time')}`}
-
 									className="form-input calender-input"
 								/>
-								{submitCount ? errors.start ? <div className="mt-1 text-danger"> {errors.start} </div> : null : ''}
+								{submitCount ? errors.startDate ? <div className="mt-1 text-danger"> {errors.startDate} </div> : null : ''}
 							</div>
 							<div className='flex-1'>
-								<label htmlFor="dateEnd">
+								<label htmlFor="endDate">
 									{t('end_time')} <span style={{ color: 'red' }}>* </span>
 								</label>
 								<Flatpickr
@@ -249,10 +174,14 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 
 									}}
 									placeholder={`${t('choose_end_time')}`}
-
+                                    onChange={(e: any) => {
+                                        if (e?.length > 0) {
+                                        setFieldValue("endDate", dayjs(e[0]).toISOString());
+                                                                }
+                                    }}
 									className="form-input calender-input"
 								/>
-								{submitCount ? errors.end ? <div className="mt-1 text-danger"> {errors.end} </div> : null : ''}
+								{submitCount ? errors.endDate ? <div className="mt-1 text-danger"> {errors.endDate} </div> : null : ''}
 							</div>
 						</div>
 
@@ -264,19 +193,19 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 							<label>{t('level')}</label>
 							<div className="mt-3">
 								<label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-									<Field autoComplete="off" type="radio" name="type" value="primary" className="form-radio" />
+									<Field autoComplete="off" type="radio" name="level" value="primary" className="form-radio" />
 									<span className="ltr:pl-2 rtl:pr-2">{t('less_important')}</span>
 								</label>
 								<label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-									<Field autoComplete="off" type="radio" name="type" value="info" className="form-radio text-info" />
+									<Field autoComplete="off" type="radio" name="level" value="info" className="form-radio text-info" />
 									<span className="ltr:pl-2 rtl:pr-2">{t('normal')}</span>
 								</label>
 								<label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-									<Field autoComplete="off" type="radio" name="type" value="success" className="form-radio text-success" />
+									<Field autoComplete="off" type="radio" name="level" value="success" className="form-radio text-success" />
 									<span className="ltr:pl-2 rtl:pr-2">{t('important')}</span>
 								</label>
 								<label className="inline-flex cursor-pointer">
-									<Field autoComplete="off" type="radio" name="type" value="danger" className="form-radio text-danger" />
+									<Field autoComplete="off" type="radio" name="level" value="danger" className="form-radio text-danger" />
 									<span className="ltr:pl-2 rtl:pr-2">{t('priority')}</span>
 								</label>
 							</div>
@@ -289,7 +218,9 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 										{t('delete')}
 									</button>
 								)}
-								<button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+								<button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={(e: any) => {
+                                    console.log(values)
+}}>
 									{params?.id ? t('update') : t('add')}
 								</button>
 							</div>

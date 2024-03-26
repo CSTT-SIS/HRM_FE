@@ -2,7 +2,7 @@ import callApi from '@core/call-api';
 import Config from '@core/configs';
 import Cookies from 'js-cookie';
 export const listAllPosition = async (data: any) => {
-	const endpoint = '/position/list-all';
+	const endpoint = '/position';
 	return callApi(endpoint, 'GET', data);
 };
 export const detailPosition = async (data: any) => {

@@ -67,3 +67,12 @@ export function makeRamdomText(length: any) {
 	}
 	return result;
 }
+
+
+export function removeNullProperties(obj: any) {
+  Object.keys(obj).forEach(key => {
+    if (obj[key] === null) {
+      delete obj[key];
+    }
+  });
+}

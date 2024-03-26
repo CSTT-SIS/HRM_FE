@@ -53,20 +53,8 @@ const Duty = ({ ...props }: Props) => {
     const { data: position, pagination, mutate } = Positions({
         sortBy: 'id.ASC',
         ...router.query
-    })
+    });
 
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            setGetStorge(duty_list);
-            localStorage.setItem('duty_list', JSON.stringify(duty_list));
-        }
-    }, [])
-
-    useEffect(() => {
-        setTotal(getStorge?.length);
-        setPageSize(PAGE_SIZES_DEFAULT);
-        setRecordsData(getStorge?.filter((item: any, index: any) => { return index <= 9 && page === 1 ? item : index >= 10 && index <= (page * 9) ? item : null }));
-    }, [getStorge, getStorge?.length, page])
 
     useEffect(() => {
         setShowLoader(false);
@@ -208,17 +196,17 @@ const Duty = ({ ...props }: Props) => {
                     <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
                 </div>
                 <div className="datatables">
-                    <DataTable
+                     <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover custom_table"
-                        records={recordsData}
+                        records={position?.data}
                         columns={columns}
-                        totalRecords={total}
-                        recordsPerPage={pageSize}
-                        page={page}
-                        onPageChange={(p) => setPage(p)}
+                        totalRecords={pagination?.totalRecords}
+                        recordsPerPage={pagination?.perPage}
+                        page={pagination?.page}
+                        onPageChange={(p) => handleChangePage(p, pagination?.perPage)}
                         recordsPerPageOptions={PAGE_SIZES}
-                        onRecordsPerPageChange={setPageSize}
+                        onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
                         sortStatus={sortStatus}
                         onSortStatusChange={setSortStatus}
                         minHeight={200}

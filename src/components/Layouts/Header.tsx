@@ -381,7 +381,7 @@ const Header = () => {
 									</span>
 								}
 							>
-								<InfiniteScroll
+                                    <InfiniteScroll
 									dataLength={10}
 									next={fetchMoreData}
 									onScroll={e => fetchMoreData}
