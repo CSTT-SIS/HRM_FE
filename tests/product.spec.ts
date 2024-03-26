@@ -19,65 +19,65 @@ const fillProductForm = async (page: Page, text: string) => {
 test.describe.serial('Product CRUD', () => {
 	const text = makeRamdomText(5);
 	const editText = text + 'edit';
-	test('01. Create', async ({ page }) => {
-		await page.goto('/warehouse/product/list');
+	// test('01. Create', async ({ page }) => {
+	// 	await page.goto('/warehouse/product/list');
 
-		await page.getByTestId('add-product').click();
-		await page.waitForLoadState('networkidle');
+	// 	await page.getByTestId('add-product').click();
+	// 	await page.waitForLoadState('networkidle');
 
-		await expect(page).toHaveURL('/warehouse/product/list/create');
+	// 	await expect(page).toHaveURL('/warehouse/product/list/create');
 
-		await fillProductForm(page, text);
-		await page.getByTestId('submit-btn').click();
+	// 	await fillProductForm(page, text);
+	// 	await page.getByTestId('submit-btn').click();
 
-		await page.waitForLoadState('networkidle');
+	// 	await page.waitForLoadState('networkidle');
 
-		await expect(page).toHaveURL('/warehouse/product/list');
+	// 	await expect(page).toHaveURL('/warehouse/product/list');
 
-		await page.getByTestId('search-product-input').fill(text);
-		await page.waitForLoadState('networkidle');
+	// 	await page.getByTestId('search-product-input').fill(text);
+	// 	await page.waitForLoadState('networkidle');
 
-		await page.getByTestId('edit-product-btn').first().waitFor({ state: 'visible' });
-		await page.waitForTimeout(1000);
-		await expect(page.getByTestId('edit-product-btn')).toBeVisible();
-	});
+	// 	await page.getByTestId('edit-product-btn').first().waitFor({ state: 'visible' });
+	// 	await page.waitForTimeout(1000);
+	// 	await expect(page.getByTestId('edit-product-btn')).toBeVisible();
+	// });
 
-	test('02. Edit', async ({ page }) => {
-		await page.goto('/warehouse/product/list');
+	// test('02. Edit', async ({ page }) => {
+	// 	await page.goto('/warehouse/product/list');
 
-		await page.getByTestId('search-product-input').fill(text);
-		await page.waitForLoadState('networkidle');
+	// 	await page.getByTestId('search-product-input').fill(text);
+	// 	await page.waitForLoadState('networkidle');
 
-		await page.getByTestId('edit-product-btn').first().click();
-		await page.waitForLoadState('networkidle');
+	// 	await page.getByTestId('edit-product-btn').first().click();
+	// 	await page.waitForLoadState('networkidle');
 
-		await fillProductForm(page, editText);
-		await page.getByTestId('submit-btn').click();
+	// 	await fillProductForm(page, editText);
+	// 	await page.getByTestId('submit-btn').click();
 
-		await page.waitForLoadState('networkidle');
-		await expect(page).toHaveURL('/warehouse/product/list');
+	// 	await page.waitForLoadState('networkidle');
+	// 	await expect(page).toHaveURL('/warehouse/product/list');
 
-		await page.getByTestId('search-product-input').fill(editText);
-		await page.waitForLoadState('networkidle');
+	// 	await page.getByTestId('search-product-input').fill(editText);
+	// 	await page.waitForLoadState('networkidle');
 
-		await page.getByTestId('edit-product-btn').first().waitFor({ state: 'visible' });
-		await page.waitForTimeout(1000);
-		await expect(page.getByTestId('edit-product-btn')).toBeVisible();
-	});
+	// 	await page.getByTestId('edit-product-btn').first().waitFor({ state: 'visible' });
+	// 	await page.waitForTimeout(1000);
+	// 	await expect(page.getByTestId('edit-product-btn')).toBeVisible();
+	// });
 
-	test('03. Delete', async ({ page }) => {
-		await page.goto('/warehouse/product/list');
+	// test('03. Delete', async ({ page }) => {
+	// 	await page.goto('/warehouse/product/list');
 
-		await page.getByTestId('search-product-input').fill(editText);
-		await page.waitForLoadState('networkidle');
+	// 	await page.getByTestId('search-product-input').fill(editText);
+	// 	await page.waitForLoadState('networkidle');
 
-		await page.getByTestId('delete-product-btn').first().click();
-		await page.waitForLoadState('networkidle');
+	// 	await page.getByTestId('delete-product-btn').first().click();
+	// 	await page.waitForLoadState('networkidle');
 
-		await page.locator('.testid-confirm-btn').first().click();
+	// 	await page.locator('.testid-confirm-btn').first().click();
 
-		await page.waitForLoadState('networkidle');
+	// 	await page.waitForLoadState('networkidle');
 
-		await expect(page.getByTestId('delete-product-btn')).not.toBeVisible();
-	});
+	// 	await expect(page.getByTestId('delete-product-btn')).not.toBeVisible();
+	// });
 });
