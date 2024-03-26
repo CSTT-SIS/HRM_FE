@@ -232,7 +232,7 @@ const ProductModal = ({ ...props }: Props) => {
                                         {t('min_quantity')} <span style={{ color: 'red' }}>* </span>
                                     </label>
                                     <Field autoComplete="off" name="minQuantity" type="number" id="minQuantity" placeholder={`${t('enter_min_quantity')}`} className="form-input" />
-                                    {errors.minQuantity ? <div className="mt-1 text-danger"> {errors.minQuantity} </div> : null}
+                                    {submitCount && errors.minQuantity ? <div className="mt-1 text-danger"> {errors.minQuantity} </div> : null}
                                 </div>
                                 <div className="w-1/2">
                                     <label htmlFor="maxQuantity" data-testid={'maxQuantity'} className='label'>
@@ -240,7 +240,7 @@ const ProductModal = ({ ...props }: Props) => {
                                         {t('max_quantity')} <span style={{ color: 'red' }}>* </span>
                                     </label>
                                     <Field autoComplete="off" name="maxQuantity" type="number" id="maxQuantity" placeholder={`${t('enter_max_quantity')}`} className="form-input" />
-                                    {errors.maxQuantity ? <div className="mt-1 text-danger"> {errors.maxQuantity} </div> : null}
+                                    {submitCount && errors.maxQuantity ? <div className="mt-1 text-danger"> {errors.maxQuantity} </div> : null}
                                 </div>
                             </div>
                             <div className="flex justify-between gap-5">
