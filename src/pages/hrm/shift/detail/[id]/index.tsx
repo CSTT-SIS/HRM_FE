@@ -16,6 +16,7 @@ import IconArrowBackward from '@/components/Icon/IconArrowBackward';
 import IconBack from '@/components/Icon/IconBack';
 import shift from '../../shift.json';
 import Personnel from '../../personnel';
+import { detailShift } from '@/services/apis/shift.api';
 
 interface Props {
     [key: string]: any;
@@ -26,70 +27,48 @@ const AddNewShift = ({ ...props }: Props) => {
     const [disabled, setDisabled] = useState(false);
     const router = useRouter();
     const [detail, setDetail] = useState<any>();
-    const [typeShift, setTypeShift] = useState("0"); // 0: time, 1: total hours
+    const [typeShift, setTypeShift] = useState(1); // 0: time, 1: total hours
     useEffect(() => {
-        if (Number(router.query.id)) {
-            const detailData = shift?.find(d => d.id === Number(router.query.id));
-            setDetail(detailData);
+        const id = router.query.id
+        if (id) {
+            detailShift(id).then((res) => {
+                console.log(res);
+                setDetail(res?.data)
+                setTypeShift(res?.data?.type)
+            }).catch((err: any) => {
+                console.log(err)
+            });
         }
     }, [router])
-    const SubmittedForm = Yup.object().shape({
-        code_shift: Yup.string().required(`${t('please_fill_code_shift')}`),
-        name_shift: Yup.string()
-            .required(`${t('please_fill_name_shift')}`),
-        type_shift: Yup.string(),
-        work_coefficient: Yup.number().typeError(`${t('please_fill_work_coefficient')}`),
-        time: Yup.number().typeError(`${t('please_fill_total_time')}`),
-        from_time: typeShift === "0" ? Yup.date().typeError(`${t('please_fill_from_time')}`) : Yup.date(),
-        end_time: typeShift === "0" ? Yup.date().typeError(`${t('please_fill_end_time')}`) : Yup.date(),
-        break_from_time: typeShift === "0" ? Yup.date().typeError(`${t('please_fill_break_from_time')}`) : Yup.date(),
-        break_end_time: typeShift === "0" ? Yup.date().typeError(`${t('please_fill_break_end_time')}`) : Yup.date(),
-        description: Yup.string().required(`${t('please_fill_description')}`),
-        note: Yup.string(),
-        status: Yup.string().required(`${t('please_fill_status')}`)
-    });
 
-    const handleDepartment = (value: any) => {
-        if (props?.data) {
-            const reNew = props.totalData.filter((item: any) => item.id !== props.data.id);
-            reNew.push({
-                id: props.data.id,
-                name: value.name,
-                code: value.code,
-            });
-            localStorage.setItem('departmentList', JSON.stringify(reNew));
-            props.setGetStorge(reNew);
-            props.setOpenModal(false);
-            props.setData(undefined);
-            showMessage(`${t('edit_department_success')}`, 'success');
-        } else {
-            const reNew = props.totalData;
-            reNew.push({
-                id: Number(props?.totalData[props?.totalData?.length - 1].id) + 1,
-                name: value.name,
-                code: value.code,
-                status: value.status,
-            });
-            localStorage.setItem('departmentList', JSON.stringify(reNew));
-            props.setGetStorge(props.totalData);
-            props.setOpenModal(false);
-            props.setData(undefined);
-            showMessage(`${t('add_department_success')}`, 'success');
-        }
-    };
-
-    const handleChangeTypeShift = (e: any, type: string) => {
+    const handleChangeTypeShift = (e: any, type: number) => {
         console.log(e.target.checked);
         if (e) {
             setTypeShift(type)
         }
         // setTypeShift(e);
     }
-
-    const handleCancel = () => {
-        props.setOpenModal(false);
-        props.setData(undefined);
+        const baseSchema = {
+    code: Yup.string().required(`${t('please_fill_code_shift')}`),
+    name: Yup.string().required(`${t('please_fill_name_shift')}`),
+    type: Yup.string(),
+    wageRate: Yup.number().typeError(`${t('please_fill_wageRate')}`),
+    totalHours: Yup.number().typeError(`${t('please_fill_total_time')}`),
+    description: Yup.string().required(`${t('please_fill_description')}`),
+    note: Yup.string(),
+    isActive: Yup.bool().required(`${t('please_fill_status')}`)
     };
+
+    const extendedSchema = typeShift === 0 ? {
+    ...baseSchema,
+    startTime: Yup.string().required(`${t('please_fill_from_time')}`),
+    endTime: Yup.string().required(`${t('please_fill_end_time')}`),
+    breakFrom: Yup.string().required(`${t('please_fill_break_from_time')}`),
+    breakTo: Yup.string().required(`${t('please_fill_break_end_time')}`)
+    } : baseSchema;
+
+    const SubmittedForm = Yup.object().shape(extendedSchema);
+
     return (
 
         <div className="p-5">
@@ -108,145 +87,125 @@ const AddNewShift = ({ ...props }: Props) => {
 
             <Formik
                 initialValues={{
-                    code_shift: detail?.code_shift,
-                    name_shift: detail?.name_shift,
-                    type_shift: "Ca theo thời gian",
-                    work_coefficient: detail?.work_coefficient,
-                    from_time: detail?.from_time,
-                    end_time: detail?.end_time,
-                    break_from_time: detail?.break_from_time,
-                    break_end_time: detail?.break_end_time,
-                    time: detail?.end_time,
+                    code: detail?.code,
+                    name: detail?.name,
+                    type: detail?.type,
+                    wageRate: detail?.wageRate,
+                    startTime: detail?.startTime,
+                    endTime: detail?.endTime,
+                    breakFrom: detail?.breakFrom,
+                    breakTo: detail?.breakTo,
+                    totalHours: detail?.totalHours,
                     note: detail?.note,
-                    status: detail?.status,
+                    isActive: detail?.isActive,
                     description: detail?.description
                 }}
                 enableReinitialize
                 validationSchema={SubmittedForm}
-                onSubmit={(values) => {
-                    handleDepartment(values);
+                onSubmit={() => {
+
                 }}
             >
                 {({ errors, touched, submitCount }) => (
                     <Form className="space-y-5">
                         <div className='flex justify-between gap-5'>
                             <div className="mb-5 w-1/2">
-                                <label htmlFor="type_shift" className='label'>
+                                <label htmlFor="type" className='label'>
                                     {' '}
                                     {t('type_shift')} <span style={{ color: 'red' }}>* </span>
                                 </label>
                                 <div className="flex" style={{ alignItems: 'center', marginTop: '13px' }}>
                                     <label style={{ marginBottom: 0, marginRight: '10px' }}>
-                                        <Field autoComplete="off" disabled type="radio" name="type_shift" value="Ca theo thời gian"
-                                        checked={typeShift === "0"}
-                                        onChange={(e: any) => handleChangeTypeShift(e, "0")}
-                                        className="form-checkbox rounded-full" />
+                                        <Field autoComplete="off" type="radio" name="type" value={1}
+                                            checked={detail?.type === 1}
+                                            className="form-checkbox rounded-full" />
                                         {t('shift_base_time')}
                                     </label>
                                     <label style={{ marginBottom: 0 }}>
-                                        <Field autoComplete="off" disabled type="radio" name="type_shift" value="Ca theo tổng số giờ"
-                                        checked={typeShift === "1"}
-                                        onChange={(e: any) => handleChangeTypeShift(e, "1")}
+                                        <Field autoComplete="off" disabled type="radio" name="type" value={0}
+                                        checked={typeShift === 0}
                                         className="form-checkbox rounded-full" />
                                         {t('shift_base_total_time')}
                                     </label>
                                 </div>
-                                {submitCount ? errors?.type_shift ? <div className="mt-1 text-danger"> {errors?.type_shift} </div> : null : ''}
                             </div>
                             <div className="mb-5 w-1/2">
-                                <label htmlFor="code_shift" className='label'>
+                                <label htmlFor="code" className='label'>
                                     {' '}
                                     {t('code_shift')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field autoComplete="off" disabled name="code_shift" type="text" id="code_shift" placeholder={`${t('fill_code_shift')}`} className="form-input" />
-                                {submitCount ? errors?.code_shift ? <div className="mt-1 text-danger">
-                                {`${errors?.code_shift}`}</div> : null : ''}
+                                <Field autoComplete="off" disabled name="code" type="text" id="code" placeholder={`${t('fill_code_shift')}`} className="form-input" />
                             </div>
 
                         </div>
                         <div className='flex justify-between gap-5'>
                             <div className="mb-5 w-1/2">
-                                <label htmlFor="name_shift" className='label'>
+                                <label htmlFor="name" className='label'>
                                     {' '}
                                     {t('name_shift')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field autoComplete="off" disabled name="name_shift" type="text" id="name_shift" placeholder={`${t('fill_name_shift')}`} className="form-input" />
-                                {submitCount ? errors?.name_shift ? <div className="mt-1 text-danger">{`${errors?.name_shift}`} </div> : null : ''}
+                                <Field autoComplete="off" disabled name="name" type="text" id="name" placeholder={`${t('fill_name_shift')}`} className="form-input" />
                             </div>
                             <div className="mb-5 w-1/2">
-                                <label htmlFor="work_coefficient" className='label'>
+                                <label htmlFor="wageRate" className='label'>
                                     {' '}
                                     {t('work_coefficient')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field autoComplete="off" disabled name="work_coefficient" type="number" id="work_coefficient" placeholder="" className="form-input" />
-                                {submitCount ? errors?.work_coefficient ? <div className="mt-1 text-danger">
-                                {`${errors?.work_coefficient}`}</div> : null : ""}
+                                <Field autoComplete="off" disabled name="wageRate" type="number" id="wageRate" placeholder="" className="form-input" />
                             </div>
                         </div>
-                        {typeShift === "0" && <> <div className='flex justify-between gap-5'>
+                        {typeShift === 0 && <> <div className='flex justify-between gap-5'>
                             <div className="mb-5 w-1/2">
-                                <label htmlFor="from_time" className='label'>
+                                <label htmlFor="startTime" className='label'>
                                     {' '}
                                     {t('from_time')} <span style={{ color: 'red' }}>* </span>
                                 </label>
                                 <Field autoComplete="off" disabled
-                                    name="from_time"
+                                    name="startTime"
                                     type="time"
                                     className="form-input"
                                 />
-                                {submitCount ? errors?.from_time ? <div className="mt-1 text-danger">
-                                {`${errors?.from_time}`}
-                                    </div> : null : ''}
                             </div>
                             <div className="mb-5 w-1/2">
-                                <label htmlFor="end_time" className='label'>
+                                <label htmlFor="endTime" className='label'>
                                     {' '}
                                     {t('end_time')} <span style={{ color: 'red' }}>* </span>
                                 </label>
                                 <Field autoComplete="off" disabled
-                                    name="end_time"
+                                    name="endTime"
                                     type="time"
                                     className="form-input"
                                 />
-                                {submitCount ? errors?.end_time ? <div className="mt-1 text-danger">
-                                {`${errors?.end_time}`}
-                                     </div> : null : ''}
                             </div>
                         </div>
                             <div className='flex justify-between gap-5'>
                                 <div className="mb-5 w-1/2">
-                                    <label htmlFor="break_from_time" className='label'>
+                                    <label htmlFor="breakFrom" className='label'>
                                         {' '}
                                         {t('break_from_time')} <span style={{ color: 'red' }}>* </span>
                                     </label>
                                     <Field autoComplete="off" disabled
-                                        name="break_from_time"
+                                        name="breakFrom"
                                         type="time"
                                         className="form-input"
                                     />
-                                    {submitCount ? errors?.break_from_time ? <div className="mt-1 text-danger">
-                                    {`${errors?.break_from_time}`}
-                                    </div> : null : ''}
                                 </div>
                                 <div className="mb-5 w-1/2">
-                                    <label htmlFor="break_end_time" className='label'>
+                                    <label htmlFor="breakTo" className='label'>
                                         {' '}
                                         {t('break_end_time')} <span style={{ color: 'red' }}>* </span>
                                     </label>
                                     <Field autoComplete="off" disabled
-                                        name="break_end_time"
+                                        name="breakTo"
                                         type="time"
                                     className="form-input"
                                     />
-                                    {submitCount ? errors?.break_end_time ? <div className="mt-1 text-danger">
-                                    {`${errors?.break_end_time}`}
-                                         </div> : null : ''}
                                 </div>
                             </div>
                         </>}
                         <div className='flex justify-between gap-5'>
                             <div className="mb-5 w-1/2">
-                                <label htmlFor="time" className='label'>
+                                <label htmlFor="description" className='label'>
                                     {' '}
                                     {t('description')} <span style={{ color: 'red' }}>* </span>
                                 </label>
@@ -262,41 +221,28 @@ const AddNewShift = ({ ...props }: Props) => {
                                     {t('note')}
                                 </label>
                                 <Field autoComplete="off" disabled name="note" as="textarea" id="note" placeholder={t('fill_note')} className="form-input" />
-                                {submitCount ? errors?.note ? <div className="mt-1 text-danger">
-                                {`${errors?.status}`}
-                                </div> : null : ''}
                             </div>
                         </div>
                         <div className='flex justify-between gap-5'>
                         <div className="mb-5 w-1/2">
-                                <label htmlFor="description" className='label'>
+                                <label htmlFor="totalHours" className='label'>
                                     {' '}
                                     {t('time_shift')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field autoComplete="off" disabled name="time" type="number" id="time" placeholder={t('fill_total_time')} className="form-input" />
-                                {submitCount ? errors?.time ? <div className="mt-1 text-danger">
-                                {`${errors?.time}`}
-                                   </div> : null : ''}
-
+                                <Field autoComplete="off" disabled name="totalHours" type="number" id="totalHours" placeholder={t('fill_total_time')} className="form-input" />
                             </div>
                         <div className="mb-5 w-1/2">
-                                <label htmlFor="status" className='label'> {t('status')} < span style={{ color: 'red' }}>* </span></label >
+                                <label htmlFor="isActive" className='label'> {t('status')} < span style={{ color: 'red' }}>* </span></label >
                                 <div className="flex" style={{ alignItems: 'center', marginTop: '13px' }}>
                                     <label style={{ marginBottom: 0, marginRight: '10px' }}>
-                                        <Field autoComplete="off" disabled type="radio" name="status" value="active" className="form-checkbox rounded-full"/>
+                                        <Field autoComplete="off" disabled type="radio" name="isActive" value={true} className="form-checkbox rounded-full"/>
                                         {t('active')}
                                     </label>
                                     <label style={{ marginBottom: 0 }}>
-                                        <Field autoComplete="off" disabled type="radio" name="status" value="inactive" className="form-checkbox rounded-full" />
+                                        <Field autoComplete="off" disabled type="radio" name="isActive" value={false} className="form-checkbox rounded-full" />
                                         {t('inactive')}
                                     </label>
                                 </div>
-
-                                {submitCount ? errors?.status ? (
-                                    <div className="text-danger mt-1">
-                                                                    {`${errors?.status}`}
-                                </div>
-                                ) : null : ''}
                             </div>
 
 

@@ -6,132 +6,200 @@ import { useTranslation } from 'react-i18next';
 const OrganizationChart: React.FC<{}> = () => {
 	const { t } = useTranslation();
 	const initechOrg = {
-		name: 'Giám đốc',
+		name: 'Tổng giám đốc',
+        avatar: "/assets/images/profile-26.jpeg",
         className: 'level-0',
 		children: [
+            {
+                name: 'P.Tổng giám đốc đối ngoại',
+                avatar: "/assets/images/profile-26.jpeg",
+                className: 'level-1'
+            },
 			{
-				name: 'Phó Giám đốc phụ trách chế biến',
+                name: "P.Tổng giám đốc",
+                description: "Giám đốc các dự án",
+                avatar: "/assets/images/profile-26.jpeg",
                 className: 'level-1',
-				children: [
-					{
-						name: 'Ban đốc nhà máy',
+                siblings: [
+                    {
+                        name: "P.Tổng giám đốc",
+                        description: "P.GĐ dự án phụ trách kỹ thuật",
+                        avatar: "/assets/images/profile-26.jpeg",
+                        className: 'level-1',
+                    }
+                ],
+                children: [
+                    {
+                        name: "Phó giám đốc thường trực công ty",
+                        description: "",
+                        avatar: "/assets/images/profile-26.jpeg",
                         className: 'level-2',
-						children: [
-							{
-								name: 'Nhà máy nghiền khô',
-                                className: "level-3"
-							},
-							{
-								name: 'Nhà máy tuyến',
-                                className: "level-3"
-							},
-							{
-								name: 'Nhà máy luyện 2000 tấn, 500 tấn',
-                                className: "level-3"
-							},
-							{
-								name: 'Tổ kỹ thuật công nghệ, Tổ điện phân',
-                                className: "level-3"
-							},
-						],
-					},
+                        children: [
+                            {
+                                name: "Phòng Tài chính Kế toán",
+                                description: "",
+                                avatar: "/assets/images/profile-26.jpeg",
+                                className: 'level-3'
+                            },
+                            {
+                                name: "Phòng Tổ chức hành chính",
+                                description: "",
+                                avatar: "/assets/images/profile-26.jpeg",
+                                className: 'level-3'
+                            },
+                            {
+                                name: "Ban Giám sát",
+                                description: "",
+                                avatar: "/assets/images/profile-26.jpeg",
+                                className: 'level-3'
+                            },
+                            {
+                                name: "Tổ camera",
+                                description: "",
+                                avatar: "/assets/images/profile-26.jpeg",
+                                className: 'level-3'
+                            }
+                        ]
+                    },
+                         {
+                        name: "Phó giám đốc công ty phụ trách sản xuất",
+                        description: "",
+                        avatar: "/assets/images/profile-26.jpeg",
+                        className: 'level-2',
+                        children: [
+                            {
+                                name: "Phòng Kế hoạch vật tư",
+                                description: "",
+                                avatar: "/assets/images/profile-26.jpeg",
+                                className: 'level-3'
+                            },
+                            {
+                                name: "Phòng Kỹ thuật",
+                                description: "",
+                                avatar: "/assets/images/profile-26.jpeg",
+                                className: 'level-3'
+                            },
+                            {
+                                name: "Tổ Giám sát HT",
+                                description: "",
+                                avatar: "/assets/images/profile-26.jpeg",
+                                className: 'level-3'
+                            },
+                            {
+                                name: "Tổ Bảo dưỡng",
+                                description: "",
+                                avatar: "/assets/images/profile-26.jpeg",
+                                className: 'level-3'
+                            },
+                              {
+                                name: "Đội sửa chữa (Gara)",
+                                description: "",
+                                avatar: "/assets/images/profile-26.jpeg",
+                                className: 'level-3'
+                            }
+                        ]
+                    },
+                      {
+                        name: "Phó giám đốc công ty khai thác",
+                        description: "",
+                        avatar: "/assets/images/profile-26.jpeg",
+                        className: 'level-2',
+                        children: [
+                            {
+                                name: "Ban Giám đốc khai thác",
+                                description: "",
+                                avatar: "/assets/images/profile-26.jpeg",
+                                className: 'level-3',
+                                children: [
+                                    {
+                                        name: "Các tổ khai thác",
+                                        description: "",
+                                        avatar: "/assets/images/profile-26.jpeg",
+                                        className: 'level-4'
+                                    },
+                                     {
+                                        name: "Đội xe Lào, Việt",
+                                        description: "",
+                                        avatar: "/assets/images/profile-26.jpeg",
+                                        className: 'level-4'
+                                    },
+                                     {
+                                        name: "Đội máy, đội khoan",
+                                        description: "",
+                                        avatar: "/assets/images/profile-26.jpeg",
+                                        className: 'level-4'
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                     {
+                        name: "Phó giám đốc công ty phụ trách nhà máy",
+                        description: "",
+                        avatar: "/assets/images/profile-26.jpeg",
+                        className: 'level-2',
+                        children: [
+                            {
+                                name: "Ban Giám đốc nhà máy",
+                                description: "",
+                                avatar: "/assets/images/profile-26.jpeg",
+                                className: 'level-3',
+                                children: [
+                                    {
+                                        name: "Tổ phân tích",
+                                        description: "",
+                                        avatar: "/assets/images/profile-26.jpeg",
+                                        className: 'level-4'
+                                    },
+                                     {
+                                        name: "Tổ công nghệ",
+                                        description: "",
+                                        avatar: "/assets/images/profile-26.jpeg",
+                                        className: 'level-4'
+                                    },
+                                     {
+                                        name: "Tổ cơ điện",
+                                        description: "",
+                                        avatar: "/assets/images/profile-26.jpeg",
+                                        className: 'level-4'
+                                    },
+                                    {
+                                        name: "Nhà máy 2000",
+                                        description: "",
+                                        avatar: "/assets/images/profile-26.jpeg",
+                                        className: 'level-4'
+                                    },
+                                    {
+                                        name: "Nhà máy nghiền khô",
+                                        description: "",
+                                        avatar: "/assets/images/profile-26.jpeg",
+                                        className: 'level-4'
+                                    },
+                                      {
+                                        name: "Nhà máy 500",
+                                        description: "",
+                                        avatar: "/assets/images/profile-26.jpeg",
+                                        className: 'level-4'
+                                    },
+                                      {
+                                        name: "Nhà máy điện phân",
+                                        description: "",
+                                        avatar: "/assets/images/profile-26.jpeg",
+                                        className: 'level-4'
+                                    }
+                                ]
+                            },
+                            {
+                                 name: "Tổ an ninh sản phẩm",
+                                description: "",
+                                avatar: "/assets/images/profile-26.jpeg",
+                                className: 'level-3'
+                            }
+                        ]
+                    }
 				],
-			},
-			{
-				name: 'Bộ phận Camera',
-                className: 'level-1',
-			},
-			{
-				name: 'Ban Giám sát',
-                className: 'level-1',
-			},
-			{
-				name: 'Phó Giám đốc thường trực',
-                className: 'level-1',
-				children: [
-					{
-						name: 'Phòng Phân tích, Tổ gia công mã hóa',
-                        className: 'level-2',
-					},
-					{
-						name: 'Phòng Tổ chức hành chính',
-                        className: 'level-2',
-						children: [
-							{
-								name: 'Tổ xe, Bộ phận cấp dưỡng, Bảo vệ',
-                                className: 'level-3',
-							},
-						],
-					},
-					{
-						name: 'Phòng Kế hoạch vật tư',
-                        className: 'level-2',
-						children: [
-							{
-								name: 'Tổ điện, Tổ làm ngoài, Bộ phận sửa chữa',
-                                className: 'level-3',
-							},
-						],
-					},
-					{
-						name: 'Phòng Hành chính kế toán',
-                        className: 'level-2',
-						children: [
-							{
-								name: 'Bộ phận kho vật tư',
-                                className: 'level-3',
-							},
-						],
-					},
-					{
-						name: 'Phòng Kỹ thuật',
-                        className: 'level-2',
-						children: [
-							{
-								name: 'Tổ gia công mẫu, Tổ môi trường',
-                                className: 'level-3',
-							},
-						],
-					},
-				],
-			},
-			{
-				name: 'Phó Giám đốc khai thác',
-                className: 'level-1',
-				children: [
-					{
-						name: 'Bộ phận Kỹ thuật khai thác',
-                        className: 'level-2',
-						children: [
-							{
-								name: 'Tổ lái xe Lào',
-                                className: "level-3"
-							},
-							{
-								name: 'Tổ lái xe Việt',
-                                className: "level-3"
-							},
-							{
-								name: 'Tổ máy',
-                                className: "level-3"
-							},
-							{
-								name: 'Tổ làm hồ',
-                                className: "level-3"
-							},
-							{
-								name: 'Bộ phận khoan nổ mình',
-                                className: "level-3"
-							},
-						],
-					},
-					{
-						name: 'Bộ phận Giám sát hành trình',
-                        className: "level-2"
-					},
-				],
-			},
-		],
+			}
+		]
 	};
 
 	return (

@@ -152,7 +152,7 @@ const Sidebar = () => {
                 <div className="h-full bg-white dark:bg-black">
                     <div className="flex items-center justify-between px-4 py-3">
                         <Link href="/hrm/dashboard" className="main-logo flex shrink-0 items-center">
-                            <img id="logo" className="ml-[5px] w-8 flex-none" src="/assets/images/favicon.jpg" alt="logo" />
+                            <img id="logo" className="ml-[5px] w-8 flex-none" src="/assets/images/logo.png" alt="logo" />
                         </Link>
 
                         <button
