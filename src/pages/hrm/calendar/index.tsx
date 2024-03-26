@@ -213,7 +213,7 @@ const Canlendar = () => {
 						droppable={true}
 						eventClick={(event: any) => handleClickEvent(event)}
 						select={(event: any) => editDate(event)}
-						events={workSchedule}
+						events={calendar?.data}
 						eventContent={renderEventContent}
 					/>
 				</div>
