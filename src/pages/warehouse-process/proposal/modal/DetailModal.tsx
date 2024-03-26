@@ -10,7 +10,8 @@ import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
 import { AddProposalDetail, EditProposalDetail } from '@/services/apis/proposal.api';
-import { DropdownProducts } from '@/services/swr/dropdown.twr';
+import { DropdownInventory, DropdownProducts } from '@/services/swr/dropdown.twr';
+import { GetQuantity } from '@/services/apis/product.api';
 
 interface Props {
     [key: string]: any;
@@ -28,7 +29,7 @@ const DetailModal = ({ ...props }: Props) => {
         quantity: Yup.string().required(`${t('please_fill_quantity')}`),
     });
 
-    const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ page: page });
+    const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownInventory({ page: page, warehouseId: props?.warehouseId });
 
     const handleProposal = (param: any) => {
         if (Number(router.query.id)) {
@@ -63,6 +64,7 @@ const DetailModal = ({ ...props }: Props) => {
                 productId: Number(param.productId.value),
                 quantity: Number(param.quantity),
                 note: param.note,
+                inventory: Number(param.inventory)
                 // price: param?.price ? param?.price : 0
             };
             if (props?.data?.id) {
@@ -79,12 +81,11 @@ const DetailModal = ({ ...props }: Props) => {
             handleCancel();
         }
     }
-
     const handleCancel = () => {
         props.setOpenModal(false);
         // props.setData();
         props.proposalDetailMutate();
-        setInitialValue({});
+        props.setData();
     };
 
     useEffect(() => {
@@ -96,9 +97,9 @@ const DetailModal = ({ ...props }: Props) => {
             } : "",
             note: props?.data ? `${props?.data?.note}` : "",
             // price: props?.data ? props?.data.price : ""
+            inventory: props?.data?.inventory ? `${props?.data?.inventory}` : props?.data?.product ? `${props?.data?.product.quantity}` : ""
         })
     }, [props?.data]);
-
 
     useEffect(() => {
         if (productPagination?.page === undefined) return;
@@ -114,6 +115,14 @@ const DetailModal = ({ ...props }: Props) => {
         setTimeout(() => {
             setPage(productPagination?.page + 1);
         }, 1000);
+    }
+
+    const handleQuantity = (param: any, setFieldValue: any) => {
+        GetQuantity({ id: param.value }).then((res) => {
+            setFieldValue('inventory', res.data)
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
     }
 
     return (
@@ -180,12 +189,27 @@ const DetailModal = ({ ...props }: Props) => {
                                                                 value={values?.productId}
                                                                 onChange={e => {
                                                                     setFieldValue('productId', e)
+                                                                    handleQuantity(e, setFieldValue);
                                                                 }}
                                                             />
                                                             {submitCount && errors.productId ? (
                                                                 <div className="text-danger mt-1"> {`${errors.productId}`} </div>
                                                             ) : null}
                                                         </div>
+                                                    </div>
+                                                    <div className="mb-5">
+                                                        <label htmlFor="inventory" > {t('inventory_number')} </label >
+                                                        <Field
+                                                            autoComplete="off"
+                                                            name="inventory"
+                                                            type="number"
+                                                            id="inventory"
+                                                            className={"form-input bg-[#f2f2f2]"}
+                                                            disabled={true}
+                                                        />
+                                                        {submitCount && errors.inventory ? (
+                                                            <div className="text-danger mt-1"> {`${errors.inventory}`} </div>
+                                                        ) : null}
                                                     </div>
                                                     <div className="mb-5">
                                                         <label htmlFor="quantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >

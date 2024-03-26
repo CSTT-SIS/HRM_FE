@@ -1,4 +1,4 @@
-import { useEffect, Fragment, useState, useCallback } from 'react';
+import { useEffect, Fragment, useState, useCallback, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { setPageTitle } from '@/store/themeConfigSlice';
@@ -22,6 +22,8 @@ import * as Yup from 'yup';
 import Link from 'next/link';
 import IconBackward from '@/components/Icon/IconBackward';
 import moment from 'moment';
+import IconImportFile from '@/components/Icon/IconImportFile';
+import IconNewPlus from '@/components/Icon/IconNewPlus';
 
 
 interface Props {
@@ -36,6 +38,7 @@ const ShelfPage = ({ ...props }: Props) => {
     const [dataDetail, setDataDetail] = useState<any>();
     const router = useRouter();
     const [showLoader, setShowLoader] = useState(true);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
@@ -285,9 +288,14 @@ const ShelfPage = ({ ...props }: Props) => {
                                     <div className="" style={{ borderRadius: "0" }}>
                                         <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                                             <div className="flex items-center flex-wrap">
-                                                <button type="button" onClick={(e) => setOpenModal(true)} className="btn btn-primary btn-sm m-1 custom-button" >
-                                                    <IconPlus className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
-                                                    {t('add')}
+                                                <button type="button" className="m-1 button-table button-create" onClick={(e) => setOpenModal(true)}>
+                                                    <IconNewPlus />
+                                                    <span className='uppercase'>{t('add')}</span>
+                                                </button>
+                                                <input autoComplete="off" type="file" ref={fileInputRef} accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" style={{ display: "none" }} />
+                                                <button type="button" className=" m-1 button-table button-import" onClick={() => fileInputRef.current?.click()}>
+                                                    <IconImportFile />
+                                                    <span className="uppercase">Nhập file</span>
                                                 </button>
                                             </div>
                                             <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />

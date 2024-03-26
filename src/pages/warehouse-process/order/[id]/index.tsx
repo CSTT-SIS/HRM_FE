@@ -54,6 +54,7 @@ const DetailPage = ({ ...props }: Props) => {
     const [entity, setEntity] = useState<any>("");
     const [searchP, setSearchP] = useState<any>();
     const [searchR, setSearchR] = useState<any>();
+    const [warehouseId, setWarehouseId] = useState<any>();
 
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().required(`${t('please_fill_name')}`),
@@ -114,7 +115,10 @@ const DetailPage = ({ ...props }: Props) => {
             }
                 : '',
         })
-        setEntity(data?.warehouse?.name === "Gara" ? "repairRequest" : "proposal")
+        setEntity(data?.warehouse?.name === "Gara" ? "repairRequest" : "proposal");
+        if (data?.warehouse?.length > 0) {
+            setWarehouseId(data?.warehouse?.id)
+        }
     }, [data]);
 
     useEffect(() => {
@@ -627,6 +631,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                                     setFieldValue('proposalIds', "")
                                                                     setListDataDetail([])
                                                                     setEntity(e.label === "Gara" ? "repairRequest" : '');
+                                                                    setWarehouseId(e.value);
                                                                 }}
                                                                 isDisabled={disable}
                                                             />
@@ -807,6 +812,7 @@ const DetailPage = ({ ...props }: Props) => {
                                         listData={listDataDetail}
                                         setListData={setListDataDetail}
                                         orderDetailMutate={mutate}
+                                        warehouseId={warehouseId}
                                     />
                                 </AnimateHeight>
                             </div>

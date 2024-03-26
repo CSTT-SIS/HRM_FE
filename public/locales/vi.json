@@ -832,5 +832,7 @@
     "add_shift_error": "Tạo mới ca làm việc thất bại",
     "update_shift_success": "Cập nhật ca làm việc thành công",
     "update_shift_error": "Cập nhật ca làm việc thất bại",
-    "delete_shift_success": "Xóa ca làm việc thành công"
+    "delete_shift_success": "Xóa ca làm việc thành công",
+	"please_fill_minQuantity": "Vui lòng nhập số lượng tối thiểu",
+	"please_fill_maxQuantity": "Vui lòng nhập số lượng tối đa"
 }

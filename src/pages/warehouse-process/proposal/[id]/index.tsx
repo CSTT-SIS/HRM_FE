@@ -42,6 +42,7 @@ const DetailPage = ({ ...props }: Props) => {
     const [query, setQuery] = useState<any>({});
     const [active, setActive] = useState<any>([1, 2]);
     const [initialValue, setInitialValue] = useState<any>();
+    const [warehouseId, setWarehouseId] = useState<any>();
     const [data, setData] = useState<any>();
     const [page, setPage] = useState(1);
     const [dataDepartment, setDataDepartment] = useState<any>([]);
@@ -93,6 +94,9 @@ const DetailPage = ({ ...props }: Props) => {
             }
                 : '',
         })
+        if (data?.warehouse?.length > 0) {
+            setWarehouseId(data?.warehouse?.id)
+        }
     }, [data, router]);
     useEffect(() => {
         if (Number(router.query.id)) {
@@ -429,7 +433,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className='flex justify-between gap-5 mt-5'>
                                                     <div className=" w-1/2">
-                                                        <label htmlFor="warehouseId">
+                                                        <label htmlFor="warehouseId" className='label'>
                                                             {t('warehouse')} <span style={{ color: 'red' }}>* </span>
                                                         </label>
                                                         <Select
@@ -441,6 +445,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                             value={values?.warehouseId}
                                                             onChange={(e) => {
                                                                 setFieldValue('warehouseId', e);
+                                                                setWarehouseId(e.value);
                                                             }}
                                                         />
                                                         {submitCount && errors.warehouseId ? <div className="mt-1 text-danger"> {`${errors.warehouseId}`} </div> : null}
@@ -518,6 +523,7 @@ const DetailPage = ({ ...props }: Props) => {
                                     listData={listDataDetail}
                                     setListData={setListDataDetail}
                                     proposalDetailMutate={mutate}
+                                    warehouseId={warehouseId}
                                 />
                             </AnimateHeight>
                         </div>
