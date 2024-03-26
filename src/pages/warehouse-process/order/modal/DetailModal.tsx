@@ -9,7 +9,7 @@ import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
-import { DropdownProducts } from '@/services/swr/dropdown.twr';
+import { DropdownInventory, DropdownProducts } from '@/services/swr/dropdown.twr';
 import { AddOrderDetail, EditOrderDetail } from '@/services/apis/order.api';
 import { GetQuantity } from '@/services/apis/product.api';
 
@@ -30,7 +30,7 @@ const DetailModal = ({ ...props }: Props) => {
         quantity: Yup.string().required(`${t('please_fill_quantity')}`),
     });
 
-    const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ page: page });
+    const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownInventory({ page: page, warehouseId: props?.warehouseId });
 
     const handleOrder = (param: any) => {
         if (Number(router.query.id)) {
@@ -65,7 +65,8 @@ const DetailModal = ({ ...props }: Props) => {
                 },
                 productId: Number(param.productId.value),
                 quantity: Number(param.quantity),
-                note: param.note
+                note: param.note,
+                inventory: Number(param.inventory)
             };
             if (props?.data?.id) {
                 const filteredItems = props.listData.filter((item: any) => item.id !== props.data.id)
@@ -84,8 +85,7 @@ const DetailModal = ({ ...props }: Props) => {
 
     const handleCancel = () => {
         props.setOpenModal(false);
-        // props.setData();
-        setInitialValue({});
+        props.setData();
     };
 
     useEffect(() => {
@@ -96,7 +96,7 @@ const DetailModal = ({ ...props }: Props) => {
                 label: `${props?.data?.product?.name}`
             } : "",
             note: props?.data?.note ? props?.data?.note : "",
-            inventory: props?.data?.product ? props?.data?.product.quantity : ""
+            inventory: props?.data?.inventory ? `${props?.data?.inventory}` : props?.data?.product ? `${props?.data?.product.quantity}` : ""
         })
     }, [props?.data]);
 

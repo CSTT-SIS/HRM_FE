@@ -15,10 +15,10 @@ import Tippy from '@tippyjs/react';
 import { DataTableSortStatus, DataTable } from 'mantine-datatable';
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2';
-import HandleDetailModal from '../form/DetailModal';
+import HandleDetailModal from '../modal/DetailModal';
 import { StocktakeDetail } from '@/services/swr/stocktake.twr';
 import { AddStocktakeDetail, AddStocktakeDetailAuto, AddStocktakeDetails, CreateStocktake, DeleteStocktakeDetail, EditStocktake, GetStocktake, StocktakeApprove, StocktakeCancel, StocktakeFinish, StocktakeStart } from '@/services/apis/stocktake.api';
-import TallyModal from '../form/TallyModal';
+import TallyModal from '../modal/TallyModal';
 import IconArchive from '@/components/Icon/IconArchive';
 import { IconInventory } from '@/components/Icon/IconInventory';
 import { Field, Form, Formik } from 'formik';
@@ -60,6 +60,7 @@ const DetailPage = ({ ...props }: Props) => {
     const [listDataDetail, setListDataDetail] = useState<any>();
     const [dataDetail, setDataDetail] = useState<any>();
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
+    const [warehouseId, setWarehouseId] = useState<any>();
 
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().required(`${t('please_fill_name')}`),
@@ -201,7 +202,7 @@ const DetailPage = ({ ...props }: Props) => {
                         !disable &&
                         <div className="flex items-center w-max mx-auto gap-2">
                             {
-                                router.query?.status === "DRAFT" &&
+                                router.query.type === "DRAFT" &&
                                 <>
                                     <button className='bg-[#9CD3EB] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleEdit(records)}>
                                         <IconPencil /> <span>{`${t('edit')}`}</span>
@@ -214,12 +215,10 @@ const DetailPage = ({ ...props }: Props) => {
                         </div>
                     }
                     {
-                        router.query?.type === "tally" && router.query.id !== "create" &&
-                        <>
-                            <button className='bg-[#C5E7AF] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleOpenTally(records)}>
-                                <IconListCheck />  <span>{`${t('tally')}`}</span>
-                            </button>
-                        </>
+                        router.query.type === "IN_PROGRESS" &&
+                        <button className='bg-[#C5E7AF] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleOpenTally(records)}>
+                            <IconListCheck />  <span>{`${t('tally')}`}</span>
+                        </button>
                     }
                 </>
             ),
@@ -231,7 +230,7 @@ const DetailPage = ({ ...props }: Props) => {
     };
 
     const handleChangeComplete = (id: any) => {
-        StocktakeStart(id).then(() => {
+        StocktakeStart({ id: id }).then(() => {
             showMessage(`${t('update_success')}`, 'success');
             handleCancel();
         }).catch((err) => {
@@ -346,6 +345,9 @@ const DetailPage = ({ ...props }: Props) => {
             startDate: data ? moment(`${data?.startDate}`).format("YYYY-MM-DD hh:mm") : "",
             endDate: data ? moment(`${data?.endDate}`).format("YYYY-MM-DD hh:mm") : ""
         })
+        if (data?.warehouse?.length > 0) {
+            setWarehouseId(data?.warehouse?.id)
+        }
     }, [data]);
 
     const handleDetail = async (id: any) => {
@@ -432,7 +434,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                                 className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
                                                                 disabled={disable}
                                                             />
-                                                            {errors.name ? (
+                                                            {submitCount && errors.name ? (
                                                                 <div className="text-danger mt-1"> {`${errors.name}`} </div>
                                                             ) : null}
                                                         </div>
@@ -449,10 +451,11 @@ const DetailPage = ({ ...props }: Props) => {
                                                                 value={values?.warehouseId}
                                                                 onChange={e => {
                                                                     setFieldValue('warehouseId', e)
+                                                                    setWarehouseId(e.value);
                                                                 }}
                                                                 isDisabled={disable}
                                                             />
-                                                            {errors.warehouseId ? (
+                                                            {submitCount && errors.warehouseId ? (
                                                                 <div className="text-danger mt-1"> {`${errors.warehouseId}`} </div>
                                                             ) : null}
                                                         </div>
@@ -477,7 +480,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                                 />)
                                                                 }
                                                             />
-                                                            {errors.startDate ? (
+                                                            {submitCount && errors.startDate ? (
                                                                 <div className="text-danger mt-1"> {`${errors.startDate}`} </div>
                                                             ) : null}
                                                         </div>
@@ -500,7 +503,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                                     />
                                                                 )}
                                                             />
-                                                            {errors.endDate ? (
+                                                            {submitCount && errors.endDate ? (
                                                                 <div className="text-danger mt-1"> {`${errors.endDate}`} </div>
                                                             ) : null}
                                                         </div>
@@ -523,7 +526,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                                 }}
                                                                 isDisabled={disable}
                                                             />
-                                                            {errors.participants ? (
+                                                            {submitCount && errors.participants ? (
                                                                 <div className="text-danger mt-1"> {`${errors.participants}`} </div>
                                                             ) : null}
                                                         </div>
@@ -537,7 +540,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                                 className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
                                                                 disabled={disable}
                                                             />
-                                                            {errors.description ? (
+                                                            {submitCount && errors.description ? (
                                                                 <div className="text-danger mt-1"> {`${errors.description}`} </div>
                                                             ) : null}
                                                         </div>
@@ -598,6 +601,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                     setData={setDataDetail}
                                                     listData={listDataDetail}
                                                     setListData={setListDataDetail}
+                                                    warehouseId={warehouseId}
                                                 />
                                                 <TallyModal
                                                     openModal={openModalTally}
