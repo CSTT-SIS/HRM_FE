@@ -31,6 +31,7 @@ import IconNewTrash from '@/components/Icon/IconNewTrash';
 import IconNewPlus from '@/components/Icon/IconNewPlus';
 import { Shifts } from '@/services/swr/shift.twr';
 import { deleteShift } from '@/services/apis/shift.api';
+import IconNewEye from '@/components/Icon/IconNewEye';
 
 interface Props {
     [key: string]: any;
@@ -73,7 +74,7 @@ const Duty = ({ ...props }: Props) => {
     ]
 
         // get data
-    const { data: unit, pagination, mutate } = Shifts({ sortBy: 'id.ASC', ...router.query });
+    const { data: shift, pagination, mutate } = Shifts({ sortBy: 'id.ASC', ...router.query });
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -107,7 +108,7 @@ const Duty = ({ ...props }: Props) => {
         swalDeletes
             .fire({
                 title: `${t('delete_shift')}`,
-				html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.name_shift}?`,
+				html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.name}?`,
                 padding: '2em',
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
@@ -116,7 +117,7 @@ const Duty = ({ ...props }: Props) => {
             })
             .then((result) => {
                  if (result.value) {
-                    deleteShift({ id }).then(() => {
+                    deleteShift(data?.id).then(() => {
                         mutate();
                         showMessage(`${t('delete_shift_success')}`, 'success');
                     }).catch((err) => {
@@ -163,45 +164,37 @@ const Duty = ({ ...props }: Props) => {
             render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{(page - 1) * pageSize + index + 1}</span>,
         },
         {
-            accessor: 'code_shift',
+            accessor: 'code',
             title: `${t('code_shift')}`,
             sortable: false,
-            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.code_shift}</span>
+            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.code}</span>
         },
         {
-            accessor: 'name_shift',
+            accessor: 'name',
             title: `${t('name_shift')}`,
             sortable: false,
-            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.name_shift}</span>
+            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.name}</span>
         },
         {
-            accessor: 'type_shift',
+            accessor: 'type',
             title: `${t('type_shift')}`,
             sortable: false,
-            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.type_shift}</span>
+            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.type === 1 ? t('shift_base_time') : t('shift_base_total_time')}</span>
         },
         {
-            accessor: 'from_time',
+            accessor: 'startTime',
             title: `${t('from_time')}`,
             sortable: false,
-            render: (records: any, index: any) => <span onClick={(records) => handleDetail(records)}>{records?.from_time}</span>
+            render: (records: any, index: any) => <span onClick={(records) => handleDetail(records)}>{records?.startTime}</span>
         },
         {
-            accessor: 'end_time',
+            accessor: 'endTime',
             title: `${t('end_time')}`,
             sortable: false,
-            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.end_time}</span>
+            render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.endTime}</span>
         },
-    //         { accessor: 'break_from_time',
-    //         title: `${t('break_from_time')}`, sortable: false,         render: (records: any, index: any) => <span onClick={(records) => handleDetail(records)}>{records?.break_from_time}</span>
-    //     },
-    //     { accessor: 'break_end_time',
-    //      title: `${t('break_end_time')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.break_end_time}</span>
-    // },
-    { accessor: 'time_total', title: `${t('time_shift')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.time_total}</span>
+    { accessor: 'totalHours', title: `${t('time_shift')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.totalHours}</span>
 },
-// { accessor: 'description', title: `${t('description')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.description}</span>
-// },
         {
             accessor: 'action',
             title: 'Thao tác',
@@ -290,7 +283,7 @@ const Duty = ({ ...props }: Props) => {
                       <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover custom_table"
-                        records={unit?.data}
+                        records={shift?.data}
                         columns={columns}
                         totalRecords={pagination?.totalRecords}
                         recordsPerPage={pagination?.perPage}

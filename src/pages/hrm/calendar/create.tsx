@@ -7,12 +7,16 @@ import { Field, Form, Formik } from 'formik';
 import IconBack from '@/components/Icon/IconBack';
 import Link from 'next/link';
 import Select from 'react-select';
-interface Props {
-	[key: string]: any;
-}
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import { listAllHuman } from '@/services/apis/human.api';
+import { createCalendar } from '@/services/apis/calendar.api';
+import dayjs from "dayjs";
+import { showMessage } from '@/@core/utils';
+
+interface Props {
+	[key: string]: any;
+}
 
 //FAKE DATA
 
@@ -23,7 +27,6 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
             page: 1,
             perPage: 1000
         }).then((res) => {
-            console.log(res);
             setListHuman(res.data?.map((human: any) => {
                 return {
                     value: human.id,
@@ -36,17 +39,51 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
     }, []);
 	const { t } = useTranslation();
 	const SubmittedForm = Yup.object().shape({
-		userId: new Yup.ArraySchema().required(`${t('please_select_the_staff')}`),
-		content: Yup.string().required(`${t('please_fill_content_work_schedule')}`),
-		start: Yup.date().required(`${t('please_fill_work_start_date')}`),
-		end: Yup.date().required(`${t('please_fill_work_end_date')}`),
+		userIds: Yup.array().typeError(`${t('please_select_the_staff')}`),
+		title: Yup.string().required(`${t('please_fill_title_work_schedule')}`),
+		startDate: Yup.date().typeError(`${t('please_fill_work_start_date')}`),
+		endDate: Yup.date().typeError(`${t('please_fill_work_end_date')}`),
+        description: Yup.string(),
+        level: Yup.string().required(`${t('please_select_work_level')}`)
 	});
 	const { isAddWorkScheduleModal, setIsAddWokScheduleModal, params, minStartDate, minEndDate, saveWorkSchedule, handleDelete } = props;
+    const handleAddWorkSchedule = (data: any) => {
+        console.log("data", data)
+        let level_
+        switch (data.level) {
+            case "primary":
+                level_= 1;
+                break;
+            case "info":
+                level_= 2;
+                break;
+            case "success":
+                level_= 3;
+                break;
+            case "danger":
+                level_= 4;
+                break;
+            default:
+                level_= 1;
+                break;
+        }
+        const dataSubmit = {
+            ...data,
+            level: level_
+        };
+
+        createCalendar(dataSubmit).then(() => {
+                showMessage(`${t('create_work_schedule_success')}`, 'success');
+            }).catch((err) => {
+                showMessage(`${t('create_work_schedule_error')}`, 'error');
+            });
+
+    }
 	return (
 
 		<div className="p-5">
 			<div className='flex justify-between header-page-bottom pb-4 mb-4'>
-				<h1 className='page-content'>{t('add_calendar')}</h1>
+				<h1 className='page-title'>{t('add_calendar')}</h1>
 				<Link href="/hrm/calendar">
 					<button type="button" className="btn btn-primary btn-sm m-1 back-button" >
 						<IconBack className="w-5 h-5 ltr:mr-2 rtl:ml-2" />
@@ -58,54 +95,54 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 			</div>
 			<Formik
 				initialValues={{
-					userId: params ? `${params?.userId}` : [],
-					content: params ? `${params?.content}` : '',
-					start: params ? `${params?.start}` : '',
-					end: params ? `${params?.end}` : '',
-					type: params ? `${params?.type}` : '',
+					userIds: params ? `${params?.userIds}` : null,
+					title: params ? `${params?.title}` : '',
+					startDate: params ? `${params?.startDate}` : null,
+					endDate: params ? `${params?.endDate}` : null,
+					level: params ? `${params?.level}` : null,
 					description: params ? `${params?.description}` : '',
 				}}
 				validationSchema={SubmittedForm}
 				onSubmit={(values) => {
-					saveWorkSchedule(values);
+					handleAddWorkSchedule(values);
 				}}
 			>
-				{({ errors, touched, submitCount, setFieldValue }) => (
+				{({ errors, touched, submitCount, setFieldValue, values }) => (
 					<Form className="space-y-5">
 						<div className="mb-3 flex gap-2">
 
 							<div className="flex-1">
-								<label htmlFor="content">
+								<label htmlFor="title">
 									{t('calendar_title')}
 									<span style={{ color: 'red' }}> *</span>
 								</label>
-								<Field autoComplete="off" name="content" type="text" id="content" placeholder={t('fill_calendar_title')} className="form-input" />
-								{submitCount ? errors.content ? <div className="mt-1 text-danger"> {errors.content} </div> : null : ''}
+								<Field autoComplete="off" name="title" type="text" id="title" placeholder={t('fill_calendar_title')} className="form-input" />
+								{submitCount ? errors.title ? <div className="mt-1 text-danger"> {errors.title} </div> : null : ''}
 							</div>
 							<div className="flex-1">
-								<label htmlFor="userId">
+								<label htmlFor="userIds">
 									{t('participants')}
 									<span style={{ color: 'red' }}> *</span>
 								</label>
 
 								<Select
-									name="userId"
-									id='userId'
+									name="userIds"
+									id='userIds'
 									options={listHuman}
 									isMulti
 									isSearchable
 									placeholder={`${t('choose_participants')}`}
 									onChange={e => {
-										setFieldValue('userId', e?.map((user: any) => user.value));
+										setFieldValue('userIds', e?.map((user: any) => user.value));
 									}}
 								/>
-								{submitCount ? errors.userId ? <div className="mt-1 text-danger"> {errors.userId} </div> : null : ''}
+								{submitCount ? errors.userIds ? <div className="mt-1 text-danger"> {errors.userIds} </div> : null : ''}
 							</div>
 						</div>
 
 						<div className="mb-3 flex gap-2">
 							<div className='flex-1'>
-								<label htmlFor="dateStart">
+								<label htmlFor="startDate">
 									{t('from_time')}<span style={{ color: 'red' }}>* </span>
 								</label>
 								<Flatpickr
@@ -115,14 +152,18 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 										time_24hr: true
 
 									}}
+                                    onChange={(e: any) => {
+                                        if (e?.length > 0) {
+                                        setFieldValue("startDate", dayjs(e[0]).toISOString());
+                                        }
+                                    }}
 									placeholder={`${t('choose_from_time')}`}
-
 									className="form-input calender-input"
 								/>
-								{submitCount ? errors.start ? <div className="mt-1 text-danger"> {errors.start} </div> : null : ''}
+								{submitCount ? errors.startDate ? <div className="mt-1 text-danger"> {errors.startDate} </div> : null : ''}
 							</div>
 							<div className='flex-1'>
-								<label htmlFor="dateEnd">
+								<label htmlFor="endDate">
 									{t('end_time')} <span style={{ color: 'red' }}>* </span>
 								</label>
 								<Flatpickr
@@ -133,10 +174,14 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 
 									}}
 									placeholder={`${t('choose_end_time')}`}
-
+                                    onChange={(e: any) => {
+                                        if (e?.length > 0) {
+                                        setFieldValue("endDate", dayjs(e[0]).toISOString());
+                                                                }
+                                    }}
 									className="form-input calender-input"
 								/>
-								{submitCount ? errors.end ? <div className="mt-1 text-danger"> {errors.end} </div> : null : ''}
+								{submitCount ? errors.endDate ? <div className="mt-1 text-danger"> {errors.endDate} </div> : null : ''}
 							</div>
 						</div>
 
@@ -148,19 +193,19 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 							<label>{t('level')}</label>
 							<div className="mt-3">
 								<label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-									<Field autoComplete="off" type="radio" name="type" value="primary" className="form-radio" />
+									<Field autoComplete="off" type="radio" name="level" value="primary" className="form-radio" />
 									<span className="ltr:pl-2 rtl:pr-2">{t('less_important')}</span>
 								</label>
 								<label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-									<Field autoComplete="off" type="radio" name="type" value="info" className="form-radio text-info" />
+									<Field autoComplete="off" type="radio" name="level" value="info" className="form-radio text-info" />
 									<span className="ltr:pl-2 rtl:pr-2">{t('normal')}</span>
 								</label>
 								<label className="inline-flex cursor-pointer ltr:mr-3 rtl:ml-3">
-									<Field autoComplete="off" type="radio" name="type" value="success" className="form-radio text-success" />
+									<Field autoComplete="off" type="radio" name="level" value="success" className="form-radio text-success" />
 									<span className="ltr:pl-2 rtl:pr-2">{t('important')}</span>
 								</label>
 								<label className="inline-flex cursor-pointer">
-									<Field autoComplete="off" type="radio" name="type" value="danger" className="form-radio text-danger" />
+									<Field autoComplete="off" type="radio" name="level" value="danger" className="form-radio text-danger" />
 									<span className="ltr:pl-2 rtl:pr-2">{t('priority')}</span>
 								</label>
 							</div>
@@ -173,7 +218,9 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 										{t('delete')}
 									</button>
 								)}
-								<button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button">
+								<button type="submit" className="btn btn-primary ltr:ml-4 rtl:mr-4 add-button" onClick={(e: any) => {
+                                    console.log(values)
+}}>
 									{params?.id ? t('update') : t('add')}
 								</button>
 							</div>

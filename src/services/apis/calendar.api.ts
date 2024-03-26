@@ -10,7 +10,7 @@ export const detailCalendar = async (data: any) => {
 	return callApi(endpoint, 'GET');
 };
 export const createCalendar = async (data: any) => {
-	const endpoint = `/calendar/create`;
+	const endpoint = `/calendar`;
 	return callApi(endpoint, 'POST', data);
 };
 export const updateCalendar = async (data: any) => {

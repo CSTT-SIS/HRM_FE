@@ -6,21 +6,21 @@ export const listAllShift = async (data: any) => {
 	const endpoint = '/shift';
 	return callApi(endpoint, 'GET', data);
 };
-export const detailShift = async (data: any) => {
-	const endpoint = `/shift/detail?shiftId=${data.shiftId}`;
+export const detailShift = async (id: any) => {
+	const endpoint = `/shift/${id}`;
 	return callApi(endpoint, 'GET');
 };
 export const createShift = async (data: any) => {
-	const endpoint = `/shift/create`;
+	const endpoint = `/shift`;
 	return callApi(endpoint, 'POST', data);
 };
-export const updateShift = async (data: any) => {
-	const endpoint = `/shift/update`;
-	return callApi(endpoint, 'POST', data);
+export const updateShift = async (id: any, data: any) => {
+	const endpoint = `/shift/${id}`;
+	return callApi(endpoint, 'PATCH', data);
 };
 
 export const deleteShift = async (data: any) => {
-	const endpoint = `/shift/delete?shiftId=${data.shiftId}`;
-	return callApi(endpoint, 'POST', data);
+	const endpoint = `/shift/${data}`;
+	return callApi(endpoint, 'DELETE');
 };
 

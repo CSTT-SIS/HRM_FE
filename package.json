@@ -22,7 +22,6 @@
 		"@mantine/hooks": "^5.10.5",
 		"@next/font": "13.1.2",
 		"@reduxjs/toolkit": "^1.9.1",
-		"@syncfusion/ej2-react-diagrams": "^25.1.35",
 		"@tippyjs/react": "^4.2.6",
 		"@types/node": "18.17.0",
 		"@types/react": "18.0.27",
@@ -100,8 +99,8 @@
 		"tailwindcss": "^3.3.2",
 		"ts-jest": "^29.1.2"
 	},
-    "resolutions": {
-        "@types/react": "18.0.27",
+	"resolutions": {
+		"@types/react": "18.0.27",
 		"@types/react-dom": "18.0.10"
-    }
+	}
 }
