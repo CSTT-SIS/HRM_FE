@@ -820,9 +820,13 @@
 	"proposal_management": "Quản lý yêu cầu",
 	"inventory_number": "Số lượng trong kho",
 	"expiration_date": "Ngày hết hạn",
-    "inventory_not_enough": "Số lượng yêu cầu không được lớn hơn số lượng yêu cầu",
-    "repair_history": "Lịch sử sửa chữa",
-    "expired_date": "Ngày hết hạn",
-    "noti_expired": "Thông báo hết hạn",
-    "choose_proposal": "Chọn yêu cầu cung cấp"
+	"inventory_not_enough": "Số lượng yêu cầu không được lớn hơn số lượng yêu cầu",
+	"repair_history": "Lịch sử sửa chữa",
+	"expired_date": "Ngày hết hạn",
+	"noti_expired": "Thông báo hết hạn",
+	"choose_proposal": "Chọn yêu cầu cung cấp",
+	"expired_date_noti": "Ngày thông báo hết hạn",
+	"number_noti": "Số ngày thông báo trước",
+	"please_fill_minQuantity": "Vui lòng nhập số lượng tối thiểu",
+	"please_fill_maxQuantity": "Vui lòng nhập số lượng tối đa"
 }

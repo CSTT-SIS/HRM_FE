@@ -9,9 +9,9 @@ import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
-import { DropdownProducts } from '@/services/swr/dropdown.twr';
+import { DropdownInventory, DropdownProducts } from '@/services/swr/dropdown.twr';
 import { AddStocktakeDetail, EditStocktakeDetail } from '@/services/apis/stocktake.api';
-import { GetProduct } from '@/services/apis/product.api';
+import { GetProduct, GetQuantity } from '@/services/apis/product.api';
 
 interface Props {
     [key: string]: any;
@@ -28,8 +28,8 @@ const DetailModal = ({ ...props }: Props) => {
     const SubmittedForm = Yup.object().shape({
         productId: new Yup.ObjectSchema().required(`${t('please_fill_product')}`),
     });
+    const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownInventory({ page: page, warehouseId: props?.warehouseId });
 
-    const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ page: page });
     const handleStocktake = (param: any) => {
         const query = {
             productId: Number(param.productId.value),
@@ -57,6 +57,7 @@ const DetailModal = ({ ...props }: Props) => {
             const query = {
                 productId: Number(param.productId.value),
                 openingQuantity: param?.openingQuantity || 0,
+                inventory: Number(param.inventory),
                 ...data
             };
             if (props?.data?.id) {
@@ -76,9 +77,17 @@ const DetailModal = ({ ...props }: Props) => {
 
     const handleCancel = () => {
         props.setOpenModal(false);
-        // props.setData();
-        setInitialValue({});
+        props.setData();
+        // setInitialValue({});
     };
+
+    const handleQuantity = (param: any, setFieldValue: any) => {
+        GetQuantity({ id: param.value }).then((res) => {
+            setFieldValue('inventory', res.data)
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
 
     useEffect(() => {
         setInitialValue({
@@ -86,7 +95,8 @@ const DetailModal = ({ ...props }: Props) => {
                 value: `${props?.data?.product?.id || props.data.productId}`,
                 label: `${props?.data?.product?.name || props.data.name}`
             } : "",
-            openingQuantity: props?.data ? props.data.openingQuantity : ""
+            openingQuantity: props?.data ? props.data.openingQuantity : "",
+            inventory: props?.data?.inventory ? `${props?.data?.inventory}` : props?.data?.replacementPart ? `${props?.data?.replacementPart.quantity}` : ""
         })
     }, [props?.data, router]);
 
@@ -160,7 +170,7 @@ const DetailModal = ({ ...props }: Props) => {
                                         }}
                                         enableReinitialize
                                     >
-                                        {({ errors, values, setFieldValue }) => (
+                                        {({ errors, values, setFieldValue, submitCount }) => (
                                             <Form className="space-y-5" >
                                                 <div className="mb-5 flex justify-between gap-4">
                                                     <div className="flex-1">
@@ -177,12 +187,27 @@ const DetailModal = ({ ...props }: Props) => {
                                                             onChange={e => {
                                                                 setFieldValue('productId', e)
                                                                 handleProduct(e?.value);
+                                                                handleQuantity(e, setFieldValue);
                                                             }}
                                                         />
-                                                        {errors.productId ? (
+                                                        {submitCount && errors.productId ? (
                                                             <div className="text-danger mt-1"> {`${errors.productId}`} </div>
                                                         ) : null}
                                                     </div>
+                                                </div>
+                                                <div className="mb-5">
+                                                    <label htmlFor="inventory" > {t('inventory_number')} </label >
+                                                    <Field
+                                                        autoComplete="off"
+                                                        name="inventory"
+                                                        type="number"
+                                                        id="inventory"
+                                                        className={"form-input bg-[#f2f2f2]"}
+                                                        disabled={true}
+                                                    />
+                                                    {submitCount && errors.inventory ? (
+                                                        <div className="text-danger mt-1"> {`${errors.inventory}`} </div>
+                                                    ) : null}
                                                 </div>
                                                 <div className="">
                                                     <label htmlFor="openingQuantity" > {t('opening_quantity')}</label >
@@ -193,7 +218,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                         placeholder={`${t('enter_quantity')}`}
                                                         className="form-input"
                                                     />
-                                                    {errors.openingQuantity ? (
+                                                    {submitCount && errors.openingQuantity ? (
                                                         <div className="text-danger mt-1"> {`${errors.openingQuantity}`} </div>
                                                     ) : null}
                                                 </div>

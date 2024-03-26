@@ -184,7 +184,6 @@ const OrderForm = ({ ...props }: Props) => {
             title: 'Trạng thái',
             sortable: false,
             render: ({ status }: any) => {
-                console.log("🚀 ~ OrderForm ~ status:", status)
                 return (
                     <span className={`badge uppercase bg-${(status === "COMPLETED" || status === "HEAD_APPROVED" || status === "MANAGER_APPROVED") ? "success" : (status === "HEAD_REJECTED" || status === "HEAD_REJECTED") ? "danger" : "warning"}`}>{
                         (status === "COMPLETED" || status === "HEAD_APPROVED" || status === "MANAGER_APPROVED") ? "Đã duyệt" :

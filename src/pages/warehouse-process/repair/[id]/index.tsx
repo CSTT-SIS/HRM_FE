@@ -23,7 +23,6 @@ import IconBackward from '@/components/Icon/IconBackward';
 import * as Yup from 'yup';
 import Select, { components } from 'react-select';
 import IconBack from '@/components/Icon/IconBack';
-import HandleDetailForm from '../modal/DetailModal';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import moment from 'moment';

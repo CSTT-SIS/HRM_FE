@@ -28,6 +28,7 @@ const ImportModal = ({ ...props }: Props) => {
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState();
     const [disable, setDisable] = useState(true);
+    const [expired, setExpired] = useState(false);
 
     const SubmittedForm = Yup.object().shape({
         quantity: Yup.string().required(`${t('please_fill_quantity')}`),
@@ -43,10 +44,14 @@ const ImportModal = ({ ...props }: Props) => {
             "id": router.query.id,
             "quantity": Number(param.quantity),
             "errorQuantity": Number(param.errorQuantity),
-            "productId": param.productId.value
+            "productId": param.productId.value,
+            "notifyExpired": expired
         }
         if (param.expiredDate) {
             query.expiredDate = moment(param.expiredDate).format("YYYY-MM-DD hh:mm:ss");
+        }
+        if (param.notifyBefore) {
+            query.notifyBefore = Number(param.notifyBefore)
         }
         ImportProduct(query).then(() => {
             props.importMutate();
@@ -94,7 +99,9 @@ const ImportModal = ({ ...props }: Props) => {
         setSearch(e);
     }
 
-    const handleNoti = () => {
+
+    const handleExpired = () => {
+        setExpired(!expired);
         setDisable(!disable);
     }
 
@@ -149,7 +156,7 @@ const ImportModal = ({ ...props }: Props) => {
                                             <Form className="space-y-5" >
                                                 <div className="mb-5 flex justify-between gap-4">
                                                     <div className="flex-1">
-                                                        <label htmlFor="productId" > {t('product')} < span style={{ color: 'red' }}>* </span></label >
+                                                        <label htmlFor="productId" className='label'> {t('product')} < span style={{ color: 'red' }}>* </span></label >
                                                         <Select
                                                             id='productId'
                                                             name='productId'
@@ -170,7 +177,7 @@ const ImportModal = ({ ...props }: Props) => {
                                                     </div>
                                                 </div>
                                                 <div className="mb-5">
-                                                    <label htmlFor="quantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
+                                                    <label htmlFor="quantity" className='label'> {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
                                                     <Field autoComplete="off"
                                                         name="quantity"
                                                         type="text"
@@ -183,7 +190,7 @@ const ImportModal = ({ ...props }: Props) => {
                                                     ) : null}
                                                 </div>
                                                 <div className="mb-5">
-                                                    <label htmlFor="errorQuantity" > {t('error_quantity')}</label >
+                                                    <label htmlFor="errorQuantity" className='label'> {t('error_quantity')}</label >
                                                     <Field autoComplete="off"
                                                         name="errorQuantity"
                                                         type="text"
@@ -210,8 +217,7 @@ const ImportModal = ({ ...props }: Props) => {
                                                                 }}
                                                                 value={field?.value}
                                                                 onChange={e => setFieldValue("expiredDate", moment(e[0]).format("YYYY-MM-DD hh:mm"))}
-                                                                className={disable ? "form-input bg-[#f2f2f2] calender-input" : "form-input calender-input"}
-                                                                disabled={disable}
+                                                                className={"form-input calender-input"}
                                                             />
                                                         )}
                                                     />
@@ -219,9 +225,23 @@ const ImportModal = ({ ...props }: Props) => {
                                                         <div className="text-danger mt-1"> {`${errors.expiredDate}`} </div>
                                                     ) : null}
                                                 </div>
+                                                <div className="mb-5">
+                                                    <label htmlFor="notifyBefore" className='label'> {t('number_noti')}</label >
+                                                    <Field
+                                                        autoComplete="off"
+                                                        name="notifyBefore"
+                                                        id="notifyBefore"
+                                                        type="number"
+                                                        className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
+                                                        disabled={disable}
+                                                    />
+                                                    {submitCount && errors.notifyBefore ? (
+                                                        <div className="text-danger mt-1"> {`${errors.notifyBefore}`} </div>
+                                                    ) : null}
+                                                </div>
                                                 <div className="flex justify-between">
-                                                    <div className="flex items-center justify-end ltr:text-right rtl:text-left gap-2">
-                                                        <Checkbox onClick={e => handleNoti()} />
+                                                    <div className="flex items-center justify-start ltr:text-right rtl:text-left gap-2">
+                                                        <Checkbox onClick={e => handleExpired()} />
                                                         <span>{`${t('noti_expired')}`}</span>
                                                     </div>
                                                     <div className="p-[15px] flex items-center justify-end ltr:text-right rtl:text-left">

@@ -9,8 +9,9 @@ import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
-import { DropdownProducts } from '@/services/swr/dropdown.twr';
+import { DropdownInventory, DropdownProducts } from '@/services/swr/dropdown.twr';
 import { AddRepairDetail, EditRepairDetail } from '@/services/apis/repair.api';
+import { GetQuantity } from '@/services/apis/product.api';
 
 interface Props {
     [key: string]: any;
@@ -29,8 +30,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
         quantity: Yup.string().required(`${t('please_fill_quantity')}`),
     });
 
-    const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ page: page });
-
+    const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownInventory({ page: page, warehouseId: 10 });
 
     const handleRepairDetail = (param: any) => {
         if (Number(router.query.id)) {
@@ -67,7 +67,8 @@ const HandleDetailModal = ({ ...props }: Props) => {
                 replacementPartId: Number(param.replacementPartId.value),
                 quantity: Number(param.quantity),
                 brokenPart: param.brokenPart,
-                description: param.description
+                description: param.description,
+                inventory: Number(param.inventory)
             };
             if (props?.data?.id) {
                 const filteredItems = props.listData.filter((item: any) => item.id !== props.data.id)
@@ -87,7 +88,6 @@ const HandleDetailModal = ({ ...props }: Props) => {
     const handleCancel = () => {
         props.setOpenModal(false);
         props.setData();
-        setInitialValue({});
     };
 
     useEffect(() => {
@@ -98,7 +98,8 @@ const HandleDetailModal = ({ ...props }: Props) => {
                 label: `${props?.data?.replacementPart?.name}`
             } : "",
             brokenPart: props?.data ? props?.data.brokenPart : "",
-            description: props?.data ? props?.data.description : ""
+            description: props?.data ? props?.data.description : "",
+            inventory: props?.data?.inventory ? `${props?.data?.inventory}` : props?.data?.replacementPart ? `${props?.data?.replacementPart.quantity}` : ""
         })
     }, [props?.data, router]);
 
@@ -118,6 +119,13 @@ const HandleDetailModal = ({ ...props }: Props) => {
         }, 1000);
     }
 
+    const handleQuantity = (param: any, setFieldValue: any) => {
+        GetQuantity({ id: param.value }).then((res) => {
+            setFieldValue('inventory', res.data)
+        }).catch((err) => {
+            showMessage(`${err?.response?.data?.message}`, 'error');
+        });
+    }
 
     return (
         <Transition appear show={props.openModal ?? false} as={Fragment}>
@@ -181,12 +189,27 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                             value={values.replacementPartId}
                                                             onChange={e => {
                                                                 setFieldValue('replacementPartId', e)
+                                                                handleQuantity(e, setFieldValue);
                                                             }}
                                                         />
                                                         {submitCount && errors.replacementPartId ? (
                                                             <div className="text-danger mt-1"> {`${errors.replacementPartId}`} </div>
                                                         ) : null}
                                                     </div>
+                                                </div>
+                                                <div className="mb-5">
+                                                    <label htmlFor="inventory" > {t('inventory_number')} </label >
+                                                    <Field
+                                                        autoComplete="off"
+                                                        name="inventory"
+                                                        type="number"
+                                                        id="inventory"
+                                                        className={"form-input bg-[#f2f2f2]"}
+                                                        disabled={true}
+                                                    />
+                                                    {submitCount && errors.inventory ? (
+                                                        <div className="text-danger mt-1"> {`${errors.inventory}`} </div>
+                                                    ) : null}
                                                 </div>
                                                 <div className="mb-5">
                                                     <label htmlFor="quantity" > {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
