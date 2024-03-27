@@ -43,7 +43,7 @@ const WarehousePage = ({ ...props }: Props) => {
 
 
     // get data
-    const { data: warehouse, pagination, mutate } = Warehouses({ sortBy: 'id.ASC', ...router.query });
+    const { data: warehouse, pagination, mutate } = Warehouses({ sortBy: "id.DESC", ...router.query });
 
     useEffect(() => {
         dispatch(setPageTitle(`${t('warehouse')}`));

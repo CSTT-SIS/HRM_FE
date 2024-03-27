@@ -1,4 +1,4 @@
-import { useEffect, Fragment, useState } from 'react';
+import { useEffect, Fragment, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { setPageTitle } from '@/store/themeConfigSlice';
@@ -33,6 +33,7 @@ import IconNewEye from '@/components/Icon/IconNewEye';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
 import Link from 'next/link';
 import IconNewPlus from '@/components/Icon/IconNewPlus';
+import IconImportFile from '@/components/Icon/IconImportFile';
 
 interface Props {
     [key: string]: any;
@@ -51,7 +52,7 @@ const StocktakePage = ({ ...props }: Props) => {
 
 
     // get data
-    const { data: stocktakes, pagination, mutate } = Stocktakes({ ...router.query });
+    const { data: stocktakes, pagination, mutate } = Stocktakes({ ...router.query, sortBy: "id.DESC" });
     useEffect(() => {
         dispatch(setPageTitle(`${t('Stocktake')}`));
     });
@@ -122,7 +123,7 @@ const StocktakePage = ({ ...props }: Props) => {
     };
 
     const handleDetail = (value: any) => {
-        router.push(`/warehouse-process/stocktake/${value.id}?status=${value.status}`)
+        router.push(`/warehouse-process/stocktake/${value.id}?status=${value.status}&&type=${value.status}`)
     }
 
     const handleReject = ({ id }: any) => {
@@ -183,70 +184,42 @@ const StocktakePage = ({ ...props }: Props) => {
             accessor: 'action',
             title: 'Thao tác',
             titleClassName: '!text-center',
-            render: (records: any) => (
-                <div className="flex justify-start gap-2">
-                    <div className="w-[80px]">
-                        <Link href={`/warehouse-process/stocktake/${records.id}?status=${true}`}>
-                            <button type='button' className='button-detail'>
-                                <IconNewEye /> <span>{t('detail')}</span>
-                            </button>
-                        </Link>
-                    </div>
-                    {
-                        records.status === "DRAFT" &&
-                        <>
-                            <div className="w-[60px]">
-                                <button type="button" className='button-edit' onClick={() => handleDetail(records)}>
-                                    <IconNewEdit /><span>
-                                        {t('edit')}
-                                    </span>
-                                </button>
-                            </div>
+            render: (records: any) => {
+                return (
+                    <>
+                        <div className="flex justify-start gap-2">
                             <div className="w-[80px]">
-                                <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
-                                    <IconNewTrash />
-                                    <span>
-                                        {t('delete')}
-                                    </span>
-                                </button>
+                                <Link href={`/warehouse-process/stocktake/${records.id}?status=${true}&&type=${records.status
+                                    }`}>
+                                    <button type='button' className='button-detail'>
+                                        <IconNewEye /> <span>{t('detail')}</span>
+                                    </button>
+                                </Link>
                             </div>
-                        </>
-                    }
-                </div>
-                // <div className="flex justify-start gap-2">
-                //      <button className='bg-[#F2E080] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/stocktake/${records.id}?status=${true}`)}>
-                //         <IconEye /> <span>{`${t('detail')}`}</span>
-                //     </button>
-                //     {
-                //         records.status === "DRAFT" &&
-                //         <>
-                //             <button className='bg-[#9CD3EB] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => handleDetail(records)}>
-                //                 <IconPencil /> <span>{`${t('edit')}`}</span>
-                //             </button>
-                //             <button className='bg-[#E43940] flex justify-between gap-1 p-1 rounded text-[#F5F5F5]' type="button" onClick={() => handleDelete(records)}>
-                //                 <IconTrashLines /> <span>{`${t('delete')}`}</span>
-                //             </button>
-                //         </>
-                //     }
-                //     {
-                //         records.status === "IN_PROGRESS" &&
-                //         <button className='bg-[#C5E7AF] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/stocktake/${records.id}?type=tally&&status=${true}`)}>
-                //             <IconListCheck />  <span>{`${t('tally')}`}</span>
-                //         </button>
-                //     }
-                //     {/* <Tippy content={`${t('reject')}`}>
-                //         <button type="button" onClick={() => handleCancel(records)}>
-                //             <IconXCircle />
-                //         </button>
-                //     </Tippy> */}
-                //     {
-                //         records.status === "FINISHED" &&
-                //         <button className='bg-[#EFBD99] flex justify-between gap-1 p-1 rounded' type="button" onClick={() => router.push(`/warehouse-process/stocktake/${records.id}?type=approve&&status=${true}`)}>
-                //             <IconChecks />  <span>{`${t('approve')}`}</span>
-                //         </button>
-                //     }
-                // </div>
-            ),
+                            {
+                                records.status === "DRAFT" &&
+                                <>
+                                    <div className="w-[60px]">
+                                        <button type="button" className='button-edit' onClick={() => handleDetail(records)}>
+                                            <IconNewEdit /><span>
+                                                {t('edit')}
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <div className="w-[80px]">
+                                        <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                                            <IconNewTrash />
+                                            <span>
+                                                {t('delete')}
+                                            </span>
+                                        </button>
+                                    </div>
+                                </>
+                            }
+                        </div>
+                    </>
+                )
+            }
         },
     ]
 

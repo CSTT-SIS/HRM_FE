@@ -16,6 +16,10 @@ import IconMessage2 from "../../components/Icon/IconMessage2";
 import IconUsers from "../../components/Icon/IconUsers";
 import IconTag from "../../components/Icon/IconTag";
 import IconCalendar from "../../components/Icon/IconCalendar";
+import { InventoryExpired, WarehouseStatistic } from '@/services/swr/statistic.twr';
+import moment from 'moment';
+import { PAGE_SIZES } from '@/utils/constants';
+import { useRouter } from 'next/router';
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
     ssr: false,
 });
@@ -29,6 +33,13 @@ const DashBoard = () => {
     const isDark = useSelector((state: IRootState) => state.themeConfig.theme === 'dark' || state.themeConfig.isDarkMode);
     const isRtl = useSelector((state: IRootState) => state.themeConfig.rtlClass) === 'rtl' ? true : false;
     const [isMounted, setIsMounted] = useState(false);
+    const [inventoryPage, setInventoryPage] = useState<any>();
+
+    //get data
+    const { data: warehouseStatistic } = WarehouseStatistic({ sortBy: "id.DESC" });
+    const { data: inventoryExpired, pagination: inventoryPagination, mutate } = InventoryExpired({ sortBy: "id.DESC", page: inventoryPage });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         setIsMounted(true);
     });
@@ -147,11 +158,12 @@ const DashBoard = () => {
             },
         },
     };
-    const columnChart1: any = {
+
+    const columnChartInventory: any = {
         series: [
             {
                 name: 'Revenue',
-                data: [76, 85, 101, 98, 67],
+                data: warehouseStatistic?.data?.map((item: any) => { return (item.products[0]) }) || [],
             },
         ],
         options: {
@@ -195,7 +207,7 @@ const DashBoard = () => {
                 },
             },
             xaxis: {
-                categories: ['Kho nhà máy', 'Kho garage', 'Kho mìn', 'Kho hành chính', 'Kho xăng dầu'],
+                categories: warehouseStatistic?.data?.map((item: any) => { return (item.name) }) || [],
                 axisBorder: {
                     color: isDark ? '#191e3a' : '#e0e6ed',
                 },
@@ -345,6 +357,14 @@ const DashBoard = () => {
             },
         },
     };
+
+    const router = useRouter();
+
+    const handleChangePage = (page: number, pageSize: number) => {
+        setInventoryPage(page);
+        return pageSize;
+    };
+
     return (
         <div>
             <ul className="flex space-x-2 rtl:space-x-reverse mb-6">
@@ -447,7 +467,7 @@ const DashBoard = () => {
                         <h5 className="text-lg font-semibold dark:text-white-light">Thống kê vật tư</h5>
                     </div>
                     <div className="mb-5">
-                        {isMounted && <ReactApexChart series={columnChart1.series} options={columnChart1.options} className="rounded-lg bg-white dark:bg-black overflow-hidden" type="bar" height={300} width={"100%"} />}
+                        {isMounted && <ReactApexChart series={columnChartInventory.series} options={columnChartInventory.options} className="rounded-lg bg-white dark:bg-black overflow-hidden" type="bar" height={300} width={"100%"} />}
 
                     </div>
                 </div>
@@ -460,55 +480,32 @@ const DashBoard = () => {
                             <DataTable
                                 highlightOnHover
                                 className="whitespace-nowrap table-hover custom_table"
-                                records={[{
-                                    stt: 1,
-                                    name: 'Mìn C4',
-                                    type: 'Thuốc nổ',
-                                    ware: 'kho mìn',
-                                    num: 15,
-                                    date: '6/2024'
-                                },
-                                {
-                                    stt: 1,
-                                    name: 'Mìn C4',
-                                    type: 'Thuốc nổ',
-                                    ware: 'kho mìn',
-                                    num: 15,
-                                    date: '6/2024'
-                                },
-                                {
-                                    stt: 1,
-                                    name: 'Mìn C4',
-                                    type: 'Thuốc nổ',
-                                    ware: 'kho mìn',
-                                    num: 15,
-                                    date: '6/2024'
-                                },
-                                {
-                                    stt: 1,
-                                    name: 'Mìn C4',
-                                    type: 'Thuốc nổ',
-                                    ware: 'kho mìn',
-                                    num: 15,
-                                    date: '6/2024'
-                                }]}
+                                records={inventoryExpired?.data || []}
                                 columns={[
                                     {
                                         accessor: 'stt',
                                         title: 'STT',
+                                        render: (records: any, index: any) => <span>{index + 1}</span>,
                                     },
                                     { accessor: 'name', title: 'Tên', sortable: false },
-                                    { accessor: 'type', title: 'Loại', sortable: false },
-                                    { accessor: 'ware', title: 'Kho', sortable: false },
-                                    { accessor: 'num', title: 'Số lượng', sortable: false },
-                                    { accessor: 'date', title: 'Hạn', sortable: false },
+                                    { accessor: 'category', title: 'Loại', sortable: false },
+                                    { accessor: 'warehouse', title: 'Kho', sortable: false },
+                                    { accessor: 'quantity', title: 'Số lượng', sortable: false },
+                                    {
+                                        accessor: 'expiredAt',
+                                        title: 'Hạn',
+                                        render: (records: any, index: any) => <span>{moment(records).format("YYYY-MM-DD")}</span>,
+                                        sortable: false
+                                    },
 
                                 ]}
-                                totalRecords={10}
-                                recordsPerPage={10}
                                 minHeight={200}
-                                page={1}
-                                onPageChange={(p) => p.toString()}
+                                totalRecords={inventoryPagination?.totalRecords}
+                                recordsPerPage={inventoryPagination?.perPage}
+                                page={inventoryPagination?.page}
+                                onPageChange={(p) => handleChangePage(p, inventoryPagination?.perPage)}
+                                recordsPerPageOptions={PAGE_SIZES}
+                                onRecordsPerPageChange={e => handleChangePage(inventoryPagination?.page, e)}
                             />
                         </div>
                     </div>

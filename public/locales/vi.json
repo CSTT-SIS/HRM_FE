@@ -840,5 +840,10 @@
     "add_work_schedule_error": "Tạo mới lịch làm việc thất bại",
     "update_work_schedule_error": "Cập nhật lịch làm việc thất bại",
     "delete_work_schedules_error": "Xóa lịch làm việc thất bạt",
-    "please_fill_group_position": "Vui lòng chọn nhóm chức vụ"
+    "please_fill_group_position": "Vui lòng chọn nhóm chức vụ",
+	"please_fill_minQuantity": "Vui lòng nhập số lượng tối thiểu",
+	"please_fill_maxQuantity": "Vui lòng nhập số lượng tối đa",
+    "attached_file": "Tệp đính kèm",
+	"expired_date_noti": "Ngày thông báo hết hạn",
+	"number_noti": "Số ngày thông báo trước"
 }
