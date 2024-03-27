@@ -14,23 +14,14 @@ import IconArrowBackward from '@/components/Icon/IconArrowBackward';
 import IconBack from '@/components/Icon/IconBack';
 import duty_list from '../duty_list.json';
 import Select from "react-select";
+import { removeNullProperties } from '@/utils/commons';
 import { C } from '@fullcalendar/core/internal-common';
 import { Positions } from '@/services/swr/position.twr';
 import { detailPosition, updatePosition } from '@/services/apis/position.api';
+import { GroupPositions } from '@/services/swr/group-position.twr';
 interface Props {
     [key: string]: any;
 }
-
-const list_duty_type = [
-    {
-        value: 1,
-        label: 'Quản lý'
-    },
-    {
-        value: 1,
-        label: 'Nhân viên'
-    }
-]
 
 const DetailDuty = ({ ...props }: Props) => {
     const router = useRouter();
@@ -38,10 +29,10 @@ const DetailDuty = ({ ...props }: Props) => {
     const id = Number(router.query.id);
     const { t } = useTranslation();
     const [disabled, setDisabled] = useState(false);
-    const { data: position, pagination, mutate } = Positions({
-        sortBy: 'id.ASC',
-        ...router.query
-    });
+    // const { data: position, pagination, mutate } = Positions({
+    //     sortBy: 'id.ASC',
+    //     ...router.query
+    // });
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_duty')}`),
         code: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_dutyCode')}`),
@@ -51,20 +42,33 @@ const DetailDuty = ({ ...props }: Props) => {
     });
 
     useEffect(() => {
-        if (Number(router.query.id)) {
-            detailPosition(router.query.id).then((res) => {
+        const id = router.query.id
+        if (id) {
+            detailPosition(id).then((res) => {
                 setDetail(res?.data)
-            }).catch((err) => { });
+            }).catch((err: any) => {
+                console.log(err)
+            });
         }
     }, [router])
-
+    const { data: group_position, pagination: pagination1, mutate: mutate1 } = GroupPositions({ sortBy: 'id.ASC', ...router.query });
+  
     const handleDuty = (value: any) => {
-        updatePosition(detail?.id, value).then(() => {
-                showMessage(`${t('update_duty_success')}`, 'success');
-                mutate();
-            }).catch((err) => {
-                showMessage(`${t('update_duty_error')}`, 'error');
-            });
+        removeNullProperties(value);
+        let dataSubmit
+            dataSubmit = {
+                name: value.name,
+                description: value.description,
+                isActive: parseInt(value.isActive),
+                groupPosition: value.groupPosition,
+                code: value.code
+            }
+        updatePosition(detail?.id, dataSubmit).then(() => {
+            showMessage(`${t('update_group_position_success')}`, 'success');
+            mutate1();
+        }).catch(() => {
+            showMessage(`${t('update_group_position_error')}`, 'error');
+        })
     }
 
     const handleCancel = () => {
@@ -126,19 +130,21 @@ const DetailDuty = ({ ...props }: Props) => {
                                                         name="groupPosition"
                                                         render={({ field }: any) => (
                                                             <>
-                                                                <Select
-                                                                id='duty_group'
-                                                                name='duty_group'
-                                                                    // value={values?.groupPosition}
-                                                                    options={list_duty_type}
-                                                                    placeholder={`${t('choose_group_duty')}`}
-                                                                    onChange={(e: any) => {
-                                                                        console.log(e)
-                                                                        setFieldValue('groupPosition', e?.label)
-                                                                    }}
-                                                                    />
-                                                                    </>
-                                                        )}
+                                                               <Select
+                                                                    {...field}
+                                                                        id='duty_group'
+                                                                        name='duty_group'
+                                                                        options={group_position?.data?.map((item: any) => ({ value: item.id, label: item.name })) || []}
+                                                                            
+                                                                        isSearchable
+                                                                        placeholder={`${t('choose_group_duty')}`}
+                                                                        onChange={(e: { value: any }) => {
+                                                                            console.log(e)
+                                                                            setFieldValue('groupPosition', e?.value)
+                                                                        }}
+                                                                        />
+                                                                        </>
+                                                                    )}
                                                         />
 
                                                         {submitCount ? errors.groupPosition ? (
@@ -146,22 +152,40 @@ const DetailDuty = ({ ...props }: Props) => {
                                 ) : null : ''}
                             </div>
                             <div className="mb-5 w-1/2">
-                                <label htmlFor="isActive" className='label'> {t('status')} < span style={{ color: 'red' }}>* </span></label >
+                                <label htmlFor="isActive" className='label'> {t('status')} <span style={{ color: 'red' }}>*</span></label>
                                 <div className="flex" style={{ alignItems: 'center', marginTop: '13px' }}>
                                     <label style={{ marginBottom: 0, marginRight: '10px' }}>
-                                        <Field autoComplete="off" type="radio" name="isActive" value={true} className="form-checkbox rounded-full" />
+                                        <Field
+                                            autoComplete="off"
+                                            type="radio"
+                                            name="isActive"
+                                            value={true}
+                                            checked={values.isActive === true}
+                                            className="form-checkbox rounded-full"
+                                            onChange={() => setFieldValue('isActive', true)}
+                                        />
                                         {t('active')}
                                     </label>
                                     <label style={{ marginBottom: 0 }}>
-                                        <Field autoComplete="off" type="radio" name="isActive" value={false} className="form-checkbox rounded-full" />
+                                        <Field
+                                            autoComplete="off"
+                                            type="radio"
+                                            name="isActive"
+                                            value={false}
+                                            checked={values.isActive === false}
+                                            className="form-checkbox rounded-full"
+                                            onChange={() => setFieldValue('isActive', false)}
+                                        />
                                         {t('inactive')}
                                     </label>
                                 </div>
 
-                                {submitCount ? errors.isActive ? (
-                                    <div className="text-danger mt-1"> {`${errors.isActive}`} </div>
-                                ) : null : ''}
+                                {submitCount && errors.isActive && typeof errors.isActive === 'string' && (
+                                        <div className="text-danger mt-1">{errors.isActive}</div>
+                                    )}
+
                             </div>
+
                         </div>
                         <div className="mb-5">
                             <label htmlFor="description" className='label'> {t('description')}</label >
