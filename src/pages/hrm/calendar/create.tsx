@@ -48,7 +48,6 @@ const AddWorkScheduleModal = ({ ...props }: Props) => {
 	});
 	const { isAddWorkScheduleModal, setIsAddWokScheduleModal, params, minStartDate, minEndDate, saveWorkSchedule, handleDelete } = props;
     const handleAddWorkSchedule = (data: any) => {
-        console.log("data", data)
         let level_
         switch (data.level) {
             case "primary":

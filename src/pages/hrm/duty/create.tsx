@@ -10,30 +10,43 @@ import { showMessage } from '@/@core/utils';
 import IconBack from '@/components/Icon/IconBack';
 import Select from "react-select";
 import { createPosition } from '@/services/apis/position.api';
-import { listAllGroupPositon } from '@/services/apis/group-position.api';
-import { GroupPositions } from '@/services/swr/group-position.twr';
+import { Positions } from '@/services/swr/position.twr';
+import { useRouter } from 'next/router';
+
 interface Props {
     [key: string]: any;
 }
-
+const list_duty_type = [
+    {
+        value: '1',
+        label: 'Quản lý'
+    },
+    {
+        value: '2',
+        label: 'Nhân viên'
+    }
+]
 const AddNewDuty = ({ ...props }: Props) => {
 
     const { t } = useTranslation();
     const [disabled, setDisabled] = useState(false);
+    const router = useRouter();
+    const { data: position, pagination, mutate } = Positions({
+        sortBy: 'id.ASC',
+        ...router.query
+    });
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_duty')}`),
         code: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_dutyCode')}`),
-        isActive: Yup.string().required(`${t('please_fill_status')}`),
-        groupPosition: Yup.string().required(`${t('please_fill_status')}`)
+        groupPosition: Yup.string().required(`${t('please_fill_group_position')}`),
+        isActive: Yup.bool().required(`${t('please_fill_status')}`),
+        description: Yup.string()
     });
-    const { data: groupPositions, pagination, mutate } = GroupPositions({
-        sortBy: 'id.ASC',
-    }); 
-    
+
     const handleDuty = (value: any) => {
-    
         createPosition(value).then(() => {
                 showMessage(`${t('create_duty_success')}`, 'success');
+                mutate();
             }).catch((err) => {
                 showMessage(`${t('create_duty_error')}`, 'error');
             });
@@ -59,11 +72,11 @@ const AddNewDuty = ({ ...props }: Props) => {
             <Formik
                 initialValues={
                     {
-                        name: props?.data ? `${props?.data?.name}` : "",
-                        code: props?.data ? `${props?.data?.code}` : "",
-                        isActive: props?.data ? `${props?.data?.isActive}` : false,
-                        groupPosition: props?.data ? `${props?.data?.groupPosition}` : "",
-                        description: props?.data ? `${props?.data?.description}` : ""
+                        name: "",
+                        code: "",
+                        isActive: true,
+                        groupPosition: "",
+                        description: ""
                     }
                 }
                 validationSchema={SubmittedForm}
@@ -71,7 +84,6 @@ const AddNewDuty = ({ ...props }: Props) => {
                     handleDuty(values);
                 }}
             >
-
                 {({ errors, touched, submitCount, setFieldValue }) => (
                     <Form className="space-y-5" >
                         <div className="flex justify-between gap-5">
@@ -92,22 +104,22 @@ const AddNewDuty = ({ ...props }: Props) => {
                         </div>
                         <div className="flex justify-between gap-5">
                             <div className="mb-5 w-1/2">
-                                <label htmlFor="groupPosition" className='label'> {t('group_position')} < span style={{ color: 'red' }}>* </span></label >
+                                <label htmlFor="groupPosition" className='label'> {t('duty_group')} < span style={{ color: 'red' }}>* </span></label >
                                 <Field autoComplete="off"
                                                         name="groupPosition"
                                                         render={({ field }: any) => (
                                                             <>
-                                                               <Select
+                                                                <Select
                                                                     {...field}
-                                                                    options={groupPositions?.data?.map((item: any) => ({ value: item.id, label: item.name })) || []}
-                                                                    
+                                                                    options={list_duty_type}
                                                                     isSearchable
                                                                     placeholder={`${t('choose_group_duty')}`}
-                                                                    onChange={(e: { value: any }) => {
+                                                                    onChange={(e: any) => {
                                                                         console.log(e)
-                                                                        setFieldValue('groupPosition', e?.value)
+                                                                        setFieldValue('groupPosition', e.label)
                                                                     }}
-                                                                />
+                                                                    />
+
                                                                 </>
                                                             )}
                                                         />
@@ -116,26 +128,26 @@ const AddNewDuty = ({ ...props }: Props) => {
                                 ) : null : ''}
                             </div>
                             <div className="mb-5 w-1/2">
-                                    <label htmlFor="isActive" className='label'> {t('isActive')} < span style={{ color: 'red' }}>* </span></label >
-                                    <div className="flex" style={{ alignItems: 'center', marginTop: '13px' }}>
-                                        <label style={{ marginBottom: 0, marginRight: '10px' }}>
-                                            <Field autoComplete="off" type="radio" name="isActive"  value={true} className="form-checkbox rounded-full"/>
-                                            {t('active')}
-                                        </label>
-                                        <label style={{ marginBottom: 0 }}>
-                                            <Field autoComplete="off" type="radio" name="isActive" value={false} className="form-checkbox rounded-full" />
-                                            {t('inactive')}
-                                        </label>
-                                    </div>
+                                <label htmlFor="status" className='label'> {t('status')} < span style={{ color: 'red' }}>* </span></label >
+                                <div className="flex" style={{ alignItems: 'center', marginTop: '13px' }}>
+                                    <label style={{ marginBottom: 0, marginRight: '10px' }}>
+                                        <Field autoComplete="off" type="radio" name="isActive" value={true} className="form-checkbox rounded-full"/>
+                                        {t('active')}
+                                    </label>
+                                    <label style={{ marginBottom: 0 }}>
+                                        <Field autoComplete="off" type="radio" name="isActive" value={false} className="form-checkbox rounded-full" />
+                                        {t('inactive')}
+                                    </label>
+                                </div>
+
                                 {submitCount ? errors.isActive ? (
                                     <div className="text-danger mt-1"> {errors.isActive} </div>
                                 ) : null : ''}
                             </div>
-                            </div>
-                            
+                        </div>
                         <div className="mb-5">
                             <label htmlFor="description" className='label'> {t('description')}</label >
-                            <Field autoComplete="off" name="description" as="textarea" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
+                            <Field autoComplete="off" name="duty_description" as="textarea" id="duty_description" placeholder={`${t('enter_description')}`} className="form-input" />
                             {submitCount ? errors.description ? (
                                 <div className="text-danger mt-1"> {errors.description} </div>
                             ) : null : ''}

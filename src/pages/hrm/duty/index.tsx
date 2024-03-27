@@ -85,32 +85,32 @@ const Duty = ({ ...props }: Props) => {
 
     const handleDelete = (data: any) => {
         const swalDeletes = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-secondary',
-				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-				popup: 'confirm-delete',
-			},
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'confirm-delete',
+            },
             imageUrl: '/assets/images/delete_popup.png',
-			buttonsStyling: false,
-		});
+            buttonsStyling: false,
+        });
         swalDeletes
             .fire({
                 title: `${t('delete_duty')}`,
-				html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.name}?`,
+                html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.name}?`,
                 padding: '2em',
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
                 confirmButtonText: `${t('confirm')}`,
-				reverseButtons: true,
+                reverseButtons: true,
             })
             .then((result) => {
-                 if (result.value) {
-                    deletePosition(data?.id).then(() => {
-                        mutate();
+                if (result.value) {
+                        deletePosition(data?.id).then(() => {
                         showMessage(`${t('delete_duty_success')}`, 'success');
-                    }).catch((err) => {
-                        showMessage(`${err?.response?.data?.message}`, 'error');
-                    });
+                        mutate();
+                }).catch((err) => {
+                    showMessage(`${t('delete_duty_error')}`, 'error');
+                });
                 }
             });
     };
@@ -133,12 +133,18 @@ const Duty = ({ ...props }: Props) => {
             render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
         },
         { accessor: 'name', title: 'Tên chức vụ', sortable: false },
-        // { accessor: 'code', title: 'Mã Chức vụ', sortable: false },
+        { accessor: 'code', title: 'Mã Chức vụ', sortable: false },
         { accessor: 'duty_group', title: 'Nhóm chức vụ', sortable: false },
         { accessor: 'description', title: 'Mô tả', sortable: false },
         {
-            accessor: 'isActive',
+            accessor: 'status',
             title: 'Trạng thái',
+            sortable: false,
+            render: ({ isActive }: any) => <span className={`badge badge-outline-${isActive ? "success" : "danger"} `}>{ isActive ? t('active') : t('inactive')}</span>,
+        },
+        {
+            accessor: 'action',
+            title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="mx-auto flex items-center gap-2 justify-center">
@@ -148,7 +154,7 @@ const Duty = ({ ...props }: Props) => {
                                 {t('edit')}
                             </span>
                         </button>
-                    </div> 
+                    </div>
                     <div className="w-[80px]">
                         <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
                             <IconNewTrash />
