@@ -386,6 +386,7 @@
     "duty_description": "Mô tả",
     "enter_duty_status": "Chọn trạng thái",
     "duty": "Chức vụ",
+	"group_position": "Nhóm Chức vụ",
     "duty_list": "Danh sách chức vụ",
     "delete_duty": "Xóa chức vụ",
     "delete_duty_success": "Xóa chức vụ thành công",
