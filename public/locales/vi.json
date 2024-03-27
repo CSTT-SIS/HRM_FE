@@ -180,9 +180,11 @@
 	"delete_user_success_department_err": "Xóa lỗi người dùng",
 	"duty": "Chức vụ",
 	"duty_list": "Danh sách Chức vụ",
-	"delete_duty": "Xóa nhiệm vụ",
-	"delete_duty_success": "Xóa nhiệm vụ thành công",
-	"delete_duty_error": "Xóa lỗi nhiệm vụ",
+	"delete_duty": "Xóa chức vụ",
+	"delete_duty_success": "Xóa chức vụ thành công",
+	"delete_duty_error": "Xóa chức vụ lỗi",
+    "update_duty_success": "Cập nhật chức vụ thành công",
+	"update_duty_error": "Cập nhật chức vụ lỗi",
 	"please_fill_name_duty": "Vui lòng nhập tên chức vụ",
 	"please_fill_dutyCode": "Vui lòng nhập mã nhiệm vụ",
 	"enter_name_duty": "Nhập tên Chức vụ",
@@ -832,5 +834,11 @@
     "add_shift_error": "Tạo mới ca làm việc thất bại",
     "update_shift_success": "Cập nhật ca làm việc thành công",
     "update_shift_error": "Cập nhật ca làm việc thất bại",
-    "delete_shift_success": "Xóa ca làm việc thành công"
+    "delete_shift_success": "Xóa ca làm việc thành công",
+    "update_work_schedule_success": "Cập nhật lịch làm việc thành công",
+    "add_work_schedule_success": "Tạo mới lịch làm việc thành công",
+    "add_work_schedule_error": "Tạo mới lịch làm việc thất bại",
+    "update_work_schedule_error": "Cập nhật lịch làm việc thất bại",
+    "delete_work_schedules_error": "Xóa lịch làm việc thất bạt",
+    "please_fill_group_position": "Vui lòng chọn nhóm chức vụ"
 }

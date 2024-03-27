@@ -16,19 +16,13 @@ import IconNewPlus from '@/components/Icon/IconNewPlus';
 import { listAllCalendar } from '@/services/apis/calendar.api';
 import { Calendars } from '@/services/swr/calendar.twr';
 import workSchedule from './workSchedules.json'
+import dayjs from 'dayjs';
 
 const Canlendar = () => {
 	const dispatch = useDispatch();
 	const { t } = useTranslation();
     const router = useRouter();
-    const [data, setData] = useState<any>();
-
-	useEffect(() => {
-		dispatch(setPageTitle(`${t('work_schedule')}`));
-        calendar?.data?.map((item: any) => {
-            console.log(item)
-        })
-	});
+    const [data, setData] = useState<any>([]);
 
     const { data: calendar, pagination, mutate } = Calendars({ sortBy: 'id.ASC', ...router.query });
 	const now = new Date();
@@ -38,7 +32,41 @@ const Canlendar = () => {
 		return str;
 		// return dt.getMonth() < 10 ? '0' + month : month;
 	};
-
+    useEffect(() => {
+		dispatch(setPageTitle(`${t('work_schedule')}`));
+        let listData: object[] = [];
+        calendar?.data?.map((item: any) => {
+            let level_
+            switch (data.level) {
+            case 1:
+                level_= "primary";
+                break;
+            case 2:
+                level_= "info";
+                break;
+            case 3:
+                level_= "success";
+                break;
+            case 4:
+                level_= "danger";
+                break;
+            default:
+                level_= "primary";
+                break;
+            }
+            console.log("hehe", item?.calendarUsers?.map((per: any) => per.user.fullName))
+            listData.push({
+                id: item.id,
+                title: item.title,
+                start: dayjs(item?.startDate).format("YYYY-MM-DDTHH:mm:ss"),
+                end: dayjs(item?.endDate).format("YYYY-MM-DDTHH:mm:ss"),
+                className: level_,
+                description: item?.description,
+                user: item?.calendarUsers?.map((person: any) => person?.user?.fullName)
+            })
+            setData(listData);
+        })
+	}, [calendar]);
 
 	const [isAddWorkScheduleModal, setIsAddWokScheduleModal] = useState(false);
 	const [minStartDate, setMinStartDate] = useState<any>('');
@@ -166,7 +194,6 @@ const Canlendar = () => {
         let obj = JSON.parse(JSON.stringify(event.event));
         router.push(`/hrm/calendar/${obj.id}`)
     }
-    console.log("calendar", calendar?.data);
 	return (
 		<Fragment>
 			<div className="panel mb-5">
@@ -213,7 +240,7 @@ const Canlendar = () => {
 						droppable={true}
 						eventClick={(event: any) => handleClickEvent(event)}
 						select={(event: any) => editDate(event)}
-						events={calendar?.data}
+						events={data}
 						eventContent={renderEventContent}
 					/>
 				</div>

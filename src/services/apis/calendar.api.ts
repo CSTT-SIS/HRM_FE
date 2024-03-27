@@ -6,20 +6,20 @@ export const listAllCalendar = async (data: any) => {
 	return callApi(endpoint, 'GET', data);
 };
 export const detailCalendar = async (data: any) => {
-	const endpoint = `/calendar/detail?calendarId=${data.calendarId}`;
+	const endpoint = `/calendar/${data}`;
 	return callApi(endpoint, 'GET');
 };
 export const createCalendar = async (data: any) => {
 	const endpoint = `/calendar`;
 	return callApi(endpoint, 'POST', data);
 };
-export const updateCalendar = async (data: any) => {
-	const endpoint = `/calendar/update`;
-	return callApi(endpoint, 'POST', data);
+export const updateCalendar = async (id: any, data: any) => {
+	const endpoint = `/calendar/${id}`;
+	return callApi(endpoint, 'PATCH', data);
 };
 
-export const deleteCalendar = async (data: any) => {
-	const endpoint = `/calendar/delete?calendarId=${data.calendarId}`;
-	return callApi(endpoint, 'POST', data);
+export const deleteCalendar = async (id: any) => {
+	const endpoint = `/calendar/${id}`;
+	return callApi(endpoint, 'DELETE');
 };
 
