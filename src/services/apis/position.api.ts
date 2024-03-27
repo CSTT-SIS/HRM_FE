@@ -20,6 +20,6 @@ export const updatePosition = async (id: any, data: any) => {
 
 export const deletePosition = async (data: any) => {
 	const endpoint = `/position/${data}`;
-	return callApi(endpoint, 'DELETE', data);
+	return callApi(endpoint, 'DELETE');
 };
 
