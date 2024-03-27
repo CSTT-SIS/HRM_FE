@@ -24,6 +24,7 @@ import duty_list from './duty_list.json'
 import IconNewEdit from '@/components/Icon/IconNewEdit';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
 import IconNewPlus from '@/components/Icon/IconNewPlus';
+import { deletePosition } from '@/services/apis/position.api';
 interface Props {
     [key: string]: any;
 }
@@ -84,30 +85,32 @@ const Duty = ({ ...props }: Props) => {
 
     const handleDelete = (data: any) => {
         const swalDeletes = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-secondary',
-                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-                popup: 'confirm-delete',
-            },
+			customClass: {
+				confirmButton: 'btn btn-secondary',
+				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+				popup: 'confirm-delete',
+			},
             imageUrl: '/assets/images/delete_popup.png',
-            buttonsStyling: false,
-        });
+			buttonsStyling: false,
+		});
         swalDeletes
             .fire({
                 title: `${t('delete_duty')}`,
-                html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.name}?`,
+				html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.name}?`,
                 padding: '2em',
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
                 confirmButtonText: `${t('confirm')}`,
-                reverseButtons: true,
+				reverseButtons: true,
             })
             .then((result) => {
-                if (result.value) {
-                    const value = getStorge.filter((item: any) => { return (item.id !== data.id) });
-                    localStorage.setItem('duty_list', JSON.stringify(value));
-                    setGetStorge(value);
-                    showMessage(`${t('delete_duty_success')}`, 'success')
+                 if (result.value) {
+                    deletePosition(data?.id).then(() => {
+                        mutate();
+                        showMessage(`${t('delete_duty_success')}`, 'success');
+                    }).catch((err) => {
+                        showMessage(`${err?.response?.data?.message}`, 'error');
+                    });
                 }
             });
     };
@@ -134,14 +137,8 @@ const Duty = ({ ...props }: Props) => {
         { accessor: 'duty_group', title: 'Nhóm chức vụ', sortable: false },
         { accessor: 'description', title: 'Mô tả', sortable: false },
         {
-            accessor: 'status',
+            accessor: 'isActive',
             title: 'Trạng thái',
-            sortable: false,
-            render: ({ status }: any) => <span className={`badge badge-outline-${status === "active" ? "success" : "danger"} `}>{t(`${status}`)}</span>,
-        },
-        {
-            accessor: 'action',
-            title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="mx-auto flex items-center gap-2 justify-center">
@@ -151,7 +148,7 @@ const Duty = ({ ...props }: Props) => {
                                 {t('edit')}
                             </span>
                         </button>
-                    </div>
+                    </div> 
                     <div className="w-[80px]">
                         <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
                             <IconNewTrash />

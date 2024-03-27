@@ -23,8 +23,10 @@ const AddNewGroupPositon = ({ ...props }: Props) => {
     });
 
     const handleDuty = (value: any) => {
-        console.log("value", value)
-        createGroupPositon(value).then(() => {
+        createGroupPositon({
+            ...value,
+            isManager: parseInt(value?.isManager)
+        }).then(() => {
                 showMessage(`${t('create_group_position_success')}`, 'success');
             }).catch((err) => {
                 showMessage(`${t('create_group_position_error')}`, 'error');
@@ -52,7 +54,8 @@ const AddNewGroupPositon = ({ ...props }: Props) => {
                     initialValues={
                         {
                             name: props?.data ? `${props?.data?.name}` : "",
-                            description: props?.data ? `${props?.data?.description}` : ""
+                            description: props?.data ? `${props?.data?.description}` : "",
+                            isManager: props?.data ? `${props?.data?.isManager}` : 0,
                         }
                     }
                     validationSchema={SubmittedForm}
@@ -63,14 +66,33 @@ const AddNewGroupPositon = ({ ...props }: Props) => {
 
                     {({ errors, touched, submitCount, setFieldValue }) => (
                         <Form className="space-y-5" >
-                            <div className="mb-5">
+                           <div className="flex justify-between gap-5">
+                            <div className="mb-5 w-1/2">
                                 <label htmlFor="name" className='label'>
                                         {' '}
                                         {t('name_group_position')} <span style={{ color: 'red' }}>* </span>
                                     </label>
                                       <Field autoComplete="off" name="name" type="text" id="name" placeholder={`${t('enter_group_position')}`} className="form-input" />
                                     {submitCount ? errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null : ''}
-                                </div>       
+                                </div>  
+                                <div className="mb-5 w-1/2">
+                                <label htmlFor="isManager" className='label'> {t('isManager')} < span style={{ color: 'red' }}>* </span></label >
+                                <div className="flex" style={{ alignItems: 'center', marginTop: '13px' }}>
+                                    <label style={{ marginBottom: 0, marginRight: '10px' }}>
+                                        <Field autoComplete="off" type="radio" name="isManager" value="1" className="form-checkbox rounded-full"/>
+                                        {t('active')}
+                                    </label>
+                                    <label style={{ marginBottom: 0 }}>
+                                        <Field autoComplete="off" type="radio" name="isManager" value="0" className="form-checkbox rounded-full" />
+                                        {t('inactive')}
+                                    </label>
+                                </div>
+
+                                {submitCount ? errors.isManager ? (
+                                    <div className="text-danger mt-1"> {errors.isManager} </div>
+                                ) : null : ''}
+                            </div>     
+                            </div>     
                             <div className="mb-5">
                                 <label htmlFor="description" className='label'> {t('description')}</label >
                                 <Field autoComplete="off" name="description" as="textarea" id="description" placeholder={`${t('description')}`} className="form-input" />

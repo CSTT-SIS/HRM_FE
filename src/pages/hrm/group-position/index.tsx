@@ -25,6 +25,7 @@ import IconNewEdit from '@/components/Icon/IconNewEdit';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
 import IconNewPlus from '@/components/Icon/IconNewPlus';
 import { deleteGroupPositon } from '@/services/apis/group-position.api';
+import { Manager } from 'react-popper';
 interface Props {
     [key: string]: any;
 }
@@ -34,7 +35,7 @@ const GroupPosition = ({ ...props }: Props) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     useEffect(() => {
-        dispatch(setPageTitle(`${t('duty')}`));
+        dispatch(setPageTitle(`${t('group_position')}`));
     });
 
     const router = useRouter();
@@ -93,7 +94,7 @@ const GroupPosition = ({ ...props }: Props) => {
 		});
         swalDeletes
             .fire({
-                title: `${t('delete_groupP')}`,
+                title: `${t('delete_group_position')}`,
 				html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.name}?`,
                 padding: '2em',
                 showCancelButton: true,
@@ -132,12 +133,18 @@ const GroupPosition = ({ ...props }: Props) => {
         },
         { accessor: 'name', title: 'Tên nhóm chức vụ', sortable: false },
         { accessor: 'description', title: 'Mô tả', sortable: false },
-        // {
-        //     accessor: 'status',
-        //     title: 'Trạng thái',
-        //     sortable: false,
-        //     render: ({ status }: any) => <span className={`badge badge-outline-${status === "active" ? "success" : "danger"} `}>{t(`${status}`)}</span>,
-        // },
+        {
+            accessor: 'isManager',
+            title: 'Quản lý',
+            sortable: false,
+            render: ({ isManager }: any) => {
+                   return (
+                <span className={`badge badge-outline-${isManager === 0 ? "danger" : "success"}`}>
+                  {isManager === "0" ? <>&#10008;</> : <>&#10004;</>}
+                </span>
+              );
+            }
+          },
         {
             accessor: 'action',
             title: 'Thao tác',
