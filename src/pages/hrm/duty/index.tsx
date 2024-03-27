@@ -24,6 +24,7 @@ import duty_list from './duty_list.json'
 import IconNewEdit from '@/components/Icon/IconNewEdit';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
 import IconNewPlus from '@/components/Icon/IconNewPlus';
+import { deletePosition } from '@/services/apis/position.api';
 interface Props {
     [key: string]: any;
 }
@@ -104,10 +105,12 @@ const Duty = ({ ...props }: Props) => {
             })
             .then((result) => {
                 if (result.value) {
-                    const value = getStorge.filter((item: any) => { return (item.id !== data.id) });
-                    localStorage.setItem('duty_list', JSON.stringify(value));
-                    setGetStorge(value);
-                    showMessage(`${t('delete_duty_success')}`, 'success')
+                        deletePosition(data?.id).then(() => {
+                        showMessage(`${t('delete_duty_success')}`, 'success');
+                        mutate();
+                }).catch((err) => {
+                    showMessage(`${t('delete_duty_error')}`, 'error');
+                });
                 }
             });
     };
@@ -130,14 +133,14 @@ const Duty = ({ ...props }: Props) => {
             render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
         },
         { accessor: 'name', title: 'Tên chức vụ', sortable: false },
-        // { accessor: 'code', title: 'Mã Chức vụ', sortable: false },
+        { accessor: 'code', title: 'Mã Chức vụ', sortable: false },
         { accessor: 'duty_group', title: 'Nhóm chức vụ', sortable: false },
         { accessor: 'description', title: 'Mô tả', sortable: false },
         {
             accessor: 'status',
             title: 'Trạng thái',
             sortable: false,
-            render: ({ status }: any) => <span className={`badge badge-outline-${status === "active" ? "success" : "danger"} `}>{t(`${status}`)}</span>,
+            render: ({ isActive }: any) => <span className={`badge badge-outline-${isActive ? "success" : "danger"} `}>{ isActive ? t('active') : t('inactive')}</span>,
         },
         {
             accessor: 'action',
