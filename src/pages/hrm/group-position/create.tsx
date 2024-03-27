@@ -19,11 +19,11 @@ const AddNewGroupPositon = ({ ...props }: Props) => {
     const [disabled, setDisabled] = useState(false);
 
     const SubmittedForm = Yup.object().shape({
-        name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_group_position')}`),
-        status: Yup.string().required(`${t('please_fill_status')}`)
+        name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_group_position')}`)
     });
 
     const handleDuty = (value: any) => {
+        console.log("value", value)
         createGroupPositon(value).then(() => {
                 showMessage(`${t('create_group_position_success')}`, 'success');
             }).catch((err) => {
