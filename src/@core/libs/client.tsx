@@ -6,7 +6,7 @@ function getAuthToken(): string {
 }
 
 const API = axios.create({
-    baseURL: `http://117.4.240.104:8687/api/v1`,
+    baseURL: `http://103.167.89.184:8080/`,
 });
 
 API.interceptors.request.use((config: any) => {

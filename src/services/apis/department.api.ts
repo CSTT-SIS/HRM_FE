@@ -2,24 +2,24 @@ import callApi from '@core/call-api';
 import Config from '@core/configs';
 import Cookies from 'js-cookie';
 export const listAllDepartment = async (data: any) => {
-	const endpoint = '/department/list-all';
+	const endpoint = '/department';
 	return callApi(endpoint, 'GET', data);
 };
 export const detailDepartment = async (data: any) => {
-	const endpoint = `/department/detail?departmentId=${data.departmentId}`;
+	const endpoint = `/department/${data.departmentId}`;
 	return callApi(endpoint, 'GET');
 };
 export const createDepartment = async (data: any) => {
-	const endpoint = `/department/create`;
+	const endpoint = `/department`;
 	return callApi(endpoint, 'POST', data);
 };
 export const updateDepartment = async (data: any) => {
-	const endpoint = `/department/update`;
-	return callApi(endpoint, 'POST', data);
+	const endpoint = `/department`;
+	return callApi(endpoint, 'PATCH', data);
 };
 
 export const deleteDepartment = async (data: any) => {
-	const endpoint = `/department/delete?departmentId=${data.departmentId}`;
-	return callApi(endpoint, 'POST', data);
+	const endpoint = `/department/${data.departmentId}`;
+	return callApi(endpoint, 'DELETE', data);
 };
 

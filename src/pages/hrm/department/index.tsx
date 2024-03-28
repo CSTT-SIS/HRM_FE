@@ -11,7 +11,6 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
-import { deleteDepartment, detailDepartment, listAllDepartment } from '../../../services/apis/department.api';
 // constants
 import { PAGE_SIZES, PAGE_SIZES_DEFAULT, PAGE_NUMBER_DEFAULT } from '@/utils/constants';
 // helper
@@ -21,6 +20,7 @@ import IconPencil from '../../../components/Icon/IconPencil';
 import IconTrashLines from '../../../components/Icon/IconTrashLines';
 import { IconLoading } from '@/components/Icon/IconLoading';
 import IconPlus from '@/components/Icon/IconPlus';
+import { Departments } from '@/services/swr/department.twr';
 
 
 // json
@@ -66,6 +66,7 @@ const Department = ({ ...props }: Props) => {
 
     const [openModal, setOpenModal] = useState(false);
 
+    const { data: shift, pagination, mutate } = Departments({ sortBy: 'id.ASC', ...router.query });
     useEffect(() => {
         if (typeof window !== 'undefined') {
             setGetStorge(DepartmentList);
@@ -74,11 +75,6 @@ const Department = ({ ...props }: Props) => {
         }
     }, [])
 
-    useEffect(() => {
-        setTotal(getStorge?.length);
-        setPageSize(PAGE_SIZES_DEFAULT);
-        setRecordsData(getStorge?.filter((item: any, index: any) => { return index <= 9 && page === 1 ? item : index >= 10 && index <= (page * 9) ? item : null }));
-    }, [getStorge, getStorge?.length, page])
 
     useEffect(() => {
         setShowLoader(false);
@@ -122,17 +118,32 @@ const Department = ({ ...props }: Props) => {
     };
 
 
-    const handleSearch = (e: any) => {
-        if (e.target.value === "") {
-            setRecordsData(getStorge);
-        } else {
-            setRecordsData(
-                getStorge.filter((item: any) => {
-                    return item.name.toLowerCase().includes(e.target.value.toLowerCase())
-                })
-            )
-        }
+    const handleSearch = (param: any) => {
+        router.replace(
+            {
+                pathname: router.pathname,
+                query: {
+                    ...router.query,
+                    search: param
+                },
+            }
+        );
     }
+    const handleChangePage = (page: number, pageSize: number) => {
+        router.replace(
+            {
+                pathname: router.pathname,
+                query: {
+                    ...router.query,
+                    page: page,
+                    perPage: pageSize,
+                },
+            },
+            undefined,
+            { shallow: true },
+        );
+        return pageSize;
+    };
     type Content = { id: number; name: string; code: string; status: string; abbreviated: string };
 
     type Item = {
@@ -141,31 +152,7 @@ const Department = ({ ...props }: Props) => {
         hasChildren: boolean;
         children?: Item[];
     };
-    const Title = (props: Content) => <Box as="span">{props.name}</Box>;
-    const Description = (props: Content) => (
-        <Box as="span">{props.code}</Box>
-    );
-    const Action = (props: Content) => (
-        <div className="flex items-center w-max mx-auto gap-2">
-                                <div className="w-[60px]">
 
-                <button type="button" className='button-edit' onClick={() => handleEdit(props)}>
-                    <IconNewEdit /><span>
-                        <span>{t('edit')}</span>
-                    </span>
-                </button>
-                </div>
-                <div className="w-[80px]">
-
-                <button type="button" className='button-delete' onClick={() => handleDelete(props)}>
-                    <IconNewTrash />
-                    <span>
-                        {t('delete')}
-                    </span>
-                </button>
-                </div>
-        </div>
-    );
     const items: Item[] = [
         {
             id: 1,
@@ -346,50 +333,7 @@ const Department = ({ ...props }: Props) => {
 
         },
     ];
-    const columns = [
 
-        {
-            accessor: 'name',
-            titleClassName: '!text-center w-[100px]',
-
-            title: 'Tên phòng ban', sortable: false
-        },
-        {
-            accessor: 'code',
-            titleClassName: '!text-center w-[100px]',
-            title: 'Mã phòng ban', sortable: false
-        },
-        {
-            accessor: 'abbreviated',
-            titleClassName: '!text-center w-[100px]',
-            title: 'Tên viết tắt', sortable: false
-        },
-
-        {
-            accessor: 'action',
-            title: 'Thao tác',
-            titleClassName: '!text-center w-[100px]',
-            render: (records: any) => (
-                <div className="flex items-center w-max mx-auto gap-2">
-                                        <div className="w-[60px]">
-
-                        <button type="button" className='button-edit' onClick={() => handleEdit(records)}>
-                            <IconNewEdit />
-                            <span>
-                            {t('edit')}
-                            </span>
-                        </button>
-</div>
-<div className="w-[80px]">
-
-                        <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
-                            <IconNewTrash /> <span>{t('delete')}</span>
-                        </button>
-                </div>
-                </div>
-            )
-        },
-    ]
 
     return (
         <div>
@@ -451,20 +395,20 @@ const Department = ({ ...props }: Props) => {
                                     <Cell>{content.abbreviated}</Cell>
 
                                     <Cell> <div className="flex items-center w-max mx-auto gap-2">
-                                                            <div className="w-[60px]">
-                                        <button type="button" className='button-edit' onClick={() => handleEdit(content)}>
-                                            <IconNewEdit /><span>
-                                                {t('edit')}
-                                            </span>
-                                        </button>
+                                        <div className="w-[60px]">
+                                            <button type="button" className='button-edit' onClick={() => handleEdit(content)}>
+                                                <IconNewEdit /><span>
+                                                    {t('edit')}
+                                                </span>
+                                            </button>
                                         </div>
-                                                            <div className="w-[80px]">
-                                        <button type="button" className='button-delete' onClick={() => handleDelete(content)}>
-                                            <IconNewTrash />
-                                            <span>
-                                                {t('delete')}
-                                            </span>
-                                        </button>
+                                        <div className="w-[80px]">
+                                            <button type="button" className='button-delete' onClick={() => handleDelete(content)}>
+                                                <IconNewTrash />
+                                                <span>
+                                                    {t('delete')}
+                                                </span>
+                                            </button>
                                         </div>
                                     </div></Cell>
                                 </Row>
