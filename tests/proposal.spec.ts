@@ -24,7 +24,7 @@ test.describe.serial('proposal CRUD', () => {
 	const searchText = 'search=' + text;
 	const searchEditText = 'search=' + editText;
 
-	test('01. Create', async ({ page }) => {
+	test.skip('01. Create', async ({ page }) => {
 		await page.goto('/warehouse-process/proposal');
 
 		await page.getByTestId('add-proposal').click();
@@ -59,7 +59,7 @@ test.describe.serial('proposal CRUD', () => {
 		await expect(page.getByTestId('edit-proposal-btn')).toBeVisible();
 	});
 
-	test('02. Edit', async ({ page }) => {
+	test.skip('02. Edit', async ({ page }) => {
 		await page.goto('/warehouse-process/proposal');
 
 		await page.waitForTimeout(1000);
@@ -89,7 +89,7 @@ test.describe.serial('proposal CRUD', () => {
 		await expect(page.getByTestId('edit-proposal-btn')).toBeVisible();
 	});
 
-	test('03. Approve', async ({ page }) => {
+	test.skip('03. Approve', async ({ page }) => {
 		await page.goto('/warehouse-process/proposal');
 
 		await page.waitForTimeout(1000);

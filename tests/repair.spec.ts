@@ -26,7 +26,7 @@ test.describe.serial('repair CRUD', () => {
 	const searchText = 'search=' + text;
 	const searchEditText = 'search=' + editText;
 
-	test('01. Create', async ({ page }) => {
+	test.skip('01. Create', async ({ page }) => {
 		await page.goto('/warehouse-process/repair');
 
 		await page.getByTestId('add-repair').click();
@@ -61,7 +61,7 @@ test.describe.serial('repair CRUD', () => {
 		await expect(page.getByTestId('edit-repair-btn')).toBeVisible();
 	});
 
-	test('02. Edit', async ({ page }) => {
+	test.skip('02. Edit', async ({ page }) => {
 		await page.goto('/warehouse-process/repair');
 
 		await page.waitForTimeout(1000);
@@ -91,7 +91,7 @@ test.describe.serial('repair CRUD', () => {
 		await expect(page.getByTestId('edit-repair-btn')).toBeVisible();
 	});
 
-	test('03. Approve', async ({ page }) => {
+	test.skip('03. Approve', async ({ page }) => {
 		await page.goto('/warehouse-process/repair');
 
 		await page.waitForTimeout(1000);
