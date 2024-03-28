@@ -58,9 +58,11 @@ const DetailPage = ({ ...props }: Props) => {
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
     const formRef = useRef<any>();
     const fileRef = useRef<any>();
+    const [searchUser, setSearchUser] = useState<any>();
+
     // get data
     const { data: repairDetails, pagination, mutate, isLoading } = RepairDetails({ ...query });
-    const { data: users, pagination: paginationUser, isLoading: userLoading } = DropdownUsers({ page: page });
+    const { data: users, pagination: paginationUser, isLoading: userLoading } = DropdownUsers({ page: page, search: searchUser });
     const { data: history, pagination: paginationHistory, isLoading: historyLoading } = RepairHistory({ id: data?.vehicleId || 0, ...queryH });
 
 
@@ -470,6 +472,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                             onMenuOpen={() => setPage(1)}
                                                             onMenuScrollToBottom={handleMenuScrollToBottom}
                                                             isLoading={userLoading}
+                                                            onInputChange={e => setSearchUser(e)}
                                                             onChange={e => {
                                                                 setFieldValue('repairById', e)
                                                             }}
@@ -554,6 +557,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                         className={disable ? "form-input bg-[#f2f2f2]" : "form-input"}
                                                         disabled={disable}
                                                         multiple
+                                                        accept="image/*"
                                                         onChange={(e: any) => handleChange(e)}
                                                     />
                                                     {submitCount && errors.imageIds ? (

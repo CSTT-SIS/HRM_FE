@@ -24,13 +24,14 @@ const DetailModal = ({ ...props }: Props) => {
     const [initialValue, setInitialValue] = useState<any>();
     const [dataProductDropdown, setDataProductDropdown] = useState<any>([]);
     const [page, setPage] = useState(1);
+    const [searchProduct, setSearchProduct] = useState<any>();
 
     const SubmittedForm = Yup.object().shape({
         productId: new Yup.ObjectSchema().required(`${t('please_fill_product')}`),
         quantity: Yup.string().required(`${t('please_fill_quantity')}`),
     });
 
-    const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownInventory({ page: page, warehouseId: props?.warehouseId });
+    const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownInventory({ page: page, warehouseId: props?.warehouseId, search: searchProduct });
 
     const handleOrder = (param: any) => {
         if (Number(router.query.id)) {
@@ -184,6 +185,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                             isLoading={productLoading}
                                                             maxMenuHeight={160}
                                                             value={values.productId}
+                                                            onInputChange={e => setSearchProduct(e)}
                                                             onChange={e => {
                                                                 setFieldValue('productId', e)
                                                                 handleQuantity(e, setFieldValue);

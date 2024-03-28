@@ -233,6 +233,8 @@ const ExportPage = ({ ...props }: Props) => {
     const [pageRepair, setPageRepair] = useState<any>(1);
     const [dataRepairDropdown, setDataRepairDropdown] = useState<any>([]);
     const [entity, setEntity] = useState<any>("");
+    const [searchProposal, setSearchProposal] = useState<any>();
+    const [searchRepair, setSearchRepair] = useState<any>();
 
     const SubmittedForm = Yup.object().shape({
         // name: Yup.string().required(`${t('please_fill_name')}`),
@@ -241,10 +243,10 @@ const ExportPage = ({ ...props }: Props) => {
         warehouseId: new Yup.ObjectSchema().required(`${t('please_fill_warehouse')}`),
     });
 
-    const { data: proposals, pagination: proposalPagination, isLoading: proposalLoading } = DropdownProposals({ page: pageProposal, type: "SUPPLY", isCreatedBill: true, status: "HEAD_APPROVED" });
+    const { data: proposals, pagination: proposalPagination, isLoading: proposalLoading } = DropdownProposals({ page: pageProposal, type: "SUPPLY", isCreatedBill: true, status: "HEAD_APPROVED", searchProposal });
     const { data: warehouses, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({ page: pageWarehouse });
     const { data: listRequest } = WarehousingBillListRequest({ id: router.query.proposalId });
-    const { data: dropdownRepair, pagination: repairPagination, isLoading: repairLoading } = DropdownRepair({ page: pageRepair, isCreatedBill: true, status: "HEAD_APPROVED" })
+    const { data: dropdownRepair, pagination: repairPagination, isLoading: repairLoading } = DropdownRepair({ page: pageRepair, isCreatedBill: true, status: "HEAD_APPROVED", search: searchRepair })
 
     useEffect(() => {
         if (router.query.proposalId) {
@@ -565,6 +567,7 @@ const ExportPage = ({ ...props }: Props) => {
                                                                         isLoading={repairLoading}
                                                                         maxMenuHeight={160}
                                                                         value={values?.repairRequestId}
+                                                                        onInputChange={e => setSearchRepair(e)}
                                                                         onChange={e => {
                                                                             setFieldValue('repairRequestId', e);
                                                                             getValueDetail({ value: e?.value, type: "repairRequest", setFieldValue });
@@ -576,7 +579,7 @@ const ExportPage = ({ ...props }: Props) => {
                                                                     ) : null}
                                                                 </div> :
                                                                 <div className="w-1/2">
-                                                                    <label htmlFor="proposalId" className='label'> {t('proposal')} < span style={{ color: 'red' }}>* </span></label >
+                                                                    <label htmlFor="proposalId" className='label'> {t('proposal_product')} < span style={{ color: 'red' }}>* </span></label >
                                                                     <Select
                                                                         id='proposalId'
                                                                         name='proposalId'
@@ -586,6 +589,7 @@ const ExportPage = ({ ...props }: Props) => {
                                                                         isLoading={proposalLoading}
                                                                         maxMenuHeight={160}
                                                                         value={values?.proposalId}
+                                                                        onInputChange={e => setSearchProposal(e)}
                                                                         onChange={e => {
                                                                             setFieldValue('proposalId', e)
                                                                             getValueDetail({ value: e?.value, type: "proposal", setFieldValue });
