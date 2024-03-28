@@ -36,6 +36,7 @@ import { getDaysOfMonth } from '@/utils/commons';
 
 import personnel_list from './personnel_list.json';
 import IconFolderMinus from '@/components/Icon/IconFolderMinus';
+import { getUsersByShiftId } from '@/services/apis/user-shift.api';
 
 interface Props {
     [key: string]: any;
@@ -52,8 +53,8 @@ const monthSelectConfig: Partial<Config> = {
     theme: "light" // defaults to "light"
 };
 
-const TimekeepingHistory = ({ ...props }: Props) => {
-
+const Personnel = ({ ...props }: Props) => {
+    const id = props.id;
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
@@ -75,19 +76,20 @@ const TimekeepingHistory = ({ ...props }: Props) => {
     const currentYear = currentDate.getFullYear();
 
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            setGetStorge(personnel_list);
-            localStorage.setItem('employeeList', JSON.stringify(personnel_list));
-        }
-    }, [])
+        getUsersByShiftId(id).then((res) => {
+            setData(res?.data)
+        }).catch((err) => {
+            console.log(err);
+        })
+    }, [id])
 
-    useEffect(() => {
-        setTotal(getStorge?.length);
-        setPageSize(PAGE_SIZES_DEFAULT);
-        setRecordsData(getStorge?.filter((item: any, index: any) => { return index <= 9 && page === 1 ? item : index >= 10 && index <= (page * 9) ? item : null }));
-        const listDay_ = getDaysOfMonth(currentYear, currentMonth);
-        setListDay(listDay_);
-    }, [getStorge, getStorge?.length, page])
+    // useEffect(() => {
+    //     setTotal(getStorge?.length);
+    //     setPageSize(PAGE_SIZES_DEFAULT);
+    //     setRecordsData(getStorge?.filter((item: any, index: any) => { return index <= 9 && page === 1 ? item : index >= 10 && index <= (page * 9) ? item : null }));
+    //     const listDay_ = getDaysOfMonth(currentYear, currentMonth);
+    //     setListDay(listDay_);
+    // }, [getStorge, getStorge?.length, page])
 
     useEffect(() => {
         setShowLoader(false);
@@ -234,4 +236,4 @@ const TimekeepingHistory = ({ ...props }: Props) => {
     );
 };
 
-export default TimekeepingHistory;
+export default Personnel;

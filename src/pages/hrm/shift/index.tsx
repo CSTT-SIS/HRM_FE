@@ -54,21 +54,24 @@ const Duty = ({ ...props }: Props) => {
     const [total, setTotal] = useState(0);
     const [getStorge, setGetStorge] = useState<any>();
     const [data, setData] = useState<any>();
-
+    const [filter, setFilter] = useState<any>({
+        search: '',
+        type: ''
+    });
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
     const [openModal, setOpenModal] = useState(false);
     const list_type = [
         {
-            value: 'all',
+            value: '',
             label: `${t('all')}`
         },
         {
-            value: 'active',
+            value: 'TIME_RANGE',
             label: `${t('shift_base_time')}`
         },
         {
-            value: 'inactive',
+            value: 'HOUR_BASED',
             label: `${t('shift_base_total_time')}`
         }
     ]
@@ -128,6 +131,10 @@ const Duty = ({ ...props }: Props) => {
     };
 
     const handleSearch = (param: any) => {
+        setFilter({
+            ...filter,
+            search: param
+        })
         router.replace(
             {
                 pathname: router.pathname,
@@ -153,6 +160,21 @@ const Duty = ({ ...props }: Props) => {
         );
         return pageSize;
     };
+    const handleFilterType = (param: any) => {
+        setFilter({
+            ...filter,
+            type: param
+        })
+        router.replace(
+            {
+                pathname: router.pathname,
+                query: {
+                    ...router.query,
+                    type: param
+                },
+            }
+        );
+    }
 
     const handleDetail = (data: any) => {
         setData(data);
@@ -262,18 +284,22 @@ const Duty = ({ ...props }: Props) => {
                         <div className='flex gap-1'>
                         <div className="flex-1">
                         <Select
-                        className='w-[150px] zIndex-10'
+                        className='w-[190px] zIndex-10'
                                     id='unidepartmentparentIdtId'
                                     name='departmentparentId'
-                                    // defaultValue='all'
+                                    value={list_type?.find((e: any) => e.value===filter?.type)}
                                     placeholder={t('choose_type_shift')}
-                                    // onInputChange={e => handleSearch(e)}
+                                    onChange={(e: any) => {
+                                        if (e) {
+                                           handleFilterType(e.value)
+                                        }
+                                    }}
                                     options={list_type}
                                     maxMenuHeight={160}
                                 />
                         </div>
                         <div className="flex-1">
-                        <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                        <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} value={filter?.search} onChange={(e) => handleSearch(e.target.value)} />
 
 </div>
                         </div>

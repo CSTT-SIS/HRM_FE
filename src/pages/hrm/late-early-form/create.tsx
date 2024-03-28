@@ -85,10 +85,15 @@ const LateEarlyFormModal = ({ ...props }: Props) => {
         department: Yup.object()
             .typeError(`${t('please_choose_department')}`),
         submitday: Yup.date().typeError(`${t('please_choose_submit_day')}`),
-        fromdate: Yup.date().typeError(`${t('please_choose_from_day')}`),
-        enddate: Yup.date().typeError(`${t('please_choose_end_day')}`),
+        startDay: Yup.string().required(`${t('please_choose_from_day')}`),
+        endDay: Yup.string().required(`${t('please_choose_end_day')}`),
         shift: Yup.date().typeError(`${t('please_choose_shift')}`),
         reason: Yup.string().required(`${t('please_fill_reason')}`)
+//   "status": 1,
+//   "approverId": 0,
+//   "approverDate": "2024-03-28",
+//   "comments": "string",
+//   "userId": 0
     });
 
     const handleDepartment = (value: any) => {

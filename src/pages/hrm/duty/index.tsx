@@ -46,6 +46,7 @@ const Duty = ({ ...props }: Props) => {
     const [total, setTotal] = useState(0);
     const [getStorge, setGetStorge] = useState<any>();
     const [data, setData] = useState<any>();
+    const [search, setSearch] = useState<any>("");
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
@@ -115,17 +116,17 @@ const Duty = ({ ...props }: Props) => {
             });
     };
 
-    const handleSearch = (e: any) => {
-        if (e.target.value === "") {
-            setRecordsData(getStorge);
-        } else {
-            setRecordsData(
-                getStorge.filter((item: any) => {
-                    return item.name.toLowerCase().includes(e.target.value.toLowerCase())
-                })
-            )
-        }
-    }
+    const handleSearch = (param: any) => {
+        setSearch(param);
+        router.replace({
+            pathname: router.pathname,
+            query: {
+                ...router.query,
+                search: param,
+            },
+        });
+    };
+
     const columns = [
         {
             accessor: 'id',
@@ -196,7 +197,7 @@ const Duty = ({ ...props }: Props) => {
                             Xuất file excel
                         </button> */}
                     </div>
-                    <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                    <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} value={search}onChange={(e) => handleSearch(e.target.value)} />
                 </div>
                 <div className="datatables">
                      <DataTable

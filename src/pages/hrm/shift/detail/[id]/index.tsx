@@ -261,7 +261,7 @@ const AddNewShift = ({ ...props }: Props) => {
             </div>
             <div>
             <h1 className='page-title'>{t('list_staff_by_shift')}</h1>
-            <Personnel />
+            <Personnel id={router.query.id}/>
             </div>
         </div>
 
