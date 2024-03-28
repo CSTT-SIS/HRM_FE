@@ -495,10 +495,10 @@ const DetailPage = ({ ...props }: Props) => {
                                                                 render={({ field }: any) =>
                                                                 (<Flatpickr
                                                                     data-enable-time
-                                                                    // placeholder={`${t('choose_break_end_time')}`}
+                                                                    placeholder={`${t('HH:mm DD/MM/YYYY')}`}
                                                                     options={{
                                                                         enableTime: true,
-                                                                        dateFormat: 'Y-m-d H:i'
+                                                                        dateFormat: 'H:i d/m/Y'
                                                                     }}
                                                                     value={field?.value}
                                                                     onChange={e => setFieldValue("startDate", moment(e[0]).format("YYYY-MM-DD hh:mm"))}
@@ -518,10 +518,10 @@ const DetailPage = ({ ...props }: Props) => {
                                                                 render={({ field }: any) => (
                                                                     <Flatpickr
                                                                         data-enable-time
-                                                                        // placeholder={`${t('choose_break_end_time')}`}
+                                                                        placeholder={`${t('HH:mm DD/MM/YYYY')}`}
                                                                         options={{
                                                                             enableTime: true,
-                                                                            dateFormat: 'Y-m-d H:i'
+                                                                            dateFormat: 'H:i d/m/Y'
                                                                         }}
                                                                         value={field?.value}
                                                                         onChange={e => setFieldValue("endDate", moment(e[0]).format("YYYY-MM-DD hh:mm"))}

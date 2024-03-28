@@ -196,10 +196,10 @@ const HistoryModal = ({ ...props }: Props) => {
                                                                                 render={({ field }: any) => (
                                                                                     <Flatpickr
                                                                                         data-enable-time
-                                                                                        // placeholder={`${t('choose_break_end_time')}`}
+                                                                                        placeholder={`${t('HH:mm DD/MM/YYYY')}`}
                                                                                         options={{
                                                                                             enableTime: true,
-                                                                                            dateFormat: 'Y-m-d H:i'
+                                                                                            dateFormat: 'H:i d/m/Y'
                                                                                         }}
                                                                                         value={moment().format("DD/MM/YYYY hh:mm")}
                                                                                         onChange={e => setFieldValue("estimatedDeliveryDate", moment(e[0]).format("YYYY-MM-DD hh:mm"))}
