@@ -16,11 +16,15 @@ export const detailHuman = async (data: any) => {
 };
 export const createHuman = async (data: any) => {
 	const endpoint = `/human`;
-	return callApi(endpoint, 'POST', data);
+	return callApi(endpoint, 'POST', data, {
+		'Content-Type': 'multipart/form-data',
+	});
 };
 export const updateHuman = async (data: any) => {
 	const endpoint = `/human/update`;
-	return callApi(endpoint, 'POST', data);
+	return callApi(endpoint, 'POST', data, {
+		'Content-Type': 'multipart/form-data',
+	});
 };
 
 export const deleteHuman = async (data: any) => {

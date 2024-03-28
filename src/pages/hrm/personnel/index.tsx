@@ -98,7 +98,7 @@ const Department = ({ ...props }: Props) => {
 	}, [recordsData]);
 
 	const handleEdit = (data: any) => {
-		router.push(`/hrm/personnel/${data.id}`)
+		router.push(`/hrm/personnel/${data}`)
 	};
 
 	const handleDelete = (data: any) => {
@@ -134,15 +134,15 @@ const Department = ({ ...props }: Props) => {
 	};
 
 	const handleSearch = (e: any) => {
-		if (e.target.value === '') {
-			setRecordsData(getStorge);
-		} else {
-			setRecordsData(
-				getStorge.filter((item: any) => {
-					return item.name.toLowerCase().includes(e.target.value.toLowerCase());
-				}),
-			);
-		}
+		router.replace(
+			{
+				pathname: router.pathname,
+				query: {
+					...router.query,
+					search: e
+				},
+			}
+		);
 	};
 	type Content = { id: number; name: string; code: string; department?: string; duty?: string, type: string };
 
@@ -182,7 +182,7 @@ const Department = ({ ...props }: Props) => {
 							<span className="uppercase">Xuất file excel</span>
 						</button>
 					</div>
-					<input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+					<input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
 
 				</div>
 				<div className="mb-5">
