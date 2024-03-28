@@ -26,13 +26,15 @@ const AddNewDuty = ({ ...props }: Props) => {
         isActive: Yup.string().required(`${t('please_fill_status')}`),
         groupPosition: Yup.string().required(`${t('please_fill_status')}`)
     });
-    const { data: groupPositions, pagination, mutate } = GroupPositions({
-        sortBy: 'id.ASC',
-    }); 
-    
+    const { data: group_position, pagination: pagination1, mutate: mutate1 } = GroupPositions({ sortBy: 'id.ASC' });
+
+    const options = group_position?.data?.map((item: any) => ({ value: item.id, label: item.name })) || [];
     const handleDuty = (value: any) => {
     
-        createPosition(value).then(() => {
+        createPosition({
+            ...value,
+            positionGroupId: value?.groupPosition?.value
+        }).then(() => {
                 showMessage(`${t('create_duty_success')}`, 'success');
             }).catch((err) => {
                 showMessage(`${t('create_duty_error')}`, 'error');
@@ -61,7 +63,7 @@ const AddNewDuty = ({ ...props }: Props) => {
                     {
                         name: props?.data ? `${props?.data?.name}` : "",
                         code: props?.data ? `${props?.data?.code}` : "",
-                        isActive: props?.data ? `${props?.data?.isActive}` : false,
+                        isActive: props?.data ? `${props?.data?.isActive}` : true,
                         groupPosition: props?.data ? `${props?.data?.groupPosition}` : "",
                         description: props?.data ? `${props?.data?.description}` : ""
                     }
@@ -72,7 +74,7 @@ const AddNewDuty = ({ ...props }: Props) => {
                 }}
             >
 
-                {({ errors, touched, submitCount, setFieldValue }) => (
+                {({ errors, touched, submitCount, values, setFieldValue }) => (
                     <Form className="space-y-5" >
                         <div className="flex justify-between gap-5">
                             <div className="mb-5 w-1/2">
@@ -98,15 +100,13 @@ const AddNewDuty = ({ ...props }: Props) => {
                                                         render={({ field }: any) => (
                                                             <>
                                                                <Select
-                                                                    {...field}
-                                                                    options={groupPositions?.data?.map((item: any) => ({ value: item.id, label: item.name })) || []}
-                                                                    
-                                                                    isSearchable
-                                                                    placeholder={`${t('choose_group_duty')}`}
-                                                                    onChange={(e: { value: any }) => {
-                                                                        console.log(e)
-                                                                        setFieldValue('groupPosition', e?.value)
-                                                                    }}
+                                                                   id='groupPosition'
+                                                                   name='groupPosition'
+                                                                   options={options}
+                                                                   placeholder={`${t('choose_group_duty')}`}
+                                                                   onChange={(newValue: any, actionMeta: any) => {
+                                                                       setFieldValue('groupPosition', newValue ? newValue.value : null);
+                                                                   }}
                                                                 />
                                                                 </>
                                                             )}
@@ -115,21 +115,22 @@ const AddNewDuty = ({ ...props }: Props) => {
                                     <div className="text-danger mt-1"> {errors.groupPosition} </div>
                                 ) : null : ''}
                             </div>
+                           
                             <div className="mb-5 w-1/2">
                                     <label htmlFor="isActive" className='label'> {t('isActive')} < span style={{ color: 'red' }}>* </span></label >
                                     <div className="flex" style={{ alignItems: 'center', marginTop: '13px' }}>
                                         <label style={{ marginBottom: 0, marginRight: '10px' }}>
-                                            <Field autoComplete="off" type="radio" name="isActive"  value={true} className="form-checkbox rounded-full"/>
+                                            <Field autoComplete="off" type="radio" name="isActive"  value={true} checked={values.isActive === true} className="form-checkbox rounded-full"  onChange={() => setFieldValue('isActive', true)}/>
                                             {t('active')}
                                         </label>
                                         <label style={{ marginBottom: 0 }}>
-                                            <Field autoComplete="off" type="radio" name="isActive" value={false} className="form-checkbox rounded-full" />
+                                            <Field autoComplete="off" type="radio" name="isActive" value={false} checked={values.isActive === false} className="form-checkbox rounded-full" onChange={() => setFieldValue('isActive', false)}/>
                                             {t('inactive')}
                                         </label>
                                     </div>
-                                {submitCount ? errors.isActive ? (
-                                    <div className="text-danger mt-1"> {errors.isActive} </div>
-                                ) : null : ''}
+                                    {/* {submitCount && errors.isActive && typeof errors.isActive === 'string' && (
+                                        <div className="text-danger mt-1">{errors.isActive ? "" : ""}</div>
+                                    )} */}
                             </div>
                             </div>
                             

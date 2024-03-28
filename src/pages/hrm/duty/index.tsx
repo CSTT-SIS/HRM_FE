@@ -25,6 +25,8 @@ import IconNewEdit from '@/components/Icon/IconNewEdit';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
 import IconNewPlus from '@/components/Icon/IconNewPlus';
 import { deletePosition } from '@/services/apis/position.api';
+import GroupPosition from '../group-position';
+import { GroupPositions } from '@/services/swr/group-position.twr';
 interface Props {
     [key: string]: any;
 }
@@ -55,7 +57,10 @@ const Duty = ({ ...props }: Props) => {
         sortBy: 'id.ASC',
         ...router.query
     });
-
+    const { data: groupPositionsData, pagination: groupPositionPagination, mutate: groupPositionMutate } = GroupPositions({
+        sortBy: 'id.ASC',
+    });
+    
 
     useEffect(() => {
         setShowLoader(false);
@@ -134,6 +139,17 @@ const Duty = ({ ...props }: Props) => {
         },
         { accessor: 'name', title: 'Tên chức vụ', sortable: false },
         { accessor: 'code', title: 'Mã Chức vụ', sortable: false },
+        {
+            accessor: 'duty_group',
+            title: 'Nhóm chức vụ',
+            sortable: false,
+            render: (records: any, index: any) => {
+                const res = groupPositionsData?.data.find((i: { id: string; name: string }) => i.id === records.positionGroupId);
+                return (
+                    <span>{res ? res?.name : ""}</span>
+                )
+            },
+        },
         { accessor: 'duty_group', title: 'Nhóm chức vụ', sortable: false },
         { accessor: 'description', title: 'Mô tả', sortable: false },
         {

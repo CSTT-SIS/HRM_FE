@@ -36,11 +36,10 @@ const DetailDuty = ({ ...props }: Props) => {
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_duty')}`),
         code: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_dutyCode')}`),
-        groupPosition: Yup.string().required(`${t('please_fill_group_position')}`),
+        positionGroupId: Yup.string().required(`${t('please_fill_group_position')}`),
         isActive: Yup.bool().required(`${t('please_fill_status')}`),
         description: Yup.string()
     });
-
     useEffect(() => {
         const id = router.query.id
         if (id) {
@@ -52,15 +51,17 @@ const DetailDuty = ({ ...props }: Props) => {
         }
     }, [router])
     const { data: group_position, pagination: pagination1, mutate: mutate1 } = GroupPositions({ sortBy: 'id.ASC', ...router.query });
-  
+
+    const options = group_position?.data?.map((item: any) => ({ value: item.id, label: item.name })) || [];
+    const defaultGroup = options.find((i: { value: string }) => i && i.value === detail?.positionGroupId);
     const handleDuty = (value: any) => {
         removeNullProperties(value);
         let dataSubmit
             dataSubmit = {
                 name: value.name,
                 description: value.description,
-                isActive: parseInt(value.isActive),
-                groupPosition: value.groupPosition,
+                isActive: value.isActive,
+                positionGroupId: parseInt(value.positionGroupId),
                 code: value.code
             }
         updatePosition(detail?.id, dataSubmit).then(() => {
@@ -75,7 +76,6 @@ const DetailDuty = ({ ...props }: Props) => {
         props.setOpenModal(false);
         props.setData(undefined);
     };
-
     return (
         <div className="p-5">
             <div className='flex justify-between header-page-bottom pb-4 mb-4'>
@@ -95,7 +95,7 @@ const DetailDuty = ({ ...props }: Props) => {
                         name: detail ? `${detail?.name}` : "",
                         code: detail ? `${detail?.code}` : "",
                         isActive: detail ? detail?.isActive : true,
-                        groupPosition: detail ? `${detail?.groupPosition}` : "",
+                        positionGroupId: detail ? `${detail?.positionGroupId}` : "",
                         description: detail ? detail?.description : ""
                     }
                 }
@@ -125,31 +125,21 @@ const DetailDuty = ({ ...props }: Props) => {
                         </div>
                         <div className="flex justify-between gap-5">
                             <div className="mb-5 w-1/2">
-                                <label htmlFor="groupPosition" className='label'> {t('duty_group')} < span style={{ color: 'red' }}>* </span></label >
-<Field autoComplete="off"
-                                                        name="groupPosition"
-                                                        render={({ field }: any) => (
-                                                            <>
-                                                               <Select
-                                                                    {...field}
-                                                                        id='duty_group'
-                                                                        name='duty_group'
-                                                                        options={group_position?.data?.map((item: any) => ({ value: item.id, label: item.name })) || []}
-                                                                            
-                                                                        isSearchable
-                                                                        placeholder={`${t('choose_group_duty')}`}
-                                                                        onChange={(e: { value: any }) => {
-                                                                            console.log(e)
-                                                                            setFieldValue('groupPosition', e?.value)
-                                                                        }}
-                                                                        />
-                                                                        </>
-                                                                    )}
-                                                        />
+                            <label htmlFor="positionGroupId" className='label'> {t('duty_group')} < span style={{ color: 'red' }}>* </span></label >
+                            <Select
+                                defaultValue={defaultGroup}
+                                id='positionGroupId'
+                                name='positionGroupId'
+                                options={options}
+                                placeholder={`${t('choose_group_duty')}`}
+                                onChange={(newValue: any, actionMeta: any) => {
+                                    setFieldValue('positionGroupId', newValue ? newValue.value : null);
+                                }}
+                            />
+                            {submitCount ? errors.positionGroupId ? (
+                                <div className="text-danger mt-1">{errors.positionGroupId}</div>
+                            ) : null : ''}
 
-                                                        {submitCount ? errors.groupPosition ? (
-                                    <div className="text-danger mt-1"> {errors.groupPosition} </div>
-                                ) : null : ''}
                             </div>
                             <div className="mb-5 w-1/2">
                                 <label htmlFor="isActive" className='label'> {t('status')} <span style={{ color: 'red' }}>*</span></label>
@@ -179,10 +169,9 @@ const DetailDuty = ({ ...props }: Props) => {
                                         {t('inactive')}
                                     </label>
                                 </div>
-
-                                {submitCount && errors.isActive && typeof errors.isActive === 'string' && (
+                                {/* {submitCount && errors.isActive && typeof errors.isActive === 'string' && (
                                         <div className="text-danger mt-1">{errors.isActive}</div>
-                                    )}
+                                    )} */}
 
                             </div>
 
