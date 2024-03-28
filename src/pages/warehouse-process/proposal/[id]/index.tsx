@@ -47,13 +47,14 @@ const DetailPage = ({ ...props }: Props) => {
     const [page, setPage] = useState(1);
     const [dataDepartment, setDataDepartment] = useState<any>([]);
     const formRef = useRef<any>();
+    const [searchDepartment, setSearchDepartment] = useState<any>();
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
 
     // get data
     const { data: ProposalDetail, pagination, mutate, isLoading } = ProposalDetails({ ...query });
-    const { data: dropdownDepartment, pagination: paginationDepartment, mutate: mutateDepartment, isLoading: isLoadingDepartment } = DropdownDepartment({ page: page });
+    const { data: dropdownDepartment, pagination: paginationDepartment, mutate: mutateDepartment, isLoading: isLoadingDepartment } = DropdownDepartment({ page: page, search: searchDepartment });
     const { data: warehouseDropdown, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({ page: 1 });
 
     useEffect(() => {
@@ -421,6 +422,7 @@ const DetailPage = ({ ...props }: Props) => {
                                                             onMenuOpen={() => setPage(1)}
                                                             onMenuScrollToBottom={handleMenuScrollToBottom}
                                                             isLoading={isLoadingDepartment}
+                                                            onInputChange={e => setSearchDepartment(e)}
                                                             onChange={e => {
                                                                 setFieldValue('departmentId', e)
                                                             }}

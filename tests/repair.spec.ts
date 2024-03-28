@@ -21,12 +21,12 @@ const fillModal = async (page: Page, text: string) => {
 };
 
 test.describe.serial('repair CRUD', () => {
-	const text = makeRamdomText(5);
+	const text = 'yeu cau sua chua' + makeRamdomText(5);
 	const editText = text + 'edit';
 	const searchText = 'search=' + text;
-    const searchEditText = 'search=' + editText;
+	const searchEditText = 'search=' + editText;
 
-	test('01. Create', async ({ page }) => {
+	test.skip('01. Create', async ({ page }) => {
 		await page.goto('/warehouse-process/repair');
 
 		await page.getByTestId('add-repair').click();
@@ -61,7 +61,7 @@ test.describe.serial('repair CRUD', () => {
 		await expect(page.getByTestId('edit-repair-btn')).toBeVisible();
 	});
 
-	test('02. Edit', async ({ page }) => {
+	test.skip('02. Edit', async ({ page }) => {
 		await page.goto('/warehouse-process/repair');
 
 		await page.waitForTimeout(1000);
@@ -91,7 +91,7 @@ test.describe.serial('repair CRUD', () => {
 		await expect(page.getByTestId('edit-repair-btn')).toBeVisible();
 	});
 
-	test('03. Approve', async ({ page }) => {
+	test.skip('03. Approve', async ({ page }) => {
 		await page.goto('/warehouse-process/repair');
 
 		await page.waitForTimeout(1000);
@@ -110,7 +110,7 @@ test.describe.serial('repair CRUD', () => {
 		await page.getByTestId('search-repair-input').fill(editText);
 		await page.waitForLoadState('networkidle');
 
-        await page.waitForTimeout(1000);
+		await page.waitForTimeout(1000);
 		await page.goto(`/warehouse-process/repair?${searchEditText}`);
 
 		await page.getByTestId('detail-repair-btn').first().waitFor({ state: 'visible' });

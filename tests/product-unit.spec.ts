@@ -10,7 +10,7 @@ const fillForm = async (page: Page, text: string) => {
 };
 
 test.describe.serial('Product unit CRUD', () => {
-	const text = makeRamdomText(5);
+	const text = 'dvt' + makeRamdomText(5);
 	const editText = text + 'edit';
 	test('01. Create', async ({ page }) => {
 		await page.goto('/warehouse/product/unit');

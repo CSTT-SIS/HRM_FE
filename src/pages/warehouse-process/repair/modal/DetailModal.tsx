@@ -24,13 +24,14 @@ const HandleDetailModal = ({ ...props }: Props) => {
     const [initialValue, setInitialValue] = useState<any>();
     const [dataProductDropdown, setDataProductDropdown] = useState<any>([]);
     const [page, setPage] = useState(1);
+    const [searchProduct, setSearchProduct] = useState<any>();
 
     const SubmittedForm = Yup.object().shape({
         replacementPartId: new Yup.ObjectSchema().required(`${t('please_fill_product')}`),
         quantity: Yup.string().required(`${t('please_fill_quantity')}`),
     });
 
-    const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownInventory({ page: page, warehouseId: 10 });
+    const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownInventory({ page: page, warehouseId: 10, search: searchProduct });
 
     const handleRepairDetail = (param: any) => {
         if (Number(router.query.id)) {
@@ -187,6 +188,7 @@ const HandleDetailModal = ({ ...props }: Props) => {
                                                             isLoading={productLoading}
                                                             maxMenuHeight={160}
                                                             value={values.replacementPartId}
+                                                            onInputChange={e => setSearchProduct(e)}
                                                             onChange={e => {
                                                                 setFieldValue('replacementPartId', e)
                                                                 handleQuantity(e, setFieldValue);

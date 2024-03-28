@@ -211,6 +211,7 @@ const ExportPage = ({ ...props }: Props) => {
     const [dataWarehouseDropdown, setDataWarehouseDropdown] = useState<any>([]);
     const [active, setActive] = useState<any>([1, 2]);
     const formRef = useRef<any>();
+    const [searchOrder, setSearchOrder] = useState<any>();
 
     const SubmittedForm = Yup.object().shape({
         // name: Yup.string().required(`${t('please_fill_name')}`),
@@ -219,7 +220,7 @@ const ExportPage = ({ ...props }: Props) => {
         warehouseId: new Yup.ObjectSchema().required(`${t('please_fill_warehouse')}`),
     });
 
-    const { data: orders, pagination: orderPagination, isLoading: orderLoading } = DropdownOrder({ page: pageOder, isCreatedBill: true });
+    const { data: orders, pagination: orderPagination, isLoading: orderLoading } = DropdownOrder({ page: pageOder, isCreatedBill: true, search: searchOrder });
     const { data: warehouses, pagination: warehousePagination, isLoading: warehouseLoading } = DropdownWarehouses({ page: pageWarehouse });
     const { data: listRequest } = WarehousingBillListRequest({ id: router.query.proposalId });
 
@@ -477,6 +478,7 @@ const ExportPage = ({ ...props }: Props) => {
                                                                 isLoading={orderLoading}
                                                                 maxMenuHeight={160}
                                                                 value={values?.orderId}
+                                                                onInputChange={e => setSearchOrder(e)}
                                                                 onChange={e => {
                                                                     setFieldValue('orderId', e)
                                                                     getValueDetail({ value: e?.value, setFieldValue });

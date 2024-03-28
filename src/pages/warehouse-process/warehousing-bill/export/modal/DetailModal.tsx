@@ -24,13 +24,14 @@ const DetailModal = ({ ...props }: Props) => {
     const [initialValue, setInitialValue] = useState<any>();
     const [dataProductDropdown, setDataProductDropdown] = useState<any>([]);
     const [page, setPage] = useState(1);
+    const [searchProduct, setSearchProduct] = useState<any>();
 
     const SubmittedForm = Yup.object().shape({
         productId: new Yup.ObjectSchema().required(`${t('please_fill_product')}`),
         proposalQuantity: Yup.string().required(`${t('please_fill_quantity')}`),
     });
 
-    const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ page: page });
+    const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ page: page, search: searchProduct });
 
     const handleProposal = (param: any, resetForm: any) => {
         if (param.inventory < param.proposalQuantity) {
@@ -193,6 +194,7 @@ const DetailModal = ({ ...props }: Props) => {
                                                                 isLoading={productLoading}
                                                                 maxMenuHeight={160}
                                                                 value={values?.productId}
+                                                                onInputChange={e => setSearchProduct(e)}
                                                                 onChange={(e: any) => {
                                                                     setFieldValue('productId', e)
                                                                     handleQuantity(e, setFieldValue);
