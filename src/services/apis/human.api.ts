@@ -15,7 +15,7 @@ export const detailHuman = async (data: any) => {
 	return callApi(endpoint, 'GET');
 };
 export const createHuman = async (data: any) => {
-	const endpoint = `/human/create`;
+	const endpoint = `/human`;
 	return callApi(endpoint, 'POST', data);
 };
 export const updateHuman = async (data: any) => {

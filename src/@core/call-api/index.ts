@@ -74,8 +74,6 @@ const callApi = (
 		// withCredentials: true,
 	})
 		.then((res: any) => {
-			console.log('LOG ~ .then ~ res:', res.headers);
-			console.log('LOG ~ :', res.headers['set-cookies']);
 			if (res?.status !== 200 && res?.status !== 201) throw res;
 			return res?.data;
 		})
