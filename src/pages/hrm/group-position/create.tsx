@@ -23,7 +23,6 @@ const AddNewGroupPositon = ({ ...props }: Props) => {
     });
 
     const handleDuty = (value: any) => {
-        console.log("value", value)
         createGroupPositon(value).then(() => {
                 showMessage(`${t('create_group_position_success')}`, 'success');
             }).catch((err) => {

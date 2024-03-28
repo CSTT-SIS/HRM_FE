@@ -13,57 +13,32 @@ import 'flatpickr/dist/flatpickr.css';
 import Select from 'react-select';
 import Link from 'next/link';
 import IconArrowBackward from '@/components/Icon/IconArrowBackward';
-import { ProductCategorys, Providers } from '@/services/swr/product.twr';
 import AnimateHeight from 'react-animate-height';
 import IconCaretDown from '@/components/Icon/IconCaretDown';
 import IconBack from '@/components/Icon/IconBack';
 import ImageUploading, { ImageListType } from 'react-images-uploading';
-import list_departments from '../department/department_list.json';
-import list_personnels from '../personnel/personnel_list.json';
-import list_duty from "../duty/duty_list.json";
+import { Departments } from '@/services/swr/department.twr';
+import { Humans } from '@/services/swr/human.twr';
+import { Positions } from '@/services/swr/position.twr';
+import { createHuman } from '@/services/apis/human.api';
+
 interface Props {
     [key: string]: any;
 }
 
 const AddNewPersonel = ({ ...props }: Props) => {
     const { t } = useTranslation();
-    const [disabled, setDisabled] = useState(false);
     const [query, setQuery] = useState<any>();
     const [images, setImages] = useState<any>([]);
-    const [listDepartment, setListDepartment] = useState<any>();
-    const [listPersons, setListPersons] = useState<any>();
-    const [listDuty, setListDuty] = useState<any>([]);
-    useEffect(() => {
-        const list_temp_department = list_departments?.map((department: any) => {
-            return {
-                value: department.id,
-                label: department.name
-            }
-        })
-        setListDepartment(list_temp_department);
-        const list_temp_person = list_personnels?.map((person: any) => {
-            return {
-                value: person.code,
-                label: person.name
-            }
-        })
-        setListPersons(list_temp_person);
-        const list_temp_duty = list_duty?.map((person: any) => {
-            return {
-                value: person.code,
-                label: person.name
-            }
-        })
-        setListDuty(list_temp_duty);
-    }, [])
     const onChange = (imageList: ImageListType, addUpdateIndex: number[] | undefined) => {
         setImages(imageList as never[]);
     };
     const maxNumber = 69;
 
-    const [typeShift, setTypeShift] = useState("0"); // 0: time, 1: total hours
-    const { data: departmentparents } = ProductCategorys(query);
-    const { data: manages } = Providers(query);
+    const { data: departmentparents } = Departments(query);
+    const { data: manages } = Humans(query);
+    const { data: positions } = Positions(query);
+
     const departmentparent = departmentparents?.data.filter((item: any) => {
         return (
             item.value = item.id,
@@ -78,62 +53,58 @@ const AddNewPersonel = ({ ...props }: Props) => {
             item.label = item.name
         )
     })
+    const position = positions?.data.filter((item: any) => {
+        return (
+            item.value = item.id,
+            item.label = item.name
+        )
+    })
     const SubmittedForm = Yup.object().shape({
-        name: Yup.string()
+        fullName: Yup.string()
             .min(2, 'Too Short!')
             .required(`${t('please_fill_name_staff')}`),
         code: Yup.string()
             .min(2, 'Too Short!')
-            .required(`${t('please_fill_Xaypayouode')}`),
-        surname: Yup.string()
-            .min(2, 'Too Short!')
-            .required(`${t('please_fill_surname_name')}`),
-        email: Yup.string()
-            .min(2, 'Too Short!')
-            .required(`${t('please_fill_email')}`),
-        phone: Yup.string()
-            .min(2, 'Too Short!')
-            .required(`${t('please_fill_phone')}`),
-        userName: Yup.string()
-            .min(2, 'Too Short!')
-            .required(`${t('please_fill_username')}`),
+            .required(`${t('please_fill_code')}`),
     });
     const handleSearch = (param: any) => {
         setQuery({ search: param });
     }
     const handleWarehouse = (value: any) => {
-        if (props?.data) {
-            const reNew = props.totalData.filter((item: any) => item.id !== props.data.id);
-            reNew.push({
-                id: props.data.id,
-                name: value.name,
-                code: value.code,
-                status: value.status,
-            });
-            localStorage.setItem('staffList', JSON.stringify(reNew));
-            props.setGetStorge(reNew);
-            props.setOpenModal(false);
-            props.setData(undefined);
-            showMessage(`${t('edit_staff_success')}`, 'success');
-        } else {
-            const reNew = props.totalData;
-            reNew.push({
-                id: Number(props?.totalData[props?.totalData?.length - 1].id) + 1,
-                name: value.name,
-                code: value.code,
-                status: value.status,
-            });
-            localStorage.setItem('staffList', JSON.stringify(reNew));
-            props.setGetStorge(props.totalData);
-            props.setOpenModal(false);
-            props.setData(undefined);
-            showMessage(`${t('add_staff_success')}`, 'success');
-        }
-    };
 
-    const handleChangeTypeShift = (e: any) => {
-        setTypeShift(e);
-    }
+        const formdata = new FormData
+        formdata.append("avatar", images[0].file)
+        formdata.append("code", value.code)
+        formdata.append("fullName", value.fullName )
+        formdata.append("email", value.email )
+        if(value.phoneNumber !== '') formdata.append("phoneNumber", value.phoneNumber)
+        if(value.birthDay !== '') formdata.append("birthDay", value.birthDay)
+        if(value.sex !== null) formdata.append("sex", value.sex)
+        if(value.identityNumber !== '') formdata.append("identityNumber", value.identityNumber)
+        if(value.identityDate !== '') formdata.append("identityDate", value.identityDate)
+        if(value.identityPlace !== '') formdata.append("identityPlace", value.identityPlace)
+        if(value.passportNumber !== '') formdata.append("passportNumber", value.passportNumber)
+        if(value.passportDate !== '') formdata.append("passportDate", value.passportDate)
+        if(value.passportPlace !== '') formdata.append("passportPlace", value.passportPlace)
+        if(value.passportExpired !== '') formdata.append("passportExpired", value.passportExpired)
+        if(value.placeOfBirth !== '') formdata.append("placeOfBirth", value.placeOfBirth)
+        if(value.provice !== '') formdata.append("provice", value.provice)
+        if(value.maritalStatus !== '') formdata.append("maritalStatus", value.maritalStatus)
+        if(value.departmentId !== null) formdata.append("departmentId", value.departmentId)
+        if(value.positionId !== null) formdata.append("positionId", value.positionId)
+        if(value.indirectSuperior !== null) formdata.append("indirectSuperior", value.indirectSuperior)
+        if(value.directSuperior !== null) formdata.append("directSuperior", value.directSuperior)
+        if(value.dateOfJoin !== '') formdata.append("dateOfJoin", value.dateOfJoin)
+        if(value.taxCode !== '') formdata.append("taxCode", value.taxCode)
+        if(value.bankAccount !== '') formdata.append("bankAccount", value.bankAccount)
+        if(value.bankName !== '') formdata.append("bankName", value.bankName)
+        if(value.bankBranch !== '') formdata.append("bankBranch", value.bankBranch)
+        createHuman(formdata).then(() => {
+            showMessage(`${t('add_staff_success')}`, 'success');
+        }).catch((err) => {
+            showMessage(`${t('add_staff_error')}`, 'error');
+        });
+    };
     const [active, setActive] = useState<string>('1');
     const togglePara = (value: string) => {
         setActive((oldValue) => {
@@ -160,32 +131,42 @@ const AddNewPersonel = ({ ...props }: Props) => {
             </div>
             <Formik
                 initialValues={{
-                    name: props?.data ? `${props?.data?.name}` : '',
                     code: props?.data ? `${props?.data?.code}` : '',
+                    fullName: props?.data ? `${props?.data?.fullName}` : '',
                     surname: props?.data ? `${props?.data?.surname}` : '',
                     email: props?.data ? `${props?.data?.email}` : '',
-                    phone: props?.data ? `${props?.data?.phone}` : '',
-                    userName: props?.data ? `${props?.data?.userName}` : '',
+                    phoneNumber: props?.data ? `${props?.data?.phoneNumber}` : '',
+                    anotherName: props?.data ? `${props?.data?.anotherName}` : '',
+                    birthDay: props?.data ? `${props?.data?.birthDay}` : '',
+                    sex: props?.data ? props?.data?.sex : null,
+                    identityNumber: props?.data ? `${props?.data?.identityNumber}` : '',
+                    identityDate: props?.data ? `${props?.data?.identityDate}` : '',
+                    identityPlace: props?.data ? `${props?.data?.identityPlace}` : '',
+                    passportNumber: props?.data ? `${props?.data?.passportNumber}` : '',
+                    passportDate: props?.data ? `${props?.data?.passportDate}` : '',
+                    passportExpired: props?.data ? `${props?.data?.passportExpired}` : '',
+                    passportPlace: props?.data ? `${props?.data?.passportPlace}` : '',
+                    placeOfBirth: props?.data ? `${props?.data?.placeOfBirth}` : '',
+                    nation: props?.data ? `${props?.data?.nation}` : '',
+                    provice: props?.data ? props?.data?.provice : null,
+                    religion: props?.data ? `${props?.data?.religion}` : '',
+                    maritalStatus: props?.data ? `${props?.data?.maritalStatus}` : '',
+                    departmentId: props?.data ? props?.data?.departmentId : null,
+                    positionId: props?.data ? props?.data?.positionId : null,
+                    indirectSuperior: props?.data ? props?.data?.indirectSuperior : null,
+                    directSuperior: props?.data ? props?.data?.directSuperior : null,
+                    dateOfJoin: props?.data ? props?.data?.dateOfJoin : null,
+                    taxCode: props?.data ? `${props?.data?.taxCode}` : '',
+                    bankAccount: props?.data ? `${props?.data?.bankAccount}` : '',
+                    bankName: props?.data ? `${props?.data?.bankName}` : '',
+                    bankBranch: props?.data ? `${props?.data?.bankBranch}` : '',
                     othername: props?.data ? `${props?.data?.othername}` : '',
-                    dateofbirth: props?.data ? `${props?.data?.dateofbirth}` : '',
-                    sex: props?.data ? {
-                        value: `${props?.data?.sex.id}`,
-                        label: `${props?.data?.sex.name}`
-                    } : "",
-                    IDnumber: props?.data ? `${props?.data?.IDnumber}` : '',
-                    dateissue: props?.data ? `${props?.data?.dateissue}` : '',
-                    manageId: props?.data ? {
-                        value: `${props?.data?.manage.id}`,
-                        label: `${props?.data?.manage.name}`
-                    } : "",
-                    departmentparentId: props?.data ? {
-                        value: `${props?.data?.departmentparent.id}`,
-                        label: `${props?.data?.departmentparent.name}`
-                    } : "",
 
                 }}
                 validationSchema={SubmittedForm}
-                onSubmit={() => { }}
+                onSubmit={(values) => {
+                    handleWarehouse(values);
+                }}
 
             >
                 {({ errors, touched, values, setFieldValue, submitCount }) => (
@@ -239,7 +220,6 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="code" className='label'>
-                                                            {' '}
                                                             {t('code_staff')} <span style={{ color: 'red' }}>* </span>
                                                         </label>
                                                         <Field autoComplete="off" name="code" type="text" id="code" placeholder={`${t('enter_code_staff')}`} className="form-input" />
@@ -250,31 +230,27 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="surname" className='label'>
-                                                            {' '}
                                                             {t('surname_middle')}
                                                         </label>
                                                         <Field autoComplete="off" name="surname" type="text" id="surname" placeholder={t('enter_surname_middle')} className="form-input" />
                                                     </div>
                                                     <div className="mb-5 w-1/2">
-                                                        <label htmlFor="name" className='label'>
-                                                            {' '}
+                                                        <label htmlFor="fullName" className='label'>
                                                             {t('name_staff')} <span style={{ color: 'red' }}>* </span>
                                                         </label>
-                                                        <Field autoComplete="off" name="name" type="text" id="name" placeholder={`${t('enter_name_staff')}`} className="form-input" />
-                                                        {submitCount ? errors.name ? <div className="mt-1 text-danger"> {errors.name} </div> : null : ''}
+                                                        <Field autoComplete="off" name="fullName" type="text" id="fullName" placeholder={`${t('enter_name_staff')}`} className="form-input" />
+                                                        {submitCount ? errors.fullName ? <div className="mt-1 text-danger"> {errors.fullName} </div> : null : ''}
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="email" className='label'>
-                                                            {' '}
                                                             Email
                                                         </label>
                                                         <Field autoComplete="off" name="email" type="text" id="email" placeholder={t('enter_email')} className="form-input" />
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="phone" className='label'>
-                                                            {' '}
                                                             {t('phone_number')}
                                                         </label>
                                                         <Field autoComplete="off" name="phone" type="text" id="phone" placeholder={t('enter_phone_number')} className="form-input" />
@@ -306,14 +282,12 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="othername" className='label'>
-                                                            {' '}
                                                             {t('other_name')}
                                                         </label>
                                                         <Field autoComplete="off" name="othername" type="text" id="othername" placeholder={t('enter_other_name')} className="form-input" />
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="dateofbirth" className='label'>
-                                                            {' '}
                                                             {t('date_of_birth')}
                                                         </label>
                                                         <Flatpickr
@@ -321,6 +295,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                                 dateFormat: 'Y-m-d',
                                                                 position: 'auto left',
                                                             }}
+                                                            value={values.birthDay}
                                                             className="form-input calender-input"
                                                             placeholder={`${t('enter_date_of_birth')}`}
                                                         />
@@ -330,17 +305,19 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="sex" className='label'>
-                                                            {' '}
                                                             {t('gender')}
                                                         </label>
                                                         <Select
                                                             id='sex'
                                                             name='sex'
                                                             options={[{
+                                                                value: 0,
                                                                 label: 'Nam'
                                                             }, {
+                                                                value: 1,
                                                                 label: 'Nữ'
                                                             }]}
+                                                            value={values.sex}
                                                             placeholder={'Chọn giới tính'}
                                                             maxMenuHeight={160}
                                                             onChange={e => {
@@ -349,17 +326,15 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                         />
                                                     </div>
                                                     <div className="mb-5 w-1/2">
-                                                        <label htmlFor="IDnumber" className='label'>
-                                                            {' '}
+                                                        <label htmlFor="identityNumber" className='label'>
                                                             {t('id_number')}
                                                         </label>
-                                                        <Field autoComplete="off" name="IDnumber" type="text" id="IDnumber" placeholder={t('enter_id_number')} className="form-input" />
+                                                        <Field autoComplete="off" name="identityNumber" type="text" id="identityNumber" placeholder={t('enter_id_number')} className="form-input" />
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="dateissue" className='label'>
-                                                            {' '}
                                                             {t('date_of_issue')}
                                                         </label>
                                                         <Flatpickr
@@ -367,30 +342,28 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                                 dateFormat: 'Y-m-d',
                                                                 position: 'auto left',
                                                             }}
+                                                            value={values.identityDate}
                                                             className="form-input calender-input"
                                                             placeholder={`${t('enter_date_of_issue')}`}
                                                         />
 
                                                     </div>
                                                     <div className="mb-5 w-1/2">
-                                                        <label htmlFor="IDnumber" className='label'>
-                                                            {' '}
+                                                        <label htmlFor="identityPlace" className='label'>
                                                             {t('address_issue')}
                                                         </label>
-                                                        <Field autoComplete="off" name="IDnumber" type="text" id="IDnumber" placeholder={t('enter_address_issue')} className="form-input" />
+                                                        <Field autoComplete="off" name="identityPlace" type="text" id="identityPlace" placeholder={t('enter_address_issue')} className="form-input" />
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
-                                                        <label htmlFor="id_passport" className='label'>
-                                                            {' '}
+                                                        <label htmlFor="passportNumber" className='label'>
                                                             {t('id_passport')}
                                                         </label>
-                                                        <Field autoComplete="off" name="id_passport" type="text" id="id_passport" placeholder={t('enter_id_passport')} className="form-input" />
+                                                        <Field autoComplete="off" name="passportNumber" type="text" id="passportNumber" placeholder={t('enter_id_passport')} className="form-input" />
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="dateissuepassport" className='label'>
-                                                            {' '}
                                                             {t('date_of_issue_passport')}
                                                         </label>
                                                         <Flatpickr
@@ -398,6 +371,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                                 dateFormat: 'Y-m-d',
                                                                 position: 'auto left',
                                                             }}
+                                                            value={values.passportDate}
                                                             className="form-input calender-input"
                                                             placeholder={`${t('enter_date_of_issue_passport')}`}
                                                         />
@@ -405,11 +379,10 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
-                                                        <label htmlFor="issuepassport" className='label'>
-                                                            {' '}
+                                                        <label htmlFor="passportPlace" className='label'>
                                                             {t('address_issue_passport')}
                                                         </label>
-                                                        <Field autoComplete="off" name="issuepassport" type="text" id="issuepassport" placeholder={t('enter_address_issue_passport')} className="form-input" />
+                                                        <Field autoComplete="off" name="passportPlace" type="text" id="passportPlace" placeholder={t('enter_address_issue_passport')} className="form-input" />
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="dateendpassport" className='label'>
@@ -421,6 +394,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                                 dateFormat: 'Y-m-d',
                                                                 position: 'auto left',
                                                             }}
+                                                            value={values.passportExpired}
                                                             className="form-input calender-input"
                                                             placeholder={`${t('enter_date_end_passport')}`}
                                                         />
@@ -428,15 +402,13 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
-                                                        <label htmlFor="place_of_birth" className='label'>
-                                                            {' '}
+                                                        <label htmlFor="placeOfBirth" className='label'>
                                                             {t('place_of_birth')}
                                                         </label>
-                                                        <Field autoComplete="off" name="place_of_birth" type="text" id="place_of_birth" placeholder={t('enter_place_of_birth')} className="form-input" />
+                                                        <Field autoComplete="off" name="placeOfBirth" type="text" id="placeOfBirth" placeholder={t('enter_place_of_birth')} className="form-input" />
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="nation" className='label'>
-                                                            {' '}
                                                             {t('nation')}
                                                         </label>
                                                         <Field autoComplete="off" name="nation" type="text" id="nation" placeholder={t('enter_nation')} className="form-input" />
@@ -445,7 +417,6 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="province" className='label'>
-                                                            {' '}
                                                             {t('province')}
                                                         </label>
                                                         <Select
@@ -476,6 +447,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                             }, {
                                                                 label: 'Ninh Bình'
                                                             }]}
+                                                            value={values.provice}
                                                             placeholder={t('enter_province')}
                                                             maxMenuHeight={160}
                                                             onChange={e => {
@@ -485,18 +457,16 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                     </div>
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="religion" className='label'>
-                                                            {' '}
                                                             {t('religion')}
                                                         </label>
                                                         <Field autoComplete="off" name="religion" type="text" id="religion" placeholder={t('enter_religion')} className="form-input" />
                                                     </div>
                                                 </div>
                                                 <div className="mb-5 w-1/2">
-                                                    <label htmlFor="marital_status" className='label'>
-                                                        {' '}
+                                                    <label htmlFor="maritalStatus" className='label'>
                                                         {t('marital_status')}
                                                     </label>
-                                                    <Field autoComplete="off" name="marital_status" type="text" id="marital_status" placeholder={t('enter_marital_status')} className="form-input" />
+                                                    <Field autoComplete="off" name="maritalStatus" type="text" id="maritalStatus" placeholder={t('enter_marital_status')} className="form-input" />
                                                 </div>
                                             </div>
                                         </AnimateHeight>
@@ -520,32 +490,32 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                     <div className="mb-5 w-1/2">
                                                         <label htmlFor="departmentparentId" className='label'> {t('Department_Parent')}</label >
                                                         <Select
-                                                            id='unidepartmentparentIdtId'
+                                                            id='departmentparentId'
                                                             name='departmentparentId'
                                                             placeholder={t('select_departmentparent')}
                                                             onInputChange={e => handleSearch(e)}
-                                                            options={listDepartment}
+                                                            options={departmentparent}
                                                             maxMenuHeight={160}
-                                                            value={values.departmentparentId}
+                                                            value={values.departmentId}
                                                             onChange={e => {
-                                                                setFieldValue('departmentparentId', e)
+                                                                setFieldValue('directSuperior', e)
                                                             }}
                                                         />
 
                                                     </div>
                                                     <div className="mb-5 w-1/2">
-                                                        <label htmlFor="manageId" className='label'> {t('duty')}</label >
+                                                        <label htmlFor="positionId" className='label'> {t('duty')}</label >
                                                         <Select
-                                                            id='manageId'
-                                                            name='manageId'
+                                                            id='positionId'
+                                                            name='positionId'
                                                             placeholder={t('select_duty')}
 
                                                             onInputChange={e => handleSearch(e)}
-                                                            options={listDuty}
+                                                            options={position}
                                                             maxMenuHeight={160}
-                                                            value={values.manageId}
+                                                            value={values.positionId}
                                                             onChange={e => {
-                                                                setFieldValue('manageId', e)
+                                                                setFieldValue('positionId', e)
                                                             }}
                                                         />
 
@@ -553,33 +523,33 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
-                                                        <label htmlFor="manageId" className='label'> {t('Manager')} </label >
+                                                        <label htmlFor="directSuperior" className='label'> {t('Manager')} </label >
                                                         <Select
-                                                            id='manageId'
-                                                            name='manageId'
+                                                            id='directSuperior'
+                                                            name='directSuperior'
                                                             onInputChange={e => handleSearch(e)}
-                                                            options={listPersons}
+                                                            options={manage}
                                                             placeholder={t('select_manager')}
                                                             maxMenuHeight={160}
-                                                            value={values.manageId}
+                                                            value={values.directSuperior}
                                                             onChange={e => {
-                                                                setFieldValue('manageId', e)
+                                                                setFieldValue('directSuperior', e)
                                                             }}
                                                         />
 
                                                     </div>
                                                     <div className="mb-5 w-1/2">
-                                                        <label htmlFor="manageId" className='label'> {t('Manager_2')} </label >
+                                                        <label htmlFor="indirectSuperior" className='label'> {t('Manager_2')} </label >
                                                         <Select
-                                                            id='manageId'
-                                                            name='manageId'
+                                                            id='indirectSuperior'
+                                                            name='indirectSuperior'
                                                             onInputChange={e => handleSearch(e)}
-                                                            options={listPersons}
+                                                            options={manage}
                                                             maxMenuHeight={160}
-                                                            value={values.manageId}
+                                                            value={values.indirectSuperior}
                                                             placeholder={t('select_manager_2')}
                                                             onChange={e => {
-                                                                setFieldValue('manageId', e)
+                                                                setFieldValue('indirectSuperior', e)
                                                             }}
                                                         />
 
@@ -604,6 +574,7 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                                 dateFormat: 'Y-m-d',
                                                                 position: 'auto left',
                                                             }}
+                                                            value={values.dateOfJoin}
                                                             className="form-input calender-input"
                                                             placeholder={`${t('enter_date_join')}`}
                                                         />
@@ -611,34 +582,34 @@ const AddNewPersonel = ({ ...props }: Props) => {
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
-                                                        <label htmlFor="tax_code" className='label'>
+                                                        <label htmlFor="taxCode" className='label'>
                                                             {' '}
                                                             {t('tax_code')}
                                                         </label>
-                                                        <Field autoComplete="off" name="tax_code" type="text" id="tax_code" placeholder={t('enter_tax_code')} className="form-input" />
+                                                        <Field autoComplete="off" name="taxCode" type="text" id="taxCode" placeholder={t('enter_tax_code')} className="form-input" />
                                                     </div>
                                                     <div className="mb-5 w-1/2">
-                                                        <label htmlFor="bank_number" className='label'>
+                                                        <label htmlFor="bankAccount" className='label'>
                                                             {' '}
                                                             {t('bank_number')}
                                                         </label>
-                                                        <Field autoComplete="off" name="bank_number" type="text" id="bank_number" placeholder={t('enter_bank_number')} className="form-input" />
+                                                        <Field autoComplete="off" name="bankAccount" type="text" id="bankAccount" placeholder={t('enter_bank_number')} className="form-input" />
                                                     </div>
                                                 </div>
                                                 <div className='flex justify-between gap-5'>
                                                     <div className="mb-5 w-1/2">
-                                                        <label htmlFor="bank" className='label'>
+                                                        <label htmlFor="bankName" className='label'>
                                                             {' '}
                                                             {t('bank')}
                                                         </label>
-                                                        <Field autoComplete="off" name="bank" type="text" id="bank" placeholder={t('enter_bank')} className="form-input" />
+                                                        <Field autoComplete="off" name="bankName" type="text" id="bankName" placeholder={t('enter_bank')} className="form-input" />
                                                     </div>
                                                     <div className="mb-5 w-1/2">
-                                                        <label htmlFor="branch" className='label'>
+                                                        <label htmlFor="bankBranch" className='label'>
                                                             {' '}
                                                             {t('branch')}
                                                         </label>
-                                                        <Field autoComplete="off" name="branch" type="text" id="branch" placeholder={t('enter_branch')} className="form-input" />
+                                                        <Field autoComplete="off" name="bankBranch" type="text" id="bankBranch" placeholder={t('enter_branch')} className="form-input" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -652,12 +623,8 @@ const AddNewPersonel = ({ ...props }: Props) => {
                             <button type="button" className="btn btn-outline-dark cancel-button" onClick={() => handleCancel()}>
                                 {t('cancel')}
                             </button>
-                            <button type="submit" className="btn :ml-4 rtl:mr-4 add-button" disabled={disabled} onClick={() => {
-                                if (Object.keys(touched).length !== 0 && Object.keys(errors).length === 0) {
-                                    handleWarehouse(values);
-                                }
-                            }}>
-                                {props.data !== undefined ? t('update') : t('add')}
+                            <button type="submit" className="btn :ml-4 rtl:mr-4 add-button">
+                                {t('add')}
                             </button>
                         </div>
                     </Form>

@@ -83,26 +83,26 @@ const GroupPosition = ({ ...props }: Props) => {
 
     const handleDelete = (data: any) => {
         const swalDeletes = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-secondary',
-				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-				popup: 'confirm-delete',
-			},
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'confirm-delete',
+            },
             imageUrl: '/assets/images/delete_popup.png',
-			buttonsStyling: false,
-		});
+            buttonsStyling: false,
+        });
         swalDeletes
             .fire({
                 title: `${t('delete_groupP')}`,
-				html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.name}?`,
+                html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.name}?`,
                 padding: '2em',
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
                 confirmButtonText: `${t('confirm')}`,
-				reverseButtons: true,
+                reverseButtons: true,
             })
             .then((result) => {
-                 if (result.value) {
+                if (result.value) {
                     deleteGroupPositon(data?.id).then(() => {
                         mutate();
                         showMessage(`${t('delete_group_position')}`, 'success');
@@ -114,15 +114,15 @@ const GroupPosition = ({ ...props }: Props) => {
     };
 
     const handleSearch = (e: any) => {
-        if (e.target.value === "") {
-            setRecordsData(getStorge);
-        } else {
-            setRecordsData(
-                getStorge.filter((item: any) => {
-                    return item.name.toLowerCase().includes(e.target.value.toLowerCase())
-                })
-            )
-        }
+        router.replace(
+            {
+                pathname: router.pathname,
+                query: {
+                    ...router.query,
+                    search: e
+                },
+            }
+        );
     }
     const columns = [
         {
@@ -192,10 +192,10 @@ const GroupPosition = ({ ...props }: Props) => {
                             Xuất file excel
                         </button> */}
                     </div>
-                    <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                    <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
                 </div>
                 <div className="datatables">
-                     <DataTable
+                    <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover custom_table"
                         records={position?.data}

@@ -10,7 +10,6 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
-import { deleteDepartment, detailDepartment, listAllDepartment } from '../../../services/apis/department.api';
 // constants
 import { PAGE_SIZES, PAGE_SIZES_DEFAULT, PAGE_NUMBER_DEFAULT } from '@/utils/constants';
 // helper
@@ -73,7 +72,7 @@ const Duty = ({ ...props }: Props) => {
         }
     ]
 
-        // get data
+    // get data
     const { data: shift, pagination, mutate } = Shifts({ sortBy: 'id.ASC', ...router.query });
 
     useEffect(() => {
@@ -92,31 +91,31 @@ const Duty = ({ ...props }: Props) => {
     }, [recordsData])
 
     const handleEdit = (data: any) => {
-		router.push(`/hrm/shift/${data.id}`)
+        router.push(`/hrm/shift/${data.id}`)
     };
 
     const handleDelete = (data: any) => {
         const swalDeletes = Swal.mixin({
-			customClass: {
-				confirmButton: 'btn btn-secondary',
-				cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-				popup: 'confirm-delete',
-			},
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'confirm-delete',
+            },
             imageUrl: '/assets/images/delete_popup.png',
-			buttonsStyling: false,
-		});
+            buttonsStyling: false,
+        });
         swalDeletes
             .fire({
                 title: `${t('delete_shift')}`,
-				html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.name}?`,
+                html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.name}?`,
                 padding: '2em',
                 showCancelButton: true,
                 cancelButtonText: `${t('cancel')}`,
                 confirmButtonText: `${t('confirm')}`,
-				reverseButtons: true,
+                reverseButtons: true,
             })
             .then((result) => {
-                 if (result.value) {
+                if (result.value) {
                     deleteShift(data?.id).then(() => {
                         mutate();
                         showMessage(`${t('delete_shift_success')}`, 'success');
@@ -138,7 +137,7 @@ const Duty = ({ ...props }: Props) => {
             }
         );
     }
-        const handleChangePage = (page: number, pageSize: number) => {
+    const handleChangePage = (page: number, pageSize: number) => {
         router.replace(
             {
                 pathname: router.pathname,
@@ -193,38 +192,39 @@ const Duty = ({ ...props }: Props) => {
             sortable: false,
             render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.endTime}</span>
         },
-    { accessor: 'totalHours', title: `${t('time_shift')}`, sortable: false,         render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.totalHours}</span>
-},
+        {
+            accessor: 'totalHours', title: `${t('time_shift')}`, sortable: false, render: (records: any, index: any) => <span onClick={() => handleDetail(records)}>{records?.totalHours}</span>
+        },
         {
             accessor: 'action',
             title: 'Thao tác',
             titleClassName: '!text-center',
             render: (records: any) => (
                 <div className="flex items-center w-max mx-auto gap-2">
-                                        <div className="w-[80px]">
+                    <div className="w-[80px]">
 
                         <Link href={`/hrm/shift/detail/${records?.id}`}>
                             <button type='button' className='button-detail'>
                                 <IconNewEye /> <span>{t('detail')}</span>
                             </button>
-                            </Link>
-                            </div>
-                            <div className="w-[60px]">
+                        </Link>
+                    </div>
+                    <div className="w-[60px]">
 
-                    <button type="button"  className='button-edit' onClick={() => handleEdit(records)}>
-                    <IconNewEdit /><span>
-                            {t('edit')}
-                                </span>
-                    </button>
+                        <button type="button" className='button-edit' onClick={() => handleEdit(records)}>
+                            <IconNewEdit /><span>
+                                {t('edit')}
+                            </span>
+                        </button>
                     </div>
                     <div className="w-[80px]">
 
-                    <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
-                    <IconNewTrash />
+                        <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                            <IconNewTrash />
                             <span>
-                            {t('delete')}
-                                </span>
-                    </button>
+                                {t('delete')}
+                            </span>
+                        </button>
                     </div>
                 </div>
             ),
@@ -243,10 +243,10 @@ const Duty = ({ ...props }: Props) => {
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
                         <Link href="/hrm/shift/create">
-                        <button type="button" className=" m-1 button-table button-create" >
-								<IconNewPlus/>
-								<span className="uppercase">{t('add')}</span>
-							</button>
+                            <button type="button" className=" m-1 button-table button-create" >
+                                <IconNewPlus />
+                                <span className="uppercase">{t('add')}</span>
+                            </button>
                         </Link>
 
                         {/* <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
@@ -260,9 +260,9 @@ const Duty = ({ ...props }: Props) => {
                     </div>
                     <div className='flex gap-2'>
                         <div className='flex gap-1'>
-                        <div className="flex-1">
-                        <Select
-                        className='w-[150px] zIndex-10'
+                            <div className="flex-1">
+                                <Select
+                                    className='w-[150px] zIndex-10'
                                     id='unidepartmentparentIdtId'
                                     name='departmentparentId'
                                     // defaultValue='all'
@@ -271,16 +271,16 @@ const Duty = ({ ...props }: Props) => {
                                     options={list_type}
                                     maxMenuHeight={160}
                                 />
-                        </div>
-                        <div className="flex-1">
-                        <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                            </div>
+                            <div className="flex-1">
+                                <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
 
-</div>
+                            </div>
                         </div>
-                        </div>
+                    </div>
                 </div>
                 <div className="datatables">
-                      <DataTable
+                    <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover custom_table"
                         records={shift?.data}
