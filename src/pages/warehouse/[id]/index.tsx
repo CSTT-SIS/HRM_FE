@@ -24,6 +24,7 @@ import IconBackward from '@/components/Icon/IconBackward';
 import moment from 'moment';
 import IconImportFile from '@/components/Icon/IconImportFile';
 import IconNewPlus from '@/components/Icon/IconNewPlus';
+import IconNewEdit from '@/components/Icon/IconNewEdit';
 
 
 interface Props {
@@ -84,15 +85,39 @@ const ShelfPage = ({ ...props }: Props) => {
             render: ({ product }: any) => <span >{product?.unit?.name}</span>,
             sortable: false
         },
-        { accessor: 'quantity', title: 'Số lương', sortable: false },
+        { accessor: 'quantity', title: 'Số lượng', sortable: false },
         {
             accessor: 'expiredAt',
-            title: 'ngày hết hạn',
-            render: ({ expiredAt }: any) => <span >{expiredAt && moment(expiredAt).format("YYYY-MM-DD")}</span>,
+            title: 'Ngày hết hạn',
+            render: ({ expiredAt }: any) => <span >{expiredAt && moment(expiredAt).format("DD/MM/YYYY")}</span>,
             sortable: false
         },
-        { accessor: 'description', title: 'Ghi chú', sortable: false }
+        { accessor: 'description', title: 'Ghi chú', sortable: false },
+        {
+            accessor: 'action',
+            title: 'Thao tác',
+            titleClassName: '!text-center',
+            width: '10%',
+            render: (records: any) => (
+                <div className="flex justify-center gap-2">
+                    <div className="w-[60px]">
+                        <button type="button" className='button-edit' onClick={(e) => handleEdit(records)}>
+                            <IconNewEdit /><span>
+                                {t('edit')}
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            ),
+        },
     ]
+
+    const [data, setData] = useState<any>();
+
+    const handleEdit = (e: any) => {
+        setOpenModal(true);
+        setData(e);
+    }
 
     const handleChangePage = (page: number, pageSize: number) => {
         router.replace(
@@ -326,7 +351,7 @@ const ShelfPage = ({ ...props }: Props) => {
                     </div>
                 </div>
             </>
-            <ImportModal openModal={openModal} setOpenModal={setOpenModal} importMutate={mutate} />
+            <ImportModal openModal={openModal} setOpenModal={setOpenModal} importMutate={mutate} data={data} setData={setData} />
         </div>
     );
 };
