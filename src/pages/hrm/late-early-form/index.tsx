@@ -38,6 +38,7 @@ import "react-dropdown-tree-select/dist/styles.css";
 import IconNewEye from '@/components/Icon/IconNewEye';
 import IconNewPlus from '@/components/Icon/IconNewPlus';
 import list_departments from '../department/department_list.json';
+import { Letters } from '@/services/swr/letter.twr';
 
 
 interface Props {
@@ -86,12 +87,18 @@ const LateEarlyForm = ({ ...props }: Props) => {
     const [total, setTotal] = useState(0);
     const [getStorge, setGetStorge] = useState<any>();
     const [data, setData] = useState<any>();
-
+    const [filter, setFilter] = useState<any>({
+        department: '',
+        month: '',
+        search: ''
+    });
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
     const [openModal, setOpenModal] = useState(false);
     const [openDetail, setOpenDetail] = useState(false);
     const [treeDataState, setTreeDataState] = useState<any>(treeData)
+    const { data: letter, pagination, mutate } = Letters({ sortBy: 'id.ASC', ...router.query });
+
     useEffect(() => {
         const list_temp_department = list_departments?.map((department: any) => {
             return {
@@ -102,28 +109,36 @@ const LateEarlyForm = ({ ...props }: Props) => {
         setListDepartment(list_temp_department);
     }, [])
 
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const data = localStorage.getItem('lateEarlyFormList');
-            setGetStorge(LateEarlyFormList);
-            localStorage.setItem('lateEarlyFormList', JSON.stringify(LateEarlyFormList));
+    // useEffect(() => {
+    //     if (typeof window !== 'undefined') {
+    //         const data = localStorage.getItem('lateEarlyFormList');
+    //         setGetStorge(LateEarlyFormList);
+    //         localStorage.setItem('lateEarlyFormList', JSON.stringify(LateEarlyFormList));
+    //     }
+    // }, [])
 
-        }
-    }, [])
-
-    useEffect(() => {
-        setTotal(getStorge?.length);
-        setPageSize(PAGE_SIZES_DEFAULT);
-        setRecordsData(getStorge?.filter((item: any, index: any) => { return index <= 9 && page === 1 ? item : index >= 10 && index <= (page * 9) ? item : null }));
-    }, [getStorge, getStorge?.length, page])
+    // useEffect(() => {
+    //     setTotal(getStorge?.length);
+    //     setPageSize(PAGE_SIZES_DEFAULT);
+    //     setRecordsData(getStorge?.filter((item: any, index: any) => { return index <= 9 && page === 1 ? item : index >= 10 && index <= (page * 9) ? item : null }));
+    // }, [getStorge, getStorge?.length, page])
 
     useEffect(() => {
         setShowLoader(false);
     }, [recordsData])
 
+    useEffect(() => {
+        router.replace({
+            pathname: router.pathname,
+            query: {
+                ...router.query,
+                // ...( filter?.search && filter?.search !== '' && {search: filter.search}),
+                search: filter.search
+            },
+        });
+    }, [filter])
+
     const handleEdit = (data: any) => {
-        // setOpenModal(true);
-        // setData(data);
         router.push(`/hrm/late-early-form/${data.id}`)
     };
 
@@ -190,16 +205,27 @@ const LateEarlyForm = ({ ...props }: Props) => {
     };
 
     const handleSearch = (e: any) => {
-        if (e.target.value === "") {
-            setRecordsData(getStorge);
-        } else {
-            setRecordsData(
-                getStorge.filter((item: any) => {
-                    return item.name.toLowerCase().includes(e.target.value.toLowerCase())
-                })
-            )
-        }
+        setFilter({
+            ...filter,
+            search: e
+        })
     }
+
+    const handleChangePage = (page: number, pageSize: number) => {
+        router.replace(
+            {
+                pathname: router.pathname,
+                query: {
+                    ...router.query,
+                    page: page,
+                    perPage: pageSize,
+                },
+            },
+            undefined,
+            { shallow: true },
+        );
+        return pageSize;
+    };
 
     const columns = [
         {
@@ -321,22 +347,22 @@ const LateEarlyForm = ({ ...props }: Props) => {
                             />
                         </div>
                         <div className='flex flex-1'>
-                            <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e)} />
+                            <input autoComplete="off" type="text" className="form-input w-auto" value={filter?.search} placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
                         </div>
                     </div>
                 </div>
-                <div className="datatables">
-                    <DataTable
+                   <div className="datatables">
+                     <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover custom_table"
-                        records={recordsData}
+                        records={letter?.data}
                         columns={columns}
-                        totalRecords={total}
-                        recordsPerPage={pageSize}
-                        page={page}
-                        onPageChange={(p) => setPage(p)}
+                        totalRecords={pagination?.totalRecords}
+                        recordsPerPage={pagination?.perPage}
+                        page={pagination?.page}
+                        onPageChange={(p) => handleChangePage(p, pagination?.perPage)}
                         recordsPerPageOptions={PAGE_SIZES}
-                        onRecordsPerPageChange={setPageSize}
+                        onRecordsPerPageChange={e => handleChangePage(pagination?.page, e)}
                         sortStatus={sortStatus}
                         onSortStatusChange={setSortStatus}
                         minHeight={200}
