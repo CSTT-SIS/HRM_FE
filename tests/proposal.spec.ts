@@ -19,7 +19,7 @@ const fillModal = async (page: Page, text: string) => {
 };
 
 test.describe.serial('proposal CRUD', () => {
-	const text = makeRamdomText(5);
+	const text = 'yeu cau cap vat tu' + makeRamdomText(5);
 	const editText = text + 'edit';
 	const searchText = 'search=' + text;
 	const searchEditText = 'search=' + editText;
