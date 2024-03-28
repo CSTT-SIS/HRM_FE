@@ -13,14 +13,14 @@ import 'flatpickr/dist/flatpickr.css';
 import Select from 'react-select';
 import Link from 'next/link';
 import IconArrowBackward from '@/components/Icon/IconArrowBackward';
-import { ProductCategorys, Providers } from '@/services/swr/product.twr';
 import AnimateHeight from 'react-animate-height';
 import IconCaretDown from '@/components/Icon/IconCaretDown';
 import IconBack from '@/components/Icon/IconBack';
 import ImageUploading, { ImageListType } from 'react-images-uploading';
-import list_departments from '../department/department_list.json';
-import list_personnels from '../personnel/personnel_list.json';
-import list_duty from "../duty/duty_list.json";
+import { Departments } from '@/services/swr/department.twr';
+import { Humans } from '@/services/swr/human.twr';
+import { Positions } from '@/services/swr/position.twr';
+
 interface Props {
     [key: string]: any;
 }
@@ -30,40 +30,15 @@ const AddNewPersonel = ({ ...props }: Props) => {
     const [disabled, setDisabled] = useState(false);
     const [query, setQuery] = useState<any>();
     const [images, setImages] = useState<any>([]);
-    const [listDepartment, setListDepartment] = useState<any>();
-    const [listPersons, setListPersons] = useState<any>();
-    const [listDuty, setListDuty] = useState<any>([]);
-    useEffect(() => {
-        const list_temp_department = list_departments?.map((department: any) => {
-            return {
-                value: department.id,
-                label: department.name
-            }
-        })
-        setListDepartment(list_temp_department);
-        const list_temp_person = list_personnels?.map((person: any) => {
-            return {
-                value: person.code,
-                label: person.name
-            }
-        })
-        setListPersons(list_temp_person);
-        const list_temp_duty = list_duty?.map((person: any) => {
-            return {
-                value: person.code,
-                label: person.name
-            }
-        })
-        setListDuty(list_temp_duty);
-    }, [])
     const onChange = (imageList: ImageListType, addUpdateIndex: number[] | undefined) => {
         setImages(imageList as never[]);
     };
     const maxNumber = 69;
 
-    const [typeShift, setTypeShift] = useState("0"); // 0: time, 1: total hours
-    const { data: departmentparents } = ProductCategorys(query);
-    const { data: manages } = Providers(query);
+    const { data: departmentparents } = Departments(query);
+    const { data: manages } = Humans(query);
+    const { data: positions } = Positions(query);
+
     const departmentparent = departmentparents?.data.filter((item: any) => {
         return (
             item.value = item.id,
@@ -78,25 +53,19 @@ const AddNewPersonel = ({ ...props }: Props) => {
             item.label = item.name
         )
     })
+    const position = positions?.data.filter((item: any) => {
+        return (
+            item.value = item.id,
+            item.label = item.name
+        )
+    })
     const SubmittedForm = Yup.object().shape({
         name: Yup.string()
             .min(2, 'Too Short!')
             .required(`${t('please_fill_name_staff')}`),
         code: Yup.string()
             .min(2, 'Too Short!')
-            .required(`${t('please_fill_Xaypayouode')}`),
-        surname: Yup.string()
-            .min(2, 'Too Short!')
-            .required(`${t('please_fill_surname_name')}`),
-        email: Yup.string()
-            .min(2, 'Too Short!')
-            .required(`${t('please_fill_email')}`),
-        phone: Yup.string()
-            .min(2, 'Too Short!')
-            .required(`${t('please_fill_phone')}`),
-        userName: Yup.string()
-            .min(2, 'Too Short!')
-            .required(`${t('please_fill_username')}`),
+            .required(`${t('please_fill_code')}`),
     });
     const handleSearch = (param: any) => {
         setQuery({ search: param });

@@ -5,8 +5,12 @@ export const listAllDepartment = async (data: any) => {
 	const endpoint = '/department';
 	return callApi(endpoint, 'GET', data);
 };
+export const listAllDepartmentTree = async (data: any) => {
+	const endpoint = '/department/list-tree';
+	return callApi(endpoint, 'GET', data);
+};
 export const detailDepartment = async (data: any) => {
-	const endpoint = `/department/${data.departmentId}`;
+	const endpoint = `/department/${data}`;
 	return callApi(endpoint, 'GET');
 };
 export const createDepartment = async (data: any) => {
@@ -19,7 +23,7 @@ export const updateDepartment = async (data: any) => {
 };
 
 export const deleteDepartment = async (data: any) => {
-	const endpoint = `/department/${data.departmentId}`;
+	const endpoint = `/department/${data}`;
 	return callApi(endpoint, 'DELETE', data);
 };
 

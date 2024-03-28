@@ -41,13 +41,15 @@ import IconNewPlus from '@/components/Icon/IconNewPlus';
 import IconImportFile from '@/components/Icon/IconImportFile';
 import IconNewDownload from '@/components/Icon/IconNewDownload';
 import IconNewDownload2 from '@/components/Icon/IconNewDownload2';
+import { Humans } from '@/services/swr/human.twr';
+import { deleteHuman } from '@/services/apis/human.api';
 
 interface Props {
 	[key: string]: any;
 }
 
 const Department = ({ ...props }: Props) => {
-    const fileInputRef = useRef<HTMLInputElement>(null);
+	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	const dispatch = useDispatch();
 	const { t } = useTranslation();
@@ -63,39 +65,13 @@ const Department = ({ ...props }: Props) => {
 	const [recordsData, setRecordsData] = useState<any>();
 	const [total, setTotal] = useState(0);
 	const [getStorge, setGetStorge] = useState<any>();
-	const [data, setData] = useState<any>();
+	const { data: human, pagination, mutate } = Humans({ sortBy: 'id.ASC', ...router.query });
 
-	const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
-	const [openModal, setOpenModal] = useState(false);
+
 	const [codeArr, setCodeArr] = useState<string[]>([]);
 
-	const toggleCode = (name: string) => {
-		if (codeArr.includes(name)) {
-			setCodeArr((value) => value.filter((d) => d !== name));
-		} else {
-			setCodeArr([...codeArr, name]);
-		}
-	};
-	const [treeview1, setTreeview1] = useState<string[]>(['images']);
-	const [pagesSubMenu, setPagesSubMenu] = useState(false);
 
-	const toggleTreeview1 = (name: any) => {
-		if (treeview1.includes(name)) {
-			setTreeview1((value) => value.filter((d) => d !== name));
-		} else {
-			setTreeview1([...treeview1, name]);
-		}
-	};
-
-	const [treeview2, setTreeview2] = useState<string[]>(['parent']);
-	const toggleTreeview2 = (name: any) => {
-		if (treeview2.includes(name)) {
-			setTreeview2((value) => value.filter((d) => d !== name));
-		} else {
-			setTreeview2([...treeview2, name]);
-		}
-	};
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
 			const data = localStorage.getItem('staffList');
@@ -137,8 +113,8 @@ const Department = ({ ...props }: Props) => {
 		});
 		swalDeletes
 			.fire({
-				title: `${t('delete_asset')}`,
-				html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.name}?`,
+				title: `${t('delete_staff')}`,
+				html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.fullName}?`,
 				padding: '2em',
 				showCancelButton: true,
 				cancelButtonText: `${t('cancel')}`,
@@ -147,12 +123,12 @@ const Department = ({ ...props }: Props) => {
 			})
 			.then((result) => {
 				if (result.value) {
-					const value = getStorge.filter((item: any) => {
-						return item.id !== data.id;
+					deleteHuman(data?.id).then(() => {
+						mutate();
+						showMessage(`${t('delete_staff_success')}`, 'success');
+					}).catch((err) => {
+						showMessage(`${err?.response?.data?.message}`, 'error');
 					});
-					localStorage.setItem('staffList', JSON.stringify(value));
-					setGetStorge(value);
-					showMessage(`${t('delete_department_success')}`, 'success');
 				}
 			});
 	};
@@ -172,188 +148,11 @@ const Department = ({ ...props }: Props) => {
 
 	type Item = {
 		id: number;
-		content: Content;
+		fullName: string; code: string; department?: string; duty?: string; email: string;
 		hasChildren: boolean;
 		children?: Item[];
 	};
-	const Name = (props: Content) => <Box as="span">{props.name}</Box>;
-	const Code = (props: Content) => (
-		<Box as="span">{props.code}</Box>
-	);
-	const Duty = (props: Content) => (
-		<Box as="span">{props.duty}</Box>
-	);
-	const Department = (props: Content) => (
-		<Box as="span">{props.department}</Box>
-	);
-	const Action = (props: Content) => (
-		<>
-			{
-				props.type !== 'PB' ?
-					<div className="flex items-center w-max mx-auto gap-2">
-						<Tippy content={`${t('edit')}`}>
-							<button type="button" className='button-edit' onClick={() => handleEdit(props)}>
-								<IconNewEdit /><span>
-									{t('edit')}
-								</span>
-							</button>
-						</Tippy>
 
-						<Tippy content={`${t('delete')}`}>
-							<button type="button" className='button-delete' onClick={() => handleDelete(props)}>
-								<IconNewTrash />
-								<span>
-									{t('delete')}
-								</span>
-							</button>
-						</Tippy>
-						<Tippy content={`${t('work_schedule')}`}>
-							<Link href="/hrm/calendar" className="group">
-								<IconNewCalendar />
-								<span>
-									{t('work_schedule')}
-								</span>
-							</Link>
-						</Tippy>
-					</div> : <></>
-			}
-		</>
-
-	);
-	const items: Item[] = [
-		{
-			id: 1,
-			content: {
-				id: 1,
-				name: "Phòng Hành chính",
-				code: "PB01",
-				type: 'PB'
-			},
-			hasChildren: true,
-			children: [
-				{
-					id: 2,
-					content: {
-						id: 1,
-						name: "Bountafaibounnheuang",
-						code: "NV1",
-						type: 'NV',
-						department: 'Phòng Hành chính',
-						duty: 'Phó phòng'
-					},
-					hasChildren: false,
-
-				},
-                {
-					id: 2,
-					content: {
-						id: 1,
-						name: "Toukta",
-						code: "NV1",
-						type: 'NV',
-						department: 'Phòng Hành chính',
-						duty: 'Nhân viên'
-					},
-					hasChildren: false,
-
-				},
-			],
-
-		},
-		{
-			id: 2,
-			content: {
-				id: 2,
-				name: "Phòng Kỹ thuật",
-				code: "PB02",
-				type: 'PB'
-			},
-			hasChildren: true,
-			children: [
-				{
-					id: 4,
-					content: {
-						id: 2,
-						name: "Khampa Sirt",
-						code: "NV02",
-						type: 'NV',
-						department: 'Phòng Kỹ thuật',
-						duty: 'Nhân viên'
-					},
-					hasChildren: false,
-
-				},
-				{
-					id: 5,
-					content: {
-						id: 3,
-						name: "Phu thone",
-						code: "NV03",
-						type: 'NV',
-						department: 'Phòng Kỹ thuật',
-						duty: 'Nhân viên'
-					},
-					hasChildren: false,
-
-				},
-                {
-					id: 5,
-					content: {
-						id: 3,
-						name: "Vilaxay",
-						code: "NV03",
-						type: 'NV',
-						department: 'Phòng Kỹ thuật',
-						duty: 'Nhân viên'
-					},
-					hasChildren: false,
-
-				}
-			],
-
-		},
-	];
-	const columns = [
-		{
-			accessor: 'id',
-			title: '#',
-			render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
-		},
-		{ accessor: 'name', title: 'Tên nhân viên', sortable: false },
-		{ accessor: 'code', title: 'Mã nhân viên', sortable: false, width: '20%' },
-
-		{
-			accessor: 'action',
-			title: 'Thao tác',
-			titleClassName: '!text-center',
-			render: (records: any) => (
-				<div className="mx-auto flex w-max items-center gap-2">
-						<button type="button" onClick={() => handleEdit(records)}>
-							<IconNewEdit />
-                            <span>
-                                {t('edit')}
-                            </span>
-						</button>
-						<button type="button" onClick={() => handleDelete(records)}>
-							<IconNewTrash />
-                            <span>
-                                {t('delete')}
-                            </span>
-						</button>
-
-						<Link href="/hrm/calendar" className="group">
-                            <button className="button-calendar">
-                            <span>
-                                {t('work_schedule')}
-                            </span>
-                            </button>
-							<IconNewCalendar />
-
-						</Link>
-				</div>
-			),
-		},
-	];
 
 	return (
 		<div>
@@ -368,18 +167,18 @@ const Department = ({ ...props }: Props) => {
 					<div className="flex flex-wrap items-center">
 						<Link href="/hrm/personnel/AddNewPersonel">
 							<button type="button" className=" m-1 button-table button-create" >
-								<IconNewPlus/>
+								<IconNewPlus />
 								<span className="uppercase">{t('add')}</span>
 							</button>
 						</Link>
 						<input autoComplete="off" type="file" ref={fileInputRef} style={{ display: "none" }} />
 
 						<button type="button" className=" m-1 button-table button-import" onClick={() => fileInputRef.current?.click()}>
-                            <IconImportFile/>
-                            <span className="uppercase">Nhập file</span>
-                        </button>
+							<IconImportFile />
+							<span className="uppercase">Nhập file</span>
+						</button>
 						<button type="button" className=" m-1 button-table button-download">
-							<IconNewDownload2/>
+							<IconNewDownload2 />
 							<span className="uppercase">Xuất file excel</span>
 						</button>
 					</div>
@@ -392,43 +191,42 @@ const Department = ({ ...props }: Props) => {
 							<Header width={'20%'}>Tên nhân viên</Header>
 							<Header width={'20%'}>Mã nhân viên</Header>
 							<Header width={'20%'}>Chức vụ</Header>
-							<Header width={'20%'}>Phòng ban</Header>
+							<Header width={'20%'}>Email</Header>
 							<Header width={'20%'}>Thao tác</Header>
 						</Headers>
 						<Rows
-							items={items}
-							render={({ id, content, children = [] }: Item) => (
+							items={human?.data}
+							render={({ id, fullName, code, email, children = [] }: Item) => (
 								<Row
 									itemId={id}
 									items={children}
 									hasChildren={children.length > 0}
 									isDefaultExpanded
 								>
-									<Cell singleLine>{content.name}</Cell>
-									<Cell>{content.code}</Cell>
-									<Cell>{content.duty}</Cell>
-									<Cell>{content.department}</Cell>
+									<Cell singleLine>{fullName}</Cell>
+									<Cell>{code}</Cell>
+									<Cell></Cell>
+									<Cell>{email}</Cell>
 									<Cell> <div className="flex items-center w-max mx-auto gap-2">
 										{
-											content.type !== 'PB' ?
-												<div className="flex items-center w-max mx-auto gap-2">
-                                                                        <div className="w-[60px]">
+											<div className="flex items-center w-max mx-auto gap-2">
+												<div className="w-[60px]">
 
-														<button type="button" className='button-edit' onClick={() => handleEdit(content)}>
-															<IconNewEdit /><span>
-																{t('edit')}
-															</span>
-														</button>
-                                                        </div>
-                                                        <div className="w-[80px]">
-														<button type="button" className='button-delete' onClick={() => handleDelete(content)}>
-															<IconNewTrash />
-															<span>
-																{t('delete')}
-															</span>
-														</button>
-                                                        </div>
-													</div> : <></>
+													<button type="button" className='button-edit' onClick={() => handleEdit(id)}>
+														<IconNewEdit /><span>
+															{t('edit')}
+														</span>
+													</button>
+												</div>
+												<div className="w-[80px]">
+													<button type="button" className='button-delete' onClick={() => handleDelete({ id, fullName })}>
+														<IconNewTrash />
+														<span>
+															{t('delete')}
+														</span>
+													</button>
+												</div>
+											</div>
 										}
 									</div></Cell>
 								</Row>
@@ -462,7 +260,6 @@ const Department = ({ ...props }: Props) => {
 					</div>
 				</div>
 			</div>
-			<PersonnelModal openModal={openModal} setOpenModal={setOpenModal} data={data} totalData={getStorge} setData={setData} setGetStorge={setGetStorge} />
 		</div>
 	);
 };

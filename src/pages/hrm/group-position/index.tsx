@@ -1,111 +1,69 @@
 import { useEffect, Fragment, useState, useCallback } from 'react';
-import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
-import { lazy } from 'react';
-import { setPageTitle } from '@/store/themeConfigSlice';
+import { setPageTitle } from '../../../store/themeConfigSlice';
+import Link from 'next/link';
 // Third party libs
 import { DataTable, DataTableSortStatus } from 'mantine-datatable';
 import Swal from 'sweetalert2';
-import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { useTranslation } from 'react-i18next';
 // API
-import { Units } from '@/services/swr/product.twr';
-import { DeleteUnit } from '@/services/apis/product.api';
+import { Positions } from '@/services/swr/position.twr';
+import { GroupPositions } from '@/services/swr/group-position.twr';
 // constants
-import { PAGE_SIZES } from '@/utils/constants';
+import { PAGE_SIZES, PAGE_SIZES_DEFAULT, PAGE_NUMBER_DEFAULT } from '@/utils/constants';
 // helper
 import { showMessage } from '@/@core/utils';
 // icons
 import { IconLoading } from '@/components/Icon/IconLoading';
-import IconPlus from '@/components/Icon/IconPlus';
-import IconPencil from '@/components/Icon/IconPencil';
-import IconTrashLines from '@/components/Icon/IconTrashLines';
 
-// modal
-import UnitModal from './UnitModal';
+import { useRouter } from 'next/router';
+
+// json
+import DutyModal from './modal/DutyModal';
 import IconNewEdit from '@/components/Icon/IconNewEdit';
 import IconNewTrash from '@/components/Icon/IconNewTrash';
 import IconNewPlus from '@/components/Icon/IconNewPlus';
-
-
+import { deleteGroupPositon } from '@/services/apis/group-position.api';
 interface Props {
     [key: string]: any;
 }
 
-const ProductUnitPage = ({ ...props }: Props) => {
+const GroupPosition = ({ ...props }: Props) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
+    useEffect(() => {
+        dispatch(setPageTitle(`${t('duty')}`));
+    });
+
     const router = useRouter();
 
     const [showLoader, setShowLoader] = useState(true);
+    const [page, setPage] = useState<any>(PAGE_NUMBER_DEFAULT);
+    const [pageSize, setPageSize] = useState(PAGE_SIZES_DEFAULT);
+    const [recordsData, setRecordsData] = useState<any>();
+    const [total, setTotal] = useState(0);
+    const [getStorge, setGetStorge] = useState<any>();
     const [data, setData] = useState<any>();
-    const [openModal, setOpenModal] = useState(false);
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({ columnAccessor: 'id', direction: 'desc' });
 
-
-    // get data
-    const { data: unit, pagination, mutate } = Units({ sortBy: "id.DESC", ...router.query });
-
-    useEffect(() => {
-        dispatch(setPageTitle(`${t('unit')}`));
+    const [openModal, setOpenModal] = useState(false);
+    //get data
+    const { data: position, pagination, mutate } = GroupPositions({
+        sortBy: 'id.ASC',
+        ...router.query
     });
+
 
     useEffect(() => {
         setShowLoader(false);
-    }, [unit])
+    }, [recordsData])
 
     const handleEdit = (data: any) => {
-        router.push(`/warehouse/product/unit/${data?.id}`);
-        setData(data);
+        router.push(`/hrm/group-position/${data.id}`)
     };
-
-    const handleDelete = ({ id, name }: any) => {
-        const swalDeletes = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-secondary testid-confirm-btn',
-                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
-                popup: 'confirm-delete',
-            },
-            imageUrl: '/assets/images/delete_popup.png',
-            buttonsStyling: false,
-        });
-        swalDeletes
-            .fire({
-                icon: 'question',
-                title: `${t('delete_unit')}`,
-                text: `${t('delete')} ${name}`,
-                padding: '2em',
-                showCancelButton: true,
-                cancelButtonText: `${t('cancel')}`,
-                confirmButtonText: `${t('confirm')}`,
-                reverseButtons: true,
-            })
-            .then((result) => {
-                if (result.value) {
-                    DeleteUnit({ id }).then(() => {
-                        mutate();
-                        showMessage(`${t('delete_unit_success')}`, 'success');
-                    }).catch((err) => {
-                        showMessage(`${err?.response?.data?.message}`, 'error');
-                    });
-                }
-            });
-    };
-
-    const handleSearch = (param: any) => {
-        router.replace(
-            {
-                pathname: router.pathname,
-                query: {
-                    ...router.query,
-                    search: param
-                },
-            }
-        );
-    }
 
     const handleChangePage = (page: number, pageSize: number) => {
         router.replace(
@@ -123,36 +81,85 @@ const ProductUnitPage = ({ ...props }: Props) => {
         return pageSize;
     };
 
+    const handleDelete = (data: any) => {
+        const swalDeletes = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-secondary',
+                cancelButton: 'btn btn-danger ltr:mr-3 rtl:ml-3',
+                popup: 'confirm-delete',
+            },
+            imageUrl: '/assets/images/delete_popup.png',
+            buttonsStyling: false,
+        });
+        swalDeletes
+            .fire({
+                title: `${t('delete_groupP')}`,
+                html: `<span class='confirm-span'>${t('confirm_delete')}</span> ${data.name}?`,
+                padding: '2em',
+                showCancelButton: true,
+                cancelButtonText: `${t('cancel')}`,
+                confirmButtonText: `${t('confirm')}`,
+                reverseButtons: true,
+            })
+            .then((result) => {
+                if (result.value) {
+                    deleteGroupPositon(data?.id).then(() => {
+                        mutate();
+                        showMessage(`${t('delete_group_position')}`, 'success');
+                    }).catch((err) => {
+                        showMessage(`${err?.response?.data?.message}`, 'error');
+                    });
+                }
+            });
+    };
+
+    const handleSearch = (e: any) => {
+        router.replace(
+            {
+                pathname: router.pathname,
+                query: {
+                    ...router.query,
+                    search: e
+                },
+            }
+        );
+    }
     const columns = [
         {
             accessor: 'id',
             title: '#',
-            render: (records: any, index: any) => <span>{(pagination?.page - 1) * pagination?.perPage + index + 1}</span>,
+            render: (records: any, index: any) => <span>{(page - 1) * pageSize + index + 1}</span>,
         },
-        { accessor: 'name', title: 'Tên Đvt', sortable: false },
-        { accessor: 'description', title: 'Ghi chú', sortable: false },
+        { accessor: 'name', title: 'Tên nhóm chức vụ', sortable: false },
+        { accessor: 'description', title: 'Mô tả', sortable: false },
+        // {
+        //     accessor: 'status',
+        //     title: 'Trạng thái',
+        //     sortable: false,
+        //     render: ({ status }: any) => <span className={`badge badge-outline-${status === "active" ? "success" : "danger"} `}>{t(`${status}`)}</span>,
+        // },
         {
             accessor: 'action',
             title: 'Thao tác',
             titleClassName: '!text-center',
-            width: '10%',
             render: (records: any) => (
-                <div className="flex justify-start gap-2">
+                <div className="mx-auto flex items-center gap-2 justify-center">
                     <div className="w-[60px]">
-                        <button data-testId="edit-unit-btn" type="button" className='button-edit' onClick={() => handleEdit(records)}>
+                        <button type="button" className='button-edit' onClick={() => handleEdit(records)}>
                             <IconNewEdit /><span>
                                 {t('edit')}
                             </span>
                         </button>
                     </div>
                     <div className="w-[80px]">
-                        <button data-testId="delete-unit-btn" type="button" className='button-delete' onClick={() => handleDelete(records)}>
+                        <button type="button" className='button-delete' onClick={() => handleDelete(records)}>
                             <IconNewTrash />
                             <span>
                                 {t('delete')}
                             </span>
                         </button>
                     </div>
+
                 </div>
             ),
         },
@@ -165,23 +172,33 @@ const ProductUnitPage = ({ ...props }: Props) => {
                     <IconLoading />
                 </div>
             )}
-            <title>unit</title>
+            <title>{t('department')}</title>
             <div className="panel mt-6">
                 <div className="flex md:items-center justify-between md:flex-row flex-col mb-4.5 gap-5">
                     <div className="flex items-center flex-wrap">
-                        <button data-testId="add-unit" type="button" className="m-1 button-table button-create" onClick={(e) => router.push(`/warehouse/product/unit/create`)}>
-                            <IconNewPlus />
-                            <span className='uppercase'>{t('add')}</span>
-                        </button>
-                    </div>
+                        <Link href="/hrm/group-position/create">
+                            <button type="button" className=" m-1 button-table button-create" >
+                                <IconNewPlus />
+                                <span className="uppercase">{t('add')}</span>
+                            </button>
+                        </Link>
 
-                    <input data-testid="search-unit-input" autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
+                        {/* <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                            <IconFolderMinus className="ltr:mr-2 rtl:ml-2" />
+                            Nhập file
+                        </button>
+                        <button type="button" className="btn btn-primary btn-sm m-1 custom-button" >
+                            <IconDownload className="ltr:mr-2 rtl:ml-2" />
+                            Xuất file excel
+                        </button> */}
+                    </div>
+                    <input autoComplete="off" type="text" className="form-input w-auto" placeholder={`${t('search')}`} onChange={(e) => handleSearch(e.target.value)} />
                 </div>
                 <div className="datatables">
                     <DataTable
                         highlightOnHover
                         className="whitespace-nowrap table-hover custom_table"
-                        records={unit?.data}
+                        records={position?.data}
                         columns={columns}
                         totalRecords={pagination?.totalRecords}
                         recordsPerPage={pagination?.perPage}
@@ -196,15 +213,16 @@ const ProductUnitPage = ({ ...props }: Props) => {
                     />
                 </div>
             </div>
-            <UnitModal
+            <DutyModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}
                 data={data}
+                totalData={getStorge}
                 setData={setData}
-                unitMutate={mutate}
+                setGetStorge={setGetStorge}
             />
         </div>
     );
 };
 
-export default ProductUnitPage;
+export default GroupPosition;

@@ -6,6 +6,10 @@ export const listAllHuman = async (data: any) => {
 	const endpoint = '/human';
 	return callApi(endpoint, 'GET', data);
 };
+export const listManager = async (data: any) => {
+	const endpoint = '/human/by-is-manager';
+	return callApi(endpoint, 'GET', data);
+};
 export const detailHuman = async (data: any) => {
 	const endpoint = `/human/detail?humanId=${data.humanId}`;
 	return callApi(endpoint, 'GET');
@@ -20,7 +24,7 @@ export const updateHuman = async (data: any) => {
 };
 
 export const deleteHuman = async (data: any) => {
-	const endpoint = `/human/delete?humanId=${data.humanId}`;
-	return callApi(endpoint, 'POST', data);
+	const endpoint = `/human/${data}`;
+	return callApi(endpoint, 'DELETE', data);
 };
 

@@ -42,8 +42,6 @@ const ProductModal = ({ ...props }: Props) => {
             .required(`${t('please_fill_productCode')}`),
         unitId: new Yup.ObjectSchema().required(`${t('please_fill_unit')}`),
         categoryId: new Yup.ObjectSchema().required(`${t('please_fill_category')}`),
-        minQuantity: Yup.number().required(`${t('please_fill_minQuantity')}`),
-        maxQuantity: Yup.number().required(`${t('please_fill_maxQuantity')}`)
     });
     const handleProduct = (param: any) => {
         const query = {
@@ -228,19 +226,17 @@ const ProductModal = ({ ...props }: Props) => {
                             <div className="flex justify-between gap-5">
                                 <div className="w-1/2">
                                     <label htmlFor="minQuantity" data-testid={'minQuantity'} className='label'>
-                                        {' '}
-                                        {t('min_quantity')} <span style={{ color: 'red' }}>* </span>
+                                        {t('min_quantity')}
                                     </label>
                                     <Field autoComplete="off" name="minQuantity" type="number" id="minQuantity" placeholder={`${t('enter_min_quantity')}`} className="form-input" />
-                                    {errors.minQuantity ? <div className="mt-1 text-danger"> {errors.minQuantity} </div> : null}
+                                    {submitCount && errors.minQuantity ? <div className="mt-1 text-danger"> {errors.minQuantity} </div> : null}
                                 </div>
                                 <div className="w-1/2">
                                     <label htmlFor="maxQuantity" data-testid={'maxQuantity'} className='label'>
-                                        {' '}
-                                        {t('max_quantity')} <span style={{ color: 'red' }}>* </span>
+                                        {t('max_quantity')}
                                     </label>
                                     <Field autoComplete="off" name="maxQuantity" type="number" id="maxQuantity" placeholder={`${t('enter_max_quantity')}`} className="form-input" />
-                                    {errors.maxQuantity ? <div className="mt-1 text-danger"> {errors.maxQuantity} </div> : null}
+                                    {submitCount && errors.maxQuantity ? <div className="mt-1 text-danger"> {errors.maxQuantity} </div> : null}
                                 </div>
                             </div>
                             <div className="flex justify-between gap-5">

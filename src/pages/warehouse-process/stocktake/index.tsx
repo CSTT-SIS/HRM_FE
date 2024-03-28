@@ -44,7 +44,6 @@ const StocktakePage = ({ ...props }: Props) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const router = useRouter();
-    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const [showLoader, setShowLoader] = useState(true);
     const [tally, setTally] = useState(false);
@@ -53,7 +52,7 @@ const StocktakePage = ({ ...props }: Props) => {
 
 
     // get data
-    const { data: stocktakes, pagination, mutate } = Stocktakes({ ...router.query });
+    const { data: stocktakes, pagination, mutate } = Stocktakes({ ...router.query, sortBy: "id.DESC" });
     useEffect(() => {
         dispatch(setPageTitle(`${t('Stocktake')}`));
     });
@@ -238,11 +237,6 @@ const StocktakePage = ({ ...props }: Props) => {
                         <button type="button" className="m-1 button-table button-create" onClick={(e) => router.push(`/warehouse-process/stocktake/create?status=DRAFT`)}>
                             <IconNewPlus />
                             <span className='uppercase'>{t('add')}</span>
-                        </button>
-                        <input autoComplete="off" type="file" ref={fileInputRef} accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" multiple style={{ display: "none" }} />
-                        <button type="button" className=" m-1 button-table button-import" onClick={() => fileInputRef.current?.click()}>
-                            <IconImportFile />
-                            <span className="uppercase">Nhập file</span>
                         </button>
                     </div>
 

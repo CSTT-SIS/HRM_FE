@@ -13,10 +13,12 @@ import 'flatpickr/dist/flatpickr.css';
 import Select from 'react-select';
 import Link from 'next/link';
 import IconArrowBackward from '@/components/Icon/IconArrowBackward';
-import { ProductCategorys, Providers } from '@/services/swr/product.twr';
+import { Humans } from '@/services/swr/human.twr';
+import { Departments } from '@/services/swr/department.twr';
+
 import IconBack from '@/components/Icon/IconBack';
-import list_departments from './department_list.json';
-import list_personnels from '../personnel/personnel_list.json';
+import { createDepartment } from '@/services/apis/department.api';
+
 
 interface Props {
     [key: string]: any;
@@ -28,28 +30,18 @@ const AddNewDepartment = ({ ...props }: Props) => {
     const [query, setQuery] = useState<any>();
 
     const [typeShift, setTypeShift] = useState("0"); // 0: time, 1: total hours
-    const { data: departmentparents } = ProductCategorys(query);
-    const { data: manages } = Providers(query);
-    const [listDepartment, setListDepartment] = useState<any>();
-    const [listPersons, setListPersons] = useState<any>();
-    useEffect(() => {
-        const list_temp_department = list_departments?.map((department: any) => {
-            return {
-                value: department.id,
-                label: department.name
-            }
-        })
-        setListDepartment(list_temp_department);
-        const list_temp_person = list_personnels?.map((person: any) => {
-            return {
-                value: person.code,
-                label: person.name
-            }
-        })
-        setListPersons(list_temp_person);
-    }, [])
+    const { data: departmentparents } = Departments(query);
+    const { data: manages } = Humans(query);
+    
+   
 
     const manage = manages?.data.filter((item: any) => {
+        return (
+            item.value = item.id,
+            item.label = item.fullName
+        )
+    })
+    const departmentparent = departmentparents?.data.filter((item: any) => {
         return (
             item.value = item.id,
             item.label = item.name
@@ -62,7 +54,7 @@ const AddNewDepartment = ({ ...props }: Props) => {
         code: Yup.string()
             .min(2, 'Too Short!')
             .required(`${t('please_fill_departmentCode')}`),
-        abbreviated: Yup.string()
+            abbreviation: Yup.string()
             .min(2, 'Too Short!')
             .required(`${t('please_fill_abbreviated_name')}`),
     });
@@ -70,32 +62,12 @@ const AddNewDepartment = ({ ...props }: Props) => {
         setQuery({ search: param });
     }
     const handleDepartment = (value: any) => {
-        if (props?.data) {
-            const reNew = props.totalData.filter((item: any) => item.id !== props.data.id);
-            reNew.push({
-                id: props.data.id,
-                name: value.name,
-                code: value.code,
-            });
-            localStorage.setItem('departmentList', JSON.stringify(reNew));
-            props.setGetStorge(reNew);
-            props.setOpenModal(false);
-            props.setData(undefined);
-            showMessage(`${t('edit_department_success')}`, 'success');
-        } else {
-            const reNew = props.totalData;
-            reNew.push({
-                id: Number(props?.totalData[props?.totalData?.length - 1].id) + 1,
-                name: value.name,
-                code: value.code,
-                status: value.status,
-            });
-            localStorage.setItem('departmentList', JSON.stringify(reNew));
-            props.setGetStorge(props.totalData);
-            props.setOpenModal(false);
-            props.setData(undefined);
+       
+        createDepartment(value).then(() => {
             showMessage(`${t('add_department_success')}`, 'success');
-        }
+        }).catch((err) => {
+            showMessage(`${t('add_department_error')}`, 'error');
+        });
     };
 
     const handleChangeTypeShift = (e: any) => {
@@ -125,16 +97,9 @@ const AddNewDepartment = ({ ...props }: Props) => {
                     name: props?.data ? `${props?.data?.name}` : '',
                     code: props?.data ? `${props?.data?.code}` : '',
                     description: props?.data ? `${props?.data?.description}` : '',
-
-                    abbreviated: props?.data ? `${props?.data?.abbreviated}` : '',
-                    manageId: props?.data ? {
-                        value: `${props?.data?.manage.id}`,
-                        label: `${props?.data?.manage.name}`
-                    } : "",
-                    departmentparentId: props?.data ? {
-                        value: `${props?.data?.departmentparent.id}`,
-                        label: `${props?.data?.departmentparent.name}`
-                    } : "",
+                    abbreviation: props?.data ? `${props?.data?.abbreviation}` : '',
+                    headOfDepartmentId: props?.data ? props?.data?.headOfDepartmentId : null,
+                    parentId: props?.data ? props?.data?.parentId : null,
                 }}
                 validationSchema={SubmittedForm}
                 onSubmit={(values) => {
@@ -161,12 +126,12 @@ const AddNewDepartment = ({ ...props }: Props) => {
                                 {submitCount ? errors.code ? <div className="mt-1 text-danger"> {errors.code} </div> : null : ''}
                             </div>
                             <div className="mb-5 w-1/2">
-                                <label htmlFor="code" className='label'>
+                                <label htmlFor="abbreviation" className='label'>
                                     {' '}
                                     {t('Abbreviated_name')} <span style={{ color: 'red' }}>* </span>
                                 </label>
-                                <Field autoComplete="off" name="abbreviated" type="text" id="abbreviated" placeholder={`${t('enter_abbreviated_name')}`} className="form-input" />
-                                {submitCount ? errors.abbreviated ? <div className="mt-1 text-danger"> {errors.abbreviated} </div> : null : ''}
+                                <Field autoComplete="off" name="abbreviation" type="text" id="abbreviation" placeholder={`${t('enter_abbreviated_name')}`} className="form-input" />
+                                {submitCount ? errors.abbreviation ? <div className="mt-1 text-danger"> {errors.abbreviation} </div> : null : ''}
                             </div>
 
                         </div>
@@ -174,39 +139,39 @@ const AddNewDepartment = ({ ...props }: Props) => {
 
                         <div className="flex justify-between gap-5">
                             <div className="mb-5 w-1/2">
-                                <label htmlFor="departmentparentId" className='label'> {t('Department_Parent')} < span style={{ color: 'red' }}>* </span></label >
+                                <label htmlFor="parentId" className='label'> {t('Department_Parent')} < span style={{ color: 'red' }}>* </span></label >
                                 <Select
-                                    id='unidepartmentparentIdtId'
-                                    name='departmentparentId'
+                                    id='parentId'
+                                    name='parentId'
                                     placeholder={t('select_departmentparent')}
                                     onInputChange={e => handleSearch(e)}
-                                    options={listDepartment}
+                                    options={departmentparent}
                                     maxMenuHeight={160}
-                                    value={values.departmentparentId}
+                                    value={values.parentId}
                                     onChange={e => {
-                                        setFieldValue('departmentparentId', e)
+                                        setFieldValue('parentId', e)
                                     }}
                                 />
-                                {submitCount ? errors.departmentparentId ? (
-                                    <div className="text-danger mt-1"> {errors.departmentparentId} </div>
+                                {submitCount ? errors.parentId ? (
+                                    <div className="text-danger mt-1"> {`${errors.parentId}`} </div>
                                 ) : null : ''}
                             </div>
                             <div className="mb-5 w-1/2">
-                                <label htmlFor="manageId" className='label'> {t('Manager')} < span style={{ color: 'red' }}>* </span></label >
+                                <label htmlFor="headOfDepartmentId" className='label'> {t('Manager')} < span style={{ color: 'red' }}>* </span></label >
                                 <Select
-                                    id='manageId'
-                                    name='manageId'
+                                    id='headOfDepartmentId'
+                                    name='headOfDepartmentId'
                                     placeholder={t('select_manager')}
                                     onInputChange={e => handleSearch(e)}
-                                    options={listPersons}
+                                    options={manage}
                                     maxMenuHeight={160}
-                                    value={values.manageId}
+                                    value={values.headOfDepartmentId}
                                     onChange={e => {
-                                        setFieldValue('manageId', e)
+                                        setFieldValue('headOfDepartmentId', e)
                                     }}
                                 />
-                                {submitCount ? errors.manageId ? (
-                                    <div className="text-danger mt-1"> {errors.manageId} </div>
+                                {submitCount ? errors.headOfDepartmentId ? (
+                                    <div className="text-danger mt-1">  {`${errors.headOfDepartmentId}`} </div>
                                 ) : null : ''}
                             </div>
 

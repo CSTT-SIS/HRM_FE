@@ -178,6 +178,7 @@
 	"edit_user_err": "Edit user error",
 	"delete_user_success_department_err": "Delete user error",
 	"duty": "duty",
+	"group_position" : "group_position",
 	"duty_list": "Duty list",
 	"delete_duty": "Delete Duty",
 	"delete_duty_success": "Delete duty success",

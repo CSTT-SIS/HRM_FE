@@ -15,19 +15,17 @@ import IconBack from '@/components/Icon/IconBack';
 import duty_list from '../duty_list.json';
 import Select from "react-select";
 import { C } from '@fullcalendar/core/internal-common';
-import { Positions } from '@/services/swr/position.twr';
-import { detailPosition, updatePosition } from '@/services/apis/position.api';
 interface Props {
     [key: string]: any;
 }
 
 const list_duty_type = [
     {
-        value: 1,
+        value: '1',
         label: 'Quản lý'
     },
     {
-        value: 1,
+        value: '2',
         label: 'Nhân viên'
     }
 ]
@@ -38,33 +36,48 @@ const DetailDuty = ({ ...props }: Props) => {
     const id = Number(router.query.id);
     const { t } = useTranslation();
     const [disabled, setDisabled] = useState(false);
-    const { data: position, pagination, mutate } = Positions({
-        sortBy: 'id.ASC',
-        ...router.query
-    });
+
     const SubmittedForm = Yup.object().shape({
         name: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_name_duty')}`),
         code: Yup.string().min(2, 'Too Short!').required(`${t('please_fill_dutyCode')}`),
-        groupPosition: Yup.string().required(`${t('please_fill_group_position')}`),
-        isActive: Yup.bool().required(`${t('please_fill_status')}`),
-        description: Yup.string()
+        status: Yup.string().required(`${t('please_fill_status')}`)
     });
 
     useEffect(() => {
         if (Number(router.query.id)) {
-            detailPosition(router.query.id).then((res) => {
-                setDetail(res?.data)
-            }).catch((err) => { });
+            const detailData = duty_list?.find(d => d.id === Number(router.query.id));
+            setDetail(detailData);
         }
     }, [router])
 
     const handleDuty = (value: any) => {
-        updatePosition(detail?.id, value).then(() => {
-                showMessage(`${t('update_duty_success')}`, 'success');
-                mutate();
-            }).catch((err) => {
-                showMessage(`${t('update_duty_error')}`, 'error');
+        if (detail) {
+            const reNew = props.totalData.filter((item: any) => item.id !== props.data.id);
+            reNew.push({
+                id: props.data.id,
+                name: value.name,
+                code: value.code,
+                status: value.status
             });
+            localStorage.setItem('dutyList', JSON.stringify(reNew));
+            props.setGetStorge(reNew);
+            props.setOpenModal(false);
+            props.setData(undefined);
+            showMessage(`${t('edit_duty_success')}`, 'success');
+        } else {
+            const reNew = props.totalData;
+            reNew.push({
+                id: Number(props?.totalData[props?.totalData?.length - 1].id) + 1,
+                name: value.name,
+                code: value.code,
+                status: value.status
+            })
+            localStorage.setItem('dutyList', JSON.stringify(reNew));
+            props.setGetStorge(props.totalData);
+            props.setOpenModal(false);
+            props.setData(undefined);
+            showMessage(`${t('create_duty_success')}`, 'success')
+        }
     }
 
     const handleCancel = () => {
@@ -72,6 +85,7 @@ const DetailDuty = ({ ...props }: Props) => {
         props.setData(undefined);
     };
 
+    console.log(list_duty_type?.find((e: any) => e.label === detail?.duty_group))
     return (
         <div className="p-5">
             <div className='flex justify-between header-page-bottom pb-4 mb-4'>
@@ -85,14 +99,17 @@ const DetailDuty = ({ ...props }: Props) => {
                     </button>
                 </Link>
             </div>
-            { detail?.id !== undefined && <Formik
+            <Formik
                 initialValues={
                     {
                         name: detail ? `${detail?.name}` : "",
                         code: detail ? `${detail?.code}` : "",
-                        isActive: detail ? detail?.isActive : true,
-                        groupPosition: detail ? `${detail?.groupPosition}` : "",
-                        description: detail ? detail?.description : ""
+                        status: detail ? `${detail?.status}` : "",
+                        duty_group: detail ? {
+                            value: detail?.duty_group,
+                            label: list_duty_type?.find((e: any) => e.label === detail?.duty_group)?.label
+                        } : null,
+                        description: detail ? `${detail?.description}` : ""
                     }
                 }
                 validationSchema={SubmittedForm}
@@ -121,53 +138,46 @@ const DetailDuty = ({ ...props }: Props) => {
                         </div>
                         <div className="flex justify-between gap-5">
                             <div className="mb-5 w-1/2">
-                                <label htmlFor="groupPosition" className='label'> {t('duty_group')} < span style={{ color: 'red' }}>* </span></label >
-<Field autoComplete="off"
-                                                        name="groupPosition"
-                                                        render={({ field }: any) => (
-                                                            <>
+                                <label htmlFor="duty_group" className='label'> {t('duty_group')} < span style={{ color: 'red' }}>* </span></label >
+
                                                                 <Select
                                                                 id='duty_group'
                                                                 name='duty_group'
-                                                                    // value={values?.groupPosition}
+                                                                    value={values?.duty_group}
                                                                     options={list_duty_type}
                                                                     placeholder={`${t('choose_group_duty')}`}
-                                                                    onChange={(e: any) => {
-                                                                        console.log(e)
-                                                                        setFieldValue('groupPosition', e?.label)
+                                                                    onChange={e => {
+                                                                        setFieldValue('duty_group', e)
                                                                     }}
                                                                     />
-                                                                    </>
-                                                        )}
-                                                        />
 
-                                                        {submitCount ? errors.groupPosition ? (
-                                    <div className="text-danger mt-1"> {errors.groupPosition} </div>
+                                                        {submitCount ? errors.duty_group ? (
+                                    <div className="text-danger mt-1"> {errors.duty_group} </div>
                                 ) : null : ''}
                             </div>
                             <div className="mb-5 w-1/2">
-                                <label htmlFor="isActive" className='label'> {t('status')} < span style={{ color: 'red' }}>* </span></label >
+                                <label htmlFor="status" className='label'> {t('status')} < span style={{ color: 'red' }}>* </span></label >
                                 <div className="flex" style={{ alignItems: 'center', marginTop: '13px' }}>
                                     <label style={{ marginBottom: 0, marginRight: '10px' }}>
-                                        <Field autoComplete="off" type="radio" name="isActive" value={true} className="form-checkbox rounded-full" />
+                                        <Field autoComplete="off" type="radio" name="status" value="active" className="form-checkbox rounded-full" />
                                         {t('active')}
                                     </label>
                                     <label style={{ marginBottom: 0 }}>
-                                        <Field autoComplete="off" type="radio" name="isActive" value={false} className="form-checkbox rounded-full" />
+                                        <Field autoComplete="off" type="radio" name="status" value="inactive" className="form-checkbox rounded-full" />
                                         {t('inactive')}
                                     </label>
                                 </div>
 
-                                {submitCount ? errors.isActive ? (
-                                    <div className="text-danger mt-1"> {`${errors.isActive}`} </div>
+                                {submitCount ? errors.status ? (
+                                    <div className="text-danger mt-1"> {errors.status} </div>
                                 ) : null : ''}
                             </div>
                         </div>
                         <div className="mb-5">
                             <label htmlFor="description" className='label'> {t('description')}</label >
-                            <Field autoComplete="off" name="description" as="textarea" id="description" placeholder={`${t('enter_description')}`} className="form-input" />
+                            <Field autoComplete="off" name="duty_description" as="textarea" id="duty_description" placeholder={`${t('enter_description')}`} className="form-input" />
                             {submitCount ? errors.description ? (
-                                <div className="text-danger mt-1"> {`${errors.description}`} </div>
+                                <div className="text-danger mt-1"> {errors.description} </div>
                             ) : null : ''}
                         </div>
                         <div className="mt-8 flex items-center justify-end ltr:text-right rtl:text-left gap-8">
@@ -181,7 +191,7 @@ const DetailDuty = ({ ...props }: Props) => {
 
                     </Form>
                 )}
-            </Formik>}
+            </Formik>
 
         </div>
     );
