@@ -9,7 +9,7 @@ import { showMessage } from '@/@core/utils';
 import IconX from '@/components/Icon/IconX';
 import { useRouter } from 'next/router';
 import Select, { components } from 'react-select';
-import { ImportProduct } from '@/services/apis/warehouse.api';
+import { EditImportProduct, ImportProduct } from '@/services/apis/warehouse.api';
 import { DropdownProducts } from '@/services/swr/dropdown.twr';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/flatpickr.css';
@@ -31,40 +31,65 @@ const ImportModal = ({ ...props }: Props) => {
     const [expired, setExpired] = useState(false);
 
     const SubmittedForm = Yup.object().shape({
-        quantity: Yup.string().required(`${t('please_fill_quantity')}`),
-        productId: new Yup.ObjectSchema().required(`${t('please_fill_product')}`)
-
+        // quantity: Yup.string().required(`${t('please_fill_quantity')}`),
+        // productId: new Yup.ObjectSchema().required(`${t('please_fill_product')}`)
     });
 
     //get data
     const { data: productDropdown, pagination: productPagination, isLoading: productLoading } = DropdownProducts({ page: page, search: search });
 
     const handleImport = (param: any) => {
-        const query: any = {
-            "id": router.query.id,
-            "quantity": Number(param.quantity),
-            "errorQuantity": Number(param.errorQuantity),
-            "productId": param.productId.value,
-            "notifyExpired": expired
+        // if(router.query.id === 'create'){
+
+        // }
+        if (props.data) {
+            const query: any = {
+                "id": router.query.id,
+                "inventoryId": props?.data.id,
+                "errorQuantity": Number(param.errorQuantity),
+                "notifyExpired": expired,
+                "note": param.note
+            }
+            if (param.expiredDate) {
+                query.expiredDate = moment(param.expiredDate).format("YYYY-MM-DD hh:mm:ss");
+            }
+            if (param.notifyBefore) {
+                query.notifyBefore = Number(param.notifyBefore)
+            }
+            EditImportProduct(query).then(() => {
+                props.importMutate();
+                handleCancel();
+                showMessage(`${t('import_success')}`, 'success');
+            }).catch((err) => {
+                showMessage(`${t('import_error')}`, 'error');
+            });
+        } else {
+            const query: any = {
+                "id": router.query.id,
+                "quantity": Number(param.quantity),
+                "errorQuantity": Number(param.errorQuantity),
+                "productId": Number(param.productId.value),
+                "notifyExpired": expired,
+                "note": param.note
+            }
+            if (param.expiredDate) {
+                query.expiredDate = moment(param.expiredDate).format("YYYY-MM-DD hh:mm:ss");
+            }
+            if (param.notifyBefore) {
+                query.notifyBefore = Number(param.notifyBefore)
+            }
+            ImportProduct(query).then(() => {
+                props.importMutate();
+                handleCancel();
+                showMessage(`${t('import_success')}`, 'success');
+            }).catch((err) => {
+                showMessage(`${t('import_error')}`, 'error');
+            });
         }
-        if (param.expiredDate) {
-            query.expiredDate = moment(param.expiredDate).format("YYYY-MM-DD hh:mm:ss");
-        }
-        if (param.notifyBefore) {
-            query.notifyBefore = Number(param.notifyBefore)
-        }
-        ImportProduct(query).then(() => {
-            props.importMutate();
-            handleCancel();
-            showMessage(`${t('import_success')}`, 'success');
-        }).catch((err) => {
-            showMessage(`${t('import_error')}`, 'error');
-        });
     }
 
     const handleCancel = () => {
         props.setOpenModal(false);
-        setInitialValue({});
         setDisable(!disable);
     };
 
@@ -73,12 +98,18 @@ const ImportModal = ({ ...props }: Props) => {
             quantity: props?.data ? `${props?.data?.quantity}` : "",
             errorQuantity: props?.data ? `${props?.data?.errorQuantity}` : "",
             productId: props?.data ? {
-                value: `${props?.data?.product.id}`,
-                label: `${props?.data?.product.name}`
-            } : ""
+                value: `${props?.data?.product?.id}`,
+                label: `${props?.data?.product?.name}`
+            } : "",
+            expiredDate: props?.data ? props?.data?.expiredAt : "",
+            notifyBefore: props?.data ? props?.data?.notifyBefore : "",
+            note: props?.data?.note ? `${props?.data?.note}` : ""
         })
+        if (props?.data?.notifyExpired) {
+            setExpired(props?.data.notifyExpired === 1 ? true : false);
+            setDisable(true);
+        }
     }, [props?.data, router]);
-
     useEffect(() => {
         if (productPagination?.page === undefined) return;
         if (productPagination?.page === 1) {
@@ -140,7 +171,7 @@ const ImportModal = ({ ...props }: Props) => {
                                     <IconX />
                                 </button>
                                 <div className="bg-[#fbfbfb] py-3 text-lg font-medium ltr:pl-5 ltr:pr-[50px] rtl:pr-5 rtl:pl-[50px] dark:bg-[#121c2c]">
-                                    {t('import_product')}
+                                    {props.data ? t('import_product_edit') : t('import_product')}
                                 </div>
                                 <div className="p-5 pl-10 pr-10">
                                     <Formik
@@ -154,41 +185,46 @@ const ImportModal = ({ ...props }: Props) => {
 
                                         {({ errors, values, setFieldValue, submitCount }) => (
                                             <Form className="space-y-5" >
-                                                <div className="mb-5 flex justify-between gap-4">
-                                                    <div className="flex-1">
-                                                        <label htmlFor="productId" className='label'> {t('product')} < span style={{ color: 'red' }}>* </span></label >
-                                                        <Select
-                                                            id='productId'
-                                                            name='productId'
-                                                            options={dataProductDropdown}
-                                                            onInputChange={e => handleSearch(e)}
-                                                            onMenuOpen={() => setPage(1)}
-                                                            onMenuScrollToBottom={handleMenuScrollToBottom}
-                                                            isLoading={productLoading}
-                                                            maxMenuHeight={160}
-                                                            value={values?.productId}
-                                                            onChange={e => {
-                                                                setFieldValue('productId', e)
-                                                            }}
-                                                        />
-                                                        {submitCount && errors.productId ? (
-                                                            <div className="text-danger mt-1"> {`${errors.productId}`} </div>
-                                                        ) : null}
-                                                    </div>
-                                                </div>
-                                                <div className="mb-5">
-                                                    <label htmlFor="quantity" className='label'> {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
-                                                    <Field autoComplete="off"
-                                                        name="quantity"
-                                                        type="text"
-                                                        id="quantity"
-                                                        placeholder={`${t('enter_quantity_product')}`}
-                                                        className="form-input"
-                                                    />
-                                                    {submitCount && errors.quantity ? (
-                                                        <div className="text-danger mt-1"> {`${errors.quantity}`} </div>
-                                                    ) : null}
-                                                </div>
+                                                {
+                                                    Object.keys(props?.data || {}).length <= 0 &&
+                                                    <>
+                                                        <div className="mb-5 flex justify-between gap-4">
+                                                            <div className="flex-1">
+                                                                <label htmlFor="productId" className='label'> {t('product')} < span style={{ color: 'red' }}>* </span></label >
+                                                                <Select
+                                                                    id='productId'
+                                                                    name='productId'
+                                                                    options={dataProductDropdown}
+                                                                    onInputChange={e => handleSearch(e)}
+                                                                    onMenuOpen={() => setPage(1)}
+                                                                    onMenuScrollToBottom={handleMenuScrollToBottom}
+                                                                    isLoading={productLoading}
+                                                                    maxMenuHeight={160}
+                                                                    value={values?.productId}
+                                                                    onChange={e => {
+                                                                        setFieldValue('productId', e)
+                                                                    }}
+                                                                />
+                                                                {submitCount && errors.productId ? (
+                                                                    <div className="text-danger mt-1"> {`${errors.productId}`} </div>
+                                                                ) : null}
+                                                            </div>
+                                                        </div>
+                                                        <div className="mb-5">
+                                                            <label htmlFor="quantity" className='label'> {t('quantity')} < span style={{ color: 'red' }}>* </span></label >
+                                                            <Field autoComplete="off"
+                                                                name="quantity"
+                                                                type="text"
+                                                                id="quantity"
+                                                                placeholder={`${t('enter_quantity_product')}`}
+                                                                className="form-input"
+                                                            />
+                                                            {submitCount && errors.quantity ? (
+                                                                <div className="text-danger mt-1"> {`${errors.quantity}`} </div>
+                                                            ) : null}
+                                                        </div>
+                                                    </>
+                                                }
                                                 <div className="mb-5">
                                                     <label htmlFor="errorQuantity" className='label'> {t('error_quantity')}</label >
                                                     <Field autoComplete="off"
@@ -210,10 +246,10 @@ const ImportModal = ({ ...props }: Props) => {
                                                         render={({ field }: any) => (
                                                             <Flatpickr
                                                                 data-enable-time
-                                                                placeholder={`${t('YYYY-MM-DD')}`}
+                                                                placeholder={`${t('DD/MM/YYYY')}`}
                                                                 options={{
                                                                     enableTime: true,
-                                                                    dateFormat: 'Y-m-d'
+                                                                    dateFormat: 'd/m/Y'
                                                                 }}
                                                                 value={field?.value}
                                                                 onChange={e => setFieldValue("expiredDate", moment(e[0]).format("YYYY-MM-DD hh:mm"))}
@@ -239,9 +275,16 @@ const ImportModal = ({ ...props }: Props) => {
                                                         <div className="text-danger mt-1"> {`${errors.notifyBefore}`} </div>
                                                     ) : null}
                                                 </div>
+                                                <div className="mb-5">
+                                                    <label htmlFor="note" > {t('description')} </label >
+                                                    <Field autoComplete="off" name="note" as="textarea" id="note" placeholder={`${t('enter_description')}`} className="form-input" />
+                                                    {submitCount && errors.note ? (
+                                                        <div className="text-danger mt-1"> {`${errors.note}`} </div>
+                                                    ) : null}
+                                                </div>
                                                 <div className="flex justify-between">
                                                     <div className="flex items-center justify-start ltr:text-right rtl:text-left gap-2">
-                                                        <Checkbox onClick={e => handleExpired()} />
+                                                        <Checkbox onClick={e => handleExpired()} checked={expired} />
                                                         <span>{`${t('noti_expired')}`}</span>
                                                     </div>
                                                     <div className="p-[15px] flex items-center justify-end ltr:text-right rtl:text-left">
